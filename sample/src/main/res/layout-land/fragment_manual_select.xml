@@ -3,8 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:orientation="vertical"
+    android:paddingRight="@dimen/activity_horizontal_margin"
     >
 
     <net.mm2d.colorchooser.HsvView
@@ -16,9 +18,11 @@
 
     <net.mm2d.colorchooser.SliderView
         android:id="@+id/slider_view"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/module_margin"
+        android:layout_weight="1"
+        android:layout_marginLeft="@dimen/module_margin"
+        android:layout_marginStart="@dimen/module_margin"
         />
 
 </LinearLayout>

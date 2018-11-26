@@ -10,6 +10,7 @@
     <dimen name="hsv_size">256dp</dimen>
     <dimen name="hue_width">24dp</dimen>
     <dimen name="panel_margin">8dp</dimen>
+    <dimen name="module_margin">16dp</dimen>
     <dimen name="rgb_size">24dp</dimen>
     <dimen name="rgb_text">16dp</dimen>
     <dimen name="color_text">12dp</dimen>

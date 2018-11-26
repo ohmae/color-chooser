@@ -14,7 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_color_slider.*
+import kotlinx.android.synthetic.main.fragment_control.*
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -28,7 +28,7 @@ class ControlFragment : Fragment(), ColorChangeObserver {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_color_slider, container, false)
+        return inflater.inflate(R.layout.fragment_control, container, false)
     }
 
     override fun onAttach(context: Context?) {
