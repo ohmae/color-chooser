@@ -19,41 +19,10 @@
         android:layout_height="wrap_content"
         />
 
-    <LinearLayout
+    <net.mm2d.colorchooser.ControlView
+        android:id="@+id/control_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
+        />
 
-        <View
-            android:id="@+id/color_preview"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="8dp"
-            android:layout_weight="1"
-            />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/edit_hex_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            >
-
-            <EditText
-                android:id="@+id/edit_hex"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:ems="5"
-                android:fontFamily="monospace"
-                android:inputType="textNoSuggestions"
-                android:textSize="12dp"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
 </LinearLayout>
