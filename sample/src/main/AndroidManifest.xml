@@ -19,7 +19,6 @@
         </activity>
         <activity
             android:name=".ColorChooserActivity"
-            android:label="@string/title_activity_color_chooser"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>

@@ -15,7 +15,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_color_slider.*
 
@@ -35,18 +34,12 @@ class ColorSliderFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        seek_red.setOnSeekBarChangeListener(makeOnSeekBarChangeListener { progress, fromUser ->
-            text_red.text = progress.toString()
-            updateBySeek(fromUser)
-        })
-        seek_green.setOnSeekBarChangeListener(makeOnSeekBarChangeListener { progress, fromUser ->
-            text_green.text = progress.toString()
-            updateBySeek(fromUser)
-        })
-        seek_blue.setOnSeekBarChangeListener(makeOnSeekBarChangeListener { progress, fromUser ->
-            text_blue.text = progress.toString()
-            updateBySeek(fromUser)
-        })
+        slider_view.onChangeColor = {
+            color = it
+            setColorToHexText()
+            setColorToPreview()
+            setColorToHsv()
+        }
         edit_hex.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
             }
@@ -64,52 +57,40 @@ class ColorSliderFragment : Fragment() {
                 try {
                     color = Color.parseColor(s.toString())
                     edit_hex_layout.error = null
-                    setColorToSeekBar()
+                    setColorToSlider()
+                    setColorToHsv()
                     setColorToPreview()
                 } catch (e: IllegalArgumentException) {
                     edit_hex_layout.error = "error"
                 }
             }
         })
-        sv_view.onChangeSv = { saturation, value ->
-            color = ColorUtils.hsvToColor(hue_view.hue, saturation, value)
+        hsv_view.onChangeColor = {
+            color = it
+            setColorToSlider()
             setColorToHexText()
-            setColorToSeekBar()
-            setColorToPreview()
-        }
-        hue_view.onChangeHue = { hue ->
-            color = ColorUtils.hsvToColor(hue, sv_view.saturation, sv_view.value)
-            setColorToHexText()
-            setColorToSeekBar()
             setColorToPreview()
         }
     }
 
     override fun onResume() {
         super.onResume()
+        setColorToSlider()
+        setColorToHsv()
         setColorToHexText()
-        setColorToSeekBar()
         setColorToPreview()
-    }
-
-    private fun updateBySeek(fromUser: Boolean) {
-        if (fromUser) {
-            color = Color.rgb(seek_red.progress, seek_green.progress, seek_blue.progress)
-            setColorToHexText()
-            setColorToPreview()
-        }
     }
 
     private fun setColorToPreview() {
         color_preview.setBackgroundColor(color)
-        sv_view.setColor(color)
-        hue_view.setColor(color)
     }
 
-    private fun setColorToSeekBar() {
-        seek_red.progress = Color.red(color)
-        seek_green.progress = Color.green(color)
-        seek_blue.progress = Color.blue(color)
+    private fun setColorToSlider() {
+        slider_view.setColor(color)
+    }
+
+    private fun setColorToHsv() {
+        hsv_view.setColor(color)
     }
 
     @SuppressLint("SetTextI18n")
@@ -117,19 +98,5 @@ class ColorSliderFragment : Fragment() {
         changeHexTextByUser = false
         edit_hex.setText("#%06X".format(color and 0xFFFFFF))
         changeHexTextByUser = true
-    }
-
-    private fun makeOnSeekBarChangeListener(onProgressChanged: (Int, Boolean) -> Unit): SeekBar.OnSeekBarChangeListener {
-        return object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                onProgressChanged(progress, fromUser)
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {
-            }
-        }
     }
 }

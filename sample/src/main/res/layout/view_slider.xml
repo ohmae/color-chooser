@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <FrameLayout
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_margin="8dp"
+            >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:tint="#FF0000"
+                app:srcCompat="@drawable/ic_circle"
+                tools:ignore="ContentDescription"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:gravity="center"
+                android:text="R"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                tools:ignore="HardcodedText,SpUsage"
+                >
+
+                <requestFocus/>
+            </TextView>
+        </FrameLayout>
+
+        <SeekBar
+            android:id="@+id/seek_red"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:max="255"
+            android:theme="@style/AppTheme.Widget.SeekBar.Red"
+            tools:progress="128"
+            />
+
+        <TextView
+            android:id="@+id/text_red"
+            android:layout_width="24dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:gravity="end"
+            android:text="0"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="12dp"
+            tools:ignore="HardcodedText,SpUsage"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <FrameLayout
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_margin="8dp"
+            >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:tint="#008000"
+                app:srcCompat="@drawable/ic_circle"
+                tools:ignore="ContentDescription"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="G"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                tools:ignore="HardcodedText,SpUsage"
+                />
+        </FrameLayout>
+
+        <SeekBar
+            android:id="@+id/seek_green"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:max="255"
+            android:theme="@style/AppTheme.Widget.SeekBar.Green"
+            tools:progress="128"
+            />
+
+        <TextView
+            android:id="@+id/text_green"
+            android:layout_width="24dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:gravity="end"
+            android:text="0"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="12dp"
+            tools:ignore="HardcodedText,SpUsage"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <FrameLayout
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_margin="8dp"
+            >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:tint="#0000FF"
+                app:srcCompat="@drawable/ic_circle"
+                tools:ignore="ContentDescription"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="B"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                tools:ignore="HardcodedText,SpUsage"
+                />
+        </FrameLayout>
+
+
+        <SeekBar
+            android:id="@+id/seek_blue"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:max="255"
+            android:theme="@style/AppTheme.Widget.SeekBar.Blue"
+            tools:progress="128"
+            />
+
+        <TextView
+            android:id="@+id/text_blue"
+            android:layout_width="24dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:gravity="end"
+            android:text="0"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="12dp"
+            tools:ignore="HardcodedText,SpUsage"
+            />
+    </LinearLayout>
+
+</merge>

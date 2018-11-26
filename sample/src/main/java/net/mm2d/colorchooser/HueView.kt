@@ -36,8 +36,7 @@ class HueView
     private val _sampleShadowRadius: Float
     private val bitmapRect = Rect(0, 0, 1, RANGE)
     private val targetRect = Rect()
-    var hue: Float = 0f
-        private set
+    private var hue: Float = 0f
     var onChangeHue: ((hue: Float) -> Unit)? = null
 
     init {
@@ -59,14 +58,14 @@ class HueView
         updateHue(ColorUtils.hue(color))
     }
 
-    private fun updateHue(h: Float, byUser: Boolean = false) {
+    private fun updateHue(h: Float, fromUser: Boolean = false) {
         if (hue == h) {
             return
         }
         hue = h
         color = ColorUtils.hsvToColor(hue, 1f, 1f)
         invalidate()
-        if (byUser) {
+        if (fromUser) {
             onChangeHue?.invoke(hue)
         }
     }

@@ -54,7 +54,7 @@ class ColorChooserActivity : AppCompatActivity() {
         }
 
         companion object {
-            private val ARG_SECTION_NUMBER = "section_number"
+            private const val ARG_SECTION_NUMBER = "section_number"
             fun newInstance(sectionNumber: Int): PlaceholderFragment {
                 val fragment = PlaceholderFragment()
                 val args = Bundle()

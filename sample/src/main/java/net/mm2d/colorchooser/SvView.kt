@@ -38,8 +38,7 @@ class SvView
     private val bitmapRect = Rect(0, 0, TONE_SIZE, TONE_SIZE)
     private val targetRect = Rect()
     private val hsv = FloatArray(3)
-    var hue: Float = 0f
-        private set
+    private var hue: Float = 0f
     var saturation: Float = 0f
         private set
     var value: Float = 0f
@@ -50,7 +49,7 @@ class SvView
         updateBitmap()
         invalidate()
     }
-    var onChangeSv: ((saturation: Float, value: Float) -> Unit)? = null
+    var onChangeColor: ((color: Int) -> Unit)? = null
 
     init {
         val density = resources.displayMetrics.density
@@ -82,15 +81,15 @@ class SvView
         postDelayed(setColorTask, delay)
     }
 
-    private fun updateSv(s: Float, v: Float, byUser: Boolean = false) {
+    private fun updateSv(s: Float, v: Float, fromUser: Boolean = false) {
         if (saturation == s && value == v) {
             return
         }
         saturation = s
         value = v
         invalidate()
-        if (byUser) {
-            onChangeSv?.invoke(saturation, value)
+        if (fromUser) {
+            onChangeColor?.invoke(color)
         }
     }
 
