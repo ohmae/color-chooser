@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    tools:orientation="vertical"
+    tools:parentTag="android.widget.LinearLayout"
     >
 
     <LinearLayout
@@ -50,6 +51,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:max="255"
+            android:paddingTop="@dimen/seek_padding"
+            android:paddingBottom="@dimen/seek_padding"
             android:theme="@style/AppTheme.Widget.SeekBar.Red"
             tools:progress="128"
             />
@@ -106,6 +109,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:max="255"
+            android:paddingTop="@dimen/seek_padding"
+            android:paddingBottom="@dimen/seek_padding"
             android:theme="@style/AppTheme.Widget.SeekBar.Green"
             tools:progress="128"
             />
@@ -156,13 +161,14 @@
                 />
         </FrameLayout>
 
-
         <SeekBar
             android:id="@+id/seek_blue"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:max="255"
+            android:paddingTop="@dimen/seek_padding"
+            android:paddingBottom="@dimen/seek_padding"
             android:theme="@style/AppTheme.Widget.SeekBar.Blue"
             tools:progress="128"
             />
