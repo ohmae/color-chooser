@@ -23,7 +23,7 @@ class SliderView
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
-    var onChangeColor: ((color: Int) -> Unit)? = null
+    var onColorChanged: ((color: Int) -> Unit)? = null
 
     init {
         orientation = VERTICAL
@@ -51,7 +51,7 @@ class SliderView
     private fun updateBySeekBar(fromUser: Boolean) {
         if (!fromUser) return
         val color = Color.rgb(seek_red.progress, seek_green.progress, seek_blue.progress)
-        onChangeColor?.invoke(color)
+        onColorChanged?.invoke(color)
     }
 
     companion object {

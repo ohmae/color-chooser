@@ -39,7 +39,7 @@ class HueView
     private val bitmapRect = Rect(0, 0, 1, RANGE)
     private val targetRect = Rect()
     private var hue: Float = 0f
-    var onChangeHue: ((hue: Float) -> Unit)? = null
+    var onHueChanged: ((hue: Float) -> Unit)? = null
     private val colorSampleFrame = ContextCompat.getColor(context, R.color.sample_frame)
     private val colorSampleShadow = ContextCompat.getColor(context, R.color.sample_shadow)
 
@@ -63,7 +63,7 @@ class HueView
         color = ColorUtils.hsvToColor(hue, 1f, 1f)
         invalidate()
         if (fromUser) {
-            onChangeHue?.invoke(hue)
+            onHueChanged?.invoke(hue)
         }
     }
 

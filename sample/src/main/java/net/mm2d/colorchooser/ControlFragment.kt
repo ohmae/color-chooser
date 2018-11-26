@@ -7,6 +7,7 @@
 
 package net.mm2d.colorchooser
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,8 +19,9 @@ import kotlinx.android.synthetic.main.fragment_color_slider.*
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class ColorSliderFragment : Fragment() {
-    private var color: Int = Color.BLACK
+class ControlFragment : Fragment(), ColorChangeObserver {
+    private var color = Color.BLACK
+    private var colorChangeObserver: ColorChangeObserver? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,40 +31,39 @@ class ColorSliderFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_color_slider, container, false)
     }
 
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        colorChangeObserver = context as? ColorChangeObserver
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        colorChangeObserver = null
+    }
+
+    override fun onColorChange(color: Int, fragment: Fragment?) {
+        if (fragment is ControlFragment) return
+        this.color = color
+        setColor(color)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        slider_view.onChangeColor = {
+        control_view.onColorChanged = {
             color = it
-            setColorToControl()
-            setColorToHsv()
-        }
-        hsv_view.onChangeColor = {
-            color = it
-            setColorToSlider()
-            setColorToControl()
-        }
-        control_view.onChangeColor = {
-            color = it
-            setColorToSlider()
-            setColorToHsv()
+            performOnColorChange(it)
         }
     }
 
     override fun onResume() {
         super.onResume()
-        setColorToSlider()
-        setColorToHsv()
-        setColorToControl()
+        setColor(color)
     }
 
-    private fun setColorToControl() {
-        control_view.setColor(color)
+    private fun performOnColorChange(color: Int) {
+        colorChangeObserver?.onColorChange(color, this)
     }
 
-    private fun setColorToSlider() {
-        slider_view.setColor(color)
-    }
-
-    private fun setColorToHsv() {
-        hsv_view.setColor(color)
+    private fun setColor(color: Int) {
+        control_view?.setColor(color)
     }
 }

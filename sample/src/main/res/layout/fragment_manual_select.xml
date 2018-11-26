@@ -3,11 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     >
 
-    <net.mm2d.colorchooser.ControlView
-        android:id="@+id/control_view"
+    <net.mm2d.colorchooser.HsvView
+        android:id="@+id/hsv_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        />
+
+    <net.mm2d.colorchooser.SliderView
+        android:id="@+id/slider_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />

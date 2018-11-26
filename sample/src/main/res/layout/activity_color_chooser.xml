@@ -31,12 +31,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/tab_text_2"/>
 
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tabItem3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tab_text_3"/>
-
         </com.google.android.material.tabs.TabLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -46,18 +40,18 @@
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         >
-        <androidx.viewpager.widget.ViewPager
+        <net.mm2d.colorchooser.DisableSwipeViewPager
             android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            />
-
-        <fragment
-            android:id="@+id/slider"
-            android:name="net.mm2d.colorchooser.ColorSliderFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            />
+
+        <fragment
+            android:id="@+id/control"
+            android:name="net.mm2d.colorchooser.ControlFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             />
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

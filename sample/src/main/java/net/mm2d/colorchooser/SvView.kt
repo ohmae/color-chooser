@@ -53,7 +53,7 @@ class SvView
     }
     private val colorSampleFrame = ContextCompat.getColor(context, R.color.sample_frame)
     private val colorSampleShadow = ContextCompat.getColor(context, R.color.sample_shadow)
-    var onChangeColor: ((color: Int) -> Unit)? = null
+    var onColorChanged: ((color: Int) -> Unit)? = null
 
     init {
         paint.isAntiAlias = true
@@ -86,7 +86,7 @@ class SvView
         value = v
         invalidate()
         if (fromUser) {
-            onChangeColor?.invoke(color)
+            onColorChanged?.invoke(color)
         }
     }
 

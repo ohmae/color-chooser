@@ -7,6 +7,7 @@
 
 package net.mm2d.colorchooser
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,30 +20,58 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_color_chooser.*
 import kotlinx.android.synthetic.main.fragment_color_chooser.view.*
 
-class ColorChooserActivity : AppCompatActivity() {
+class ColorChooserActivity : AppCompatActivity(), ColorChangeObserver {
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
+    private lateinit var observers: List<ColorChangeObserver>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_color_chooser)
-
-        mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
+        val controlFragment = supportFragmentManager.findFragmentById(R.id.control) as ControlFragment
+        val manualSelectFragment = ManualSelectFragment()
+        val placeholderFragment = PlaceholderFragment.newInstance(2)
+        observers = listOf(controlFragment, manualSelectFragment, placeholderFragment)
+        mSectionsPagerAdapter = SectionsPagerAdapter(
+            supportFragmentManager,
+            listOf(
+                manualSelectFragment,
+                placeholderFragment
+            )
+        )
+        container.requestDisallowInterceptTouchEvent(true)
         container.adapter = mSectionsPagerAdapter
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
     }
 
-    inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+    override fun onResume() {
+        super.onResume()
+        onColorChange(Color.BLACK, null)
+    }
+
+    override fun onColorChange(color: Int, fragment: Fragment?) {
+        observers.forEach { it.onColorChange(color, fragment) }
+    }
+
+    inner class SectionsPagerAdapter(
+        fm: FragmentManager,
+        private val list: List<Fragment>
+    ) : FragmentPagerAdapter(fm) {
+
         override fun getItem(position: Int): Fragment {
-            return PlaceholderFragment.newInstance(position + 1)
+            return list[position]
         }
 
         override fun getCount(): Int {
-            return 3
+            return list.size
         }
     }
 
-    class PlaceholderFragment : Fragment() {
+    class PlaceholderFragment : Fragment(), ColorChangeObserver {
+
+        override fun onColorChange(color: Int, fragment: Fragment?) {
+        }
+
         override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?

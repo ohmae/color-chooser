@@ -32,7 +32,7 @@ class ControlView
     private var color: Int = Color.BLACK
     private val background: GradientDrawable
     private var changeHexTextByUser = true
-    var onChangeColor: ((color: Int) -> Unit)? = null
+    var onColorChanged: ((color: Int) -> Unit)? = null
 
     init {
         orientation = HORIZONTAL
@@ -58,7 +58,7 @@ class ControlView
                     color = Color.parseColor(s.toString())
                     edit_hex_layout.error = null
                     background.setColor(color)
-                    onChangeColor?.invoke(color)
+                    onColorChanged?.invoke(color)
                 } catch (e: IllegalArgumentException) {
                     edit_hex_layout.error = "error"
                 }
