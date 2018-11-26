@@ -12,12 +12,12 @@
         android:id="@+id/color_preview"
         android:layout_width="0dp"
         android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="@dimen/sample_horizontal_margin"
+        android:layout_marginLeft="@dimen/sample_horizontal_margin"
+        android:layout_marginTop="@dimen/sample_vertical_margin"
+        android:layout_marginEnd="@dimen/sample_horizontal_margin"
+        android:layout_marginRight="@dimen/sample_horizontal_margin"
+        android:layout_marginBottom="@dimen/sample_vertical_margin"
         android:layout_weight="1"
         />
 
@@ -35,7 +35,8 @@
             android:ems="5"
             android:fontFamily="monospace"
             android:inputType="textNoSuggestions"
-            android:textSize="12dp"
+            android:textSize="@dimen/color_text"
+            tools:ignore="Autofill,LabelFor,SpUsage"
             />
     </com.google.android.material.textfield.TextInputLayout>
 </merge>

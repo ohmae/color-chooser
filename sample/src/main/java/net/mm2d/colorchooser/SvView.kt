@@ -14,6 +14,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.ColorInt
+import androidx.core.content.ContextCompat
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -29,12 +30,13 @@ class SvView
     private val bitmap: Bitmap = Bitmap.createBitmap(TONE_SIZE, TONE_SIZE, Bitmap.Config.ARGB_8888)
     private val pixels = IntArray(TONE_SIZE * TONE_SIZE)
     private val paint = Paint()
-    private val _width: Int
-    private val _height: Int
-    private val _padding: Int
-    private val _sampleRadius: Float
-    private val _sampleFrameRadius: Float
-    private val _sampleShadowRadius: Float
+    private val _padding = resources.getDimensionPixelOffset(R.dimen.panel_margin)
+    private val _width = resources.getDimensionPixelOffset(R.dimen.hsv_size) + _padding * 2
+    private val _height = resources.getDimensionPixelOffset(R.dimen.hsv_size) + _padding * 2
+    private val _sampleRadius = resources.getDimension(R.dimen.sample_radius)
+    private val _sampleFrameRadius = _sampleRadius + resources.getDimension(R.dimen.sample_frame)
+    private val _sampleShadowRadius =
+        _sampleFrameRadius + resources.getDimension(R.dimen.sample_shadow)
     private val bitmapRect = Rect(0, 0, TONE_SIZE, TONE_SIZE)
     private val targetRect = Rect()
     private val hsv = FloatArray(3)
@@ -49,16 +51,11 @@ class SvView
         updateBitmap()
         invalidate()
     }
+    private val colorSampleFrame = ContextCompat.getColor(context, R.color.sample_frame)
+    private val colorSampleShadow = ContextCompat.getColor(context, R.color.sample_shadow)
     var onChangeColor: ((color: Int) -> Unit)? = null
 
     init {
-        val density = resources.displayMetrics.density
-        _padding = (PADDING * density + 0.5f).toInt()
-        _width = (TONE_SIZE * density + 0.5f).toInt() + _padding * 2
-        _height = (TONE_SIZE * density + 0.5f).toInt() + _padding * 2
-        _sampleRadius = SAMPLE_RADIUS * density
-        _sampleFrameRadius = SAMPLE_FRAME_RADIUS * density
-        _sampleShadowRadius = SAMPLE_SHADOW_RADIUS * density
         paint.isAntiAlias = true
         updateBitmap()
     }
@@ -123,9 +120,9 @@ class SvView
         canvas.drawBitmap(bitmap, bitmapRect, targetRect, paint)
         val x = saturation * targetRect.width() + targetRect.left
         val y = (1f - value) * targetRect.height() + targetRect.top
-        paint.color = SAMPLE_SHADOW_COLOR
+        paint.color = colorSampleShadow
         canvas.drawCircle(x, y, _sampleShadowRadius, paint)
-        paint.color = SAMPLE_FRAME_COLOR
+        paint.color = colorSampleFrame
         canvas.drawCircle(x, y, _sampleFrameRadius, paint)
         paint.color = color
         canvas.drawCircle(x, y, _sampleRadius, paint)
@@ -198,12 +195,6 @@ class SvView
     companion object {
         private const val TONE_MAX = 255
         private const val TONE_SIZE = 256
-        private const val PADDING = 8
-        private const val SAMPLE_RADIUS = 5
-        private const val SAMPLE_FRAME_RADIUS = 7
-        private const val SAMPLE_SHADOW_RADIUS = 8
-        private const val SAMPLE_FRAME_COLOR = Color.WHITE
-        private const val SAMPLE_SHADOW_COLOR = 0x1a000000
         private const val INTERVAL = 100L
     }
 }

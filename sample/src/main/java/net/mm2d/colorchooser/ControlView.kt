@@ -15,7 +15,9 @@ import android.graphics.drawable.LayerDrawable
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
+import android.view.View
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.view_control.view.*
 
 /**
@@ -28,27 +30,15 @@ class ControlView
     defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
     private var color: Int = Color.BLACK
-    private val background: GradientDrawable = GradientDrawable()
+    private val background: GradientDrawable
     private var changeHexTextByUser = true
     var onChangeColor: ((color: Int) -> Unit)? = null
 
     init {
         orientation = HORIZONTAL
         inflate(context, R.layout.view_control, this)
-
-        val density = resources.displayMetrics.density
-        background.shape = GradientDrawable.RECTANGLE
+        background = initDrawable(context, color_preview)
         background.setColor(color)
-        val frame = GradientDrawable()
-        frame.shape = GradientDrawable.RECTANGLE
-        frame.setStroke((2 * density + 0.5f).toInt(), Color.WHITE)
-        val shadow = GradientDrawable()
-        shadow.shape = GradientDrawable.RECTANGLE
-        shadow.setStroke((1 * density + 0.5f).toInt(), Color.argb(0x1a, 0, 0, 0))
-        val layer = LayerDrawable(arrayOf(background, frame, shadow))
-        layer.setLayerInset(0, (2 * density).toInt(), (2 * density).toInt(), (2 * density).toInt(), (2 * density).toInt())
-        layer.setLayerInset(1, (1 * density).toInt(), (1 * density).toInt(), (1 * density).toInt(), (1 * density).toInt())
-        color_preview.background = layer
 
         edit_hex.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -87,5 +77,30 @@ class ControlView
         changeHexTextByUser = false
         edit_hex.setText("#%06X".format(color and 0xFFFFFF))
         changeHexTextByUser = true
+    }
+
+    companion object {
+        fun initDrawable(context: Context, view: View): GradientDrawable {
+            val resources = context.resources
+            val frameWidth = resources.getDimensionPixelSize(R.dimen.sample_frame)
+            val shadowWidth = resources.getDimensionPixelSize(R.dimen.sample_shadow)
+            val background = GradientDrawable().also {
+                it.shape = GradientDrawable.RECTANGLE
+                it.setColor(Color.BLACK)
+            }
+            val frame = GradientDrawable().also {
+                it.shape = GradientDrawable.RECTANGLE
+                it.setStroke(frameWidth, ContextCompat.getColor(context, R.color.sample_frame))
+            }
+            val shadow = GradientDrawable().also {
+                it.shape = GradientDrawable.RECTANGLE
+                it.setStroke(shadowWidth, ContextCompat.getColor(context, R.color.sample_shadow))
+            }
+            val layerList = LayerDrawable(arrayOf(background, frame, shadow))
+            layerList.setLayerInset(0, frameWidth, frameWidth, frameWidth, frameWidth)
+            layerList.setLayerInset(1, shadowWidth, shadowWidth, shadowWidth, shadowWidth)
+            view.background = layerList
+            return background
+        }
     }
 }

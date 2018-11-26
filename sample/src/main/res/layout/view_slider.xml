@@ -16,9 +16,9 @@
         >
 
         <FrameLayout
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_margin="8dp"
+            android:layout_width="@dimen/rgb_size"
+            android:layout_height="@dimen/rgb_size"
+            android:layout_margin="@dimen/panel_margin"
             >
 
             <ImageView
@@ -37,7 +37,7 @@
                 android:gravity="center"
                 android:text="R"
                 android:textColor="@color/white"
-                android:textSize="16dp"
+                android:textSize="@dimen/rgb_text"
                 tools:ignore="HardcodedText,SpUsage"
                 >
 
@@ -59,15 +59,16 @@
 
         <TextView
             android:id="@+id/text_red"
-            android:layout_width="24dp"
+            android:layout_width="@dimen/rgb_size"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginEnd="@dimen/panel_margin"
+            android:layout_marginRight="@dimen/panel_margin"
+            android:fontFamily="monospace"
             android:gravity="end"
             android:text="0"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="12dp"
+            android:textSize="@dimen/color_text"
             tools:ignore="HardcodedText,SpUsage"
             />
     </LinearLayout>
@@ -79,9 +80,9 @@
         >
 
         <FrameLayout
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_margin="8dp"
+            android:layout_width="@dimen/rgb_size"
+            android:layout_height="@dimen/rgb_size"
+            android:layout_margin="@dimen/panel_margin"
             >
 
             <ImageView
@@ -98,7 +99,7 @@
                 android:gravity="center"
                 android:text="G"
                 android:textColor="@color/white"
-                android:textSize="16dp"
+                android:textSize="@dimen/rgb_text"
                 tools:ignore="HardcodedText,SpUsage"
                 />
         </FrameLayout>
@@ -117,15 +118,16 @@
 
         <TextView
             android:id="@+id/text_green"
-            android:layout_width="24dp"
+            android:layout_width="@dimen/rgb_size"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginEnd="@dimen/panel_margin"
+            android:layout_marginRight="@dimen/panel_margin"
+            android:fontFamily="monospace"
             android:gravity="end"
             android:text="0"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="12dp"
+            android:textSize="@dimen/color_text"
             tools:ignore="HardcodedText,SpUsage"
             />
     </LinearLayout>
@@ -137,9 +139,9 @@
         >
 
         <FrameLayout
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_margin="8dp"
+            android:layout_width="@dimen/rgb_size"
+            android:layout_height="@dimen/rgb_size"
+            android:layout_margin="@dimen/panel_margin"
             >
 
             <ImageView
@@ -156,7 +158,7 @@
                 android:gravity="center"
                 android:text="B"
                 android:textColor="@color/white"
-                android:textSize="16dp"
+                android:textSize="@dimen/rgb_text"
                 tools:ignore="HardcodedText,SpUsage"
                 />
         </FrameLayout>
@@ -175,15 +177,16 @@
 
         <TextView
             android:id="@+id/text_blue"
-            android:layout_width="24dp"
+            android:layout_width="@dimen/rgb_size"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginEnd="@dimen/panel_margin"
+            android:layout_marginRight="@dimen/panel_margin"
+            android:fontFamily="monospace"
             android:gravity="end"
             android:text="0"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="12dp"
+            android:textSize="@dimen/color_text"
             tools:ignore="HardcodedText,SpUsage"
             />
     </LinearLayout>

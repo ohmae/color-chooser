@@ -14,6 +14,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.ColorInt
+import androidx.core.content.ContextCompat
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -28,25 +29,21 @@ class HueView
     private var color: Int = Color.BLACK
     private val paint = Paint()
     private val bitmap: Bitmap
-    private val _width: Int
-    private val _height: Int
-    private val _padding: Int
-    private val _sampleRadius: Float
-    private val _sampleFrameRadius: Float
-    private val _sampleShadowRadius: Float
+    private val _padding = resources.getDimensionPixelOffset(R.dimen.panel_margin)
+    private val _width = resources.getDimensionPixelOffset(R.dimen.hue_width) + _padding * 2
+    private val _height = resources.getDimensionPixelOffset(R.dimen.hsv_size) + _padding * 2
+    private val _sampleRadius = resources.getDimension(R.dimen.sample_radius)
+    private val _sampleFrameRadius = _sampleRadius + resources.getDimension(R.dimen.sample_frame)
+    private val _sampleShadowRadius =
+        _sampleFrameRadius + resources.getDimension(R.dimen.sample_shadow)
     private val bitmapRect = Rect(0, 0, 1, RANGE)
     private val targetRect = Rect()
     private var hue: Float = 0f
     var onChangeHue: ((hue: Float) -> Unit)? = null
+    private val colorSampleFrame = ContextCompat.getColor(context, R.color.sample_frame)
+    private val colorSampleShadow = ContextCompat.getColor(context, R.color.sample_shadow)
 
     init {
-        val density = resources.displayMetrics.density
-        _padding = (PADDING * density + 0.5f).toInt()
-        _width = (WIDTH * density + 0.5f).toInt() + _padding * 2
-        _height = (HEIGHT * density + 0.5f).toInt() + _padding * 2
-        _sampleRadius = SAMPLE_RADIUS * density
-        _sampleFrameRadius = SAMPLE_FRAME_RADIUS * density
-        _sampleShadowRadius = SAMPLE_SHADOW_RADIUS * density
         val pixels = IntArray(RANGE) {
             ColorUtils.hsvToColor(it.toFloat() / RANGE, 1f, 1f)
         }
@@ -86,9 +83,9 @@ class HueView
         canvas.drawBitmap(bitmap, bitmapRect, targetRect, paint)
         val x = targetRect.centerX().toFloat()
         val y = hue * targetRect.height() + targetRect.top
-        paint.color = SAMPLE_SHADOW_COLOR
+        paint.color = colorSampleShadow
         canvas.drawCircle(x, y, _sampleShadowRadius, paint)
-        paint.color = SAMPLE_FRAME_COLOR
+        paint.color = colorSampleFrame
         canvas.drawCircle(x, y, _sampleFrameRadius, paint)
         paint.color = color
         canvas.drawCircle(x, y, _sampleRadius, paint)
@@ -111,13 +108,5 @@ class HueView
 
     companion object {
         private const val RANGE = 360
-        private const val WIDTH = 24
-        private const val HEIGHT = 256
-        private const val PADDING = 8
-        private const val SAMPLE_RADIUS = 5
-        private const val SAMPLE_FRAME_RADIUS = 7
-        private const val SAMPLE_SHADOW_RADIUS = 8
-        private const val SAMPLE_FRAME_COLOR = Color.WHITE
-        private const val SAMPLE_SHADOW_COLOR = 0x1a000000
     }
 }
