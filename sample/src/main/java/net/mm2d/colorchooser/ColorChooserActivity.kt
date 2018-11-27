@@ -21,45 +21,52 @@ import kotlinx.android.synthetic.main.activity_color_chooser.*
 import kotlinx.android.synthetic.main.fragment_color_chooser.view.*
 
 class ColorChooserActivity : AppCompatActivity(), ColorChangeObserver {
-    private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
-    private lateinit var observers: List<ColorChangeObserver>
+    private var sectionsPagerAdapter: SectionsPagerAdapter? = null
+    private var color = Color.BLACK
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_color_chooser)
-        val controlFragment = supportFragmentManager.findFragmentById(R.id.control) as ControlFragment
-        val manualSelectFragment = ManualSelectFragment()
-        val placeholderFragment = PlaceholderFragment.newInstance(2)
-        observers = listOf(controlFragment, manualSelectFragment, placeholderFragment)
-        mSectionsPagerAdapter = SectionsPagerAdapter(
+        sectionsPagerAdapter = SectionsPagerAdapter(
             supportFragmentManager,
             listOf(
-                manualSelectFragment,
-                placeholderFragment
+                { ManualSelectFragment() },
+                { PlaceholderFragment.newInstance(2) }
             )
         )
         container.requestDisallowInterceptTouchEvent(true)
-        container.adapter = mSectionsPagerAdapter
+        container.adapter = sectionsPagerAdapter
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
+        savedInstanceState?.let {
+            color = it.getInt(KEY_COLOR, Color.BLACK)
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        outState?.putInt(KEY_COLOR, color)
     }
 
     override fun onResume() {
         super.onResume()
-        onColorChange(Color.BLACK, null)
+        onColorChange(color, null)
     }
 
     override fun onColorChange(color: Int, fragment: Fragment?) {
-        observers.forEach { it.onColorChange(color, fragment) }
+        this.color = color
+        supportFragmentManager.fragments.forEach {
+            (it as? ColorChangeObserver)?.onColorChange(color, fragment)
+        }
     }
 
     inner class SectionsPagerAdapter(
         fm: FragmentManager,
-        private val list: List<Fragment>
+        private val list: List<() -> Fragment>
     ) : FragmentPagerAdapter(fm) {
 
         override fun getItem(position: Int): Fragment {
-            return list[position]
+            return list[position]()
         }
 
         override fun getCount(): Int {
@@ -92,5 +99,9 @@ class ColorChooserActivity : AppCompatActivity(), ColorChangeObserver {
                 return fragment
             }
         }
+    }
+
+    companion object {
+        private const val KEY_COLOR = "KEY_COLOR"
     }
 }
