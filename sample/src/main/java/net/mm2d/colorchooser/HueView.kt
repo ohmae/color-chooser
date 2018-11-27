@@ -26,9 +26,9 @@ class HueView
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
     @ColorInt
-    private var color: Int = Color.BLACK
+    private var color: Int = Color.RED
     private val paint = Paint()
-    private val bitmap: Bitmap
+    private val bitmap: Bitmap = createMaskBitmap()
     private val _padding = resources.getDimensionPixelOffset(R.dimen.panel_margin)
     private val _width = resources.getDimensionPixelOffset(R.dimen.hue_width) + _padding * 2
     private val _height = resources.getDimensionPixelOffset(R.dimen.hsv_size) + _padding * 2
@@ -42,14 +42,6 @@ class HueView
     var onHueChanged: ((hue: Float) -> Unit)? = null
     private val colorSampleFrame = ContextCompat.getColor(context, R.color.sample_frame)
     private val colorSampleShadow = ContextCompat.getColor(context, R.color.sample_shadow)
-
-    init {
-        val pixels = IntArray(RANGE) {
-            ColorUtils.hsvToColor(it.toFloat() / RANGE, 1f, 1f)
-        }
-        bitmap = Bitmap.createBitmap(pixels, 0, 1, 1, RANGE, Bitmap.Config.ARGB_8888)
-        color = ColorUtils.hsvToColor(hue, 1f, 1f)
-    }
 
     fun setColor(@ColorInt color: Int) {
         updateHue(ColorUtils.hue(color))
@@ -73,13 +65,16 @@ class HueView
         return true
     }
 
-    override fun onDraw(canvas: Canvas) {
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         targetRect.set(
             paddingLeft + _padding,
             paddingTop + _padding,
             width - paddingRight - _padding,
             height - paddingBottom - _padding
         )
+    }
+
+    override fun onDraw(canvas: Canvas) {
         canvas.drawBitmap(bitmap, bitmapRect, targetRect, paint)
         val x = targetRect.centerX().toFloat()
         val y = hue * targetRect.height() + targetRect.top
@@ -108,5 +103,12 @@ class HueView
 
     companion object {
         private const val RANGE = 360
+
+        private fun createMaskBitmap(): Bitmap {
+            val pixels = IntArray(RANGE) {
+                ColorUtils.hsvToColor(it.toFloat() / RANGE, 1f, 1f)
+            }
+            return Bitmap.createBitmap(pixels, 0, 1, 1, RANGE, Bitmap.Config.ARGB_8888)
+        }
     }
 }

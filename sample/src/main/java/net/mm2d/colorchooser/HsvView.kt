@@ -34,7 +34,7 @@ class HsvView
         }
         hue_view.onHueChanged = {
             color = ColorUtils.hsvToColor(it, sv_view.saturation, sv_view.value)
-            sv_view.setColor(color)
+            sv_view.setHue(it)
             onColorChanged?.invoke(color)
         }
     }
