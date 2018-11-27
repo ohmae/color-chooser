@@ -22,6 +22,19 @@ import kotlinx.android.synthetic.main.fragment_control.*
 class ControlFragment : Fragment(), ColorChangeObserver {
     private var color = Color.BLACK
     private var colorChangeObserver: ColorChangeObserver? = null
+    private var onControlClickListener: OnControlClickListener? = null
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        colorChangeObserver = context as? ColorChangeObserver
+        onControlClickListener = context as? OnControlClickListener
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        colorChangeObserver = null
+        onControlClickListener = null
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,26 +44,16 @@ class ControlFragment : Fragment(), ColorChangeObserver {
         return inflater.inflate(R.layout.fragment_control, container, false)
     }
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        colorChangeObserver = context as? ColorChangeObserver
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        colorChangeObserver = null
-    }
-
-    override fun onColorChange(color: Int, fragment: Fragment?) {
-        if (fragment is ControlFragment) return
-        this.color = color
-        setColor(color)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         control_view.onColorChanged = {
             color = it
-            performOnColorChange(it)
+            notifyColorChange(it)
+        }
+        button_done.setOnClickListener {
+            onControlClickListener?.onDoneClick()
+        }
+        button_cancel.setOnClickListener {
+            onControlClickListener?.onCancelClick()
         }
     }
 
@@ -59,11 +62,22 @@ class ControlFragment : Fragment(), ColorChangeObserver {
         setColor(color)
     }
 
-    private fun performOnColorChange(color: Int) {
+    override fun onColorChange(color: Int, fragment: Fragment?) {
+        if (fragment is ControlFragment) return
+        this.color = color
+        setColor(color)
+    }
+
+    private fun notifyColorChange(color: Int) {
         colorChangeObserver?.onColorChange(color, this)
     }
 
     private fun setColor(color: Int) {
         control_view?.setColor(color)
+    }
+
+    interface OnControlClickListener {
+        fun onDoneClick()
+        fun onCancelClick()
     }
 }

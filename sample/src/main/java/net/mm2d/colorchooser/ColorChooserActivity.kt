@@ -19,8 +19,9 @@ import androidx.fragment.app.FragmentPagerAdapter
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_color_chooser.*
 import kotlinx.android.synthetic.main.fragment_color_chooser.view.*
+import net.mm2d.colorchooser.ControlFragment.OnControlClickListener
 
-class ColorChooserActivity : AppCompatActivity(), ColorChangeObserver {
+class ColorChooserActivity : AppCompatActivity(), ColorChangeObserver, OnControlClickListener {
     private var sectionsPagerAdapter: SectionsPagerAdapter? = null
     private var color = Color.BLACK
 
@@ -58,6 +59,14 @@ class ColorChooserActivity : AppCompatActivity(), ColorChangeObserver {
         supportFragmentManager.fragments.forEach {
             (it as? ColorChangeObserver)?.onColorChange(color, fragment)
         }
+    }
+
+    override fun onDoneClick() {
+        finish()
+    }
+
+    override fun onCancelClick() {
+        finish()
     }
 
     inner class SectionsPagerAdapter(

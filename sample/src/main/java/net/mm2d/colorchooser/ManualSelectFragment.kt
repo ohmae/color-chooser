@@ -23,14 +23,6 @@ class ManualSelectFragment : Fragment(), ColorChangeObserver {
     private var color = Color.BLACK
     private var colorChangeObserver: ColorChangeObserver? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_manual_select, container, false)
-    }
-
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         colorChangeObserver = context as? ColorChangeObserver
@@ -41,17 +33,31 @@ class ManualSelectFragment : Fragment(), ColorChangeObserver {
         colorChangeObserver = null
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_manual_select, container, false)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         slider_view.onColorChanged = {
             color = it
             setColorToHsv(it)
-            performOnColorChange(it)
+            notifyColorChange(it)
         }
         hsv_view.onColorChanged = {
             color = it
             setColorToSlider(it)
-            performOnColorChange(it)
+            notifyColorChange(it)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setColorToSlider(color)
+        setColorToHsv(color)
     }
 
     override fun onColorChange(color: Int, fragment: Fragment?) {
@@ -61,13 +67,7 @@ class ManualSelectFragment : Fragment(), ColorChangeObserver {
         setColorToHsv(color)
     }
 
-    override fun onResume() {
-        super.onResume()
-        setColorToSlider(color)
-        setColorToHsv(color)
-    }
-
-    private fun performOnColorChange(color: Int) {
+    private fun notifyColorChange(color: Int) {
         colorChangeObserver?.onColorChange(color, this)
     }
 
