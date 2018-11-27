@@ -53,6 +53,7 @@ class ControlView
                 }
                 if (s.isNullOrEmpty()) {
                     edit_hex_layout.error = "error"
+                    return
                 }
                 try {
                     color = Color.parseColor(s.toString())
