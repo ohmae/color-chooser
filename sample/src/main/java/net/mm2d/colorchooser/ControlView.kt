@@ -12,6 +12,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.LayerDrawable
+import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
@@ -87,20 +88,19 @@ class ControlView
             val shadowWidth = resources.getDimensionPixelSize(R.dimen.sample_shadow)
             val background = GradientDrawable().also {
                 it.shape = GradientDrawable.RECTANGLE
-                it.setColor(Color.BLACK)
-            }
-            val frame = GradientDrawable().also {
-                it.shape = GradientDrawable.RECTANGLE
                 it.setStroke(frameWidth, ContextCompat.getColor(context, R.color.sample_frame))
+            }
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN) {
+                view.background = background
+                return background
             }
             val shadow = GradientDrawable().also {
                 it.shape = GradientDrawable.RECTANGLE
                 it.setStroke(shadowWidth, ContextCompat.getColor(context, R.color.sample_shadow))
             }
-            val layerList = LayerDrawable(arrayOf(background, frame, shadow))
-            layerList.setLayerInset(0, frameWidth, frameWidth, frameWidth, frameWidth)
-            layerList.setLayerInset(1, shadowWidth, shadowWidth, shadowWidth, shadowWidth)
-            view.background = layerList
+            val layerDrawable = LayerDrawable(arrayOf(background, shadow))
+            layerDrawable.setLayerInset(0, shadowWidth, shadowWidth, shadowWidth, shadowWidth)
+            view.background = layerDrawable
             return background
         }
     }
