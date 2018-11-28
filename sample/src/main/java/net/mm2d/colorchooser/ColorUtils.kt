@@ -58,7 +58,7 @@ object ColorUtils {
 
     fun svToMask(s: Float, v: Float): Int {
         val a = 1f - (s * v)
-        val g = (v * (1f - s) / a).clamp(0f, 1f)
+        val g = if (a == 0f) 0f else (v * (1f - s) / a).clamp(0f, 1f)
         return toColor(a, g, g, g)
     }
 
