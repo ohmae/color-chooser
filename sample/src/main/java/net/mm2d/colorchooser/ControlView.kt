@@ -29,11 +29,11 @@ class ControlView
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : LinearLayout(context, attrs, defStyleAttr) {
+) : LinearLayout(context, attrs, defStyleAttr), ColorChangeObserver {
     private var color: Int = Color.BLACK
     private val background: GradientDrawable
     private var changeHexTextByUser = true
-    var onColorChanged: ((color: Int) -> Unit)? = null
+    var observer: ColorChangeObserver? = null
 
     init {
         orientation = HORIZONTAL
@@ -60,7 +60,7 @@ class ControlView
                     color = Color.parseColor(s.toString())
                     edit_hex_layout.error = null
                     background.setColor(color)
-                    onColorChanged?.invoke(color)
+                    observer?.onChange(color, this@ControlView)
                 } catch (e: IllegalArgumentException) {
                     edit_hex_layout.error = "error"
                 }
@@ -68,7 +68,8 @@ class ControlView
         })
     }
 
-    fun setColor(color: Int) {
+    override fun onChange(color: Int, notifier: Any?) {
+        if (notifier == this) return
         this.color = color
         background.setColor(color)
         setColorToHexText()

@@ -7,11 +7,9 @@
 
 package net.mm2d.colorchooser
 
-import androidx.fragment.app.Fragment
-
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 interface ColorChangeObserver {
-    fun onColorChange(color: Int, fragment: Fragment?)
+    fun onChange(color: Int, notifier: Any?)
 }

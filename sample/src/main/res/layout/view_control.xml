@@ -12,12 +12,8 @@
         android:id="@+id/color_preview"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginStart="@dimen/sample_horizontal_margin"
-        android:layout_marginLeft="@dimen/sample_horizontal_margin"
-        android:layout_marginTop="@dimen/sample_vertical_margin"
         android:layout_marginEnd="@dimen/sample_horizontal_margin"
         android:layout_marginRight="@dimen/sample_horizontal_margin"
-        android:layout_marginBottom="@dimen/sample_vertical_margin"
         />
 
     <com.google.android.material.textfield.TextInputLayout

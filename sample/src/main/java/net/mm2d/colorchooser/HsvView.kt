@@ -21,25 +21,26 @@ class HsvView
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : LinearLayout(context, attrs, defStyleAttr) {
+) : LinearLayout(context, attrs, defStyleAttr), ColorChangeObserver {
     private var color: Int = Color.BLACK
-    var onColorChanged: ((color: Int) -> Unit)? = null
+    var observer: ColorChangeObserver? = null
 
     init {
         orientation = HORIZONTAL
         inflate(context, R.layout.view_hsv, this)
         sv_view.onColorChanged = {
             color = it
-            onColorChanged?.invoke(color)
+            observer?.onChange(color, this)
         }
         hue_view.onHueChanged = {
             color = ColorUtils.hsvToColor(it, sv_view.saturation, sv_view.value)
             sv_view.setHue(it)
-            onColorChanged?.invoke(color)
+            observer?.onChange(color, this)
         }
     }
 
-    fun setColor(color: Int) {
+    override fun onChange(color: Int, notifier: Any?) {
+        if (notifier == this) return
         this.color = color
         sv_view.setColor(color)
         hue_view.setColor(color)
