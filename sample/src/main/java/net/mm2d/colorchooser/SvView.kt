@@ -28,7 +28,7 @@ class SvView
     @ColorInt
     private var color: Int = Color.BLACK
     private var maxColor: Int = Color.RED
-    private val bitmap: Bitmap = createMaskBitmap()
+    private var maskBitmap: Bitmap? = null
     private val paint = Paint().also {
         it.isAntiAlias = true
     }
@@ -39,7 +39,7 @@ class SvView
     private val _sampleFrameRadius = _sampleRadius + resources.getDimension(R.dimen.sample_frame)
     private val _sampleShadowRadius =
         _sampleFrameRadius + resources.getDimension(R.dimen.sample_shadow)
-    private val bitmapRect = Rect(0, 0, TONE_SIZE, TONE_SIZE)
+    private val maskRect = Rect(0, 0, TONE_SIZE, TONE_SIZE)
     private val targetRect = Rect()
     private var hue: Float = 0f
     var saturation: Float = 0f
@@ -50,6 +50,13 @@ class SvView
     private val colorSampleShadow = ContextCompat.getColor(context, R.color.sample_shadow)
     private val hsvCache = FloatArray(3)
     var onColorChanged: ((color: Int) -> Unit)? = null
+
+    init {
+        Thread {
+            maskBitmap = createMaskBitmap()
+            invalidate()
+        }.start()
+    }
 
     fun setColor(@ColorInt color: Int) {
         this.color = color
@@ -103,9 +110,10 @@ class SvView
     }
 
     override fun onDraw(canvas: Canvas) {
+        val mask = maskBitmap ?: return
         paint.color = maxColor
         canvas.drawRect(targetRect, paint)
-        canvas.drawBitmap(bitmap, bitmapRect, targetRect, paint)
+        canvas.drawBitmap(mask, maskRect, targetRect, paint)
         val x = saturation * targetRect.width() + targetRect.left
         val y = (1f - value) * targetRect.height() + targetRect.top
         paint.color = colorSampleShadow
