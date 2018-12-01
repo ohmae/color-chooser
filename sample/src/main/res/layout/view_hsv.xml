@@ -8,13 +8,13 @@
     tools:parentTag="android.widget.LinearLayout"
     >
 
-    <net.mm2d.colorchooser.SvView
+    <net.mm2d.colorchooser.element.SvView
         android:id="@+id/sv_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         />
 
-    <net.mm2d.colorchooser.HueView
+    <net.mm2d.colorchooser.element.HueView
         android:id="@+id/hue_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

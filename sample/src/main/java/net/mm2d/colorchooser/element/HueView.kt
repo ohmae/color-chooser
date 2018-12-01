@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.colorchooser
+package net.mm2d.colorchooser.element
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -15,6 +15,7 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
+import net.mm2d.colorchooser.R
 import net.mm2d.colorchooser.util.ColorUtils
 import net.mm2d.colorchooser.util.clamp
 
@@ -42,8 +43,12 @@ class HueView
     private val targetRect = Rect()
     private var hue: Float = 0f
     var onHueChanged: ((hue: Float) -> Unit)? = null
-    private val colorSampleFrame = ContextCompat.getColor(context, R.color.sample_frame)
-    private val colorSampleShadow = ContextCompat.getColor(context, R.color.sample_shadow)
+    private val colorSampleFrame = ContextCompat.getColor(context,
+        R.color.sample_frame
+    )
+    private val colorSampleShadow = ContextCompat.getColor(context,
+        R.color.sample_shadow
+    )
 
     fun setColor(@ColorInt color: Int) {
         updateHue(ColorUtils.hue(color))
@@ -110,7 +115,8 @@ class HueView
             val pixels = IntArray(RANGE) {
                 ColorUtils.hsvToColor(it.toFloat() / RANGE, 1f, 1f)
             }
-            return Bitmap.createBitmap(pixels, 0, 1, 1, RANGE, Bitmap.Config.ARGB_8888)
+            return Bitmap.createBitmap(pixels, 0, 1, 1,
+                RANGE, Bitmap.Config.ARGB_8888)
         }
     }
 }

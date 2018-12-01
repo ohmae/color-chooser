@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.colorchooser
+package net.mm2d.colorchooser.element
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -15,6 +15,7 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
+import net.mm2d.colorchooser.R
 import net.mm2d.colorchooser.util.ColorUtils
 import net.mm2d.colorchooser.util.clamp
 
@@ -41,15 +42,22 @@ class SvView
     private val _sampleFrameRadius = _sampleRadius + resources.getDimension(R.dimen.sample_frame)
     private val _sampleShadowRadius =
         _sampleFrameRadius + resources.getDimension(R.dimen.sample_shadow)
-    private val maskRect = Rect(0, 0, TONE_SIZE, TONE_SIZE)
+    private val maskRect = Rect(0, 0,
+        TONE_SIZE,
+        TONE_SIZE
+    )
     private val targetRect = Rect()
     private var hue: Float = 0f
     var saturation: Float = 0f
         private set
     var value: Float = 0f
         private set
-    private val colorSampleFrame = ContextCompat.getColor(context, R.color.sample_frame)
-    private val colorSampleShadow = ContextCompat.getColor(context, R.color.sample_shadow)
+    private val colorSampleFrame = ContextCompat.getColor(context,
+        R.color.sample_frame
+    )
+    private val colorSampleShadow = ContextCompat.getColor(context,
+        R.color.sample_shadow
+    )
     private val hsvCache = FloatArray(3)
     var onColorChanged: ((color: Int) -> Unit)? = null
 
