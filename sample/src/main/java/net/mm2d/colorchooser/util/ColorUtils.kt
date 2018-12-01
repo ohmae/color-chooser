@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.colorchooser
+package net.mm2d.colorchooser.util
 
 /**
  * HSVやRGBの色空間表現を扱う上でのメソッド
@@ -13,7 +13,8 @@ package net.mm2d.colorchooser
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 object ColorUtils {
-    fun hsvToColor(hsv: FloatArray): Int = hsvToColor(hsv[0], hsv[1], hsv[2])
+    fun hsvToColor(hsv: FloatArray): Int =
+        hsvToColor(hsv[0], hsv[1], hsv[2])
 
     fun hsvToColor(h: Float, s: Float, v: Float): Int {
         if (s <= 0f) return toColor(v, v, v)
@@ -108,7 +109,8 @@ object ColorUtils {
     private fun saturation(max: Float, min: Float): Float =
         if (max != 0.0f) (max - min) / max else 0f
 
-    fun toColor(r: Float, g: Float, b: Float): Int = toColor(r.to8bit(), g.to8bit(), b.to8bit())
+    fun toColor(r: Float, g: Float, b: Float): Int =
+        toColor(r.to8bit(), g.to8bit(), b.to8bit())
 
     fun toColor(r: Int, g: Int, b: Int): Int =
         (0xff shl 24) or (0xff and r shl 16) or (0xff and g shl 8) or (0xff and b)
@@ -119,9 +121,11 @@ object ColorUtils {
     fun toColor(a: Int, r: Int, g: Int, b: Int): Int =
         (0xff and a shl 24) or (0xff and r shl 16) or (0xff and g shl 8) or (0xff and b)
 
-    fun toRgb(rgb: IntArray): FloatArray = toRgb(rgb[0], rgb[1], rgb[2])
+    fun toRgb(rgb: IntArray): FloatArray =
+        toRgb(rgb[0], rgb[1], rgb[2])
 
-    fun toRgb(color: Int): FloatArray = toRgb(color.red, color.green, color.blue)
+    fun toRgb(color: Int): FloatArray =
+        toRgb(color.red, color.green, color.blue)
 
     fun toRgb(r: Int, g: Int, b: Int): FloatArray =
         floatArrayOf(r.toRatio(), g.toRatio(), b.toRatio())
@@ -159,7 +163,6 @@ object ColorUtils {
 
     fun shoulUseWhiteForeground(color: Int): Boolean =
         color.contrastWithWhite() > MINIMUM_CONTRAST_FOR_LARGE_TEXT
-
 }
 
 val Int.red: Int

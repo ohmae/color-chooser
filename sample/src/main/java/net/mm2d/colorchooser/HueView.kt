@@ -15,6 +15,8 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
+import net.mm2d.colorchooser.util.ColorUtils
+import net.mm2d.colorchooser.util.clamp
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)

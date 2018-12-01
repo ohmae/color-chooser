@@ -12,6 +12,7 @@ import android.graphics.Color
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.view_hsv.view.*
+import net.mm2d.colorchooser.util.ColorUtils
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
