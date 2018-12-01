@@ -62,13 +62,6 @@ object ColorUtils {
         return toColor(a, g, g, g)
     }
 
-    val Int.red: Int
-        get() = ushr(16) and 0xff
-    val Int.green: Int
-        get() = ushr(8) and 0xff
-    val Int.blue: Int
-        get() = this and 0xff
-
     fun colorToHsv(color: Int, outHsv: FloatArray? = null): FloatArray {
         val r = color.red / 255f
         val g = color.green / 255f
@@ -112,71 +105,100 @@ object ColorUtils {
         return (hue / 6f).clamp(0f, 1f)
     }
 
-    private fun saturation(max: Float, min: Float): Float {
-        return if (max != 0.0f) (max - min) / max else 0f
+    private fun saturation(max: Float, min: Float): Float =
+        if (max != 0.0f) (max - min) / max else 0f
+
+    fun toColor(r: Float, g: Float, b: Float): Int = toColor(r.to8bit(), g.to8bit(), b.to8bit())
+
+    fun toColor(r: Int, g: Int, b: Int): Int =
+        (0xff shl 24) or (0xff and r shl 16) or (0xff and g shl 8) or (0xff and b)
+
+    fun toColor(a: Float, r: Float, g: Float, b: Float): Int =
+        toColor(a.to8bit(), r.to8bit(), g.to8bit(), b.to8bit())
+
+    fun toColor(a: Int, r: Int, g: Int, b: Int): Int =
+        (0xff and a shl 24) or (0xff and r shl 16) or (0xff and g shl 8) or (0xff and b)
+
+    fun toRgb(rgb: IntArray): FloatArray = toRgb(rgb[0], rgb[1], rgb[2])
+
+    fun toRgb(color: Int): FloatArray = toRgb(color.red, color.green, color.blue)
+
+    fun toRgb(r: Int, g: Int, b: Int): FloatArray =
+        floatArrayOf(r.toRatio(), g.toRatio(), b.toRatio())
+
+    /**
+     * Based on ITU-R BT.709
+     */
+    fun luminance(r: Int, g: Int, b: Int): Int =
+        (r * 0.2126f + g * 0.7152f + b * 0.0722f + 0.5f).toInt().clamp(0, 255)
+
+    /**
+     * https://www.w3.org/TR/WCAG20/#relativeluminancedef
+     */
+    fun luminance(r: Float, g: Float, b: Float): Float =
+        r * 0.2126f + g * 0.7152f + b * 0.0722f + 0.5f
+
+    /**
+     * https://www.w3.org/TR/WCAG20/#contrast-ratiodef
+     * Contrast ratios can range from 1 to 21 (commonly written 1:1 to 21:1).
+     */
+    fun contrast(color1: Int, color2: Int): Float {
+        val l1 = color1.relativeLuminance()
+        val l2 = color2.relativeLuminance()
+        return if (l1 > l2) (l1 + 0.05f) / (l2 + 0.05f) else (l2 + 0.05f) / (l1 + 0.05f)
     }
 
-    fun toColor(r: Float, g: Float, b: Float): Int {
-        return toColor(r.to8bit(), g.to8bit(), b.to8bit())
-    }
+    /**
+     * https://www.w3.org/TR/WCAG20/#visual-audio-contrast-contrast
+     */
+    private const val MINUMUM_CONTRAST = 4.5f
+    /**
+     * https://www.w3.org/TR/WCAG20/#visual-audio-contrast-contrast
+     */
+    private const val MINIMUM_CONTRAST_FOR_LARGE_TEXT = 3f
 
-    fun toColor(r: Int, g: Int, b: Int): Int {
-        return (0xff shl 24) or (0xff and r shl 16) or (0xff and g shl 8) or (0xff and b)
-    }
+    fun shoulUseWhiteForeground(color: Int): Boolean =
+        color.contrastWithWhite() > MINIMUM_CONTRAST_FOR_LARGE_TEXT
 
-    fun toColor(a: Float, r: Float, g: Float, b: Float): Int {
-        return toColor(a.to8bit(), r.to8bit(), g.to8bit(), b.to8bit())
-    }
+}
 
-    fun toColor(a: Int, r: Int, g: Int, b: Int): Int {
-        return (0xff and a shl 24) or (0xff and r shl 16) or (0xff and g shl 8) or (0xff and b)
-    }
+val Int.red: Int
+    get() = ushr(16) and 0xff
+val Int.green: Int
+    get() = ushr(8) and 0xff
+val Int.blue: Int
+    get() = this and 0xff
 
-    fun toRgb(rgb: IntArray): FloatArray {
-        return toRgb(rgb[0], rgb[1], rgb[2])
-    }
+fun Int.setAlpha(alpha: Float): Int = setAlpha((0xff * alpha.clamp(0f, 1f)).toInt())
 
-    fun toRgb(color: Int): FloatArray {
-        return toRgb(color.red, color.green, color.blue)
-    }
+fun Int.setAlpha(alpha: Int): Int = this and 0xffffff or (alpha shl 24)
 
-    fun toRgb(r: Int, g: Int, b: Int): FloatArray {
-        val rgb = FloatArray(3)
-        rgb[0] = r.toRatio()
-        rgb[1] = g.toRatio()
-        rgb[2] = b.toRatio()
-        return rgb
-    }
+fun Int.angleToRatio(): Float = (this / 360f).clamp(0f, 1f)
 
-    fun Int.setAlpha(alpha: Float): Int {
-        return setAlpha((0xff * alpha.clamp(0f, 1f)).toInt())
-    }
+fun Float.ratioToAngle(): Int = (this * 360f + 0.5f).toInt().clamp(0, 360)
 
-    fun Int.setAlpha(alpha: Int): Int {
-        return this and 0xffffff or (alpha shl 24)
-    }
+fun Int.toRatio(): Float = this / 255f
 
-    fun Int.angleToRatio(): Float {
-        return (this / 360f).clamp(0f, 1f)
-    }
+fun Float.to8bit(): Int = (this * 255f + 0.5f).toInt().clamp(0, 255)
 
-    fun Float.ratioToAngle(): Int {
-        return (this * 360f + 0.5f).toInt().clamp(0, 360)
-    }
+fun Int.luminance(): Int = ColorUtils.luminance(red, green, blue)
 
-    fun Int.toRatio(): Float {
-        return (this / 255f).clamp(0f, 1f)
-    }
+/**
+ * https://www.w3.org/TR/WCAG20/#relativeluminancedef
+ */
+fun Float.normalizeForSrgb(): Float =
+    if (this < 0.03928f) this / 12.92f else Math.pow((this + 0.055f) / 1.055, 2.4).toFloat()
 
-    fun Float.to8bit(): Int {
-        return (this * 255f + 0.5f).toInt().clamp(0, 255)
-    }
+fun Int.normalizeForSrbg(): Float = toRatio().normalizeForSrgb()
 
-    fun getBrightness(color: Int): Int {
-        return getBrightness(color.red, color.green, color.blue)
-    }
+fun Int.relativeLuminance(): Float {
+    return ColorUtils.luminance(
+        red.normalizeForSrbg(),
+        green.normalizeForSrbg(),
+        blue.normalizeForSrbg()
+    )
+}
 
-    fun getBrightness(r: Int, g: Int, b: Int): Int {
-        return (r * 0.2126f + g * 0.7152f + b * 0.0722f + 0.5f).toInt().clamp(0, 255)
-    }
+fun Int.contrastWithWhite(): Float {
+    return 1.05f / (this.relativeLuminance() + 0.05f)
 }
