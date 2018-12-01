@@ -140,7 +140,7 @@ object ColorUtils {
      * https://www.w3.org/TR/WCAG20/#relativeluminancedef
      */
     fun luminance(r: Float, g: Float, b: Float): Float =
-        r * 0.2126f + g * 0.7152f + b * 0.0722f + 0.5f
+        r * 0.2126f + g * 0.7152f + b * 0.0722f
 
     /**
      * https://www.w3.org/TR/WCAG20/#contrast-ratiodef
