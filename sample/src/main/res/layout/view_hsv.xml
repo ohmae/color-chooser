@@ -18,7 +18,5 @@
         android:id="@+id/hue_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/panel_margin"
-        android:layout_marginLeft="@dimen/panel_margin"
         />
 </merge>

@@ -8,6 +8,7 @@
 package net.mm2d.colorchooser
 
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -24,14 +25,17 @@ class DialogView
     defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr), ColorChangeObserver {
     private val observers: List<ColorChangeObserver>
+    var color: Int = Color.BLACK
+        private set
 
     init {
         orientation = VERTICAL
         val inflater = LayoutInflater.from(context)
         inflater.inflate(R.layout.view_dialog, this)
         val pages: List<Pair<String, View>> = listOf(
+            "palette" to PaletteView(context).also { it.observer = this },
             "hsv" to HsvPage(context).also { it.observer = this },
-            "slider" to SliderPage(context).also { it.observer = this }
+            "rgb" to SliderPage(context).also { it.observer = this }
         )
         view_pager.adapter = ViewPagerAdapter(pages)
         tab_layout.setupWithViewPager(view_pager)
@@ -41,6 +45,7 @@ class DialogView
     }
 
     override fun onChange(color: Int, notifier: Any?) {
+        this.color = color
         observers.forEach { it.onChange(color, notifier) }
     }
 }

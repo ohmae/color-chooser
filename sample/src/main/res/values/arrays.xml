@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <array name="material_colors">
+        <item>@array/red</item>
+        <item>@array/pink</item>
+        <item>@array/purple</item>
+        <item>@array/deep_purple</item>
+        <item>@array/indigo</item>
+        <item>@array/blue</item>
+        <item>@array/light_blue</item>
+        <item>@array/cyan</item>
+        <item>@array/teal</item>
+        <item>@array/green</item>
+        <item>@array/light_green</item>
+        <item>@array/lime</item>
+        <item>@array/yellow</item>
+        <item>@array/amber</item>
+        <item>@array/orange</item>
+        <item>@array/deep_orange</item>
+        <item>@array/brown</item>
+        <item>@array/gray</item>
+        <item>@array/blue_gray</item>
+        <item>@array/black_white</item>
+    </array>
     <array name="red">
         <item>@color/red_50</item>
         <item>@color/red_100</item>

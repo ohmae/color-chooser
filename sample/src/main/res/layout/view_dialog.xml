@@ -19,7 +19,7 @@
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:maxHeight="340dp"
+        app:maxHeight="320dp"
         />
 
     <net.mm2d.colorchooser.ControlView

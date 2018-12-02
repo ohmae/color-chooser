@@ -5,6 +5,10 @@
     <color name="colorAccent">#D81B60</color>
     <color name="sample_frame">#FFFFFF</color>
     <color name="sample_shadow">#1a000000</color>
+    <color name="touch_light">#1A000000</color>
+    <color name="touch_dark">#1AFFFFFF</color>
+    <color name="ripple_light">#33000000</color>
+    <color name="ripple_dark">#33FFFFFF</color>
 
     <color name="red_50">#FFEBEE</color>
     <color name="red_100">#FFCDD2</color>
