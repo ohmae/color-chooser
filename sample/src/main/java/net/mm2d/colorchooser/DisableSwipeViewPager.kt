@@ -21,6 +21,13 @@ class DisableSwipeViewPager
     context: Context,
     attrs: AttributeSet? = null
 ) : ViewPager(context, attrs) {
+    private val maxHeight: Int
+    init {
+        val a = context.obtainStyledAttributes(attrs, R.styleable.DisableSwipeViewPager)
+        maxHeight = a.getDimensionPixelSize(R.styleable.DisableSwipeViewPager_maxHeight, 0)
+        a.recycle()
+    }
+
     override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
         return false
     }
@@ -28,5 +35,15 @@ class DisableSwipeViewPager
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(ev: MotionEvent?): Boolean {
         return false
+    }
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        val mode = MeasureSpec.getMode(heightMeasureSpec)
+        val size = MeasureSpec.getSize(heightMeasureSpec)
+        if (mode != MeasureSpec.EXACTLY && maxHeight in 1..size) {
+            super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(maxHeight, mode))
+            return
+        }
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
     }
 }
