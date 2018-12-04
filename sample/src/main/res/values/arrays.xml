@@ -18,9 +18,8 @@
         <item>@array/orange</item>
         <item>@array/deep_orange</item>
         <item>@array/brown</item>
-        <item>@array/gray</item>
         <item>@array/blue_gray</item>
-        <item>@array/black_white</item>
+        <item>@array/gray</item>
     </array>
     <array name="red">
         <item>@color/red_50</item>
@@ -301,6 +300,8 @@
         <item>@color/gray_700</item>
         <item>@color/gray_800</item>
         <item>@color/gray_900</item>
+        <item>@color/white</item>
+        <item>@color/black</item>
     </array>
     <array name="blue_gray">
         <item>@color/blue_gray_50</item>
@@ -313,9 +314,5 @@
         <item>@color/blue_gray_700</item>
         <item>@color/blue_gray_800</item>
         <item>@color/blue_gray_900</item>
-    </array>
-    <array name="black_white">
-        <item>@color/black</item>
-        <item>@color/white</item>
     </array>
 </resources>

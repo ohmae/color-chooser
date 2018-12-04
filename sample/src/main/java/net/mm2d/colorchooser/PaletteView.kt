@@ -38,6 +38,7 @@ class PaletteView
     init {
         layoutManager = LinearLayoutManager(context)
         adapter = cellAdapter
+        setBackgroundColor(Color.parseColor("#20000000"))
         cellAdapter.onColorChanged = {
             observer?.onChange(it, this)
         }
