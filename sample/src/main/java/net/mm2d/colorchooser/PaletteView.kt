@@ -22,6 +22,7 @@ import androidx.core.content.res.use
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import net.mm2d.colorchooser.util.ColorUtils
+import kotlin.math.roundToInt
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -33,10 +34,14 @@ class PaletteView
     defStyleAttr: Int = 0
 ) : RecyclerView(context, attrs, defStyleAttr), ColorChangeObserver {
     var observer: ColorChangeObserver? = null
+    private val cellHeight = (48 * context.resources.displayMetrics.density).roundToInt()
     private val cellAdapter = CellAdapter(context)
+    private val linearLayoutManager = LinearLayoutManager(context)
 
     init {
-        layoutManager = LinearLayoutManager(context)
+        setHasFixedSize(true)
+        itemAnimator = null
+        layoutManager = linearLayoutManager
         adapter = cellAdapter
         setBackgroundColor(Color.parseColor("#20000000"))
         cellAdapter.onColorChanged = {
@@ -48,11 +53,21 @@ class PaletteView
         cellAdapter.setColor(color)
     }
 
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        if (oldh == 0 && h > 0) {
+            linearLayoutManager.scrollToPositionWithOffset(cellAdapter.index, (h - cellHeight) / 2)
+        }
+    }
+
     private class CellAdapter(context: Context) : Adapter<CellHolder>() {
         private val inflater: LayoutInflater = LayoutInflater.from(context)
         private val list: List<IntArray> = createPalette(context)
         private var color: Int = 0
+        private var checked: Boolean = false
         var onColorChanged: ((color: Int) -> Unit)? = null
+        var index: Int = -1
+            private set
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CellHolder {
             return CellHolder(inflater.inflate(R.layout.item_palette, parent, false)).also {
@@ -70,9 +85,18 @@ class PaletteView
             return list.size
         }
 
-        fun setColor(color: Int) {
-            this.color = color
-            notifyDataSetChanged()
+        fun setColor(newColor: Int) {
+            if (color == newColor) return
+            color = newColor
+            val newIndex = list.indexOfFirst { it.contains(newColor) }
+            val lastIndex = index
+            index = newIndex
+            if (!checked && newIndex < 0) return
+            checked = newIndex >= 0
+            notifyItemChanged(lastIndex)
+            if (lastIndex != newIndex) {
+                notifyItemChanged(newIndex)
+            }
         }
     }
 
@@ -94,6 +118,7 @@ class PaletteView
             itemView.findViewById(R.id.sample_13)
         )
         var onColorChanged: ((color: Int) -> Unit)? = null
+
         init {
             viewList.forEach {
                 it.setOnClickListener {
