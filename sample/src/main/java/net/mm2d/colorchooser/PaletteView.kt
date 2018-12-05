@@ -121,40 +121,49 @@ class PaletteView
 
         init {
             viewList.forEach {
-                it.setOnClickListener {
-                    val color = it.tag as? Int ?: return@setOnClickListener
-                    onColorChanged?.invoke(color)
-                }
+                it.setOnClickListener(::performOnColorChanged)
             }
+        }
+
+        private fun performOnColorChanged(view: View) {
+            onColorChanged?.invoke(view.tag as? Int ?: return)
         }
 
         fun apply(colors: IntArray, selected: Int) {
             for ((i, view) in viewList.withIndex()) {
                 if (i < colors.size) {
-                    val color = colors[i]
-                    view.tag = color
-                    view.setBackgroundColor(color)
-                    if (color == selected) {
-                        view.setImageResource(R.drawable.ic_check)
-                        view.scaleType = ScaleType.CENTER
-                        val whiteForeground = ColorUtils.shoulUseWhiteForeground(color)
-                        val foregroundColor = if (whiteForeground) Color.WHITE else Color.BLACK
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            view.imageTintList = ColorStateList.valueOf(foregroundColor)
-                        } else {
-                            view.setColorFilter(foregroundColor)
-                        }
-                    } else {
-                        view.setImageResource(0)
-                    }
-                    view.isEnabled = true
+                    setColor(view, colors[i], selected)
                 } else {
-                    view.tag = 0
-                    view.setBackgroundColor(Color.TRANSPARENT)
-                    view.setImageResource(0)
-                    view.isEnabled = false
+                    disableView(view)
                 }
             }
+        }
+
+        private fun setColor(view: ImageView, color: Int, selected: Int) {
+            view.tag = color
+            view.setBackgroundColor(color)
+            if (color == selected) {
+                view.setImageResource(R.drawable.ic_check)
+                view.scaleType = ScaleType.CENTER
+                val whiteForeground = ColorUtils.shoulUseWhiteForeground(color)
+                val foregroundColor = if (whiteForeground) Color.WHITE else Color.BLACK
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    view.imageTintList = ColorStateList.valueOf(foregroundColor)
+                } else {
+                    view.setColorFilter(foregroundColor)
+                }
+            } else {
+                view.setImageResource(0)
+            }
+            view.isEnabled = true
+
+        }
+
+        private fun disableView(view: ImageView) {
+            view.tag = 0
+            view.setBackgroundColor(Color.TRANSPARENT)
+            view.setImageResource(0)
+            view.isEnabled = false
         }
     }
 
