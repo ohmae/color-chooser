@@ -39,7 +39,10 @@ class PaletteView
     private val linearLayoutManager = LinearLayoutManager(context)
 
     init {
+        val padding = context.resources.getDimensionPixelSize(R.dimen.palette_padding)
+        setPadding(0, padding, 0, padding)
         setHasFixedSize(true)
+        clipToPadding = false
         itemAnimator = null
         layoutManager = linearLayoutManager
         adapter = cellAdapter
