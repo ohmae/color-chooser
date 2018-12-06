@@ -9,19 +9,15 @@ package net.mm2d.colorchooser
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.ColorStateList
 import android.graphics.Color
-import android.os.Build
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.ImageView.ScaleType
 import androidx.core.content.res.use
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import net.mm2d.colorchooser.util.ColorUtils
+import net.mm2d.colorchooser.element.PaletteCell
 import kotlin.math.roundToInt
 
 /**
@@ -42,11 +38,11 @@ class PaletteView
         val padding = context.resources.getDimensionPixelSize(R.dimen.palette_padding)
         setPadding(0, padding, 0, padding)
         setHasFixedSize(true)
+        overScrollMode = View.OVER_SCROLL_NEVER
         clipToPadding = false
         itemAnimator = null
         layoutManager = linearLayoutManager
         adapter = cellAdapter
-        setBackgroundColor(Color.parseColor("#20000000"))
         cellAdapter.onColorChanged = {
             observer?.onChange(it, this)
         }
@@ -104,7 +100,7 @@ class PaletteView
     }
 
     private class CellHolder(itemView: View) : ViewHolder(itemView) {
-        private val viewList: List<ImageView> = listOf(
+        private val viewList: List<PaletteCell> = listOf(
             itemView.findViewById(R.id.sample_00),
             itemView.findViewById(R.id.sample_01),
             itemView.findViewById(R.id.sample_02),
@@ -133,40 +129,12 @@ class PaletteView
         }
 
         fun apply(colors: IntArray, selected: Int) {
-            for ((i, view) in viewList.withIndex()) {
-                if (i < colors.size) {
-                    setColor(view, colors[i], selected)
-                } else {
-                    disableView(view)
-                }
+            viewList.withIndex().forEach { (i, view) ->
+                val color = if (i < colors.size) colors[i] else Color.TRANSPARENT
+                view.tag = color
+                view.setColor(color)
+                view.checked = color == selected
             }
-        }
-
-        private fun setColor(view: ImageView, color: Int, selected: Int) {
-            view.tag = color
-            view.setBackgroundColor(color)
-            if (color == selected) {
-                view.setImageResource(R.drawable.ic_check)
-                view.scaleType = ScaleType.CENTER
-                val whiteForeground = ColorUtils.shoulUseWhiteForeground(color)
-                val foregroundColor = if (whiteForeground) Color.WHITE else Color.BLACK
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    view.imageTintList = ColorStateList.valueOf(foregroundColor)
-                } else {
-                    view.setColorFilter(foregroundColor)
-                }
-            } else {
-                view.setImageResource(0)
-            }
-            view.isEnabled = true
-
-        }
-
-        private fun disableView(view: ImageView) {
-            view.tag = 0
-            view.setBackgroundColor(Color.TRANSPARENT)
-            view.setImageResource(0)
-            view.isEnabled = false
         }
     }
 

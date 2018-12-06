@@ -6,98 +6,98 @@
     android:orientation="horizontal"
     >
 
-    <ImageView
+    <net.mm2d.colorchooser.element.PaletteCell
         android:id="@+id/sample_00"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_weight="1"
         />
 
-    <ImageView
+    <net.mm2d.colorchooser.element.PaletteCell
         android:id="@+id/sample_01"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_weight="1"
         />
 
-    <ImageView
+    <net.mm2d.colorchooser.element.PaletteCell
         android:id="@+id/sample_02"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_weight="1"
         />
 
-    <ImageView
+    <net.mm2d.colorchooser.element.PaletteCell
         android:id="@+id/sample_03"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_weight="1"
         />
 
-    <ImageView
+    <net.mm2d.colorchooser.element.PaletteCell
         android:id="@+id/sample_04"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_weight="1"
         />
 
-    <ImageView
+    <net.mm2d.colorchooser.element.PaletteCell
         android:id="@+id/sample_05"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_weight="1"
         />
 
-    <ImageView
+    <net.mm2d.colorchooser.element.PaletteCell
         android:id="@+id/sample_06"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_weight="1"
         />
 
-    <ImageView
+    <net.mm2d.colorchooser.element.PaletteCell
         android:id="@+id/sample_07"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_weight="1"
         />
 
-    <ImageView
+    <net.mm2d.colorchooser.element.PaletteCell
         android:id="@+id/sample_08"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_weight="1"
         />
 
-    <ImageView
+    <net.mm2d.colorchooser.element.PaletteCell
         android:id="@+id/sample_09"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_weight="1"
         />
 
-    <ImageView
+    <net.mm2d.colorchooser.element.PaletteCell
         android:id="@+id/sample_10"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_weight="1"
         />
 
-    <ImageView
+    <net.mm2d.colorchooser.element.PaletteCell
         android:id="@+id/sample_11"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_weight="1"
         />
 
-    <ImageView
+    <net.mm2d.colorchooser.element.PaletteCell
         android:id="@+id/sample_12"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_weight="1"
         />
 
-    <ImageView
+    <net.mm2d.colorchooser.element.PaletteCell
         android:id="@+id/sample_13"
         android:layout_width="0dp"
         android:layout_height="48dp"
