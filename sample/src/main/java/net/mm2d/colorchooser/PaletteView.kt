@@ -9,11 +9,14 @@ package net.mm2d.colorchooser
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.TypedArray
 import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.getColorOrThrow
+import androidx.core.content.res.getResourceIdOrThrow
 import androidx.core.content.res.use
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -140,22 +143,25 @@ class PaletteView
 
     companion object {
         @SuppressLint("Recycle")
-        fun createPalette(context: Context): List<IntArray> {
-            val result = mutableListOf<IntArray>()
-            val resources = context.resources
-            resources.obtainTypedArray(R.array.material_colors).use { ids ->
-                for (i in 0 until ids.length()) {
-                    val id = ids.getResourceId(i, 0)
-                    if (id == 0) continue
-                    resources.obtainTypedArray(id).use { colors ->
-                        val array = IntArray(colors.length()).also { result.add(it) }
-                        for (j in 0 until colors.length()) {
-                            array[j] = colors.getColor(j, 0)
-                        }
-                    }
+        private fun createPalette(context: Context): List<IntArray> {
+            val res = context.resources
+            return res.obtainTypedArray(R.array.material_colors).use { ids ->
+                (0 until ids.length()).map {
+                    res.obtainTypedArray(
+                        ids.getResourceIdOrThrow(it)
+                    ).readColorArray()
                 }
             }
-            return result
+        }
+
+        private fun TypedArray.readColorArray(): IntArray {
+            use { colors ->
+                val result = IntArray(colors.length())
+                for (i in 0 until colors.length()) {
+                    result[i] = colors.getColorOrThrow(i)
+                }
+                return result
+            }
         }
     }
 }
