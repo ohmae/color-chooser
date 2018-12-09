@@ -1,26 +1,17 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
-def versionMajor = 0
-def versionMinor = 0
-def versionPatch = 1
-
 android {
     compileSdkVersion 28
+
     defaultConfig {
-        applicationId "net.mm2d.colorchooser"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode versionMajor * 10000 + versionMinor * 100 + versionPatch
-        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
-        resConfigs "en"
-        vectorDrawables.useSupportLibrary = true
+        versionCode 1
+        versionName "1.0"
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -30,7 +21,6 @@ android {
 }
 
 dependencies {
-    implementation project(':lib')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'

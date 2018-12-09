@@ -1,0 +1,13 @@
+<resources>
+    <style name="AppTheme.Widget.SeekBar.Red" parent="Widget.AppCompat.SeekBar">
+        <item name="colorControlActivated">#FF0000</item>
+    </style>
+
+    <style name="AppTheme.Widget.SeekBar.Green" parent="Widget.AppCompat.SeekBar">
+        <item name="colorControlActivated">#00FF00</item>
+    </style>
+
+    <style name="AppTheme.Widget.SeekBar.Blue" parent="Widget.AppCompat.SeekBar">
+        <item name="colorControlActivated">#4488FF</item>
+    </style>
+</resources>

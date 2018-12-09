@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_main.*
+import net.mm2d.color.chooser.ColorChooserDialog
 
 class MainActivity : AppCompatActivity(), ColorChooserDialog.Callback {
     private var color: Int = 0
