@@ -9,7 +9,7 @@ def versionPatch = 1
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "net.mm2d.colorchooser"
+        applicationId "net.mm2d.color.chooser.sample"
         minSdkVersion 16
         targetSdkVersion 28
         versionCode versionMajor * 10000 + versionMinor * 100 + versionPatch

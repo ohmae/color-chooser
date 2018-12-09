@@ -1,4 +1,11 @@
-package net.mm2d.colorchooser
+/*
+ * Copyright (c) 2018 大前良介 (OHMAE Ryosuke)
+ *
+ * This software is released under the MIT License.
+ * http://opensource.org/licenses/MIT
+ */
+
+package net.mm2d.color.chooser.sample
 
 import android.app.Activity
 import android.os.Bundle
