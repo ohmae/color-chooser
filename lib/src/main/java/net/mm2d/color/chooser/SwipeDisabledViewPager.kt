@@ -16,15 +16,15 @@ import androidx.viewpager.widget.ViewPager
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class DisableSwipeViewPager
+class SwipeDisabledViewPager
 @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
 ) : ViewPager(context, attrs) {
     private val maxHeight: Int
     init {
-        val a = context.obtainStyledAttributes(attrs, R.styleable.DisableSwipeViewPager)
-        maxHeight = a.getDimensionPixelSize(R.styleable.DisableSwipeViewPager_maxHeight, 0)
+        val a = context.obtainStyledAttributes(attrs, R.styleable.SwipeDisabledViewPager)
+        maxHeight = a.getDimensionPixelSize(R.styleable.SwipeDisabledViewPager_maxHeight, 0)
         a.recycle()
     }
 
