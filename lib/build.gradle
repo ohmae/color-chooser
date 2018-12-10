@@ -1,15 +1,33 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'maven'
+apply plugin: 'org.jetbrains.dokka-android'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.github.dcendents.android-maven'
+
+def versionMajor = 0
+def versionMinor = 0
+def versionPatch = 1
+def packageName = 'net.mm2d'
+def libraryId = 'color-chooser'
+def siteUrl = 'https://github.com/ohmae/color-chooser'
+def githubUrl = 'https://github.com/ohmae/color-chooser'
+
+version "${versionMajor}.${versionMinor}.${versionPatch}"
+group packageName
+archivesBaseName = libraryId
 
 android {
     compileSdkVersion 28
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode versionMajor * 10000 + versionMinor * 100 + versionPatch
+        versionName project.version
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
@@ -26,4 +44,84 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.0.1'
     implementation 'com.google.android.material:material:1.0.0'
     testImplementation 'junit:junit:4.12'
+}
+
+dokka {
+    outputFormat = 'gfm'
+    outputDirectory = "../docs/dokka"
+}
+
+bintray {
+    user = project.hasProperty('bintray_user') ? bintray_user : ''
+    key = project.hasProperty('bintray_key') ? bintray_key : ''
+    configurations = ['archives']
+
+    pkg {
+        repo = 'maven'
+        name = project.group + '.' + libraryId
+        licenses = ['MIT']
+        websiteUrl = siteUrl
+        issueTrackerUrl = githubUrl + '/blob/master/LICENSE'
+        vcsUrl = githubUrl + '.git'
+        issueTrackerUrl = githubUrl + '/issues'
+        publicDownloadNumbers = true
+        version {
+            name = project.version
+        }
+    }
+}
+
+install {
+    repositories.mavenInstaller {
+        pom.project {
+            name libraryId
+            url siteUrl
+
+            packaging 'aar'
+            groupId project.group
+            artifactId libraryId
+            version project.version
+
+            licenses {
+                license {
+                    name 'The MIT License'
+                    url 'https://opensource.org/licenses/MIT'
+                    distribution 'repo'
+                }
+            }
+            scm {
+                connection githubUrl + '.git'
+                url githubUrl
+            }
+        }
+    }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: 'file:build/maven')
+            pom.project {
+                groupId = project.group
+                artifactId = libraryId
+                version = project.version
+                licenses {
+                    license {
+                        name 'The MIT License'
+                        url 'https://opensource.org/licenses/MIT'
+                        distribution 'repo'
+                    }
+                }
+            }
+        }
+    }
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+
+artifacts {
+    archives sourcesJar
 }
