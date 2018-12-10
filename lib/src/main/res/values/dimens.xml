@@ -1,16 +1,12 @@
 <resources>
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="seek_padding">4dp</dimen>
     <dimen name="sample_radius">5dp</dimen>
     <dimen name="sample_frame">2dp</dimen>
     <dimen name="sample_shadow">1dp</dimen>
     <dimen name="sample_horizontal_margin">16dp</dimen>
-    <dimen name="sample_vertical_margin">8dp</dimen>
     <dimen name="hsv_size">256dp</dimen>
     <dimen name="hue_width">24dp</dimen>
     <dimen name="panel_margin">8dp</dimen>
-    <dimen name="module_margin">16dp</dimen>
     <dimen name="rgb_size">24dp</dimen>
     <dimen name="rgb_text">16dp</dimen>
     <dimen name="color_text">12dp</dimen>
