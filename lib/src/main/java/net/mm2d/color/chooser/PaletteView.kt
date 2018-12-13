@@ -18,6 +18,7 @@ import android.view.ViewGroup
 import androidx.core.content.res.getColorOrThrow
 import androidx.core.content.res.getResourceIdOrThrow
 import androidx.core.content.res.use
+import androidx.core.view.children
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import net.mm2d.color.chooser.element.PaletteCell
@@ -72,8 +73,8 @@ class PaletteView
             private set
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CellHolder {
-            return CellHolder(inflater.inflate(R.layout.item_palette, parent, false)).also {
-                it.onColorChanged = {
+            return CellHolder(inflater.inflate(R.layout.item_palette, parent, false)).also { holder ->
+                holder.onColorChanged = {
                     onColorChanged?.invoke(it)
                 }
             }
@@ -103,22 +104,9 @@ class PaletteView
     }
 
     private class CellHolder(itemView: View) : ViewHolder(itemView) {
-        private val viewList: List<PaletteCell> = listOf(
-            itemView.findViewById(R.id.sample_00),
-            itemView.findViewById(R.id.sample_01),
-            itemView.findViewById(R.id.sample_02),
-            itemView.findViewById(R.id.sample_03),
-            itemView.findViewById(R.id.sample_04),
-            itemView.findViewById(R.id.sample_05),
-            itemView.findViewById(R.id.sample_06),
-            itemView.findViewById(R.id.sample_07),
-            itemView.findViewById(R.id.sample_08),
-            itemView.findViewById(R.id.sample_09),
-            itemView.findViewById(R.id.sample_10),
-            itemView.findViewById(R.id.sample_11),
-            itemView.findViewById(R.id.sample_12),
-            itemView.findViewById(R.id.sample_13)
-        )
+        private val viewList: List<PaletteCell> = (itemView as ViewGroup).children
+            .map { it as PaletteCell }
+            .toList()
         var onColorChanged: ((color: Int) -> Unit)? = null
 
         init {
