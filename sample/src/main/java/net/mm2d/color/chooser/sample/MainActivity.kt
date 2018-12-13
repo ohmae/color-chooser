@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity(), ColorChooserDialog.Callback {
         sample.setBackgroundColor(color)
     }
 
-    override fun onDialogResult(requestCode: Int, resultCode: Int, color: Int) {
+    override fun onColorChooserResult(requestCode: Int, resultCode: Int, color: Int) {
         if (requestCode != REQUEST_CODE || resultCode != Activity.RESULT_OK) return
         this.color = color
         sample.setBackgroundColor(color)

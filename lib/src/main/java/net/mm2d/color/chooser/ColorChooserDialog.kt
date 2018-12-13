@@ -38,12 +38,12 @@ class ColorChooserDialog : DialogFragment() {
 
     override fun onCancel(dialog: DialogInterface?) {
         val requestCode = arguments?.getInt(KEY_REQUEST_CODE) ?: return
-        extractCallback()?.onDialogResult(requestCode, Activity.RESULT_CANCELED, 0)
+        extractCallback()?.onColorChooserResult(requestCode, Activity.RESULT_CANCELED, 0)
     }
 
     private fun notifySelect() {
         val requestCode = arguments?.getInt(KEY_REQUEST_CODE) ?: return
-        extractCallback()?.onDialogResult(requestCode, Activity.RESULT_OK, dialogView.color)
+        extractCallback()?.onColorChooserResult(requestCode, Activity.RESULT_OK, dialogView.color)
     }
 
     private fun extractCallback(): Callback? {
@@ -51,34 +51,42 @@ class ColorChooserDialog : DialogFragment() {
     }
 
     interface Callback {
-        fun onDialogResult(requestCode: Int, resultCode: Int, color: Int)
+        fun onColorChooserResult(requestCode: Int, resultCode: Int, color: Int)
     }
 
     companion object {
         private const val KEY_COLOR = "KEY_COLOR"
         private const val KEY_REQUEST_CODE = "KEY_REQUEST_CODE"
-        const val TAG = "ColorChooserDialog"
+        private const val TAG = "ColorChooserDialog"
 
         fun show(activity: FragmentActivity, requestCode: Int, color: Int) {
+            val fragmentManager = activity.supportFragmentManager ?: return
+            if (fragmentManager.findFragmentByTag(TAG) != null) {
+                return
+            }
             val arguments = Bundle().apply {
                 putInt(KEY_COLOR, color)
                 putInt(KEY_REQUEST_CODE, requestCode)
             }
-            ColorChooserDialog().let {
+            ColorChooserDialog().also {
                 it.arguments = arguments
-                it.show(activity.supportFragmentManager, TAG)
+                it.show(fragmentManager, TAG)
             }
         }
 
         fun show(fragment: Fragment, requestCode: Int, color: Int) {
+            val fragmentManager = fragment.fragmentManager ?: return
+            if (fragmentManager.findFragmentByTag(TAG) != null) {
+                return
+            }
             val arguments = Bundle().apply {
                 putInt(KEY_COLOR, color)
                 putInt(KEY_REQUEST_CODE, requestCode)
             }
-            ColorChooserDialog().let {
+            ColorChooserDialog().also {
                 it.setTargetFragment(fragment, requestCode)
                 it.arguments = arguments
-                it.show(fragment.fragmentManager, TAG)
+                it.show(fragmentManager, TAG)
             }
         }
     }
