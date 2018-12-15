@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-package net.mm2d.color.chooser
+package net.mm2d.color.chooser.element
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -15,6 +15,8 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
+import net.mm2d.color.chooser.R
+import net.mm2d.color.chooser.R.dimen
 import net.mm2d.color.chooser.util.ColorUtils
 import net.mm2d.color.chooser.util.clamp
 
@@ -31,13 +33,13 @@ class HueView
     private var color: Int = Color.RED
     private val paint = Paint()
     private val bitmap: Bitmap = createMaskBitmap()
-    private val _padding = resources.getDimensionPixelOffset(R.dimen.panel_margin)
-    private val _width = resources.getDimensionPixelOffset(R.dimen.hue_width) + _padding * 2
-    private val _height = resources.getDimensionPixelOffset(R.dimen.hsv_size) + _padding * 2
-    private val _sampleRadius = resources.getDimension(R.dimen.sample_radius)
-    private val _sampleFrameRadius = _sampleRadius + resources.getDimension(R.dimen.sample_frame)
+    private val _padding = resources.getDimensionPixelOffset(dimen.panel_margin)
+    private val _width = resources.getDimensionPixelOffset(dimen.hue_width) + _padding * 2
+    private val _height = resources.getDimensionPixelOffset(dimen.hsv_size) + _padding * 2
+    private val _sampleRadius = resources.getDimension(dimen.sample_radius)
+    private val _sampleFrameRadius = _sampleRadius + resources.getDimension(dimen.sample_frame)
     private val _sampleShadowRadius =
-        _sampleFrameRadius + resources.getDimension(R.dimen.sample_shadow)
+        _sampleFrameRadius + resources.getDimension(dimen.sample_shadow)
     private val bitmapRect = Rect(0, 0, 1, RANGE)
     private val targetRect = Rect()
     private var hue: Float = 0f

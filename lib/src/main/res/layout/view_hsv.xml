@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         />
 
-    <net.mm2d.color.chooser.HueView
+    <net.mm2d.color.chooser.element.HueView
         android:id="@+id/hue_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
