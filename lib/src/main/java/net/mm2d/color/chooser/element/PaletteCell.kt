@@ -53,7 +53,7 @@ class PaletteCell @JvmOverloads constructor(
         if (checked) {
             DrawableCompat.setTint(
                 icon,
-                if (ColorUtils.shoulUseWhiteForeground(color)) Color.WHITE else Color.BLACK
+                if (ColorUtils.shouldUseWhiteForeground(color)) Color.WHITE else Color.BLACK
             )
             icon.draw(canvas)
         }

@@ -160,20 +160,22 @@ object ColorUtils {
     /**
      * https://www.w3.org/TR/WCAG20/#visual-audio-contrast-contrast
      */
-    private const val MINUMUM_CONTRAST = 4.5f
+    private const val MINIMUM_CONTRAST = 4.5f
     /**
      * https://www.w3.org/TR/WCAG20/#visual-audio-contrast-contrast
      */
     private const val MINIMUM_CONTRAST_FOR_LARGE_TEXT = 3f
 
-    fun shoulUseWhiteForeground(color: Int): Boolean =
+    fun shouldUseWhiteForeground(color: Int): Boolean =
         color.contrastWithWhite() > MINIMUM_CONTRAST_FOR_LARGE_TEXT
 }
 
 val Int.red: Int
     get() = ushr(16) and 0xff
+
 val Int.green: Int
     get() = ushr(8) and 0xff
+
 val Int.blue: Int
     get() = this and 0xff
 
@@ -195,18 +197,22 @@ fun Int.luminance(): Int = ColorUtils.luminance(red, green, blue)
  * https://www.w3.org/TR/WCAG20/#relativeluminancedef
  */
 fun Float.normalizeForSrgb(): Float =
-    if (this < 0.03928f) this / 12.92f else Math.pow((this + 0.055f) / 1.055, 2.4).toFloat()
+    if (this < 0.03928f) this / 12.92f else Math.pow((this + 0.055) / 1.055, 2.4).toFloat()
 
-fun Int.normalizeForSrbg(): Float = toRatio().normalizeForSrgb()
+fun Int.normalizeForSrgb(): Float = toRatio().normalizeForSrgb()
 
 fun Int.relativeLuminance(): Float {
     return ColorUtils.luminance(
-        red.normalizeForSrbg(),
-        green.normalizeForSrbg(),
-        blue.normalizeForSrbg()
+        red.normalizeForSrgb(),
+        green.normalizeForSrgb(),
+        blue.normalizeForSrgb()
     )
 }
 
 fun Int.contrastWithWhite(): Float {
-    return 1.05f / (this.relativeLuminance() + 0.05f)
+    return 1.05f / (relativeLuminance() + 0.05f)
+}
+
+fun Int.contrastWithBlack(): Float {
+    return (relativeLuminance() + 0.05f) / 0.05f
 }
