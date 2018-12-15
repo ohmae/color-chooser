@@ -10,8 +10,8 @@
 
     <View
         android:id="@+id/color_preview"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="@dimen/preview_size"
+        android:layout_height="@dimen/preview_size"
         android:layout_marginEnd="@dimen/sample_horizontal_margin"
         android:layout_marginRight="@dimen/sample_horizontal_margin"
         />

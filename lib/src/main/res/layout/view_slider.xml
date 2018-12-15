@@ -24,7 +24,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:tint="#FF0000"
+                android:tint="@color/bg_red"
                 app:srcCompat="@drawable/ic_circle"
                 tools:ignore="ContentDescription"
                 />
@@ -50,7 +50,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:minWidth="200dp"
+            android:minWidth="@dimen/slider_min_width"
             android:max="255"
             android:paddingTop="@dimen/seek_padding"
             android:paddingBottom="@dimen/seek_padding"
@@ -89,7 +89,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:tint="#008000"
+                android:tint="@color/bg_green"
                 app:srcCompat="@drawable/ic_circle"
                 tools:ignore="ContentDescription"
                 />
@@ -110,7 +110,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:minWidth="200dp"
+            android:minWidth="@dimen/slider_min_width"
             android:max="255"
             android:paddingTop="@dimen/seek_padding"
             android:paddingBottom="@dimen/seek_padding"
@@ -149,7 +149,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:tint="#0000FF"
+                android:tint="@color/bg_blue"
                 app:srcCompat="@drawable/ic_circle"
                 tools:ignore="ContentDescription"
                 />
@@ -170,7 +170,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:minWidth="200dp"
+            android:minWidth="@dimen/slider_min_width"
             android:max="255"
             android:paddingTop="@dimen/seek_padding"
             android:paddingBottom="@dimen/seek_padding"

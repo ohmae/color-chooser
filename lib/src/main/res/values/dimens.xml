@@ -4,6 +4,7 @@
     <dimen name="sample_frame">2dp</dimen>
     <dimen name="sample_shadow">1dp</dimen>
     <dimen name="sample_horizontal_margin">16dp</dimen>
+    <dimen name="preview_size">48dp</dimen>
     <dimen name="hsv_size">256dp</dimen>
     <dimen name="hue_width">24dp</dimen>
     <dimen name="panel_margin">8dp</dimen>
@@ -11,4 +12,6 @@
     <dimen name="rgb_text">16dp</dimen>
     <dimen name="color_text">12dp</dimen>
     <dimen name="palette_padding">24dp</dimen>
+    <dimen name="panel_height">320dp</dimen>
+    <dimen name="slider_min_width">200dp</dimen>
 </resources>
