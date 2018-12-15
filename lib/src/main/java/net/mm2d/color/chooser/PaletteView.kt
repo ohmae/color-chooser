@@ -22,6 +22,7 @@ import androidx.core.view.children
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import net.mm2d.color.chooser.element.PaletteCell
+import java.lang.ref.SoftReference
 import kotlin.math.roundToInt
 
 /**
@@ -130,8 +131,11 @@ class PaletteView
     }
 
     companion object {
+        private var cache: SoftReference<List<IntArray>>? = null
+
         @SuppressLint("Recycle")
         private fun createPalette(context: Context): List<IntArray> {
+            cache?.get()?.let { return it }
             val res = context.resources
             return res.obtainTypedArray(R.array.material_colors).use { ids ->
                 (0 until ids.length()).map {
@@ -139,6 +143,8 @@ class PaletteView
                         ids.getResourceIdOrThrow(it)
                     ).readColorArray()
                 }
+            }.also {
+                cache = SoftReference(it)
             }
         }
 
