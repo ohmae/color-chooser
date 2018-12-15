@@ -74,19 +74,19 @@ bintray {
 install {
     repositories.mavenInstaller {
         pom.project {
-            name libraryId
-            url siteUrl
+            name = libraryId
+            url = siteUrl
 
-            packaging 'aar'
-            groupId project.group
-            artifactId libraryId
-            version project.version
+            packaging = 'aar'
+            groupId = project.group
+            artifactId = libraryId
+            version = project.version
 
             licenses {
                 license {
-                    name 'The MIT License'
-                    url 'https://opensource.org/licenses/MIT'
-                    distribution 'repo'
+                    name = 'The MIT License'
+                    url = 'https://opensource.org/licenses/MIT'
+                    distribution = 'repo'
                 }
             }
             scm {
@@ -107,9 +107,9 @@ uploadArchives {
                 version = project.version
                 licenses {
                     license {
-                        name 'The MIT License'
-                        url 'https://opensource.org/licenses/MIT'
-                        distribution 'repo'
+                        name = 'The MIT License'
+                        url = 'https://opensource.org/licenses/MIT'
+                        distribution = 'repo'
                     }
                 }
             }
