@@ -28,6 +28,25 @@ dependencies {
 }
 ```
 
+To show dialog.
+
+```kotlin
+ColorChooserDialog.show(this, REQUEST_CODE, initialColor)
+```
+
+First arguemnt is `FragmentActivity` or `Fragment`
+
+To receive result. Implement `ColorChooserDialog.Callback` to `Activity` or `Fragment` 
+
+```kotlin
+class MainActivity : AppCompatActivity(), ColorChooserDialog.Callback {
+    override fun onColorChooserResult(requestCode: Int, resultCode: Int, color: Int) {
+        if (requestCode != REQUEST_CODE || resultCode != Activity.RESULT_OK) return
+        // use color
+    }
+}
+```
+
 ## Author
 大前 良介 (OHMAE Ryosuke)
 http://www.mm2d.net/
