@@ -47,6 +47,8 @@ class MainActivity : AppCompatActivity(), ColorChooserDialog.Callback {
 }
 ```
 
+Please see [Sample code](sample/src/main/java/net/mm2d/color/chooser/sample/MainActivity.kt) for detail.
+
 ## Author
 大前 良介 (OHMAE Ryosuke)
 http://www.mm2d.net/
