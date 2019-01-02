@@ -28,13 +28,11 @@ dependencies {
 }
 ```
 
-To show dialog.
+To show dialog. On `FragmentActivity` or `Fragment`
 
 ```kotlin
 ColorChooserDialog.show(this, REQUEST_CODE, initialColor)
 ```
-
-First arguemnt is `FragmentActivity` or `Fragment`
 
 To receive result. Implement `ColorChooserDialog.Callback` to `Activity` or `Fragment` 
 
