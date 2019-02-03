@@ -54,7 +54,7 @@ class SvView
     init {
         Thread {
             maskBitmap = createMaskBitmap()
-            invalidate()
+            postInvalidate()
         }.start()
     }
 
