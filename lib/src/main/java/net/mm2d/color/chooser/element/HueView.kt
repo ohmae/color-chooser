@@ -16,9 +16,8 @@ import android.view.View
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import net.mm2d.color.chooser.R
-import net.mm2d.color.chooser.R.dimen
 import net.mm2d.color.chooser.util.ColorUtils
-import net.mm2d.color.chooser.util.clamp
+import kotlin.math.max
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -33,21 +32,24 @@ class HueView
     private var color: Int = Color.RED
     private val paint = Paint()
     private val bitmap: Bitmap = createMaskBitmap()
-    private val _padding = resources.getDimensionPixelOffset(dimen.mm2d_cc_panel_margin)
-    private val _width = resources.getDimensionPixelOffset(dimen.mm2d_cc_hue_width) + _padding * 2
-    private val _height = resources.getDimensionPixelOffset(dimen.mm2d_cc_hsv_size) + _padding * 2
-    private val _sampleRadius = resources.getDimension(dimen.mm2d_cc_sample_radius)
-    private val _sampleFrameRadius = _sampleRadius + resources.getDimension(dimen.mm2d_cc_sample_frame)
+    private val _padding = resources.getDimensionPixelOffset(R.dimen.mm2d_cc_panel_margin)
+    private val _width = resources.getDimensionPixelOffset(R.dimen.mm2d_cc_hue_width) + _padding * 2
+    private val _height = resources.getDimensionPixelOffset(R.dimen.mm2d_cc_hsv_size) + _padding * 2
+    private val _sampleRadius = resources.getDimension(R.dimen.mm2d_cc_sample_radius)
+    private val _sampleFrameRadius =
+        _sampleRadius + resources.getDimension(R.dimen.mm2d_cc_sample_frame)
     private val _sampleShadowRadius =
-        _sampleFrameRadius + resources.getDimension(dimen.mm2d_cc_sample_shadow)
+        _sampleFrameRadius + resources.getDimension(R.dimen.mm2d_cc_sample_shadow)
     private val bitmapRect = Rect(0, 0, 1, RANGE)
     private val targetRect = Rect()
     private var hue: Float = 0f
     var onHueChanged: ((hue: Float) -> Unit)? = null
-    private val colorSampleFrame = ContextCompat.getColor(context,
+    private val colorSampleFrame = ContextCompat.getColor(
+        context,
         R.color.mm2d_cc_sample_frame
     )
-    private val colorSampleShadow = ContextCompat.getColor(context,
+    private val colorSampleShadow = ContextCompat.getColor(
+        context,
         R.color.mm2d_cc_sample_shadow
     )
 
@@ -69,7 +71,7 @@ class HueView
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        updateHue(((event.y - targetRect.top) / targetRect.height()).clamp(0f, 1f), true)
+        updateHue(((event.y - targetRect.top) / targetRect.height()).coerceIn(0f, 1f), true)
         return true
     }
 
@@ -97,12 +99,12 @@ class HueView
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         setMeasuredDimension(
             resolveSizeAndState(
-                Math.max(_width + paddingLeft + paddingRight, suggestedMinimumWidth),
+                max(_width + paddingLeft + paddingRight, suggestedMinimumWidth),
                 widthMeasureSpec,
                 MeasureSpec.UNSPECIFIED
             ),
             resolveSizeAndState(
-                Math.max(_height + paddingTop + paddingBottom, suggestedMinimumHeight),
+                max(_height + paddingTop + paddingBottom, suggestedMinimumHeight),
                 heightMeasureSpec,
                 MeasureSpec.UNSPECIFIED
             )
@@ -116,8 +118,10 @@ class HueView
             val pixels = IntArray(RANGE) {
                 ColorUtils.hsvToColor(it.toFloat() / RANGE, 1f, 1f)
             }
-            return Bitmap.createBitmap(pixels, 0, 1, 1,
-                RANGE, Bitmap.Config.ARGB_8888)
+            return Bitmap.createBitmap(
+                pixels, 0, 1, 1,
+                RANGE, Bitmap.Config.ARGB_8888
+            )
         }
     }
 }

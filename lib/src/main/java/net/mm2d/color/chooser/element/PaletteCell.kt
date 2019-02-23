@@ -19,6 +19,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.DrawableCompat
 import net.mm2d.color.chooser.R.drawable
 import net.mm2d.color.chooser.util.ColorUtils
+import kotlin.math.min
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -43,7 +44,7 @@ class PaletteCell @JvmOverloads constructor(
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        val size = Math.min(Math.min(width, height), icon.intrinsicWidth)
+        val size = min(min(width, height), icon.intrinsicWidth)
         icon.setBounds((w - size) / 2, (h - size) / 2, (w + size) / 2, (h + size) / 2)
     }
 

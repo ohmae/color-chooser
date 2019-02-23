@@ -22,6 +22,7 @@ class SwipeDisabledViewPager
     attrs: AttributeSet? = null
 ) : ViewPager(context, attrs) {
     private val maxHeight: Int
+
     init {
         val a = context.obtainStyledAttributes(attrs, R.styleable.SwipeDisabledViewPager)
         maxHeight = a.getDimensionPixelSize(R.styleable.SwipeDisabledViewPager_maxHeight, 0)

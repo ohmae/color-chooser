@@ -109,7 +109,10 @@ class ControlView
             val shadowWidth = resources.getDimensionPixelSize(R.dimen.mm2d_cc_sample_shadow)
             val background = GradientDrawable().also {
                 it.shape = GradientDrawable.RECTANGLE
-                it.setStroke(frameWidth, ContextCompat.getColor(context, R.color.mm2d_cc_sample_frame))
+                it.setStroke(
+                    frameWidth,
+                    ContextCompat.getColor(context, R.color.mm2d_cc_sample_frame)
+                )
             }
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN) {
                 view.background = background
@@ -117,7 +120,10 @@ class ControlView
             }
             val shadow = GradientDrawable().also {
                 it.shape = GradientDrawable.RECTANGLE
-                it.setStroke(shadowWidth, ContextCompat.getColor(context, R.color.mm2d_cc_sample_shadow))
+                it.setStroke(
+                    shadowWidth,
+                    ContextCompat.getColor(context, R.color.mm2d_cc_sample_shadow)
+                )
             }
             val layerDrawable = LayerDrawable(arrayOf(background, shadow))
             layerDrawable.setLayerInset(0, shadowWidth, shadowWidth, shadowWidth, shadowWidth)

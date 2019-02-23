@@ -7,6 +7,8 @@
 
 package net.mm2d.color.chooser.util
 
+import kotlin.math.pow
+
 /**
  * HSVやRGBの色空間表現を扱う上でのメソッド
  *
@@ -80,7 +82,7 @@ object ColorUtils {
      */
     fun svToMask(s: Float, v: Float): Int {
         val a = 1f - (s * v)
-        val g = if (a == 0f) 0f else (v * (1f - s) / a).clamp(0f, 1f)
+        val g = if (a == 0f) 0f else (v * (1f - s) / a).coerceIn(0f, 1f)
         return toColor(a, g, g, g)
     }
 
@@ -137,7 +139,7 @@ object ColorUtils {
             g -> (b - r) / range + 2f
             else -> (r - g) / range + 4f
         }
-        return (hue / 6f).clamp(0f, 1f)
+        return (hue / 6f).coerceIn(0f, 1f)
     }
 
     private fun saturation(max: Float, min: Float): Float =
@@ -232,7 +234,7 @@ object ColorUtils {
      * @return luminance
      */
     fun luminance(r: Int, g: Int, b: Int): Int =
-        (r * 0.2126f + g * 0.7152f + b * 0.0722f + 0.5f).toInt().clamp(0, 255)
+        (r * 0.2126f + g * 0.7152f + b * 0.0722f + 0.5f).toInt().coerceIn(0, 255)
 
     /**
      * Calculate luminance based on ITU-R BT.709 and sRGB
@@ -317,7 +319,7 @@ val Int.blue: Int
  * @param alpha Alpha
  * @return alpha applied color
  */
-fun Int.setAlpha(alpha: Float): Int = setAlpha((0xff * alpha.clamp(0f, 1f)).toInt())
+fun Int.setAlpha(alpha: Float): Int = setAlpha((0xff * alpha.coerceIn(0f, 1f)).toInt())
 
 /**
  * Overwrite alpha value of color
@@ -334,7 +336,7 @@ fun Int.setAlpha(alpha: Int): Int = this and 0xffffff or (alpha shl 24)
  * @receiver angle
  * @return ratio
  */
-fun Int.angleToRatio(): Float = (this / 360f).clamp(0f, 1f)
+fun Int.angleToRatio(): Float = (this / 360f).coerceIn(0f, 1f)
 
 /**
  * Convert ratio [0.0f, 1.0f] to angle [0, 360]
@@ -342,7 +344,7 @@ fun Int.angleToRatio(): Float = (this / 360f).clamp(0f, 1f)
  * @receiver ratio
  * @return angle
  */
-fun Float.ratioToAngle(): Int = (this * 360f + 0.5f).toInt().clamp(0, 360)
+fun Float.ratioToAngle(): Int = (this * 360f + 0.5f).toInt().coerceIn(0, 360)
 
 /**
  * Convert [0, 255] to [0.0f, 1.0f]
@@ -358,7 +360,7 @@ fun Int.toRatio(): Float = this / 255f
  * @receiver [0.0f, 1.0f]
  * @return [0, 255]
  */
-fun Float.to8bit(): Int = (this * 255f + 0.5f).toInt().clamp(0, 255)
+fun Float.to8bit(): Int = (this * 255f + 0.5f).toInt().coerceIn(0, 255)
 
 /**
  * Calculate luminace of color
@@ -377,7 +379,7 @@ fun Int.luminance(): Int = ColorUtils.luminance(red, green, blue)
  * @return normalized luminance
  */
 fun Float.normalizeForSrgb(): Float =
-    if (this < 0.03928f) this / 12.92f else Math.pow((this + 0.055) / 1.055, 2.4).toFloat()
+    if (this < 0.03928f) this / 12.92f else ((this + 0.055) / 1.055).pow(2.4).toFloat()
 
 /**
  * Normalize value of primary color luminance to calculate sRGB luminance of color

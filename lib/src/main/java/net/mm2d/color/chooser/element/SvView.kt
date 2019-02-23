@@ -17,7 +17,9 @@ import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import net.mm2d.color.chooser.R
 import net.mm2d.color.chooser.util.ColorUtils
-import net.mm2d.color.chooser.util.clamp
+import kotlin.math.abs
+import kotlin.math.max
+import kotlin.math.min
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -37,8 +39,10 @@ class SvView
     private val _width = resources.getDimensionPixelOffset(R.dimen.mm2d_cc_hsv_size) + _padding * 2
     private val _height = resources.getDimensionPixelOffset(R.dimen.mm2d_cc_hsv_size) + _padding * 2
     private val _sampleRadius = resources.getDimension(R.dimen.mm2d_cc_sample_radius)
-    private val _sampleFrameRadius = _sampleRadius + resources.getDimension(R.dimen.mm2d_cc_sample_frame)
-    private val _sampleShadowRadius = _sampleFrameRadius + resources.getDimension(R.dimen.mm2d_cc_sample_shadow)
+    private val _sampleFrameRadius =
+        _sampleRadius + resources.getDimension(R.dimen.mm2d_cc_sample_frame)
+    private val _sampleShadowRadius =
+        _sampleFrameRadius + resources.getDimension(R.dimen.mm2d_cc_sample_shadow)
     private val maskRect = Rect(0, 0, TONE_SIZE, TONE_SIZE)
     private val targetRect = Rect()
     private var hue: Float = 0f
@@ -93,8 +97,8 @@ class SvView
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        val s = ((event.x - targetRect.left) / targetRect.width()).clamp(0f, 1f)
-        val v = ((targetRect.bottom - event.y) / targetRect.height()).clamp(0f, 1f)
+        val s = ((event.x - targetRect.left) / targetRect.width()).coerceIn(0f, 1f)
+        val v = ((targetRect.bottom - event.y) / targetRect.height()).coerceIn(0f, 1f)
         color = ColorUtils.hsvToColor(hue, s, v)
         updateSv(s, v, true)
         return true
@@ -133,12 +137,12 @@ class SvView
         if (!resizeWidth && !resizeHeight) {
             setMeasuredDimension(
                 resolveSizeAndState(
-                    Math.max(_width + paddingHorizontal, suggestedMinimumWidth),
+                    max(_width + paddingHorizontal, suggestedMinimumWidth),
                     widthMeasureSpec,
                     MeasureSpec.UNSPECIFIED
                 ),
                 resolveSizeAndState(
-                    Math.max(_height + paddingVertical, suggestedMinimumHeight),
+                    max(_height + paddingVertical, suggestedMinimumHeight),
                     heightMeasureSpec,
                     MeasureSpec.UNSPECIFIED
                 )
@@ -150,7 +154,7 @@ class SvView
         var heightSize = resolveAdjustedSize(_height + paddingVertical, heightMeasureSpec)
         val actualAspect =
             (widthSize - paddingHorizontal).toFloat() / (heightSize - paddingVertical)
-        if (Math.abs(actualAspect - 1f) < 0.0000001) {
+        if (abs(actualAspect - 1f) < 0.0000001) {
             setMeasuredDimension(widthSize, heightSize)
             return
         }
@@ -182,7 +186,7 @@ class SvView
         val specSize = MeasureSpec.getSize(measureSpec)
         return when (specMode) {
             MeasureSpec.UNSPECIFIED -> desiredSize
-            MeasureSpec.AT_MOST -> Math.min(desiredSize, specSize)
+            MeasureSpec.AT_MOST -> min(desiredSize, specSize)
             MeasureSpec.EXACTLY -> specSize
             else -> desiredSize
         }
@@ -197,7 +201,7 @@ class SvView
             for (y in 0 until TONE_SIZE) {
                 for (x in 0 until TONE_SIZE) {
                     pixels[x + y * TONE_SIZE] =
-                            ColorUtils.svToMask(x / TONE_MAX, (TONE_MAX - y) / TONE_MAX)
+                        ColorUtils.svToMask(x / TONE_MAX, (TONE_MAX - y) / TONE_MAX)
                 }
             }
             return Bitmap.createBitmap(

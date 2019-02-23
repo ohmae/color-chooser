@@ -74,7 +74,12 @@ class PaletteView
             private set
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CellHolder {
-            return CellHolder(inflater.inflate(R.layout.mm2d_cc_item_palette, parent, false)).also { holder ->
+            return CellHolder(
+                inflater.inflate(
+                    R.layout.mm2d_cc_item_palette,
+                    parent, false
+                )
+            ).also { holder ->
                 holder.onColorChanged = {
                     onColorChanged?.invoke(it)
                 }
