@@ -15,46 +15,14 @@
         android:orientation="horizontal"
         >
 
-        <FrameLayout
-            android:layout_width="@dimen/mm2d_cc_rgb_size"
-            android:layout_height="@dimen/mm2d_cc_rgb_size"
-            android:layout_margin="@dimen/mm2d_cc_panel_margin"
-            >
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:tint="@color/mm2d_cc_bg_red"
-                app:srcCompat="@drawable/mm2d_cc_ic_circle"
-                tools:ignore="ContentDescription"
-                />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:gravity="center"
-                android:text="R"
-                android:textColor="@color/white"
-                android:textSize="@dimen/mm2d_cc_rgb_text"
-                tools:ignore="HardcodedText,SpUsage"
-                >
-
-                <requestFocus/>
-            </TextView>
-        </FrameLayout>
-
-        <SeekBar
+        <net.mm2d.color.chooser.element.ColorSliderView
             android:id="@+id/seek_red"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:minWidth="@dimen/mm2d_cc_slider_min_width"
-            android:max="255"
             android:paddingTop="@dimen/mm2d_cc_seek_padding"
             android:paddingBottom="@dimen/mm2d_cc_seek_padding"
-            android:theme="@style/AppTheme.Widget.SeekBar.Red"
+            app:color="#ff0000"
             tools:progress="128"
             />
 
@@ -80,41 +48,14 @@
         android:orientation="horizontal"
         >
 
-        <FrameLayout
-            android:layout_width="@dimen/mm2d_cc_rgb_size"
-            android:layout_height="@dimen/mm2d_cc_rgb_size"
-            android:layout_margin="@dimen/mm2d_cc_panel_margin"
-            >
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:tint="@color/mm2d_cc_bg_green"
-                app:srcCompat="@drawable/mm2d_cc_ic_circle"
-                tools:ignore="ContentDescription"
-                />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="G"
-                android:textColor="@color/white"
-                android:textSize="@dimen/mm2d_cc_rgb_text"
-                tools:ignore="HardcodedText,SpUsage"
-                />
-        </FrameLayout>
-
-        <SeekBar
+        <net.mm2d.color.chooser.element.ColorSliderView
             android:id="@+id/seek_green"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:minWidth="@dimen/mm2d_cc_slider_min_width"
-            android:max="255"
             android:paddingTop="@dimen/mm2d_cc_seek_padding"
             android:paddingBottom="@dimen/mm2d_cc_seek_padding"
-            android:theme="@style/AppTheme.Widget.SeekBar.Green"
+            app:color="#00ff00"
             tools:progress="128"
             />
 
@@ -140,41 +81,14 @@
         android:orientation="horizontal"
         >
 
-        <FrameLayout
-            android:layout_width="@dimen/mm2d_cc_rgb_size"
-            android:layout_height="@dimen/mm2d_cc_rgb_size"
-            android:layout_margin="@dimen/mm2d_cc_panel_margin"
-            >
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:tint="@color/mm2d_cc_bg_blue"
-                app:srcCompat="@drawable/mm2d_cc_ic_circle"
-                tools:ignore="ContentDescription"
-                />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="B"
-                android:textColor="@color/white"
-                android:textSize="@dimen/mm2d_cc_rgb_text"
-                tools:ignore="HardcodedText,SpUsage"
-                />
-        </FrameLayout>
-
-        <SeekBar
+        <net.mm2d.color.chooser.element.ColorSliderView
             android:id="@+id/seek_blue"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:minWidth="@dimen/mm2d_cc_slider_min_width"
-            android:max="255"
             android:paddingTop="@dimen/mm2d_cc_seek_padding"
             android:paddingBottom="@dimen/mm2d_cc_seek_padding"
-            android:theme="@style/AppTheme.Widget.SeekBar.Blue"
+            app:color="#0000ff"
             tools:progress="128"
             />
 

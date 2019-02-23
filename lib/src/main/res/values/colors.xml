@@ -2,12 +2,8 @@
 <resources>
     <color name="mm2d_cc_sample_frame">#FFFFFF</color>
     <color name="mm2d_cc_sample_shadow">#1a000000</color>
-    <color name="mm2d_cc_bg_red">#FF0000</color>
-    <color name="mm2d_cc_bg_green">#008000</color>
-    <color name="mm2d_cc_bg_blue">#0000FF</color>
-    <color name="mm2d_cc_fg_red">#FF0000</color>
-    <color name="mm2d_cc_fg_green">#00FF00</color>
-    <color name="mm2d_cc_fg_blue">#4488FF</color>
+    <color name="mm2d_cc_checker_light">#FFFFFF</color>
+    <color name="mm2d_cc_checker_dark">#808080</color>
 
     <color name="red_50">#FFEBEE</color>
     <color name="red_100">#FFCDD2</color>

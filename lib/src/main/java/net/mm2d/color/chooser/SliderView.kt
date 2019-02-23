@@ -11,7 +11,6 @@ import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import android.widget.LinearLayout
-import android.widget.SeekBar
 import kotlinx.android.synthetic.main.mm2d_cc_view_slider.view.*
 
 /**
@@ -28,50 +27,30 @@ class SliderView
     init {
         orientation = VERTICAL
         inflate(context, R.layout.mm2d_cc_view_slider, this)
-        seek_red.setOnSeekBarChangeListener(makeOnSeekBarChangeListener { progress, fromUser ->
-            text_red.text = progress.toString()
+        seek_red.onValueChanged = { value, fromUser ->
+            text_red.text = value.toString()
             updateBySeekBar(fromUser)
-        })
-        seek_green.setOnSeekBarChangeListener(makeOnSeekBarChangeListener { progress, fromUser ->
-            text_green.text = progress.toString()
+        }
+        seek_green.onValueChanged = { value, fromUser ->
+            text_green.text = value.toString()
             updateBySeekBar(fromUser)
-        })
-        seek_blue.setOnSeekBarChangeListener(makeOnSeekBarChangeListener { progress, fromUser ->
-            text_blue.text = progress.toString()
+        }
+        seek_blue.onValueChanged = { value, fromUser ->
+            text_blue.text = value.toString()
             updateBySeekBar(fromUser)
-        })
+        }
     }
 
     override fun onChange(color: Int, notifier: Any?) {
         if (notifier == this) return
-        seek_red.progress = Color.red(color)
-        seek_green.progress = Color.green(color)
-        seek_blue.progress = Color.blue(color)
+        seek_red.value = Color.red(color)
+        seek_green.value = Color.green(color)
+        seek_blue.value = Color.blue(color)
     }
 
     private fun updateBySeekBar(fromUser: Boolean) {
         if (!fromUser) return
-        val color = Color.rgb(seek_red.progress, seek_green.progress, seek_blue.progress)
+        val color = Color.rgb(seek_red.value, seek_green.value, seek_blue.value)
         observer?.onChange(color, this)
-    }
-
-    companion object {
-        private fun makeOnSeekBarChangeListener(onProgressChanged: (progress: Int, fromUser: Boolean) -> Unit): SeekBar.OnSeekBarChangeListener {
-            return object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(
-                    seekBar: SeekBar?,
-                    progress: Int,
-                    fromUser: Boolean
-                ) {
-                    onProgressChanged(progress, fromUser)
-                }
-
-                override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                }
-
-                override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                }
-            }
-        }
     }
 }
