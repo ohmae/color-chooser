@@ -9,17 +9,22 @@ package net.mm2d.color.chooser
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.LayerDrawable
 import android.os.Build
 import android.text.Editable
+import android.text.InputFilter
+import android.text.InputFilter.LengthFilter
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import kotlinx.android.synthetic.main.mm2d_cc_view_control.view.*
+import net.mm2d.color.chooser.util.AttrUtils
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -33,6 +38,10 @@ class ControlView
     private var color: Int = Color.BLACK
     private val background: GradientDrawable
     private var changeHexTextByUser = true
+    private val normalTint =
+        ColorStateList.valueOf(AttrUtils.resolveColor(context, R.attr.colorAccent, Color.BLUE))
+    private val errorTint =
+        ColorStateList.valueOf(AttrUtils.resolveColor(context, R.attr.colorError, Color.RED))
     var observer: ColorChangeObserver? = null
 
     init {
@@ -40,7 +49,9 @@ class ControlView
         inflate(context, R.layout.mm2d_cc_view_control, this)
         background = initDrawable(context, color_preview)
         background.setColor(color)
-
+        edit_hex.filters = arrayOf(InputFilter { source, _, _, _, _, _ ->
+            source.toString().toUpperCase().replace("[^0-9A-F]".toRegex(), "")
+        }, LengthFilter(6))
         edit_hex.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
             }
@@ -53,19 +64,27 @@ class ControlView
                     return
                 }
                 if (s.isNullOrEmpty()) {
-                    edit_hex_layout.error = "error"
+                    setError()
                     return
                 }
                 try {
-                    color = Color.parseColor(s.toString())
-                    edit_hex_layout.error = null
+                    color = Color.parseColor("#$s")
+                    clearError()
                     background.setColor(color)
                     observer?.onChange(color, this@ControlView)
                 } catch (e: IllegalArgumentException) {
-                    edit_hex_layout.error = "error"
+                    setError()
                 }
             }
         })
+    }
+
+    private fun setError() {
+        ViewCompat.setBackgroundTintList(edit_hex, errorTint)
+    }
+
+    private fun clearError() {
+        ViewCompat.setBackgroundTintList(edit_hex, normalTint)
     }
 
     override fun onChange(color: Int, notifier: Any?) {
@@ -78,7 +97,8 @@ class ControlView
     @SuppressLint("SetTextI18n")
     private fun setColorToHexText() {
         changeHexTextByUser = false
-        edit_hex.setText("#%06X".format(color and 0xFFFFFF))
+        edit_hex.setText("%06X".format(color and 0xFFFFFF))
+        clearError()
         changeHexTextByUser = true
     }
 
