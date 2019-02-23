@@ -1,14 +1,15 @@
 <resources>
+
     <style name="AppTheme.Widget.SeekBar.Red" parent="Widget.AppCompat.SeekBar">
-        <item name="colorControlActivated">@color/fg_red</item>
+        <item name="colorControlActivated">@color/mm2d_cc_fg_red</item>
     </style>
 
     <style name="AppTheme.Widget.SeekBar.Green" parent="Widget.AppCompat.SeekBar">
-        <item name="colorControlActivated">@color/fg_green</item>
+        <item name="colorControlActivated">@color/mm2d_cc_fg_green</item>
     </style>
 
     <style name="AppTheme.Widget.SeekBar.Blue" parent="Widget.AppCompat.SeekBar">
-        <item name="colorControlActivated">@color/fg_blue</item>
+        <item name="colorControlActivated">@color/mm2d_cc_fg_blue</item>
     </style>
 
     <style name="palette_cell">

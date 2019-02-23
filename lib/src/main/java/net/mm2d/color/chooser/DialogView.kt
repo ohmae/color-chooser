@@ -13,7 +13,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
-import kotlinx.android.synthetic.main.view_dialog.view.*
+import kotlinx.android.synthetic.main.mm2d_cc_view_dialog.view.*
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -31,7 +31,7 @@ class DialogView
     init {
         orientation = VERTICAL
         val inflater = LayoutInflater.from(context)
-        inflater.inflate(R.layout.view_dialog, this)
+        inflater.inflate(R.layout.mm2d_cc_view_dialog, this)
         val pages: List<Pair<String, View>> = listOf(
             "palette" to PaletteView(context).also { it.observer = this },
             "hsv" to HsvPage(context).also { it.observer = this },

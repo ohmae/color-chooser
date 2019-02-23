@@ -33,12 +33,12 @@ class SvView
     private var maxColor: Int = Color.RED
     private var maskBitmap: Bitmap? = null
     private val paint = Paint().also { it.isAntiAlias = true }
-    private val _padding = resources.getDimensionPixelOffset(R.dimen.panel_margin)
-    private val _width = resources.getDimensionPixelOffset(R.dimen.hsv_size) + _padding * 2
-    private val _height = resources.getDimensionPixelOffset(R.dimen.hsv_size) + _padding * 2
-    private val _sampleRadius = resources.getDimension(R.dimen.sample_radius)
-    private val _sampleFrameRadius = _sampleRadius + resources.getDimension(R.dimen.sample_frame)
-    private val _sampleShadowRadius = _sampleFrameRadius + resources.getDimension(R.dimen.sample_shadow)
+    private val _padding = resources.getDimensionPixelOffset(R.dimen.mm2d_cc_panel_margin)
+    private val _width = resources.getDimensionPixelOffset(R.dimen.mm2d_cc_hsv_size) + _padding * 2
+    private val _height = resources.getDimensionPixelOffset(R.dimen.mm2d_cc_hsv_size) + _padding * 2
+    private val _sampleRadius = resources.getDimension(R.dimen.mm2d_cc_sample_radius)
+    private val _sampleFrameRadius = _sampleRadius + resources.getDimension(R.dimen.mm2d_cc_sample_frame)
+    private val _sampleShadowRadius = _sampleFrameRadius + resources.getDimension(R.dimen.mm2d_cc_sample_shadow)
     private val maskRect = Rect(0, 0, TONE_SIZE, TONE_SIZE)
     private val targetRect = Rect()
     private var hue: Float = 0f
@@ -46,8 +46,8 @@ class SvView
         private set
     var value: Float = 0f
         private set
-    private val colorSampleFrame = ContextCompat.getColor(context, R.color.sample_frame)
-    private val colorSampleShadow = ContextCompat.getColor(context, R.color.sample_shadow)
+    private val colorSampleFrame = ContextCompat.getColor(context, R.color.mm2d_cc_sample_frame)
+    private val colorSampleShadow = ContextCompat.getColor(context, R.color.mm2d_cc_sample_shadow)
     private val hsvCache = FloatArray(3)
     var onColorChanged: ((color: Int) -> Unit)? = null
 

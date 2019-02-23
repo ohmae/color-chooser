@@ -10,7 +10,7 @@ package net.mm2d.color.chooser
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
-import kotlinx.android.synthetic.main.page_hsv.view.*
+import kotlinx.android.synthetic.main.mm2d_cc_page_hsv.view.*
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -24,7 +24,7 @@ class HsvPage
     var observer: ColorChangeObserver? = null
 
     init {
-        inflate(context, R.layout.page_hsv, this)
+        inflate(context, R.layout.mm2d_cc_page_hsv, this)
         hsv_view.observer = object : ColorChangeObserver {
             override fun onChange(color: Int, notifier: Any?) {
                 observer?.onChange(color, this@HsvPage)

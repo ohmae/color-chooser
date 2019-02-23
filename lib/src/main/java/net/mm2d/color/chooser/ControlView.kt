@@ -19,7 +19,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
-import kotlinx.android.synthetic.main.view_control.view.*
+import kotlinx.android.synthetic.main.mm2d_cc_view_control.view.*
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -37,7 +37,7 @@ class ControlView
 
     init {
         orientation = HORIZONTAL
-        inflate(context, R.layout.view_control, this)
+        inflate(context, R.layout.mm2d_cc_view_control, this)
         background = initDrawable(context, color_preview)
         background.setColor(color)
 
@@ -85,11 +85,11 @@ class ControlView
     companion object {
         fun initDrawable(context: Context, view: View): GradientDrawable {
             val resources = context.resources
-            val frameWidth = resources.getDimensionPixelSize(R.dimen.sample_frame)
-            val shadowWidth = resources.getDimensionPixelSize(R.dimen.sample_shadow)
+            val frameWidth = resources.getDimensionPixelSize(R.dimen.mm2d_cc_sample_frame)
+            val shadowWidth = resources.getDimensionPixelSize(R.dimen.mm2d_cc_sample_shadow)
             val background = GradientDrawable().also {
                 it.shape = GradientDrawable.RECTANGLE
-                it.setStroke(frameWidth, ContextCompat.getColor(context, R.color.sample_frame))
+                it.setStroke(frameWidth, ContextCompat.getColor(context, R.color.mm2d_cc_sample_frame))
             }
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN) {
                 view.background = background
@@ -97,7 +97,7 @@ class ControlView
             }
             val shadow = GradientDrawable().also {
                 it.shape = GradientDrawable.RECTANGLE
-                it.setStroke(shadowWidth, ContextCompat.getColor(context, R.color.sample_shadow))
+                it.setStroke(shadowWidth, ContextCompat.getColor(context, R.color.mm2d_cc_sample_shadow))
             }
             val layerDrawable = LayerDrawable(arrayOf(background, shadow))
             layerDrawable.setLayerInset(0, shadowWidth, shadowWidth, shadowWidth, shadowWidth)

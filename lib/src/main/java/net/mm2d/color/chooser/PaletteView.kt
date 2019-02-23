@@ -40,7 +40,7 @@ class PaletteView
     private val linearLayoutManager = LinearLayoutManager(context)
 
     init {
-        val padding = context.resources.getDimensionPixelSize(R.dimen.palette_padding)
+        val padding = context.resources.getDimensionPixelSize(R.dimen.mm2d_cc_palette_padding)
         setPadding(0, padding, 0, padding)
         setHasFixedSize(true)
         overScrollMode = View.OVER_SCROLL_NEVER
@@ -74,7 +74,7 @@ class PaletteView
             private set
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CellHolder {
-            return CellHolder(inflater.inflate(R.layout.item_palette, parent, false)).also { holder ->
+            return CellHolder(inflater.inflate(R.layout.mm2d_cc_item_palette, parent, false)).also { holder ->
                 holder.onColorChanged = {
                     onColorChanged?.invoke(it)
                 }

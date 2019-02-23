@@ -10,10 +10,10 @@
 
     <View
         android:id="@+id/color_preview"
-        android:layout_width="@dimen/preview_size"
-        android:layout_height="@dimen/preview_size"
-        android:layout_marginEnd="@dimen/sample_horizontal_margin"
-        android:layout_marginRight="@dimen/sample_horizontal_margin"
+        android:layout_width="@dimen/mm2d_cc_preview_size"
+        android:layout_height="@dimen/mm2d_cc_preview_size"
+        android:layout_marginEnd="@dimen/mm2d_cc_sample_horizontal_margin"
+        android:layout_marginRight="@dimen/mm2d_cc_sample_horizontal_margin"
         />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -30,7 +30,7 @@
             android:ems="5"
             android:fontFamily="monospace"
             android:inputType="textNoSuggestions"
-            android:textSize="@dimen/color_text"
+            android:textSize="@dimen/mm2d_cc_color_text"
             tools:ignore="Autofill,LabelFor,SpUsage"
             />
     </com.google.android.material.textfield.TextInputLayout>

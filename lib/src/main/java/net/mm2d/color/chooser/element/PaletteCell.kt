@@ -69,7 +69,7 @@ class PaletteCell @JvmOverloads constructor(
         }
 
         private fun loadIconInner(context: Context): Drawable {
-            return AppCompatResources.getDrawable(context, drawable.ic_check)!!.wrap()
+            return AppCompatResources.getDrawable(context, drawable.mm2d_cc_ic_check)!!.wrap()
         }
 
         private fun Drawable.wrap(): Drawable = DrawableCompat.wrap(this)

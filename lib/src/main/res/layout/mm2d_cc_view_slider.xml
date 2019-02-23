@@ -16,16 +16,16 @@
         >
 
         <FrameLayout
-            android:layout_width="@dimen/rgb_size"
-            android:layout_height="@dimen/rgb_size"
-            android:layout_margin="@dimen/panel_margin"
+            android:layout_width="@dimen/mm2d_cc_rgb_size"
+            android:layout_height="@dimen/mm2d_cc_rgb_size"
+            android:layout_margin="@dimen/mm2d_cc_panel_margin"
             >
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:tint="@color/bg_red"
-                app:srcCompat="@drawable/ic_circle"
+                android:tint="@color/mm2d_cc_bg_red"
+                app:srcCompat="@drawable/mm2d_cc_ic_circle"
                 tools:ignore="ContentDescription"
                 />
 
@@ -37,7 +37,7 @@
                 android:gravity="center"
                 android:text="R"
                 android:textColor="@color/white"
-                android:textSize="@dimen/rgb_text"
+                android:textSize="@dimen/mm2d_cc_rgb_text"
                 tools:ignore="HardcodedText,SpUsage"
                 >
 
@@ -50,26 +50,26 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:minWidth="@dimen/slider_min_width"
+            android:minWidth="@dimen/mm2d_cc_slider_min_width"
             android:max="255"
-            android:paddingTop="@dimen/seek_padding"
-            android:paddingBottom="@dimen/seek_padding"
+            android:paddingTop="@dimen/mm2d_cc_seek_padding"
+            android:paddingBottom="@dimen/mm2d_cc_seek_padding"
             android:theme="@style/AppTheme.Widget.SeekBar.Red"
             tools:progress="128"
             />
 
         <TextView
             android:id="@+id/text_red"
-            android:layout_width="@dimen/rgb_size"
+            android:layout_width="@dimen/mm2d_cc_rgb_size"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginEnd="@dimen/panel_margin"
-            android:layout_marginRight="@dimen/panel_margin"
+            android:layout_marginEnd="@dimen/mm2d_cc_panel_margin"
+            android:layout_marginRight="@dimen/mm2d_cc_panel_margin"
             android:fontFamily="monospace"
             android:gravity="end"
             android:text="0"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="@dimen/color_text"
+            android:textSize="@dimen/mm2d_cc_color_text"
             tools:ignore="HardcodedText,SpUsage"
             />
     </LinearLayout>
@@ -81,16 +81,16 @@
         >
 
         <FrameLayout
-            android:layout_width="@dimen/rgb_size"
-            android:layout_height="@dimen/rgb_size"
-            android:layout_margin="@dimen/panel_margin"
+            android:layout_width="@dimen/mm2d_cc_rgb_size"
+            android:layout_height="@dimen/mm2d_cc_rgb_size"
+            android:layout_margin="@dimen/mm2d_cc_panel_margin"
             >
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:tint="@color/bg_green"
-                app:srcCompat="@drawable/ic_circle"
+                android:tint="@color/mm2d_cc_bg_green"
+                app:srcCompat="@drawable/mm2d_cc_ic_circle"
                 tools:ignore="ContentDescription"
                 />
 
@@ -100,7 +100,7 @@
                 android:gravity="center"
                 android:text="G"
                 android:textColor="@color/white"
-                android:textSize="@dimen/rgb_text"
+                android:textSize="@dimen/mm2d_cc_rgb_text"
                 tools:ignore="HardcodedText,SpUsage"
                 />
         </FrameLayout>
@@ -110,26 +110,26 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:minWidth="@dimen/slider_min_width"
+            android:minWidth="@dimen/mm2d_cc_slider_min_width"
             android:max="255"
-            android:paddingTop="@dimen/seek_padding"
-            android:paddingBottom="@dimen/seek_padding"
+            android:paddingTop="@dimen/mm2d_cc_seek_padding"
+            android:paddingBottom="@dimen/mm2d_cc_seek_padding"
             android:theme="@style/AppTheme.Widget.SeekBar.Green"
             tools:progress="128"
             />
 
         <TextView
             android:id="@+id/text_green"
-            android:layout_width="@dimen/rgb_size"
+            android:layout_width="@dimen/mm2d_cc_rgb_size"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginEnd="@dimen/panel_margin"
-            android:layout_marginRight="@dimen/panel_margin"
+            android:layout_marginEnd="@dimen/mm2d_cc_panel_margin"
+            android:layout_marginRight="@dimen/mm2d_cc_panel_margin"
             android:fontFamily="monospace"
             android:gravity="end"
             android:text="0"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="@dimen/color_text"
+            android:textSize="@dimen/mm2d_cc_color_text"
             tools:ignore="HardcodedText,SpUsage"
             />
     </LinearLayout>
@@ -141,16 +141,16 @@
         >
 
         <FrameLayout
-            android:layout_width="@dimen/rgb_size"
-            android:layout_height="@dimen/rgb_size"
-            android:layout_margin="@dimen/panel_margin"
+            android:layout_width="@dimen/mm2d_cc_rgb_size"
+            android:layout_height="@dimen/mm2d_cc_rgb_size"
+            android:layout_margin="@dimen/mm2d_cc_panel_margin"
             >
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:tint="@color/bg_blue"
-                app:srcCompat="@drawable/ic_circle"
+                android:tint="@color/mm2d_cc_bg_blue"
+                app:srcCompat="@drawable/mm2d_cc_ic_circle"
                 tools:ignore="ContentDescription"
                 />
 
@@ -160,7 +160,7 @@
                 android:gravity="center"
                 android:text="B"
                 android:textColor="@color/white"
-                android:textSize="@dimen/rgb_text"
+                android:textSize="@dimen/mm2d_cc_rgb_text"
                 tools:ignore="HardcodedText,SpUsage"
                 />
         </FrameLayout>
@@ -170,26 +170,26 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:minWidth="@dimen/slider_min_width"
+            android:minWidth="@dimen/mm2d_cc_slider_min_width"
             android:max="255"
-            android:paddingTop="@dimen/seek_padding"
-            android:paddingBottom="@dimen/seek_padding"
+            android:paddingTop="@dimen/mm2d_cc_seek_padding"
+            android:paddingBottom="@dimen/mm2d_cc_seek_padding"
             android:theme="@style/AppTheme.Widget.SeekBar.Blue"
             tools:progress="128"
             />
 
         <TextView
             android:id="@+id/text_blue"
-            android:layout_width="@dimen/rgb_size"
+            android:layout_width="@dimen/mm2d_cc_rgb_size"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginEnd="@dimen/panel_margin"
-            android:layout_marginRight="@dimen/panel_margin"
+            android:layout_marginEnd="@dimen/mm2d_cc_panel_margin"
+            android:layout_marginRight="@dimen/mm2d_cc_panel_margin"
             android:fontFamily="monospace"
             android:gravity="end"
             android:text="0"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="@dimen/color_text"
+            android:textSize="@dimen/mm2d_cc_color_text"
             tools:ignore="HardcodedText,SpUsage"
             />
     </LinearLayout>

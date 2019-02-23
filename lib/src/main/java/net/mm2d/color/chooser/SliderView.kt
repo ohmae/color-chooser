@@ -12,7 +12,7 @@ import android.graphics.Color
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import android.widget.SeekBar
-import kotlinx.android.synthetic.main.view_slider.view.*
+import kotlinx.android.synthetic.main.mm2d_cc_view_slider.view.*
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -27,7 +27,7 @@ class SliderView
 
     init {
         orientation = VERTICAL
-        inflate(context, R.layout.view_slider, this)
+        inflate(context, R.layout.mm2d_cc_view_slider, this)
         seek_red.setOnSeekBarChangeListener(makeOnSeekBarChangeListener { progress, fromUser ->
             text_red.text = progress.toString()
             updateBySeekBar(fromUser)

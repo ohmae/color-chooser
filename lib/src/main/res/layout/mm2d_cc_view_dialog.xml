@@ -19,7 +19,7 @@
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:maxHeight="@dimen/panel_height"
+        app:maxHeight="@dimen/mm2d_cc_panel_height"
         />
 
     <net.mm2d.color.chooser.ControlView
@@ -27,6 +27,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/panel_margin"
+        android:layout_marginTop="@dimen/mm2d_cc_panel_margin"
         />
 </merge>

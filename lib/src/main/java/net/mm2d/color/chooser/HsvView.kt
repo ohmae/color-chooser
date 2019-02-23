@@ -11,7 +11,7 @@ import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import android.widget.LinearLayout
-import kotlinx.android.synthetic.main.view_hsv.view.*
+import kotlinx.android.synthetic.main.mm2d_cc_view_hsv.view.*
 import net.mm2d.color.chooser.util.ColorUtils
 
 /**
@@ -28,7 +28,7 @@ class HsvView
 
     init {
         orientation = HORIZONTAL
-        inflate(context, R.layout.view_hsv, this)
+        inflate(context, R.layout.mm2d_cc_view_hsv, this)
         sv_view.onColorChanged = {
             color = it
             observer?.onChange(color, this)

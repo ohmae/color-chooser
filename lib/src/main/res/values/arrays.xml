@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="material_colors">
-        <item>@array/red</item>
-        <item>@array/pink</item>
-        <item>@array/purple</item>
-        <item>@array/deep_purple</item>
-        <item>@array/indigo</item>
-        <item>@array/blue</item>
-        <item>@array/light_blue</item>
-        <item>@array/cyan</item>
-        <item>@array/teal</item>
-        <item>@array/green</item>
-        <item>@array/light_green</item>
-        <item>@array/lime</item>
-        <item>@array/yellow</item>
-        <item>@array/amber</item>
-        <item>@array/orange</item>
-        <item>@array/deep_orange</item>
-        <item>@array/brown</item>
-        <item>@array/gray</item>
-        <item>@array/blue_gray</item>
+        <item>@array/mm2d_cc_red</item>
+        <item>@array/mm2d_cc_pink</item>
+        <item>@array/mm2d_cc_purple</item>
+        <item>@array/mm2d_cc_deep_purple</item>
+        <item>@array/mm2d_cc_indigo</item>
+        <item>@array/mm2d_cc_blue</item>
+        <item>@array/mm2d_cc_light_blue</item>
+        <item>@array/mm2d_cc_cyan</item>
+        <item>@array/mm2d_cc_teal</item>
+        <item>@array/mm2d_cc_green</item>
+        <item>@array/mm2d_cc_light_green</item>
+        <item>@array/mm2d_cc_lime</item>
+        <item>@array/mm2d_cc_yellow</item>
+        <item>@array/mm2d_cc_amber</item>
+        <item>@array/mm2d_cc_orange</item>
+        <item>@array/mm2d_cc_deep_orange</item>
+        <item>@array/mm2d_cc_brown</item>
+        <item>@array/mm2d_cc_gray</item>
+        <item>@array/mm2d_cc_blue_gray</item>
     </array>
-    <array name="red">
+    <array name="mm2d_cc_red">
         <item>@color/red_50</item>
         <item>@color/red_100</item>
         <item>@color/red_200</item>
@@ -37,7 +37,7 @@
         <item>@color/red_a400</item>
         <item>@color/red_a700</item>
     </array>
-    <array name="pink">
+    <array name="mm2d_cc_pink">
         <item>@color/pink_50</item>
         <item>@color/pink_100</item>
         <item>@color/pink_200</item>
@@ -53,7 +53,7 @@
         <item>@color/pink_a400</item>
         <item>@color/pink_a700</item>
     </array>
-    <array name="purple">
+    <array name="mm2d_cc_purple">
         <item>@color/purple_50</item>
         <item>@color/purple_100</item>
         <item>@color/purple_200</item>
@@ -69,7 +69,7 @@
         <item>@color/purple_a400</item>
         <item>@color/purple_a700</item>
     </array>
-    <array name="deep_purple">
+    <array name="mm2d_cc_deep_purple">
         <item>@color/deep_purple_50</item>
         <item>@color/deep_purple_100</item>
         <item>@color/deep_purple_200</item>
@@ -85,7 +85,7 @@
         <item>@color/deep_purple_a400</item>
         <item>@color/deep_purple_a700</item>
     </array>
-    <array name="indigo">
+    <array name="mm2d_cc_indigo">
         <item>@color/indigo_50</item>
         <item>@color/indigo_100</item>
         <item>@color/indigo_200</item>
@@ -101,7 +101,7 @@
         <item>@color/indigo_a400</item>
         <item>@color/indigo_a700</item>
     </array>
-    <array name="blue">
+    <array name="mm2d_cc_blue">
         <item>@color/blue_50</item>
         <item>@color/blue_100</item>
         <item>@color/blue_200</item>
@@ -117,7 +117,7 @@
         <item>@color/blue_a400</item>
         <item>@color/blue_a700</item>
     </array>
-    <array name="light_blue">
+    <array name="mm2d_cc_light_blue">
         <item>@color/light_blue_50</item>
         <item>@color/light_blue_100</item>
         <item>@color/light_blue_200</item>
@@ -133,7 +133,7 @@
         <item>@color/light_blue_a400</item>
         <item>@color/light_blue_a700</item>
     </array>
-    <array name="cyan">
+    <array name="mm2d_cc_cyan">
         <item>@color/cyan_50</item>
         <item>@color/cyan_100</item>
         <item>@color/cyan_200</item>
@@ -149,7 +149,7 @@
         <item>@color/cyan_a400</item>
         <item>@color/cyan_a700</item>
     </array>
-    <array name="teal">
+    <array name="mm2d_cc_teal">
         <item>@color/teal_50</item>
         <item>@color/teal_100</item>
         <item>@color/teal_200</item>
@@ -165,7 +165,7 @@
         <item>@color/teal_a400</item>
         <item>@color/teal_a700</item>
     </array>
-    <array name="green">
+    <array name="mm2d_cc_green">
         <item>@color/green_50</item>
         <item>@color/green_100</item>
         <item>@color/green_200</item>
@@ -181,7 +181,7 @@
         <item>@color/green_a400</item>
         <item>@color/green_a700</item>
     </array>
-    <array name="light_green">
+    <array name="mm2d_cc_light_green">
         <item>@color/light_green_50</item>
         <item>@color/light_green_100</item>
         <item>@color/light_green_200</item>
@@ -197,7 +197,7 @@
         <item>@color/light_green_a400</item>
         <item>@color/light_green_a700</item>
     </array>
-    <array name="lime">
+    <array name="mm2d_cc_lime">
         <item>@color/lime_50</item>
         <item>@color/lime_100</item>
         <item>@color/lime_200</item>
@@ -213,7 +213,7 @@
         <item>@color/lime_a400</item>
         <item>@color/lime_a700</item>
     </array>
-    <array name="yellow">
+    <array name="mm2d_cc_yellow">
         <item>@color/yellow_50</item>
         <item>@color/yellow_100</item>
         <item>@color/yellow_200</item>
@@ -229,7 +229,7 @@
         <item>@color/yellow_a400</item>
         <item>@color/yellow_a700</item>
     </array>
-    <array name="amber">
+    <array name="mm2d_cc_amber">
         <item>@color/amber_50</item>
         <item>@color/amber_100</item>
         <item>@color/amber_200</item>
@@ -245,7 +245,7 @@
         <item>@color/amber_a400</item>
         <item>@color/amber_a700</item>
     </array>
-    <array name="orange">
+    <array name="mm2d_cc_orange">
         <item>@color/orange_50</item>
         <item>@color/orange_100</item>
         <item>@color/orange_200</item>
@@ -261,7 +261,7 @@
         <item>@color/orange_a400</item>
         <item>@color/orange_a700</item>
     </array>
-    <array name="deep_orange">
+    <array name="mm2d_cc_deep_orange">
         <item>@color/deep_orange_50</item>
         <item>@color/deep_orange_100</item>
         <item>@color/deep_orange_200</item>
@@ -277,7 +277,7 @@
         <item>@color/deep_orange_a400</item>
         <item>@color/deep_orange_a700</item>
     </array>
-    <array name="brown">
+    <array name="mm2d_cc_brown">
         <item>@color/brown_50</item>
         <item>@color/brown_100</item>
         <item>@color/brown_200</item>
@@ -291,7 +291,7 @@
         <item>@color/white</item>
         <item>@color/black</item>
     </array>
-    <array name="gray">
+    <array name="mm2d_cc_gray">
         <item>@color/gray_50</item>
         <item>@color/gray_100</item>
         <item>@color/gray_200</item>
@@ -303,7 +303,7 @@
         <item>@color/gray_800</item>
         <item>@color/gray_900</item>
     </array>
-    <array name="blue_gray">
+    <array name="mm2d_cc_blue_gray">
         <item>@color/blue_gray_50</item>
         <item>@color/blue_gray_100</item>
         <item>@color/blue_gray_200</item>
