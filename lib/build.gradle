@@ -6,16 +6,10 @@ apply plugin: 'org.jetbrains.dokka-android'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.github.dcendents.android-maven'
 
-def versionMajor = 0
-def versionMinor = 0
-def versionPatch = 3
-def packageName = 'net.mm2d'
 def libraryId = 'color-chooser'
-def siteUrl = 'https://github.com/ohmae/color-chooser'
-def githubUrl = 'https://github.com/ohmae/color-chooser'
 
 version "${versionMajor}.${versionMinor}.${versionPatch}"
-group packageName
+group groupId
 archivesBaseName = libraryId
 
 android {
