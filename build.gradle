@@ -3,7 +3,7 @@ buildscript {
         kotlin_version = '1.3.21'
         versionMajor = 0
         versionMinor = 0
-        versionPatch = 3
+        versionPatch = 4
         groupId = 'net.mm2d'
         siteUrl = 'https://github.com/ohmae/color-chooser'
         githubUrl = 'https://github.com/ohmae/color-chooser'
