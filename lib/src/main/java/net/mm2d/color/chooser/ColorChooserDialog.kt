@@ -25,9 +25,9 @@ import androidx.fragment.app.FragmentActivity
 class ColorChooserDialog : DialogFragment() {
     private lateinit var dialogView: DialogView
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val color = arguments?.getInt(KEY_INITIAL_COLOR, 0) ?: 0
         dialogView = DialogView(activity!!)
-        dialogView.color = color
+        dialogView.color = arguments?.getInt(KEY_INITIAL_COLOR, 0) ?: 0
+        dialogView.hasAlpha = arguments?.getBoolean(KEY_WITH_ALPHA) ?: false
         return AlertDialog.Builder(activity!!, theme)
             .setView(dialogView)
             .setPositiveButton("OK") { _, _ ->
@@ -70,17 +70,20 @@ class ColorChooserDialog : DialogFragment() {
     companion object {
         private const val KEY_INITIAL_COLOR = "KEY_INITIAL_COLOR"
         private const val KEY_REQUEST_CODE = "KEY_REQUEST_CODE"
+        private const val KEY_WITH_ALPHA = "KEY_WITH_ALPHA"
         private const val TAG = "ColorChooserDialog"
 
         /**
          * @param activity FragmentActivity
          * @param requestCode use in listener call
          * @param initialColor initial color
+         * @param withAlpha if true, alpha section is enabled
          */
         fun show(
             activity: FragmentActivity,
             requestCode: Int = 0,
-            initialColor: Int = Color.WHITE
+            initialColor: Int = Color.WHITE,
+            withAlpha: Boolean = false
         ) {
             val fragmentManager = activity.supportFragmentManager ?: return
             if (fragmentManager.findFragmentByTag(TAG) != null) {
@@ -89,6 +92,7 @@ class ColorChooserDialog : DialogFragment() {
             val arguments = Bundle().apply {
                 putInt(KEY_INITIAL_COLOR, initialColor)
                 putInt(KEY_REQUEST_CODE, requestCode)
+                putBoolean(KEY_WITH_ALPHA, withAlpha)
             }
             ColorChooserDialog().also {
                 it.arguments = arguments
@@ -100,11 +104,13 @@ class ColorChooserDialog : DialogFragment() {
          * @param fragment Fragment
          * @param requestCode use in listener call
          * @param initialColor initial color
+         * @param withAlpha if true, alpha section is enabled
          */
         fun show(
             fragment: Fragment,
             requestCode: Int = 0,
-            initialColor: Int = Color.WHITE
+            initialColor: Int = Color.WHITE,
+            withAlpha: Boolean = false
         ) {
             val fragmentManager = fragment.fragmentManager ?: return
             if (fragmentManager.findFragmentByTag(TAG) != null) {
@@ -113,6 +119,7 @@ class ColorChooserDialog : DialogFragment() {
             val arguments = Bundle().apply {
                 putInt(KEY_INITIAL_COLOR, initialColor)
                 putInt(KEY_REQUEST_CODE, requestCode)
+                putBoolean(KEY_WITH_ALPHA, withAlpha)
             }
             ColorChooserDialog().also {
                 it.setTargetFragment(fragment, requestCode)

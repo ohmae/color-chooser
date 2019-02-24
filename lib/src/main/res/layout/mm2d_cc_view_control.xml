@@ -10,6 +10,7 @@
     >
 
     <LinearLayout
+        android:id="@+id/section_alpha"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/mm2d_cc_page_margin"

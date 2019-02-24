@@ -24,6 +24,7 @@ import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.alpha
 import androidx.core.view.ViewCompat
+import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.mm2d_cc_view_control.view.*
 import net.mm2d.color.chooser.util.AttrUtils
 import net.mm2d.color.chooser.util.setAlpha
@@ -38,8 +39,6 @@ class ControlView
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr), ColorChangeObserver {
-    var color: Int = Color.BLACK
-        private set
     private val background: GradientDrawable
     private var changeHexTextByUser = true
     private val normalTint =
@@ -47,6 +46,21 @@ class ControlView
     private val errorTint =
         ColorStateList.valueOf(AttrUtils.resolveColor(context, R.attr.colorError, Color.RED))
     var observer: ColorChangeObserver? = null
+    var color: Int = Color.BLACK
+        private set
+    var hasAlpha: Boolean = true
+        set(hasAlpha) {
+            field = hasAlpha
+            section_alpha.isVisible = hasAlpha
+        }
+    var alpha: Int
+        get() = seek_alpha.value
+        set(alpha) {
+            seek_alpha.value = alpha
+            color = color.setAlpha(alpha)
+            background.setColor(color)
+            setColorToHexText()
+        }
 
     init {
         orientation = VERTICAL
@@ -57,7 +71,7 @@ class ControlView
         seek_alpha.onValueChanged = { value, fromUser ->
             text_alpha.text = value.toString()
             if (fromUser) {
-                setAlpha(value)
+                alpha = value
             }
         }
         edit_hex.filters = arrayOf(InputFilter { source, _, _, _, _, _ ->
@@ -105,13 +119,6 @@ class ControlView
         background.setColor(color)
         setColorToHexText()
         seek_alpha.baseColor = newColor
-    }
-
-    fun setAlpha(alpha: Int) {
-        seek_alpha.value = alpha
-        color = color.setAlpha(alpha)
-        background.setColor(color)
-        setColorToHexText()
     }
 
     @SuppressLint("SetTextI18n")

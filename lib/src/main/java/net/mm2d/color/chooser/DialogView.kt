@@ -26,11 +26,16 @@ class DialogView
     defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr), ColorChangeObserver {
     private val observers: List<ColorChangeObserver>
+    var hasAlpha: Boolean
+        get() = control_view.hasAlpha
+        set(hasAlpha) {
+            control_view.hasAlpha = hasAlpha
+        }
     var color: Int
         get() = control_view.color
         set(value) {
             onChange(value.toOpacity(), null)
-            control_view.setAlpha(value.alpha)
+            control_view.alpha = value.alpha
         }
 
     init {
