@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/mm2d_cc_page_margin"
         android:layout_marginLeft="@dimen/mm2d_cc_page_margin"
+        android:layout_marginBottom="@dimen/mm2d_cc_page_margin"
         android:orientation="horizontal"
         >
 
@@ -27,7 +28,7 @@
             android:paddingBottom="@dimen/mm2d_cc_seek_padding"
             app:maxColor="#000000"
             app:alphaMode="true"
-            app:baseColor="#000000"
+            app:baseColor="#ffffff"
             tools:progress="128"
             />
 

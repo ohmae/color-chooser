@@ -46,7 +46,12 @@ class ControlView
         set(hasAlpha) {
             field = hasAlpha
             section_alpha.isVisible = hasAlpha
-            if (!hasAlpha) alpha = 0xff
+            if (hasAlpha){
+                edit_hex.filters = argbFilter
+            } else {
+                edit_hex.filters = rgbFilter
+                alpha = 0xff
+            }
         }
     var alpha: Int
         get() = seek_alpha.value
@@ -56,6 +61,8 @@ class ControlView
             color_preview.color = color
             setColorToHexText()
         }
+    private val rgbFilter: Array<InputFilter>
+    private val argbFilter: Array<InputFilter>
 
     init {
         orientation = VERTICAL
@@ -68,9 +75,12 @@ class ControlView
                 alpha = value
             }
         }
-        edit_hex.filters = arrayOf(InputFilter { source, _, _, _, _, _ ->
+        val hexFilter = InputFilter { source, _, _, _, _, _ ->
             source.toString().toUpperCase().replace("[^0-9A-F]".toRegex(), "")
-        }, LengthFilter(8))
+        }
+        rgbFilter = arrayOf(hexFilter, LengthFilter(6))
+        argbFilter = arrayOf(hexFilter, LengthFilter(8))
+        edit_hex.filters = argbFilter
         edit_hex.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
             }
@@ -118,7 +128,11 @@ class ControlView
     @SuppressLint("SetTextI18n")
     private fun setColorToHexText() {
         changeHexTextByUser = false
-        edit_hex.setText("%08X".format(color))
+        if (hasAlpha) {
+            edit_hex.setText("%08X".format(color))
+        } else {
+            edit_hex.setText("%06X".format(color and 0xffffff))
+        }
         clearError()
         changeHexTextByUser = true
     }
