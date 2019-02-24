@@ -54,29 +54,43 @@ class ColorSliderView
         context,
         R.color.mm2d_cc_sample_shadow
     )
-    private val checker: Bitmap = createChecker(
-        resources.getDimensionPixelSize(R.dimen.mm2d_cc_checker_size),
-        resources.getDimensionPixelSize(R.dimen.mm2d_cc_slider_height),
-        ContextCompat.getColor(context, R.color.mm2d_cc_checker_light),
-        ContextCompat.getColor(context, R.color.mm2d_cc_checker_dark)
-    )
+    private var checker: Bitmap? = null
     private var _value: Float = 0f
-    private var _baseColor: Int
+    private var _maxColor: Int
     private var gradation: Bitmap
     var onValueChanged: ((value: Int, fromUser: Boolean) -> Unit)? = null
 
-    init {
-        val a = context.obtainStyledAttributes(attrs, R.styleable.ColorSliderView)
-        _baseColor = a.getColor(R.styleable.ColorSliderView_color, Color.WHITE)
-        a.recycle()
-        gradation = createGradation(_baseColor)
-    }
-
+    private var _baseColor: Int = Color.BLACK
     var baseColor: Int
         get() = _baseColor
         set(value) {
-            _baseColor = value.toOpacity()
-            gradation = createGradation(_baseColor)
+            _baseColor = value
+            invalidate()
+        }
+    private var _alphaMode: Boolean = true
+    var alphaMode: Boolean
+        get() = _alphaMode
+        set(value) {
+            _alphaMode = value
+            updateChecker()
+            invalidate()
+        }
+
+    init {
+        val a = context.obtainStyledAttributes(attrs, R.styleable.ColorSliderView)
+        _maxColor = a.getColor(R.styleable.ColorSliderView_maxColor, Color.WHITE)
+        _baseColor = a.getColor(R.styleable.ColorSliderView_baseColor, Color.BLACK)
+        _alphaMode = a.getBoolean(R.styleable.ColorSliderView_alphaMode, true)
+        a.recycle()
+        gradation = createGradation(_maxColor)
+        updateChecker()
+    }
+
+    var maxColor: Int
+        get() = _maxColor
+        set(value) {
+            _maxColor = value.toOpacity()
+            gradation = createGradation(_maxColor)
             invalidate()
         }
 
@@ -87,6 +101,19 @@ class ColorSliderView
             onValueChanged?.invoke(value, false)
             invalidate()
         }
+
+    private fun updateChecker() {
+        if (alphaMode) {
+            checker = createChecker(
+                resources.getDimensionPixelSize(R.dimen.mm2d_cc_checker_size),
+                resources.getDimensionPixelSize(R.dimen.mm2d_cc_slider_height),
+                ContextCompat.getColor(context, R.color.mm2d_cc_checker_light),
+                ContextCompat.getColor(context, R.color.mm2d_cc_checker_dark)
+            )
+        } else {
+            checker = null
+        }
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -125,22 +152,30 @@ class ColorSliderView
             targetRect.right + frame,
             targetRect.bottom + frame,
             paint)
-        canvas.save()
-        canvas.clipRect(targetRect)
-        val top = targetRect.top.toFloat()
-        for (left in targetRect.left until targetRect.right step checker.width) {
-            canvas.drawBitmap(checker, left.toFloat(), top, paint)
+        paint.style = Style.FILL
+        if (alphaMode) {
+            val checker = checker ?: return
+            canvas.save()
+            canvas.clipRect(targetRect)
+            val top = targetRect.top.toFloat()
+            for (left in targetRect.left until targetRect.right step checker.width) {
+                canvas.drawBitmap(checker, left.toFloat(), top, paint)
+            }
+            canvas.restore()
+        } else {
+            paint.color = baseColor
+            canvas.drawRect(targetRect, paint)
         }
-        canvas.restore()
         canvas.drawBitmap(gradation, gradationRect, targetRect, paint)
         val x = _value * targetRect.width() + targetRect.left
         val y = targetRect.centerY().toFloat()
-        paint.style = Style.FILL
         paint.color = colorSampleShadow
         canvas.drawCircle(x, y, _sampleShadowRadius, paint)
         paint.color = colorSampleFrame
         canvas.drawCircle(x, y, _sampleFrameRadius, paint)
-        paint.color = _baseColor.setAlpha(value)
+        paint.color = baseColor
+        canvas.drawCircle(x, y, _sampleRadius, paint)
+        paint.color = _maxColor.setAlpha(value)
         canvas.drawCircle(x, y, _sampleRadius, paint)
     }
 

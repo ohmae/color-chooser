@@ -112,7 +112,7 @@ class ControlView
         color = newColor.setAlpha(seek_alpha.value)
         color_preview.color = color
         setColorToHexText()
-        seek_alpha.baseColor = newColor
+        seek_alpha.maxColor = newColor
     }
 
     @SuppressLint("SetTextI18n")

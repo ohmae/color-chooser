@@ -22,7 +22,9 @@
             android:layout_weight="1"
             android:paddingTop="@dimen/mm2d_cc_seek_padding"
             android:paddingBottom="@dimen/mm2d_cc_seek_padding"
-            app:color="#ff0000"
+            app:maxColor="#ff0000"
+            app:alphaMode="false"
+            app:baseColor="#000000"
             tools:progress="128"
             />
 
@@ -53,7 +55,9 @@
             android:layout_weight="1"
             android:paddingTop="@dimen/mm2d_cc_seek_padding"
             android:paddingBottom="@dimen/mm2d_cc_seek_padding"
-            app:color="#00ff00"
+            app:maxColor="#00ff00"
+            app:alphaMode="false"
+            app:baseColor="#000000"
             tools:progress="128"
             />
 
@@ -84,7 +88,9 @@
             android:layout_weight="1"
             android:paddingTop="@dimen/mm2d_cc_seek_padding"
             android:paddingBottom="@dimen/mm2d_cc_seek_padding"
-            app:color="#0000ff"
+            app:maxColor="#0000ff"
+            app:alphaMode="false"
+            app:baseColor="#000000"
             tools:progress="128"
             />
 
