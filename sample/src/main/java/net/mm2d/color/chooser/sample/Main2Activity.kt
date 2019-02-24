@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 大前良介 (OHMAE Ryosuke)
+ * Copyright (c) 2019 大前良介 (OHMAE Ryosuke)
  *
  * This software is released under the MIT License.
  * http://opensource.org/licenses/MIT
@@ -8,27 +8,23 @@
 package net.mm2d.color.chooser.sample
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_main.*
 import net.mm2d.color.chooser.ColorChooserDialog
 
-class MainActivity : AppCompatActivity(), ColorChooserDialog.Callback {
+class Main2Activity : AppCompatActivity(), ColorChooserDialog.Callback  {
     private var color: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_main2)
         button1.setOnClickListener {
             ColorChooserDialog.show(this, REQUEST_CODE, color)
         }
         button2.setOnClickListener {
             ColorChooserDialog.show(this, REQUEST_CODE, color, true)
-        }
-        button3.setOnClickListener {
-            startActivity(Intent(this, Main2Activity::class.java))
         }
         color = ContextCompat.getColor(this, R.color.red_a700)
         sample.setBackgroundColor(color)
