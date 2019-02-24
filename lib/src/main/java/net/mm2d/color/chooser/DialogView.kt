@@ -8,12 +8,13 @@
 package net.mm2d.color.chooser
 
 import android.content.Context
-import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
+import androidx.core.graphics.alpha
 import kotlinx.android.synthetic.main.mm2d_cc_view_dialog.view.*
+import net.mm2d.color.chooser.util.toOpacity
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -25,8 +26,12 @@ class DialogView
     defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr), ColorChangeObserver {
     private val observers: List<ColorChangeObserver>
-    var color: Int = Color.BLACK
-        private set
+    var color: Int
+        get() = control_view.color
+        set(value) {
+            onChange(value.toOpacity(), null)
+            control_view.setAlpha(value.alpha)
+        }
 
     init {
         orientation = VERTICAL
@@ -45,7 +50,6 @@ class DialogView
     }
 
     override fun onChange(color: Int, notifier: Any?) {
-        this.color = color
         observers.forEach { it.onChange(color, notifier) }
     }
 }

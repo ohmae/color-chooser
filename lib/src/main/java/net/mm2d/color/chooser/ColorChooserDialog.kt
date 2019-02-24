@@ -27,7 +27,7 @@ class ColorChooserDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val color = arguments?.getInt(KEY_INITIAL_COLOR, 0) ?: 0
         dialogView = DialogView(activity!!)
-        dialogView.onChange(color, null)
+        dialogView.color = color
         return AlertDialog.Builder(activity!!, theme)
             .setView(dialogView)
             .setPositiveButton("OK") { _, _ ->

@@ -17,6 +17,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import net.mm2d.color.chooser.R
 import net.mm2d.color.chooser.util.setAlpha
+import net.mm2d.color.chooser.util.toOpacity
 import kotlin.math.max
 
 /**
@@ -60,22 +61,22 @@ class ColorSliderView
         ContextCompat.getColor(context, R.color.mm2d_cc_checker_dark)
     )
     private var _value: Float = 0f
-    private var _color: Int
+    private var _baseColor: Int
     private var gradation: Bitmap
     var onValueChanged: ((value: Int, fromUser: Boolean) -> Unit)? = null
 
     init {
         val a = context.obtainStyledAttributes(attrs, R.styleable.ColorSliderView)
-        _color = a.getColor(R.styleable.ColorSliderView_color, Color.WHITE)
+        _baseColor = a.getColor(R.styleable.ColorSliderView_color, Color.WHITE)
         a.recycle()
-        gradation = createGradation(_color)
+        gradation = createGradation(_baseColor)
     }
 
-    var color: Int
-        get() = _color
+    var baseColor: Int
+        get() = _baseColor
         set(value) {
-            _color = value.setAlpha(0xff)
-            gradation = createGradation(_color)
+            _baseColor = value.toOpacity()
+            gradation = createGradation(_baseColor)
             invalidate()
         }
 
@@ -139,7 +140,7 @@ class ColorSliderView
         canvas.drawCircle(x, y, _sampleShadowRadius, paint)
         paint.color = colorSampleFrame
         canvas.drawCircle(x, y, _sampleFrameRadius, paint)
-        paint.color = _color.setAlpha(value)
+        paint.color = _baseColor.setAlpha(value)
         canvas.drawCircle(x, y, _sampleRadius, paint)
     }
 

@@ -9,8 +9,10 @@
 
     <net.mm2d.color.chooser.SliderView
         android:id="@+id/slider_view"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginRight="@dimen/mm2d_cc_page_margin"
+        android:layout_marginLeft="@dimen/mm2d_cc_page_margin"
         />
 </merge>

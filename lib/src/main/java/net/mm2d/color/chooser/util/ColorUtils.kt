@@ -7,6 +7,9 @@
 
 package net.mm2d.color.chooser.util
 
+import androidx.core.graphics.blue
+import androidx.core.graphics.green
+import androidx.core.graphics.red
 import kotlin.math.pow
 
 /**
@@ -289,30 +292,6 @@ object ColorUtils {
 }
 
 /**
- * Extract red value from color
- *
- * @receiver color
- */
-val Int.red: Int
-    get() = ushr(16) and 0xff
-
-/**
- * Extract green value from color
- *
- * @receiver color
- */
-val Int.green: Int
-    get() = ushr(8) and 0xff
-
-/**
- * Extract blue value from color
- *
- * @receiver color
- */
-val Int.blue: Int
-    get() = this and 0xff
-
-/**
  * Overwrite alpha value of color
  *
  * @receiver color
@@ -329,6 +308,11 @@ fun Int.setAlpha(alpha: Float): Int = setAlpha((0xff * alpha.coerceIn(0f, 1f)).t
  * @return alpha applied color
  */
 fun Int.setAlpha(alpha: Int): Int = this and 0xffffff or (alpha shl 24)
+
+/**
+ * Overwrite alpha value to completely opaque
+ */
+fun Int.toOpacity(): Int = setAlpha(0xff)
 
 /**
  * Convert angle [0, 360] to ratio [0.0f, 1.0f]

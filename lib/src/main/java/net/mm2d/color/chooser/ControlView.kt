@@ -22,9 +22,12 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.alpha
 import androidx.core.view.ViewCompat
 import kotlinx.android.synthetic.main.mm2d_cc_view_control.view.*
 import net.mm2d.color.chooser.util.AttrUtils
+import net.mm2d.color.chooser.util.setAlpha
+import net.mm2d.color.chooser.util.toOpacity
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -35,7 +38,8 @@ class ControlView
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr), ColorChangeObserver {
-    private var color: Int = Color.BLACK
+    var color: Int = Color.BLACK
+        private set
     private val background: GradientDrawable
     private var changeHexTextByUser = true
     private val normalTint =
@@ -45,13 +49,20 @@ class ControlView
     var observer: ColorChangeObserver? = null
 
     init {
-        orientation = HORIZONTAL
+        orientation = VERTICAL
         inflate(context, R.layout.mm2d_cc_view_control, this)
         background = initDrawable(context, color_preview)
         background.setColor(color)
+        seek_alpha.value = color.alpha
+        seek_alpha.onValueChanged = { value, fromUser ->
+            text_alpha.text = value.toString()
+            if (fromUser) {
+                setAlpha(value)
+            }
+        }
         edit_hex.filters = arrayOf(InputFilter { source, _, _, _, _, _ ->
             source.toString().toUpperCase().replace("[^0-9A-F]".toRegex(), "")
-        }, LengthFilter(6))
+        }, LengthFilter(8))
         edit_hex.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
             }
@@ -71,7 +82,8 @@ class ControlView
                     color = Color.parseColor("#$s")
                     clearError()
                     background.setColor(color)
-                    observer?.onChange(color, this@ControlView)
+                    seek_alpha.value = color.alpha
+                    observer?.onChange(color.toOpacity(), this@ControlView)
                 } catch (e: IllegalArgumentException) {
                     setError()
                 }
@@ -87,9 +99,17 @@ class ControlView
         ViewCompat.setBackgroundTintList(edit_hex, normalTint)
     }
 
-    override fun onChange(color: Int, notifier: Any?) {
+    override fun onChange(newColor: Int, notifier: Any?) {
         if (notifier == this) return
-        this.color = color
+        color = newColor.setAlpha(seek_alpha.value)
+        background.setColor(color)
+        setColorToHexText()
+        seek_alpha.baseColor = newColor
+    }
+
+    fun setAlpha(alpha: Int) {
+        seek_alpha.value = alpha
+        color = color.setAlpha(alpha)
         background.setColor(color)
         setColorToHexText()
     }
@@ -97,7 +117,7 @@ class ControlView
     @SuppressLint("SetTextI18n")
     private fun setColorToHexText() {
         changeHexTextByUser = false
-        edit_hex.setText("%06X".format(color and 0xFFFFFF))
+        edit_hex.setText("%08X".format(color))
         clearError()
         changeHexTextByUser = true
     }
