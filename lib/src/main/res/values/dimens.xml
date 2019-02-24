@@ -4,7 +4,7 @@
     <dimen name="mm2d_cc_sample_frame">2dp</dimen>
     <dimen name="mm2d_cc_sample_shadow">1dp</dimen>
     <dimen name="mm2d_cc_sample_horizontal_margin">16dp</dimen>
-    <dimen name="mm2d_cc_preview_width">36dp</dimen>
+    <dimen name="mm2d_cc_preview_width">48dp</dimen>
     <dimen name="mm2d_cc_preview_height">36dp</dimen>
     <dimen name="mm2d_cc_hsv_size">256dp</dimen>
     <dimen name="mm2d_cc_hue_width">24dp</dimen>

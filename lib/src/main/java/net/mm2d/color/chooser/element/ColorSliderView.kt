@@ -56,7 +56,7 @@ class ColorSliderView
     )
     private val checker: Bitmap = createChecker(
         resources.getDimensionPixelSize(R.dimen.mm2d_cc_checker_size),
-        resources.getDimensionPixelOffset(R.dimen.mm2d_cc_slider_height),
+        resources.getDimensionPixelSize(R.dimen.mm2d_cc_slider_height),
         ContextCompat.getColor(context, R.color.mm2d_cc_checker_light),
         ContextCompat.getColor(context, R.color.mm2d_cc_checker_dark)
     )

@@ -11,17 +11,12 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
-import android.graphics.drawable.LayerDrawable
-import android.os.Build
 import android.text.Editable
 import android.text.InputFilter
 import android.text.InputFilter.LengthFilter
 import android.text.TextWatcher
 import android.util.AttributeSet
-import android.view.View
 import android.widget.LinearLayout
-import androidx.core.content.ContextCompat
 import androidx.core.graphics.alpha
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
@@ -39,7 +34,6 @@ class ControlView
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr), ColorChangeObserver {
-    private val background: GradientDrawable
     private var changeHexTextByUser = true
     private val normalTint =
         ColorStateList.valueOf(AttrUtils.resolveColor(context, R.attr.colorAccent, Color.BLUE))
@@ -52,21 +46,21 @@ class ControlView
         set(hasAlpha) {
             field = hasAlpha
             section_alpha.isVisible = hasAlpha
+            if (!hasAlpha) alpha = 0xff
         }
     var alpha: Int
         get() = seek_alpha.value
         set(alpha) {
             seek_alpha.value = alpha
             color = color.setAlpha(alpha)
-            background.setColor(color)
+            color_preview.color = color
             setColorToHexText()
         }
 
     init {
         orientation = VERTICAL
         inflate(context, R.layout.mm2d_cc_view_control, this)
-        background = initDrawable(context, color_preview)
-        background.setColor(color)
+        color_preview.color = color
         seek_alpha.value = color.alpha
         seek_alpha.onValueChanged = { value, fromUser ->
             text_alpha.text = value.toString()
@@ -95,7 +89,7 @@ class ControlView
                 try {
                     color = Color.parseColor("#$s")
                     clearError()
-                    background.setColor(color)
+                    color_preview.color = color
                     seek_alpha.value = color.alpha
                     observer?.onChange(color.toOpacity(), this@ControlView)
                 } catch (e: IllegalArgumentException) {
@@ -116,7 +110,7 @@ class ControlView
     override fun onChange(newColor: Int, notifier: Any?) {
         if (notifier == this) return
         color = newColor.setAlpha(seek_alpha.value)
-        background.setColor(color)
+        color_preview.color = color
         setColorToHexText()
         seek_alpha.baseColor = newColor
     }
@@ -127,35 +121,5 @@ class ControlView
         edit_hex.setText("%08X".format(color))
         clearError()
         changeHexTextByUser = true
-    }
-
-    companion object {
-        fun initDrawable(context: Context, view: View): GradientDrawable {
-            val resources = context.resources
-            val frameWidth = resources.getDimensionPixelSize(R.dimen.mm2d_cc_sample_frame)
-            val shadowWidth = resources.getDimensionPixelSize(R.dimen.mm2d_cc_sample_shadow)
-            val background = GradientDrawable().also {
-                it.shape = GradientDrawable.RECTANGLE
-                it.setStroke(
-                    frameWidth,
-                    ContextCompat.getColor(context, R.color.mm2d_cc_sample_frame)
-                )
-            }
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN) {
-                view.background = background
-                return background
-            }
-            val shadow = GradientDrawable().also {
-                it.shape = GradientDrawable.RECTANGLE
-                it.setStroke(
-                    shadowWidth,
-                    ContextCompat.getColor(context, R.color.mm2d_cc_sample_shadow)
-                )
-            }
-            val layerDrawable = LayerDrawable(arrayOf(background, shadow))
-            layerDrawable.setLayerInset(0, shadowWidth, shadowWidth, shadowWidth, shadowWidth)
-            view.background = layerDrawable
-            return background
-        }
     }
 }
