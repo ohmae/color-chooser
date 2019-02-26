@@ -69,6 +69,7 @@ Please see [Sample code](sample/src/main/java/net/mm2d/color/chooser/sample/Main
 - [Android Jetpack](https://developer.android.com/jetpack/)
   - androidx.appcompat:appcompat
   - androidx.constraintlayout:constraintlayout
+- [LeakCanary](https://github.com/square/leakcanary)
 
 ## Author
 大前 良介 (OHMAE Ryosuke)
