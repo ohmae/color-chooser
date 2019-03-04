@@ -6,11 +6,11 @@ apply plugin: 'org.jetbrains.dokka-android'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.github.dcendents.android-maven'
 
-def libraryId = 'color-chooser'
+def libraryName = 'color-chooser'
 
-version "${versionMajor}.${versionMinor}.${versionPatch}"
-group groupId
-archivesBaseName = libraryId
+group pj.groupId
+archivesBaseName = libraryName
+version pj.versions.name
 
 android {
     compileSdkVersion 28
@@ -19,8 +19,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode versionMajor * 10000 + versionMinor * 100 + versionPatch
-        versionName project.version
+        versionCode pj.versions.code
+        versionName pj.versions.name
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -52,12 +52,12 @@ bintray {
 
     pkg {
         repo = 'maven'
-        name = project.group + '.' + libraryId
+        name = pj.groupId + '.' + libraryName
         licenses = ['MIT']
-        websiteUrl = siteUrl
-        issueTrackerUrl = githubUrl + '/blob/master/LICENSE'
-        vcsUrl = githubUrl + '.git'
-        issueTrackerUrl = githubUrl + '/issues'
+        websiteUrl = pj.siteUrl
+        issueTrackerUrl = pj.githubUrl + '/blob/master/LICENSE'
+        vcsUrl = pj.githubUrl + '.git'
+        issueTrackerUrl = pj.githubUrl + '/issues'
         publicDownloadNumbers = true
         version {
             name = project.version
@@ -68,13 +68,13 @@ bintray {
 install {
     repositories.mavenInstaller {
         pom.project {
-            name = libraryId
-            url = siteUrl
+            name = libraryName
+            url = pj.siteUrl
 
             packaging = 'aar'
-            groupId = project.group
-            artifactId = libraryId
-            version = project.version
+            groupId = pj.groupId
+            artifactId = libraryName
+            version = pj.versions.name
 
             licenses {
                 license {
@@ -84,8 +84,8 @@ install {
                 }
             }
             scm {
-                connection githubUrl + '.git'
-                url githubUrl
+                connection pj.githubUrl + '.git'
+                url pj.githubUrl
             }
         }
     }
@@ -96,9 +96,9 @@ uploadArchives {
         mavenDeployer {
             repository(url: 'file:build/maven')
             pom.project {
-                groupId = project.group
-                artifactId = libraryId
-                version = project.version
+                groupId = pj.groupId
+                artifactId = libraryName
+                version = pj.versions.name
                 licenses {
                     license {
                         name = 'The MIT License'
