@@ -19,15 +19,6 @@ import kotlin.math.pow
  */
 object ColorUtils {
     /**
-     * Convert given HSV [0.0f, 1.0f] array to color
-     *
-     * @param hsv HSV array
-     * @return color
-     */
-    fun hsvToColor(hsv: FloatArray): Int =
-        hsvToColor(hsv[0], hsv[1], hsv[2])
-
-    /**
      * Convert given HSV [0.0f, 1.0f] to color
      *
      * @param h Hue
@@ -156,7 +147,7 @@ object ColorUtils {
      * @param b Blue value
      * @return color
      */
-    fun toColor(r: Float, g: Float, b: Float): Int =
+    private fun toColor(r: Float, g: Float, b: Float): Int =
         toColor(r.to8bit(), g.to8bit(), b.to8bit())
 
     /**
@@ -167,7 +158,7 @@ object ColorUtils {
      * @param b Blue value
      * @return color
      */
-    fun toColor(r: Int, g: Int, b: Int): Int =
+    private fun toColor(r: Int, g: Int, b: Int): Int =
         (0xff shl 24) or (0xff and r shl 16) or (0xff and g shl 8) or (0xff and b)
 
     /**
@@ -179,7 +170,7 @@ object ColorUtils {
      * @param b Blue value
      * @return color
      */
-    fun toColor(a: Float, r: Float, g: Float, b: Float): Int =
+    private fun toColor(a: Float, r: Float, g: Float, b: Float): Int =
         toColor(
             a.to8bit(),
             r.to8bit(),
@@ -196,48 +187,8 @@ object ColorUtils {
      * @param b Blue value
      * @return color
      */
-    fun toColor(a: Int, r: Int, g: Int, b: Int): Int =
+    private fun toColor(a: Int, r: Int, g: Int, b: Int): Int =
         (0xff and a shl 24) or (0xff and r shl 16) or (0xff and g shl 8) or (0xff and b)
-
-    /**
-     * Convert [0, 255] value array to [0.0f, 1.0f] value array
-     *
-     * @param rgb rgb [0, 255] value array
-     * @return rgb [0.0f, 1.0f] value array
-     */
-    fun toRgb(rgb: IntArray): FloatArray =
-        toRgb(rgb[0], rgb[1], rgb[2])
-
-    /**
-     * Convert color to [0.0f, 1.0f] value array
-     *
-     * @param color color
-     * @return rgb [0.0f, 1.0f] value array
-     */
-    fun toRgb(color: Int): FloatArray =
-        toRgb(color.red, color.green, color.blue)
-
-    /**
-     * Convert [0, 255] values to [0.0f, 1.0f] value array
-     *
-     * @param r Red value
-     * @param g Green value
-     * @param b Blue value
-     * @return rgb [0.0f, 1.0f] value array
-     */
-    fun toRgb(r: Int, g: Int, b: Int): FloatArray =
-        floatArrayOf(r.toRatio(), g.toRatio(), b.toRatio())
-
-    /**
-     * Calculate luminance based on ITU-R BT.709
-     *
-     * @param r Red value
-     * @param g Green value
-     * @param b Blue value
-     * @return luminance
-     */
-    fun luminance(r: Int, g: Int, b: Int): Int =
-        (r * 0.2126f + g * 0.7152f + b * 0.0722f + 0.5f).toInt().coerceIn(0, 255)
 
     /**
      * Calculate luminance based on ITU-R BT.709 and sRGB
@@ -252,28 +203,6 @@ object ColorUtils {
     fun luminance(r: Float, g: Float, b: Float): Float =
         r * 0.2126f + g * 0.7152f + b * 0.0722f
 
-    /**
-     * Calculate contrast between two given colors
-     *
-     * https://www.w3.org/TR/WCAG20/#contrast-ratiodef
-     * Contrast ratios can range from 1 to 21 (commonly written 1:1 to 21:1).
-     *
-     * @param color1 one of color
-     * @param color2 one of color
-     * @return contrast
-     */
-    fun contrast(color1: Int, color2: Int): Float {
-        val l1 = color1.relativeLuminance()
-        val l2 = color2.relativeLuminance()
-        return if (l1 > l2) (l1 + 0.05f) / (l2 + 0.05f) else (l2 + 0.05f) / (l1 + 0.05f)
-    }
-
-    /**
-     * Minimum contrast based on W3C guideline
-     *
-     * https://www.w3.org/TR/WCAG20/#visual-audio-contrast-contrast
-     */
-    private const val MINIMUM_CONTRAST = 4.5f
     /**
      * Minimum contrast for large text based on W3C guideline
      *
@@ -298,37 +227,12 @@ object ColorUtils {
  * @param alpha Alpha
  * @return alpha applied color
  */
-fun Int.setAlpha(alpha: Float): Int = setAlpha((0xff * alpha.coerceIn(0f, 1f)).toInt())
-
-/**
- * Overwrite alpha value of color
- *
- * @receiver color
- * @param alpha Alpha
- * @return alpha applied color
- */
 fun Int.setAlpha(alpha: Int): Int = this and 0xffffff or (alpha shl 24)
 
 /**
  * Overwrite alpha value to completely opaque
  */
 fun Int.toOpacity(): Int = setAlpha(0xff)
-
-/**
- * Convert angle [0, 360] to ratio [0.0f, 1.0f]
- *
- * @receiver angle
- * @return ratio
- */
-fun Int.angleToRatio(): Float = (this / 360f).coerceIn(0f, 1f)
-
-/**
- * Convert ratio [0.0f, 1.0f] to angle [0, 360]
- *
- * @receiver ratio
- * @return angle
- */
-fun Float.ratioToAngle(): Int = (this * 360f + 0.5f).toInt().coerceIn(0, 360)
 
 /**
  * Convert [0, 255] to [0.0f, 1.0f]
@@ -345,14 +249,6 @@ fun Int.toRatio(): Float = this / 255f
  * @return [0, 255]
  */
 fun Float.to8bit(): Int = (this * 255f + 0.5f).toInt().coerceIn(0, 255)
-
-/**
- * Calculate luminace of color
- *
- * @receiver color
- * @return luminance
- */
-fun Int.luminance(): Int = ColorUtils.luminance(red, green, blue)
 
 /**
  * Normalize value of primary color luminance to calculate sRGB luminance of color
@@ -397,14 +293,4 @@ fun Int.relativeLuminance(): Float {
  */
 fun Int.contrastWithWhite(): Float {
     return 1.05f / (relativeLuminance() + 0.05f)
-}
-
-/**
- * Calculate contrast between given color and pure black (#000000)
- *
- * @receiver color
- * @return contrast [1, 21]
- */
-fun Int.contrastWithBlack(): Float {
-    return (relativeLuminance() + 0.05f) / 0.05f
 }

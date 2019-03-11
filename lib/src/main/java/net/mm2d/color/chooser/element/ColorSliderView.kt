@@ -61,14 +61,14 @@ class ColorSliderView
     var onValueChanged: ((value: Int, fromUser: Boolean) -> Unit)? = null
 
     private var _baseColor: Int = Color.BLACK
-    var baseColor: Int
+    private var baseColor: Int
         get() = _baseColor
         set(value) {
             _baseColor = value
             invalidate()
         }
     private var _alphaMode: Boolean = true
-    var alphaMode: Boolean
+    private var alphaMode: Boolean
         get() = _alphaMode
         set(value) {
             _alphaMode = value
