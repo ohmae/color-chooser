@@ -51,7 +51,7 @@
         android:layout_height="match_parent"
         android:layout_marginRight="@dimen/mm2d_cc_page_margin"
         android:layout_marginLeft="@dimen/mm2d_cc_page_margin"
-        android:layout_gravity="right"
+        android:layout_gravity="end"
         tools:orientation="horizontal"
         >
 
