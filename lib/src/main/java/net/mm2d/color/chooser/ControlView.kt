@@ -117,12 +117,12 @@ class ControlView
         ViewCompat.setBackgroundTintList(edit_hex, normalTint)
     }
 
-    override fun onChange(newColor: Int, notifier: Any?) {
+    override fun onChange(color: Int, notifier: Any?) {
         if (notifier == this) return
-        color = newColor.setAlpha(seek_alpha.value)
-        color_preview.color = color
+        this.color = color.setAlpha(seek_alpha.value)
+        color_preview.color = this.color
         setColorToHexText()
-        seek_alpha.maxColor = newColor
+        seek_alpha.maxColor = color
     }
 
     @SuppressLint("SetTextI18n")
