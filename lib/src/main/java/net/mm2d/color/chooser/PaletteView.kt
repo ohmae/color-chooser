@@ -28,7 +28,7 @@ import kotlin.math.roundToInt
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class PaletteView
+internal class PaletteView
 @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

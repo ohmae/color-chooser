@@ -22,7 +22,7 @@ import kotlin.math.max
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class HueView
+internal class HueView
 @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

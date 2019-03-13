@@ -16,7 +16,7 @@ import androidx.viewpager.widget.ViewPager
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class SwipeDisabledViewPager
+internal class SwipeDisabledViewPager
 @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null

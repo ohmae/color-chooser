@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.mm2d_cc_page_hsv.view.*
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class HsvPage
+internal class HsvPage
 @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

@@ -10,6 +10,6 @@ package net.mm2d.color.chooser
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-interface ColorChangeObserver {
+internal interface ColorChangeObserver {
     fun onChange(color: Int, notifier: Any?)
 }

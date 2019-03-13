@@ -24,7 +24,7 @@ import kotlin.math.min
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class PaletteCell @JvmOverloads constructor(
+internal class PaletteCell @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

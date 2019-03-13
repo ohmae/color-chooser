@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.mm2d_cc_view_slider.view.*
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class SliderView
+internal class SliderView
 @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

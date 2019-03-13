@@ -16,7 +16,7 @@ import net.mm2d.color.chooser.util.toOpacity
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class SliderPage
+internal class SliderPage
 @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

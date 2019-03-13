@@ -23,7 +23,7 @@ import kotlin.math.max
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class ColorSliderView
+internal class ColorSliderView
 @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

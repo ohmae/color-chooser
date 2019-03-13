@@ -14,7 +14,7 @@ import androidx.viewpager.widget.PagerAdapter
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class ViewPagerAdapter(
+internal class ViewPagerAdapter(
     viewList: List<Pair<String, View>>
 ) : PagerAdapter() {
     private val list = viewList.toList()

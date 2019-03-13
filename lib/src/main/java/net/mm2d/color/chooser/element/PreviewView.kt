@@ -19,7 +19,7 @@ import kotlin.math.max
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class PreviewView
+internal class PreviewView
 @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

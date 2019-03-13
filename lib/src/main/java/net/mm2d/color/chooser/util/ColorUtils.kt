@@ -17,7 +17,7 @@ import kotlin.math.pow
  *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-object ColorUtils {
+internal object ColorUtils {
     /**
      * Convert given HSV [0.0f, 1.0f] to color
      *
@@ -227,12 +227,12 @@ object ColorUtils {
  * @param alpha Alpha
  * @return alpha applied color
  */
-fun Int.setAlpha(alpha: Int): Int = this and 0xffffff or (alpha shl 24)
+internal fun Int.setAlpha(alpha: Int): Int = this and 0xffffff or (alpha shl 24)
 
 /**
  * Overwrite alpha value to completely opaque
  */
-fun Int.toOpacity(): Int = setAlpha(0xff)
+internal fun Int.toOpacity(): Int = setAlpha(0xff)
 
 /**
  * Convert [0, 255] to [0.0f, 1.0f]
@@ -240,7 +240,7 @@ fun Int.toOpacity(): Int = setAlpha(0xff)
  * @receiver [0, 255]
  * @return [0.0f, 1.0f]
  */
-fun Int.toRatio(): Float = this / 255f
+internal fun Int.toRatio(): Float = this / 255f
 
 /**
  * Convert [0.0f, 1.0f] to [0, 255]
@@ -248,7 +248,7 @@ fun Int.toRatio(): Float = this / 255f
  * @receiver [0.0f, 1.0f]
  * @return [0, 255]
  */
-fun Float.to8bit(): Int = (this * 255f + 0.5f).toInt().coerceIn(0, 255)
+internal fun Float.to8bit(): Int = (this * 255f + 0.5f).toInt().coerceIn(0, 255)
 
 /**
  * Normalize value of primary color luminance to calculate sRGB luminance of color
@@ -258,7 +258,7 @@ fun Float.to8bit(): Int = (this * 255f + 0.5f).toInt().coerceIn(0, 255)
  * @receiver primary color luminance
  * @return normalized luminance
  */
-fun Float.normalizeForSrgb(): Float =
+internal fun Float.normalizeForSrgb(): Float =
     if (this < 0.03928f) this / 12.92f else ((this + 0.055) / 1.055).pow(2.4).toFloat()
 
 /**
@@ -269,7 +269,7 @@ fun Float.normalizeForSrgb(): Float =
  * @receiver primary color luminance
  * @return normalized luminance
  */
-fun Int.normalizeForSrgb(): Float = toRatio().normalizeForSrgb()
+internal fun Int.normalizeForSrgb(): Float = toRatio().normalizeForSrgb()
 
 /**
  * Calculate sRGB luminance of color
@@ -277,7 +277,7 @@ fun Int.normalizeForSrgb(): Float = toRatio().normalizeForSrgb()
  * @receiver color
  * @return sRGB luminance
  */
-fun Int.relativeLuminance(): Float {
+internal fun Int.relativeLuminance(): Float {
     return ColorUtils.luminance(
         red.normalizeForSrgb(),
         green.normalizeForSrgb(),
@@ -291,6 +291,6 @@ fun Int.relativeLuminance(): Float {
  * @receiver color
  * @return contrast [1, 21]
  */
-fun Int.contrastWithWhite(): Float {
+internal fun Int.contrastWithWhite(): Float {
     return 1.05f / (relativeLuminance() + 0.05f)
 }

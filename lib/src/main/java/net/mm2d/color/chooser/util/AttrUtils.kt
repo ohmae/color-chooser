@@ -17,7 +17,7 @@ import androidx.core.content.res.use
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-object AttrUtils {
+internal object AttrUtils {
     @ColorInt
     fun resolveColor(context: Context, @AttrRes attr: Int, @ColorInt defaultColor: Int): Int {
         return resolveColor(context, 0, attr, defaultColor)

@@ -17,7 +17,7 @@ import net.mm2d.color.chooser.util.ColorUtils
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class HsvView
+internal class HsvView
 @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
