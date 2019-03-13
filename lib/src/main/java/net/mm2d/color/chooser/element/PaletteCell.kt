@@ -30,11 +30,11 @@ class PaletteCell @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
     private val icon: Drawable = loadIcon(context)
-    var checked: Boolean = false
     private var color: Int = Color.TRANSPARENT
     private val paint: Paint = Paint().also {
         it.style = Style.FILL_AND_STROKE
     }
+    var checked: Boolean = false
 
     fun setColor(color: Int) {
         this.color = color

@@ -32,45 +32,27 @@ class ControlView
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr), ColorChangeObserver {
-    private var changeHexTextByUser = true
     private val normalTint =
         ColorStateList.valueOf(AttrUtils.resolveColor(context, R.attr.colorAccent, Color.BLUE))
     private val errorTint =
         ColorStateList.valueOf(AttrUtils.resolveColor(context, R.attr.colorError, Color.RED))
+    private var changeHexTextByUser = true
+    private var hasAlpha: Boolean = true
+    private val rgbFilter = arrayOf(HexadecimalFilter(), LengthFilter(6))
+    private val argbFilter = arrayOf(HexadecimalFilter(), LengthFilter(8))
     var observer: ColorChangeObserver? = null
     var color: Int = Color.BLACK
         private set
-    var hasAlpha: Boolean = true
-        set(hasAlpha) {
-            field = hasAlpha
-            section_alpha.isVisible = hasAlpha
-            if (hasAlpha) {
-                edit_hex.filters = argbFilter
-            } else {
-                edit_hex.filters = rgbFilter
-                alpha = 0xff
-            }
-        }
-    var alpha: Int
-        get() = seek_alpha.value
-        set(alpha) {
-            seek_alpha.value = alpha
-            color = color.setAlpha(alpha)
-            color_preview.color = color
-            setColorToHexText()
-        }
-    private val rgbFilter = arrayOf(HexadecimalFilter(), LengthFilter(6))
-    private val argbFilter = arrayOf(HexadecimalFilter(), LengthFilter(8))
 
     init {
         orientation = VERTICAL
         inflate(context, R.layout.mm2d_cc_view_control, this)
-        color_preview.color = color
-        seek_alpha.value = color.alpha
+        color_preview.setColor(color)
+        seek_alpha.setValue(color.alpha)
         seek_alpha.onValueChanged = { value, fromUser ->
             text_alpha.text = value.toString()
             if (fromUser) {
-                alpha = value
+                setAlpha(value)
             }
         }
         edit_hex.filters = argbFilter
@@ -92,14 +74,32 @@ class ControlView
                 try {
                     color = Color.parseColor("#$s")
                     clearError()
-                    color_preview.color = color
-                    seek_alpha.value = color.alpha
+                    color_preview.setColor(color)
+                    seek_alpha.setValue(color.alpha)
                     observer?.onChange(color.toOpacity(), this@ControlView)
                 } catch (e: IllegalArgumentException) {
                     setError()
                 }
             }
         })
+    }
+
+    fun setAlpha(alpha: Int) {
+        seek_alpha.setValue(alpha)
+        color = color.setAlpha(alpha)
+        color_preview.setColor(color)
+        setColorToHexText()
+    }
+
+    fun setWithAlpha(withAlpha: Boolean) {
+        hasAlpha = withAlpha
+        section_alpha.isVisible = withAlpha
+        if (withAlpha) {
+            edit_hex.filters = argbFilter
+        } else {
+            edit_hex.filters = rgbFilter
+            setAlpha(0xff)
+        }
     }
 
     private fun setError() {
@@ -113,9 +113,9 @@ class ControlView
     override fun onChange(color: Int, notifier: Any?) {
         if (notifier == this) return
         this.color = color.setAlpha(seek_alpha.value)
-        color_preview.color = this.color
+        color_preview.setColor(this.color)
         setColorToHexText()
-        seek_alpha.maxColor = color
+        seek_alpha.setMaxColor(color)
     }
 
     @SuppressLint("SetTextI18n")

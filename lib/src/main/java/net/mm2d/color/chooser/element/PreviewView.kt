@@ -47,10 +47,7 @@ class PreviewView
     private val colorCheckerDark = ContextCompat.getColor(context, R.color.mm2d_cc_checker_dark)
     private var checker: Bitmap? = null
     var color: Int = Color.BLACK
-        set(value) {
-            field = value
-            invalidate()
-        }
+        private set
 
     override fun onDraw(canvas: Canvas) {
         paint.style = Style.STROKE
@@ -79,6 +76,11 @@ class PreviewView
         paint.style = Style.FILL
         paint.color = color
         canvas.drawRect(targetRect, paint)
+    }
+
+    fun setColor(color: Int) {
+        this.color = color
+        invalidate()
     }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {

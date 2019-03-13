@@ -43,7 +43,6 @@ class HueView
     private val bitmapRect = Rect(0, 0, 1, RANGE)
     private val targetRect = Rect()
     private var hue: Float = 0f
-    var onHueChanged: ((hue: Float) -> Unit)? = null
     private val colorSampleFrame = ContextCompat.getColor(
         context,
         R.color.mm2d_cc_sample_frame
@@ -52,6 +51,7 @@ class HueView
         context,
         R.color.mm2d_cc_sample_shadow
     )
+    var onHueChanged: ((hue: Float) -> Unit)? = null
 
     fun setColor(@ColorInt color: Int) {
         updateHue(ColorUtils.hue(color))

@@ -26,17 +26,8 @@ class DialogView
     defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr), ColorChangeObserver {
     private val observers: List<ColorChangeObserver>
-    var hasAlpha: Boolean
-        get() = control_view.hasAlpha
-        set(hasAlpha) {
-            control_view.hasAlpha = hasAlpha
-        }
-    var color: Int
+    val color: Int
         get() = control_view.color
-        set(value) {
-            onChange(value.toOpacity(), null)
-            control_view.alpha = value.alpha
-        }
 
     init {
         orientation = VERTICAL
@@ -56,5 +47,14 @@ class DialogView
 
     override fun onChange(color: Int, notifier: Any?) {
         observers.forEach { it.onChange(color, notifier) }
+    }
+
+    fun setWithAlpha(withAlpha: Boolean) {
+        control_view.setWithAlpha(withAlpha)
+    }
+
+    fun setColor(color: Int) {
+        onChange(color.toOpacity(), null)
+        control_view.setAlpha(color.alpha)
     }
 }

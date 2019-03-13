@@ -56,51 +56,35 @@ class ColorSliderView
     )
     private var checker: Bitmap? = null
     private var _value: Float = 0f
-    private var _maxColor: Int
+    private var maxColor: Int
     private var gradation: Bitmap
+    private val baseColor: Int
+    private val alphaMode: Boolean
     var onValueChanged: ((value: Int, fromUser: Boolean) -> Unit)? = null
-
-    private var _baseColor: Int = Color.BLACK
-    private var baseColor: Int
-        get() = _baseColor
-        set(value) {
-            _baseColor = value
-            invalidate()
-        }
-    private var _alphaMode: Boolean = true
-    private var alphaMode: Boolean
-        get() = _alphaMode
-        set(value) {
-            _alphaMode = value
-            updateChecker()
-            invalidate()
-        }
+    val value: Int
+        get() = (_value * MAX).toInt()
 
     init {
         val a = context.obtainStyledAttributes(attrs, R.styleable.ColorSliderView)
-        _maxColor = a.getColor(R.styleable.ColorSliderView_maxColor, Color.WHITE)
-        _baseColor = a.getColor(R.styleable.ColorSliderView_baseColor, Color.BLACK)
-        _alphaMode = a.getBoolean(R.styleable.ColorSliderView_alphaMode, true)
+        maxColor = a.getColor(R.styleable.ColorSliderView_maxColor, Color.WHITE)
+        baseColor = a.getColor(R.styleable.ColorSliderView_baseColor, Color.BLACK)
+        alphaMode = a.getBoolean(R.styleable.ColorSliderView_alphaMode, true)
         a.recycle()
-        gradation = createGradation(_maxColor)
+        gradation = createGradation(maxColor)
         updateChecker()
     }
 
-    var maxColor: Int
-        get() = _maxColor
-        set(value) {
-            _maxColor = value.toOpacity()
-            gradation = createGradation(_maxColor)
-            invalidate()
-        }
+    fun setMaxColor(maxColor: Int) {
+        this.maxColor = maxColor.toOpacity()
+        gradation = createGradation(this.maxColor)
+        invalidate()
+    }
 
-    var value: Int
-        get() = (_value * MAX).toInt()
-        set(value) {
-            _value = (value / MAX.toFloat()).coerceIn(0f, 1f)
-            onValueChanged?.invoke(value, false)
-            invalidate()
-        }
+    fun setValue(value: Int) {
+        _value = (value / MAX.toFloat()).coerceIn(0f, 1f)
+        onValueChanged?.invoke(value, false)
+        invalidate()
+    }
 
     private fun updateChecker() {
         if (alphaMode) {
@@ -137,23 +121,11 @@ class ColorSliderView
         paint.color = colorSampleShadow
         paint.strokeWidth = shadowLineWidth
         val shadow = frameLineWidth + shadowLineWidth / 2
-        canvas.drawRect(
-            targetRect.left - shadow,
-            targetRect.top - shadow,
-            targetRect.right + shadow,
-            targetRect.bottom + shadow,
-            paint
-        )
+        canvas.drawRectFrame(targetRect, shadow, paint)
         paint.color = colorSampleFrame
         paint.strokeWidth = frameLineWidth
         val frame = frameLineWidth / 2
-        canvas.drawRect(
-            targetRect.left - frame,
-            targetRect.top - frame,
-            targetRect.right + frame,
-            targetRect.bottom + frame,
-            paint
-        )
+        canvas.drawRectFrame(targetRect, frame, paint)
         paint.style = Style.FILL
         if (alphaMode) {
             val checker = checker ?: return
@@ -177,8 +149,18 @@ class ColorSliderView
         canvas.drawCircle(x, y, _sampleFrameRadius, paint)
         paint.color = baseColor
         canvas.drawCircle(x, y, _sampleRadius, paint)
-        paint.color = _maxColor.setAlpha(value)
+        paint.color = maxColor.setAlpha(value)
         canvas.drawCircle(x, y, _sampleRadius, paint)
+    }
+
+    private fun Canvas.drawRectFrame(rect: Rect, offset: Float, paint: Paint) {
+        drawRect(
+            rect.left - offset,
+            rect.top - offset,
+            rect.right + offset,
+            rect.bottom + offset,
+            paint
+        )
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

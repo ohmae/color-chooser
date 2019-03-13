@@ -43,9 +43,9 @@ class SliderView
 
     override fun onChange(color: Int, notifier: Any?) {
         if (notifier == this) return
-        seek_red.value = Color.red(color)
-        seek_green.value = Color.green(color)
-        seek_blue.value = Color.blue(color)
+        seek_red.setValue(Color.red(color))
+        seek_green.setValue(Color.green(color))
+        seek_blue.setValue(Color.blue(color))
     }
 
     private fun updateBySeekBar(fromUser: Boolean) {

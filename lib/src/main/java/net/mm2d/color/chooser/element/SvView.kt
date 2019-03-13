@@ -46,13 +46,13 @@ class SvView
     private val maskRect = Rect(0, 0, TONE_SIZE, TONE_SIZE)
     private val targetRect = Rect()
     private var hue: Float = 0f
+    private val colorSampleFrame = ContextCompat.getColor(context, R.color.mm2d_cc_sample_frame)
+    private val colorSampleShadow = ContextCompat.getColor(context, R.color.mm2d_cc_sample_shadow)
+    private val hsvCache = FloatArray(3)
     var saturation: Float = 0f
         private set
     var value: Float = 0f
         private set
-    private val colorSampleFrame = ContextCompat.getColor(context, R.color.mm2d_cc_sample_frame)
-    private val colorSampleShadow = ContextCompat.getColor(context, R.color.mm2d_cc_sample_shadow)
-    private val hsvCache = FloatArray(3)
     var onColorChanged: ((color: Int) -> Unit)? = null
 
     init {

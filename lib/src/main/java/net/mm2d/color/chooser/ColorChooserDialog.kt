@@ -24,10 +24,11 @@ import androidx.fragment.app.FragmentActivity
  */
 class ColorChooserDialog : DialogFragment() {
     private lateinit var dialogView: DialogView
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         dialogView = DialogView(activity!!)
-        dialogView.color = arguments?.getInt(KEY_INITIAL_COLOR, 0) ?: 0
-        dialogView.hasAlpha = arguments?.getBoolean(KEY_WITH_ALPHA) ?: false
+        dialogView.setColor(arguments?.getInt(KEY_INITIAL_COLOR, 0) ?: 0)
+        dialogView.setWithAlpha(arguments?.getBoolean(KEY_WITH_ALPHA) ?: false)
         return AlertDialog.Builder(activity!!, theme)
             .setView(dialogView)
             .setPositiveButton("OK") { _, _ ->
