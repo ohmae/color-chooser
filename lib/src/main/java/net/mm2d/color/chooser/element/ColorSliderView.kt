@@ -136,22 +136,24 @@ class ColorSliderView
         paint.style = Style.STROKE
         paint.color = colorSampleShadow
         paint.strokeWidth = shadowLineWidth
-        val shadow =  frameLineWidth + shadowLineWidth / 2
+        val shadow = frameLineWidth + shadowLineWidth / 2
         canvas.drawRect(
             targetRect.left - shadow,
             targetRect.top - shadow,
             targetRect.right + shadow,
             targetRect.bottom + shadow,
-            paint)
+            paint
+        )
         paint.color = colorSampleFrame
         paint.strokeWidth = frameLineWidth
-        val frame =  frameLineWidth / 2
+        val frame = frameLineWidth / 2
         canvas.drawRect(
             targetRect.left - frame,
             targetRect.top - frame,
             targetRect.right + frame,
             targetRect.bottom + frame,
-            paint)
+            paint
+        )
         paint.style = Style.FILL
         if (alphaMode) {
             val checker = checker ?: return

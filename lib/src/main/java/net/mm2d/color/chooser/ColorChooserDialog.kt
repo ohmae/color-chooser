@@ -74,6 +74,8 @@ class ColorChooserDialog : DialogFragment() {
         private const val TAG = "ColorChooserDialog"
 
         /**
+         * Show dialog
+         *
          * @param activity FragmentActivity
          * @param requestCode use in listener call
          * @param initialColor initial color
@@ -101,6 +103,8 @@ class ColorChooserDialog : DialogFragment() {
         }
 
         /**
+         * Show dialog
+         *
          * @param fragment Fragment
          * @param requestCode use in listener call
          * @param initialColor initial color

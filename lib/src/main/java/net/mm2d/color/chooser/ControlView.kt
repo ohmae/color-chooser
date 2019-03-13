@@ -46,7 +46,7 @@ class ControlView
         set(hasAlpha) {
             field = hasAlpha
             section_alpha.isVisible = hasAlpha
-            if (hasAlpha){
+            if (hasAlpha) {
                 edit_hex.filters = argbFilter
             } else {
                 edit_hex.filters = rgbFilter
