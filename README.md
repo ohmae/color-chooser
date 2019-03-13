@@ -53,6 +53,10 @@ class MainActivity : AppCompatActivity(), ColorChooserDialog.Callback {
 
 Please see [Sample code](sample/src/main/java/net/mm2d/color/chooser/sample/MainActivity.kt) for detail.
 
+## API Document
+
+- [dokka](docs/dokka/lib/index.md)
+
 ## Dependent OSS
 
 ### color-chooser
