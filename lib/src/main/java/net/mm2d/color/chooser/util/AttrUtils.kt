@@ -7,6 +7,7 @@
 
 package net.mm2d.color.chooser.util
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
@@ -22,6 +23,7 @@ object AttrUtils {
         return resolveColor(context, 0, attr, defaultColor)
     }
 
+    @SuppressLint("Recycle")
     @ColorInt
     private fun resolveColor(context: Context, @StyleRes style: Int, @AttrRes attr: Int, @ColorInt defaultColor: Int): Int {
         return context.obtainStyledAttributes(style, intArrayOf(attr))
