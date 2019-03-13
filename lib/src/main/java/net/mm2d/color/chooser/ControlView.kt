@@ -11,10 +11,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.text.Editable
-import android.text.InputFilter
+import android.text.*
 import android.text.InputFilter.LengthFilter
-import android.text.TextWatcher
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import androidx.core.graphics.alpha
@@ -61,8 +59,8 @@ class ControlView
             color_preview.color = color
             setColorToHexText()
         }
-    private val rgbFilter: Array<InputFilter>
-    private val argbFilter: Array<InputFilter>
+    private val rgbFilter = arrayOf(HexadecimalFilter(), LengthFilter(6))
+    private val argbFilter = arrayOf(HexadecimalFilter(), LengthFilter(8))
 
     init {
         orientation = VERTICAL
@@ -75,11 +73,6 @@ class ControlView
                 alpha = value
             }
         }
-        val hexFilter = InputFilter { source, _, _, _, _, _ ->
-            source.toString().toUpperCase().replace("[^0-9A-F]".toRegex(), "")
-        }
-        rgbFilter = arrayOf(hexFilter, LengthFilter(6))
-        argbFilter = arrayOf(hexFilter, LengthFilter(8))
         edit_hex.filters = argbFilter
         edit_hex.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -135,5 +128,19 @@ class ControlView
         }
         clearError()
         changeHexTextByUser = true
+    }
+
+    private class HexadecimalFilter : InputFilter {
+        override fun filter(
+            source: CharSequence?, start: Int, end: Int, dest: Spanned?, dstart: Int, dend: Int
+        ): CharSequence? {
+            val converted = source.toString().toUpperCase()
+                .replace("[^0-9A-F]".toRegex(), "")
+            if (source.toString() == converted) return null
+            if (source !is Spanned) return converted
+            return SpannableString(converted).also {
+                TextUtils.copySpansFrom(source, 0, converted.length, null, it, 0)
+            }
+        }
     }
 }
