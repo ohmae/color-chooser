@@ -9,9 +9,9 @@ package net.mm2d.color.chooser.sample
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_main.*
 import net.mm2d.color.chooser.ColorChooserDialog
 
@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity(), ColorChooserDialog.Callback {
         button3.setOnClickListener {
             startActivity(Intent(this, Main2Activity::class.java))
         }
-        color = ContextCompat.getColor(this, R.color.red_a700)
+        color = Color.parseColor("#B71C1C")
         sample.setBackgroundColor(color)
     }
 

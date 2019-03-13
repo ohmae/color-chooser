@@ -8,13 +8,13 @@
 package net.mm2d.color.chooser.sample
 
 import android.app.Activity
+import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_main.*
 import net.mm2d.color.chooser.ColorChooserDialog
 
-class Main2Activity : AppCompatActivity(), ColorChooserDialog.Callback  {
+class Main2Activity : AppCompatActivity(), ColorChooserDialog.Callback {
     private var color: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +26,7 @@ class Main2Activity : AppCompatActivity(), ColorChooserDialog.Callback  {
         button2.setOnClickListener {
             ColorChooserDialog.show(this, REQUEST_CODE, color, true)
         }
-        color = ContextCompat.getColor(this, R.color.red_a700)
+        color = Color.parseColor("#B71C1C")
         sample.setBackgroundColor(color)
     }
 
