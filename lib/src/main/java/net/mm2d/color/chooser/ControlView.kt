@@ -134,8 +134,9 @@ internal class ControlView
         override fun filter(
             source: CharSequence?, start: Int, end: Int, dest: Spanned?, dstart: Int, dend: Int
         ): CharSequence? {
-            val converted = source.toString().toUpperCase()
-                .replace("[^0-9A-F]".toRegex(), "")
+            val converted = source.toString()
+                .replace("[^0-9a-fA-F]".toRegex(), "")
+                .toUpperCase()
             if (source.toString() == converted) return null
             if (source !is Spanned) return converted
             return SpannableString(converted).also {
