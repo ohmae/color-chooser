@@ -15,17 +15,14 @@
 
 ## How to use
 
-You can download this library from jCenter.
+Download from jCenter. Add dependencies, such as the following.
+
 ```gradle
 repositories {
     jcenter()
 }
-```
-
-Add dependencies, as following.
-```gradle
 dependencies {
-    implementation 'net.mm2d:color-chooser:0.1.0'
+    implementation 'net.mm2d:color-chooser:0.1.2'
 }
 ```
 
