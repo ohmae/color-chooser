@@ -18,26 +18,14 @@ internal class ViewPagerAdapter(
     viewList: List<Pair<String, View>>
 ) : PagerAdapter() {
     private val list = viewList.toList()
+    override fun isViewFromObject(view: View, obj: Any): Boolean = view == obj
+    override fun getCount(): Int = list.size
+    override fun getPageTitle(position: Int): CharSequence? = list[position].first
 
-    override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        return list[position].second.also {
-            container.addView(it)
-        }
-    }
+    override fun instantiateItem(container: ViewGroup, position: Int): Any =
+        list[position].second.also { container.addView(it) }
 
-    override fun destroyItem(container: ViewGroup, position: Int, obj: Any) {
+    override fun destroyItem(container: ViewGroup, position: Int, obj: Any) =
         container.removeView(obj as View)
-    }
 
-    override fun isViewFromObject(view: View, obj: Any): Boolean {
-        return view == obj
-    }
-
-    override fun getCount(): Int {
-        return list.size
-    }
-
-    override fun getPageTitle(position: Int): CharSequence? {
-        return list[position].first
-    }
 }

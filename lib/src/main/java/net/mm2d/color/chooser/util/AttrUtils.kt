@@ -19,14 +19,19 @@ import androidx.core.content.res.use
  */
 internal object AttrUtils {
     @ColorInt
-    fun resolveColor(context: Context, @AttrRes attr: Int, @ColorInt defaultColor: Int): Int {
-        return resolveColor(context, 0, attr, defaultColor)
-    }
+    fun resolveColor(
+        context: Context,
+        @AttrRes attr: Int,
+        @ColorInt defaultColor: Int
+    ): Int = resolveColor(context, 0, attr, defaultColor)
 
     @SuppressLint("Recycle")
     @ColorInt
-    private fun resolveColor(context: Context, @StyleRes style: Int, @AttrRes attr: Int, @ColorInt defaultColor: Int): Int {
-        return context.obtainStyledAttributes(style, intArrayOf(attr))
-            .use { it.getColor(0, defaultColor) }
-    }
+    private fun resolveColor(
+        context: Context,
+        @StyleRes style: Int,
+        @AttrRes attr: Int,
+        @ColorInt defaultColor: Int
+    ): Int = context.obtainStyledAttributes(style, intArrayOf(attr))
+        .use { it.getColor(0, defaultColor) }
 }

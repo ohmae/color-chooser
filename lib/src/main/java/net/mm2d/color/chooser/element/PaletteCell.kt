@@ -63,15 +63,11 @@ internal class PaletteCell @JvmOverloads constructor(
     companion object {
         private var icon: Drawable? = null
 
-        private fun loadIcon(context: Context): Drawable {
-            return icon ?: loadIconInner(context).also {
-                icon = it
-            }
-        }
+        private fun loadIcon(context: Context): Drawable =
+            icon ?: loadIconInner(context).also { icon = it }
 
-        private fun loadIconInner(context: Context): Drawable {
-            return AppCompatResources.getDrawable(context, drawable.mm2d_cc_ic_check)!!.wrap()
-        }
+        private fun loadIconInner(context: Context): Drawable =
+            AppCompatResources.getDrawable(context, drawable.mm2d_cc_ic_check)!!.wrap()
 
         private fun Drawable.wrap(): Drawable = DrawableCompat.wrap(this)
     }

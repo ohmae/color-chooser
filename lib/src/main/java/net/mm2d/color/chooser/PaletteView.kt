@@ -80,9 +80,7 @@ internal class PaletteView
                     parent, false
                 )
             ).also { holder ->
-                holder.onColorChanged = {
-                    onColorChanged?.invoke(it)
-                }
+                holder.onColorChanged = { onColorChanged?.invoke(it) }
             }
         }
 
@@ -141,26 +139,18 @@ internal class PaletteView
         @SuppressLint("Recycle")
         private fun createPalette(context: Context): List<IntArray> {
             cache?.get()?.let { return it }
-            val res = context.resources
-            return res.obtainTypedArray(R.array.material_colors).use { ids ->
-                (0 until ids.length()).map {
-                    res.obtainTypedArray(
-                        ids.getResourceIdOrThrow(it)
-                    ).readColorArray()
-                }
+            val resources = context.resources
+            return resources.obtainTypedArray(R.array.material_colors).use { ids ->
+                Array(ids.length()) {
+                    resources.obtainTypedArray(ids.getResourceIdOrThrow(it)).readColorArray()
+                }.toList()
             }.also {
                 cache = SoftReference(it)
             }
         }
 
-        private fun TypedArray.readColorArray(): IntArray {
-            use { colors ->
-                val result = IntArray(colors.length())
-                for (i in 0 until colors.length()) {
-                    result[i] = colors.getColorOrThrow(i)
-                }
-                return result
-            }
+        private fun TypedArray.readColorArray(): IntArray = use {
+            IntArray(length()) { getColorOrThrow(it) }
         }
     }
 }
