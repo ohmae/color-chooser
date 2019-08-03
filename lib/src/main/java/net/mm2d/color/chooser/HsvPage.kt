@@ -25,10 +25,8 @@ internal class HsvPage
 
     init {
         inflate(context, R.layout.mm2d_cc_page_hsv, this)
-        hsv_view.observer = object : ColorChangeObserver {
-            override fun onChange(color: Int, notifier: Any?) {
-                observer?.onChange(color, this@HsvPage)
-            }
+        hsv_view.observer = colorChangeObserver { color, _ ->
+            observer?.onChange(color, this)
         }
     }
 

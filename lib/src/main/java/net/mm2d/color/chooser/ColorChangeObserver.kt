@@ -13,3 +13,9 @@ package net.mm2d.color.chooser
 internal interface ColorChangeObserver {
     fun onChange(color: Int, notifier: Any?)
 }
+
+internal fun colorChangeObserver(block: (color: Int, notifier: Any?) -> Unit) = object : ColorChangeObserver {
+    override fun onChange(color: Int, notifier: Any?) {
+        block(color, notifier)
+    }
+}

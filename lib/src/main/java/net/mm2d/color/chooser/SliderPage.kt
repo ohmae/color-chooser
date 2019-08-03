@@ -26,10 +26,8 @@ internal class SliderPage
 
     init {
         inflate(context, R.layout.mm2d_cc_page_slider, this)
-        slider_view.observer = object : ColorChangeObserver {
-            override fun onChange(color: Int, notifier: Any?) {
-                observer?.onChange(color, this@SliderPage)
-            }
+        slider_view.observer = colorChangeObserver { color, _ ->
+            observer?.onChange(color, this)
         }
     }
 
