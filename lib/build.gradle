@@ -48,7 +48,7 @@ dokka {
 
 publishing {
     publications {
-        Production(MavenPublication) {
+        bintray(MavenPublication) {
             artifact("$buildDir/outputs/aar/color-chooser-release.aar")
             groupId = pj.groupId
             artifactId = libraryName
@@ -98,7 +98,7 @@ def appendDependency(parentNode, groupId, artifactId, version, scope) {
 bintray {
     user = project.hasProperty('bintray_user') ? bintray_user : ''
     key = project.hasProperty('bintray_key') ? bintray_key : ''
-    publications = ['Production']
+    publications = ['bintray']
     configurations = ['archives']
 
     pkg {
