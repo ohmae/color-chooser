@@ -46,6 +46,40 @@ dokka {
     outputDirectory = "../docs/dokka"
 }
 
+task sourcesJar(type: Jar) {
+    archiveClassifier = "sources"
+    from android.sourceSets.main.java.srcDirs
+}
+
+artifacts {
+    archives sourcesJar
+}
+
+uploadArchives {
+    repositories.mavenDeployer {
+        repository(url: "file:$buildDir/maven")
+        pom.project {
+            name = libraryName
+            url = pj.siteUrl
+
+            groupId = pj.groupId
+            artifactId = libraryName
+            version = pj.versions.name
+            licenses {
+                license {
+                    name = "The MIT License"
+                    url = "https://opensource.org/licenses/MIT"
+                    distribution = "repo"
+                }
+            }
+            scm {
+                connection = pj.scmConnection
+                url = pj.githubUrl
+            }
+        }
+    }
+}
+
 publishing {
     publications {
         bintray(MavenPublication) {
@@ -53,6 +87,8 @@ publishing {
             groupId = pj.groupId
             artifactId = libraryName
             version = pj.versions.name
+
+            artifact sourcesJar
 
             pom.withXml {
                 def node = asNode()
@@ -99,7 +135,6 @@ bintray {
     user = project.hasProperty("bintray_user") ? bintray_user : ""
     key = project.hasProperty("bintray_key") ? bintray_key : ""
     publications = ["bintray"]
-    configurations = ["archives"]
 
     pkg {
         repo = "maven"
@@ -114,40 +149,6 @@ bintray {
             name = project.version
         }
     }
-}
-
-uploadArchives {
-    repositories.mavenDeployer {
-        repository(url: "file:$buildDir/maven")
-        pom.project {
-            name = libraryName
-            url = pj.siteUrl
-
-            groupId = pj.groupId
-            artifactId = libraryName
-            version = pj.versions.name
-            licenses {
-                license {
-                    name = "The MIT License"
-                    url = "https://opensource.org/licenses/MIT"
-                    distribution = "repo"
-                }
-            }
-            scm {
-                connection = pj.scmConnection
-                url = pj.githubUrl
-            }
-        }
-    }
-}
-
-task sourcesJar(type: Jar) {
-    archiveClassifier = "sources"
-    from android.sourceSets.main.java.srcDirs
-}
-
-artifacts {
-    archives sourcesJar
 }
 
 dependencyUpdates.resolutionStrategy {
