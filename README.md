@@ -22,7 +22,7 @@ repositories {
     jcenter()
 }
 dependencies {
-    implementation 'net.mm2d:color-chooser:0.1.2'
+    implementation 'net.mm2d:color-chooser:0.1.3'
 }
 ```
 
