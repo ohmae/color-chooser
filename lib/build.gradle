@@ -83,7 +83,7 @@ uploadArchives {
 publishing {
     publications {
         bintray(MavenPublication) {
-            artifact("$buildDir/outputs/aar/color-chooser-release.aar")
+            artifact("$buildDir/outputs/aar/${libraryName}-release.aar")
             groupId = pj.groupId
             artifactId = libraryName
             version = pj.versions.name
@@ -150,6 +150,8 @@ bintray {
         }
     }
 }
+
+bintrayUpload.dependsOn assemble
 
 dependencyUpdates.resolutionStrategy {
     componentSelection { rules ->
