@@ -11,7 +11,7 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/mm2d_cc_dialog_width"
         android:layout_height="wrap_content"
         />
 
