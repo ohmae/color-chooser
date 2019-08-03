@@ -118,7 +118,7 @@ bintray {
 
 uploadArchives {
     repositories.mavenDeployer {
-        repository(url: 'file:build/maven')
+        repository(url: "file:$buildDir/maven")
         pom.project {
             name = libraryName
             url = pj.siteUrl
