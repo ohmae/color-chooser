@@ -11,6 +11,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
+import androidx.core.content.res.use
 import androidx.viewpager.widget.ViewPager
 
 /**
@@ -21,30 +22,21 @@ internal class SwipeDisabledViewPager
     context: Context,
     attrs: AttributeSet? = null
 ) : ViewPager(context, attrs) {
-    private val maxHeight: Int
+    private val maxHeight: Int =
+        context.obtainStyledAttributes(attrs, R.styleable.SwipeDisabledViewPager).use {
+            it.getDimensionPixelSize(R.styleable.SwipeDisabledViewPager_maxHeight, 0)
+        }
 
-    init {
-        val a = context.obtainStyledAttributes(attrs, R.styleable.SwipeDisabledViewPager)
-        maxHeight = a.getDimensionPixelSize(R.styleable.SwipeDisabledViewPager_maxHeight, 0)
-        a.recycle()
-    }
-
-    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
-        return false
-    }
+    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean = false
 
     @SuppressLint("ClickableViewAccessibility")
-    override fun onTouchEvent(ev: MotionEvent?): Boolean {
-        return false
-    }
+    override fun onTouchEvent(ev: MotionEvent?): Boolean = false
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val mode = MeasureSpec.getMode(heightMeasureSpec)
         val size = MeasureSpec.getSize(heightMeasureSpec)
-        if (mode != MeasureSpec.EXACTLY && maxHeight in 1..size) {
-            super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(maxHeight, mode))
-            return
-        }
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        val heightSpec = if (mode != MeasureSpec.EXACTLY && maxHeight in 1..size)
+            MeasureSpec.makeMeasureSpec(maxHeight, mode) else heightMeasureSpec
+        super.onMeasure(widthMeasureSpec, heightSpec)
     }
 }
