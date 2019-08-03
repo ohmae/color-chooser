@@ -10,7 +10,7 @@ package net.mm2d.color.chooser
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
-import android.widget.LinearLayout
+import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.mm2d_cc_view_hsv.view.*
 import net.mm2d.color.chooser.util.ColorUtils
 
@@ -22,12 +22,11 @@ internal class HsvView
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : LinearLayout(context, attrs, defStyleAttr), ColorChangeObserver {
+) : FrameLayout(context, attrs, defStyleAttr), ColorChangeObserver {
     private var color: Int = Color.BLACK
     var observer: ColorChangeObserver? = null
 
     init {
-        orientation = HORIZONTAL
         inflate(context, R.layout.mm2d_cc_view_hsv, this)
         sv_view.onColorChanged = {
             color = it

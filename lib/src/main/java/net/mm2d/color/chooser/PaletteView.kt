@@ -84,7 +84,8 @@ internal class PaletteView
             }
         }
 
-        override fun onBindViewHolder(holder: CellHolder, position: Int) = holder.apply(list[position], color)
+        override fun onBindViewHolder(holder: CellHolder, position: Int) =
+            holder.apply(list[position], color)
 
         override fun getItemCount(): Int = list.size
 
