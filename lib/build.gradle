@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'maven'
+apply plugin: 'maven-publish'
 apply plugin: 'org.jetbrains.dokka-android'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.github.ben-manes.versions'
@@ -45,9 +46,47 @@ dokka {
     outputDirectory = "../docs/dokka"
 }
 
+publishing {
+    publications {
+        Production(MavenPublication) {
+            artifact("$buildDir/outputs/aar/color-chooser-release.aar")
+            groupId = pj.groupId
+            artifactId = libraryName
+            version = pj.versions.name
+
+            pom.withXml {
+                def node = asNode()
+                def license = node.appendNode('licenses').appendNode('license')
+                license.appendNode('name', 'The MIT License')
+                license.appendNode('url', 'https://opensource.org/licenses/MIT')
+                license.appendNode('distribution', 'repo')
+                def scm = node.appendNode('scm')
+                scm.appendNode('connection', pj.githubUrl + ".git")
+                scm.appendNode('url', pj.githubUrl)
+                def dependencies = node.appendNode('dependencies')
+                configurations.api.dependencies.each {
+                    appendDependency(dependencies, it.group, it.name, it.version, 'compile')
+                }
+                configurations.implementation.dependencies.each {
+                    appendDependency(dependencies, it.group, it.name, it.version, 'runtime')
+                }
+            }
+        }
+    }
+}
+
+static def appendDependency(parent, groupId, artifactId, version, scope) {
+    def node = parent.appendNode('dependency')
+    node.appendNode('groupId', groupId)
+    node.appendNode('artifactId', artifactId)
+    node.appendNode('version', version)
+    node.appendNode('scope', scope)
+}
+
 bintray {
     user = project.hasProperty('bintray_user') ? bintray_user : ''
     key = project.hasProperty('bintray_key') ? bintray_key : ''
+    publications = ['Production']
     configurations = ['archives']
 
     pkg {
@@ -66,20 +105,25 @@ bintray {
 }
 
 uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: 'file:build/maven')
-            pom.project {
-                groupId = pj.groupId
-                artifactId = libraryName
-                version = pj.versions.name
-                licenses {
-                    license {
-                        name = 'The MIT License'
-                        url = 'https://opensource.org/licenses/MIT'
-                        distribution = 'repo'
-                    }
+    repositories.mavenDeployer {
+        repository(url: 'file:build/maven')
+        pom.project {
+            name = libraryName
+            url = pj.siteUrl
+
+            groupId = pj.groupId
+            artifactId = libraryName
+            version = pj.versions.name
+            licenses {
+                license {
+                    name = 'The MIT License'
+                    url = 'https://opensource.org/licenses/MIT'
+                    distribution = 'repo'
                 }
+            }
+            scm {
+                connection = pj.githubUrl + ".git"
+                url = pj.githubUrl
             }
         }
     }
