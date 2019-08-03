@@ -56,13 +56,12 @@ publishing {
 
             pom.withXml {
                 def node = asNode()
-                def license = node.appendNode('licenses').appendNode('license')
-                license.appendNode('name', 'The MIT License')
-                license.appendNode('url', 'https://opensource.org/licenses/MIT')
-                license.appendNode('distribution', 'repo')
-                def scm = node.appendNode('scm')
-                scm.appendNode('connection', pj.githubUrl + ".git")
-                scm.appendNode('url', pj.githubUrl)
+
+                def licenses = node.appendNode('licenses')
+                appendLicense(licenses, 'The MIT License', 'https://opensource.org/licenses/MIT', 'repo')
+
+                appendScm(node, pj.scmConnection, pj.githubUrl)
+
                 def dependencies = node.appendNode('dependencies')
                 configurations.api.dependencies.each {
                     appendDependency(dependencies, it.group, it.name, it.version, 'compile')
@@ -75,8 +74,21 @@ publishing {
     }
 }
 
-static def appendDependency(parent, groupId, artifactId, version, scope) {
-    def node = parent.appendNode('dependency')
+def appendLicense(parentNode, name, url, distribution) {
+    def node = parentNode.appendNode('license')
+    node.appendNode('name', name)
+    node.appendNode('url', url)
+    node.appendNode('distribution', distribution)
+}
+
+def appendScm(parentNode, connection, url) {
+    def node = parentNode.appendNode('scm')
+    node.appendNode('connection', connection)
+    node.appendNode('url', url)
+}
+
+def appendDependency(parentNode, groupId, artifactId, version, scope) {
+    def node = parentNode.appendNode('dependency')
     node.appendNode('groupId', groupId)
     node.appendNode('artifactId', artifactId)
     node.appendNode('version', version)
@@ -122,7 +134,7 @@ uploadArchives {
                 }
             }
             scm {
-                connection = pj.githubUrl + ".git"
+                connection = pj.scmConnection
                 url = pj.githubUrl
             }
         }

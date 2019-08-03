@@ -9,9 +9,10 @@ buildscript {
                         name: "${versionMajor}.${versionMinor}.${versionPatch}",
                         code: versionMajor * 10000 + versionMinor * 100 + versionPatch
                 ],
-                groupId  : 'net.mm2d',
-                siteUrl  : 'https://github.com/ohmae/color-chooser',
-                githubUrl: 'https://github.com/ohmae/color-chooser'
+                groupId      : 'net.mm2d',
+                siteUrl      : 'https://github.com/ohmae/color-chooser',
+                githubUrl    : 'https://github.com/ohmae/color-chooser',
+                scmConnection: 'scm:git:https://github.com/ohmae/color-chooser.git'
         ]
     }
     repositories {
