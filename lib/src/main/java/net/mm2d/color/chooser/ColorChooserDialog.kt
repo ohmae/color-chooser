@@ -41,7 +41,7 @@ class ColorChooserDialog : DialogFragment() {
             .create()
     }
 
-    override fun onCancel(dialog: DialogInterface?) {
+    override fun onCancel(dialog: DialogInterface) {
         val requestCode = arguments?.getInt(KEY_REQUEST_CODE) ?: return
         extractCallback()?.onColorChooserResult(requestCode, Activity.RESULT_CANCELED, 0)
     }
@@ -89,7 +89,7 @@ class ColorChooserDialog : DialogFragment() {
             initialColor: Int = Color.WHITE,
             withAlpha: Boolean = false
         ) {
-            val fragmentManager = activity.supportFragmentManager ?: return
+            val fragmentManager = activity.supportFragmentManager
             if (fragmentManager.findFragmentByTag(TAG) != null) {
                 return
             }

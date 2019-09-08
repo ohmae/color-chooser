@@ -14,12 +14,11 @@ archivesBaseName = libraryName
 version pj.versions.name
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+    compileSdkVersion 29
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode pj.versions.code
         versionName pj.versions.name
         vectorDrawables.useSupportLibrary = true
@@ -35,8 +34,8 @@ android {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation "androidx.appcompat:appcompat:1.0.2"
-    implementation "androidx.core:core-ktx:1.0.2"
+    implementation "androidx.appcompat:appcompat:1.1.0"
+    implementation "androidx.core:core-ktx:1.1.0"
     implementation "com.google.android.material:material:1.0.0"
     testImplementation "junit:junit:4.12"
 }
