@@ -87,15 +87,15 @@ internal class ColorSliderView
     }
 
     private fun updateChecker() {
-        if (alphaMode) {
-            checker = createChecker(
+        checker = if (alphaMode) {
+            createChecker(
                 resources.getDimensionPixelSize(R.dimen.mm2d_cc_checker_size),
                 resources.getDimensionPixelSize(R.dimen.mm2d_cc_slider_height),
                 ContextCompat.getColor(context, R.color.mm2d_cc_checker_light),
                 ContextCompat.getColor(context, R.color.mm2d_cc_checker_dark)
             )
         } else {
-            checker = null
+            null
         }
     }
 
