@@ -39,7 +39,6 @@
         <emptyLine />
       </value>
     </option>
-    <option name="JD_P_AT_EMPTY_LINES" value="false" />
     <JavaCodeStyleSettings>
       <option name="FIELD_NAME_PREFIX" value="m" />
       <option name="STATIC_FIELD_NAME_PREFIX" value="s" />

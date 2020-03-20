@@ -23,7 +23,13 @@ android {
         versionName pj.versions.name
         vectorDrawables.useSupportLibrary = true
     }
-
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -35,8 +41,8 @@ android {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.appcompat:appcompat:1.1.0"
-    implementation "androidx.core:core-ktx:1.1.0"
-    implementation "com.google.android.material:material:1.0.0"
+    implementation "androidx.core:core-ktx:1.2.0"
+    implementation "com.google.android.material:material:1.1.0"
     testImplementation "junit:junit:4.13"
 }
 
