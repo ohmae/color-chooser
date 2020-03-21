@@ -42,16 +42,22 @@ internal class PaletteView
     init {
         val padding = context.resources.getDimensionPixelSize(R.dimen.mm2d_cc_palette_padding)
         setPadding(0, padding, 0, padding)
+        clipToPadding = false
         setHasFixedSize(true)
         overScrollMode = View.OVER_SCROLL_NEVER
-        clipToPadding = false
         itemAnimator = null
         layoutManager = linearLayoutManager
         adapter = cellAdapter
+        isVerticalFadingEdgeEnabled = true
+        setFadingEdgeLength(padding)
         cellAdapter.onColorChanged = {
             observer?.onChange(it, this)
         }
     }
+
+    override fun isPaddingOffsetRequired(): Boolean = true
+    override fun getTopPaddingOffset(): Int = -paddingTop
+    override fun getBottomPaddingOffset(): Int = paddingBottom
 
     override fun onChange(color: Int, notifier: Any?) {
         cellAdapter.setColor(color)
