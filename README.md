@@ -22,7 +22,7 @@ repositories {
     jcenter()
 }
 dependencies {
-    implementation 'net.mm2d:color-chooser:0.1.3'
+    implementation 'net.mm2d:color-chooser:0.1.4'
 }
 ```
 
@@ -37,7 +37,7 @@ ColorChooserDialog.show(
 )
 ```
 
-To receive result. Implement `ColorChooserDialog.Callback` to `Activity` or `Fragment` 
+To receive result. Implement `ColorChooserDialog.Callback` to `Activity` or `Fragment`
 
 ```kotlin
 class MainActivity : AppCompatActivity(), ColorChooserDialog.Callback {
