@@ -90,7 +90,7 @@ class ColorChooserDialog : DialogFragment() {
             withAlpha: Boolean = false
         ) {
             val fragmentManager = activity.supportFragmentManager
-            if (fragmentManager.findFragmentByTag(TAG) != null) {
+            if (fragmentManager.findFragmentByTag(TAG) != null || fragmentManager.isStateSaved) {
                 return
             }
             val arguments = Bundle().apply {
@@ -100,8 +100,7 @@ class ColorChooserDialog : DialogFragment() {
             }
             ColorChooserDialog().also {
                 it.arguments = arguments
-                it.show(fragmentManager, TAG)
-            }
+            }.show(fragmentManager, TAG)
         }
 
         /**
@@ -119,7 +118,7 @@ class ColorChooserDialog : DialogFragment() {
             withAlpha: Boolean = false
         ) {
             val fragmentManager = fragment.fragmentManager ?: return
-            if (fragmentManager.findFragmentByTag(TAG) != null) {
+            if (fragmentManager.findFragmentByTag(TAG) != null || fragmentManager.isStateSaved) {
                 return
             }
             val arguments = Bundle().apply {
@@ -130,8 +129,7 @@ class ColorChooserDialog : DialogFragment() {
             ColorChooserDialog().also {
                 it.setTargetFragment(fragment, requestCode)
                 it.arguments = arguments
-                it.show(fragmentManager, TAG)
-            }
+            }.show(fragmentManager, TAG)
         }
     }
 }

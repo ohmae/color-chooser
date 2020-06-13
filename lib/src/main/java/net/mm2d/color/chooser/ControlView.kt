@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.mm2d_cc_view_control.view.*
 import net.mm2d.color.chooser.util.AttrUtils
 import net.mm2d.color.chooser.util.setAlpha
 import net.mm2d.color.chooser.util.toOpacity
+import java.util.*
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -132,7 +133,7 @@ internal class ControlView
         ): CharSequence? {
             val converted = source.toString()
                 .replace("[^0-9a-fA-F]".toRegex(), "")
-                .toUpperCase()
+                .toUpperCase(Locale.ENGLISH)
             if (source.toString() == converted) return null
             if (source !is Spanned) return converted
             return SpannableString(converted).also {
