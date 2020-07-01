@@ -1,4 +1,5 @@
 # color chooser
+
 [![license](https://img.shields.io/github/license/ohmae/color-chooser.svg)](./LICENSE)
 [![GitHub release](https://img.shields.io/github/release/ohmae/color-chooser.svg)](https://github.com/ohmae/color-chooser/releases)
 [![GitHub issues](https://img.shields.io/github/issues/ohmae/color-chooser.svg)](https://github.com/ohmae/color-chooser/issues)
@@ -73,8 +74,10 @@ Please see [Sample code](sample/src/main/java/net/mm2d/color/chooser/sample/Main
 - [LeakCanary](https://github.com/square/leakcanary)
 
 ## Author
+
 大前 良介 (OHMAE Ryosuke)
 http://www.mm2d.net/
 
 ## License
+
 [MIT License](./LICENSE)
