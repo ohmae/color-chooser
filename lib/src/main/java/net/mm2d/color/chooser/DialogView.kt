@@ -11,8 +11,12 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.core.graphics.alpha
+import androidx.core.view.forEach
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
 import kotlinx.android.synthetic.main.mm2d_cc_view_dialog.view.*
 import net.mm2d.color.chooser.util.toOpacity
 
@@ -24,8 +28,8 @@ internal class DialogView
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : LinearLayout(context, attrs, defStyleAttr), ColorChangeObserver {
-    private val observers: List<ColorChangeObserver>
+) : LinearLayout(context, attrs, defStyleAttr), ColorChangeMediator {
+    private val liveData: MutableLiveData<Int> = MutableLiveData()
     val color: Int
         get() = control_view.color
 
@@ -33,28 +37,33 @@ internal class DialogView
         orientation = VERTICAL
         val inflater = LayoutInflater.from(context)
         inflater.inflate(R.layout.mm2d_cc_view_dialog, this)
+    }
+
+    fun init(color: Int, lifecycleOwner: LifecycleOwner) {
+        onChangeColor(color.toOpacity())
+        control_view.setAlpha(color.alpha)
         val pages: List<Pair<String, View>> = listOf(
-            "palette" to PaletteView(context).also { it.observer = this },
-            "hsv" to HsvPage(context).also { it.observer = this },
-            "rgb" to SliderPage(context).also { it.observer = this }
+            "palette" to PaletteView(context),
+            "hsv" to HsvPage(context),
+            "rgb" to SliderPage(context)
         )
         view_pager.adapter = ViewPagerAdapter(pages)
         tab_layout.setupWithViewPager(view_pager)
-        control_view.observer = this
-        observers = pages.map { it.second as ColorChangeObserver }
-            .plus(control_view)
+        pages.forEach { observeRecursively(it.second, lifecycleOwner) }
+        observeRecursively(control_view, lifecycleOwner)
     }
 
-    override fun onChange(color: Int, notifier: Any?) {
-        observers.forEach { it.onChange(color, notifier) }
+    private fun observeRecursively(view: View, lifecycleOwner: LifecycleOwner) {
+        if (view is ColorObserver) liveData.observe(lifecycleOwner, view)
+        (view as? ViewGroup)?.forEach { observeRecursively(it, lifecycleOwner) }
     }
 
     fun setWithAlpha(withAlpha: Boolean) {
         control_view.setWithAlpha(withAlpha)
     }
 
-    fun setColor(color: Int) {
-        onChange(color.toOpacity(), null)
-        control_view.setAlpha(color.alpha)
+    override fun onChangeColor(color: Int) {
+        if (liveData.value == color) return
+        liveData.value = color
     }
 }

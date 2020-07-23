@@ -115,15 +115,11 @@ internal object ColorUtils {
         return hue(r, g, b, max, min)
     }
 
-    private fun max(v1: Float, v2: Float, v3: Float): Float {
-        val max = if (v1 > v2) v1 else v2
-        return if (max > v3) max else v3
-    }
+    private fun max(v1: Float, v2: Float, v3: Float): Float =
+        maxOf(maxOf(v1, v2), v3)
 
-    private fun min(v1: Float, v2: Float, v3: Float): Float {
-        val min = if (v1 < v2) v1 else v2
-        return if (min < v3) min else v3
-    }
+    private fun min(v1: Float, v2: Float, v3: Float): Float =
+        minOf(minOf(v1, v2), v3)
 
     private fun hue(r: Float, g: Float, b: Float, max: Float, min: Float): Float {
         val range = max - min

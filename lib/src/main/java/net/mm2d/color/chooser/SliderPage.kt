@@ -10,8 +10,6 @@ package net.mm2d.color.chooser
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
-import kotlinx.android.synthetic.main.mm2d_cc_page_slider.view.*
-import net.mm2d.color.chooser.util.toOpacity
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -21,18 +19,8 @@ internal class SliderPage
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr), ColorChangeObserver {
-    var observer: ColorChangeObserver? = null
-
+) : FrameLayout(context, attrs, defStyleAttr) {
     init {
         inflate(context, R.layout.mm2d_cc_page_slider, this)
-        slider_view.observer = colorChangeObserver { color, _ ->
-            observer?.onChange(color, this)
-        }
-    }
-
-    override fun onChange(color: Int, notifier: Any?) {
-        if (notifier == this) return
-        slider_view.onChange(color.toOpacity(), notifier)
     }
 }

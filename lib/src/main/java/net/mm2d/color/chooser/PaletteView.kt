@@ -33,8 +33,10 @@ internal class PaletteView
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : RecyclerView(context, attrs, defStyleAttr), ColorChangeObserver {
-    var observer: ColorChangeObserver? = null
+) : RecyclerView(context, attrs, defStyleAttr), ColorObserver {
+    private val colorChangeMediator by lazy {
+        findColorChangeMediator()
+    }
     private val cellHeight = (48 * context.resources.displayMetrics.density).roundToInt()
     private val cellAdapter = CellAdapter(context)
     private val linearLayoutManager = LinearLayoutManager(context)
@@ -51,7 +53,7 @@ internal class PaletteView
         isVerticalFadingEdgeEnabled = true
         setFadingEdgeLength(padding)
         cellAdapter.onColorChanged = {
-            observer?.onChange(it, this)
+            colorChangeMediator?.onChangeColor(it)
         }
     }
 
@@ -59,7 +61,8 @@ internal class PaletteView
     override fun getTopPaddingOffset(): Int = -paddingTop
     override fun getBottomPaddingOffset(): Int = paddingBottom
 
-    override fun onChange(color: Int, notifier: Any?) {
+    override fun onChanged(color: Int?) {
+        if (color == null) return
         cellAdapter.setColor(color)
     }
 

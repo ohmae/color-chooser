@@ -32,7 +32,10 @@ internal class ControlView
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : LinearLayout(context, attrs, defStyleAttr), ColorChangeObserver {
+) : LinearLayout(context, attrs, defStyleAttr), ColorObserver {
+    private val colorChangeMediator by lazy {
+        findColorChangeMediator()
+    }
     private val normalTint =
         ColorStateList.valueOf(AttrUtils.resolveColor(context, R.attr.colorAccent, Color.BLUE))
     private val errorTint =
@@ -41,7 +44,6 @@ internal class ControlView
     private var hasAlpha: Boolean = true
     private val rgbFilter = arrayOf(HexadecimalFilter(), LengthFilter(6))
     private val argbFilter = arrayOf(HexadecimalFilter(), LengthFilter(8))
-    var observer: ColorChangeObserver? = null
     var color: Int = Color.BLACK
         private set
 
@@ -73,7 +75,7 @@ internal class ControlView
                     clearError()
                     color_preview.setColor(color)
                     seek_alpha.setValue(color.alpha)
-                    observer?.onChange(color.toOpacity(), this@ControlView)
+                    colorChangeMediator?.onChangeColor(color.toOpacity())
                 } catch (e: IllegalArgumentException) {
                     setError()
                 }
@@ -107,8 +109,9 @@ internal class ControlView
         ViewCompat.setBackgroundTintList(edit_hex, normalTint)
     }
 
-    override fun onChange(color: Int, notifier: Any?) {
-        if (notifier == this) return
+    override fun onChanged(color: Int?) {
+        if (color == null) return
+        if (this.color.toOpacity() == color) return
         this.color = color.setAlpha(seek_alpha.value)
         color_preview.setColor(this.color)
         setColorToHexText()

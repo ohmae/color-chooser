@@ -28,7 +28,8 @@ class ColorChooserDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val activity = requireActivity()
         dialogView = DialogView(activity)
-        dialogView.setColor(requireArguments().getInt(KEY_INITIAL_COLOR, 0))
+        val color = requireArguments().getInt(KEY_INITIAL_COLOR, 0)
+        dialogView.init(color, this)
         dialogView.setWithAlpha(requireArguments().getBoolean(KEY_WITH_ALPHA))
         return AlertDialog.Builder(activity)
             .setView(dialogView)

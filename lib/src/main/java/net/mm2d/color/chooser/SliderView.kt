@@ -21,8 +21,10 @@ internal class SliderView
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : LinearLayout(context, attrs, defStyleAttr), ColorChangeObserver {
-    var observer: ColorChangeObserver? = null
+) : LinearLayout(context, attrs, defStyleAttr), ColorObserver {
+    private val colorChangeMediator by lazy {
+        findColorChangeMediator()
+    }
 
     init {
         orientation = VERTICAL
@@ -41,8 +43,8 @@ internal class SliderView
         }
     }
 
-    override fun onChange(color: Int, notifier: Any?) {
-        if (notifier == this) return
+    override fun onChanged(color: Int?) {
+        if (color == null) return
         seek_red.setValue(Color.red(color))
         seek_green.setValue(Color.green(color))
         seek_blue.setValue(Color.blue(color))
@@ -51,6 +53,6 @@ internal class SliderView
     private fun updateBySeekBar(fromUser: Boolean) {
         if (!fromUser) return
         val color = Color.rgb(seek_red.value, seek_green.value, seek_blue.value)
-        observer?.onChange(color, this)
+        colorChangeMediator?.onChangeColor(color)
     }
 }

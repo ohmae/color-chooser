@@ -22,25 +22,28 @@ internal class HsvView
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr), ColorChangeObserver {
+) : FrameLayout(context, attrs, defStyleAttr), ColorObserver {
+    private val colorChangeMediator by lazy {
+        findColorChangeMediator()
+    }
     private var color: Int = Color.BLACK
-    var observer: ColorChangeObserver? = null
 
     init {
         inflate(context, R.layout.mm2d_cc_view_hsv, this)
         sv_view.onColorChanged = {
             color = it
-            observer?.onChange(color, this)
+            colorChangeMediator?.onChangeColor(color)
         }
         hue_view.onHueChanged = {
             color = ColorUtils.hsvToColor(it, sv_view.saturation, sv_view.value)
             sv_view.setHue(it)
-            observer?.onChange(color, this)
+            colorChangeMediator?.onChangeColor(color)
         }
     }
 
-    override fun onChange(color: Int, notifier: Any?) {
-        if (notifier == this) return
+    override fun onChanged(color: Int?) {
+        if (color == null) return
+        if (this.color == color) return
         this.color = color
         sv_view.setColor(color)
         hue_view.setColor(color)
