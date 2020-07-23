@@ -26,10 +26,10 @@ class ColorChooserDialog : DialogFragment() {
     private lateinit var dialogView: DialogView
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val activity = activity!!
+        val activity = requireActivity()
         dialogView = DialogView(activity)
-        dialogView.setColor(arguments?.getInt(KEY_INITIAL_COLOR, 0) ?: 0)
-        dialogView.setWithAlpha(arguments?.getBoolean(KEY_WITH_ALPHA) ?: false)
+        dialogView.setColor(requireArguments().getInt(KEY_INITIAL_COLOR, 0))
+        dialogView.setWithAlpha(requireArguments().getBoolean(KEY_WITH_ALPHA))
         return AlertDialog.Builder(activity)
             .setView(dialogView)
             .setPositiveButton("OK") { _, _ ->
@@ -42,12 +42,12 @@ class ColorChooserDialog : DialogFragment() {
     }
 
     override fun onCancel(dialog: DialogInterface) {
-        val requestCode = arguments?.getInt(KEY_REQUEST_CODE) ?: return
+        val requestCode = requireArguments().getInt(KEY_REQUEST_CODE)
         extractCallback()?.onColorChooserResult(requestCode, Activity.RESULT_CANCELED, 0)
     }
 
     private fun notifySelect() {
-        val requestCode = arguments?.getInt(KEY_REQUEST_CODE) ?: return
+        val requestCode = requireArguments().getInt(KEY_REQUEST_CODE)
         extractCallback()?.onColorChooserResult(requestCode, Activity.RESULT_OK, dialogView.color)
     }
 
@@ -117,7 +117,7 @@ class ColorChooserDialog : DialogFragment() {
             initialColor: Int = Color.WHITE,
             withAlpha: Boolean = false
         ) {
-            val fragmentManager = fragment.fragmentManager ?: return
+            val fragmentManager = fragment.childFragmentManager
             if (fragmentManager.findFragmentByTag(TAG) != null || fragmentManager.isStateSaved) {
                 return
             }
