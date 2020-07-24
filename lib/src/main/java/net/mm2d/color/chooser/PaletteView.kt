@@ -9,12 +9,14 @@ package net.mm2d.color.chooser
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Resources
 import android.content.res.TypedArray
 import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.ArrayRes
 import androidx.core.content.res.getColorOrThrow
 import androidx.core.content.res.getResourceIdOrThrow
 import androidx.core.content.res.use
@@ -77,13 +79,12 @@ internal class PaletteView
         private val inflater: LayoutInflater = LayoutInflater.from(context)
         private val list: List<IntArray> = createPalette(context)
         private var color: Int = 0
-        private var checked: Boolean = false
         var onColorChanged: ((color: Int) -> Unit)? = null
         var index: Int = -1
             private set
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CellHolder {
-            return CellHolder(
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CellHolder =
+            CellHolder(
                 inflater.inflate(
                     R.layout.mm2d_cc_item_palette,
                     parent, false
@@ -91,7 +92,6 @@ internal class PaletteView
             ).also { holder ->
                 holder.onColorChanged = { onColorChanged?.invoke(it) }
             }
-        }
 
         override fun onBindViewHolder(holder: CellHolder, position: Int) =
             holder.apply(list[position], color)
@@ -104,10 +104,10 @@ internal class PaletteView
             val newIndex = list.indexOfFirst { it.contains(newColor) }
             val lastIndex = index
             index = newIndex
-            if (!checked && newIndex < 0) return
-            checked = newIndex >= 0
-            notifyItemChanged(lastIndex)
-            if (lastIndex != newIndex) {
+            if (lastIndex >= 0) {
+                notifyItemChanged(lastIndex)
+            }
+            if (newIndex >= 0) {
                 notifyItemChanged(newIndex)
             }
         }
@@ -140,23 +140,23 @@ internal class PaletteView
     }
 
     companion object {
-        private var cache: SoftReference<List<IntArray>>? = null
+        private var cache: SoftReference<List<IntArray>> = SoftReference<List<IntArray>>(null)
 
         @SuppressLint("Recycle")
+        private fun <R> Resources.withTypedArray(@ArrayRes id: Int, block: TypedArray.() -> R): R =
+            obtainTypedArray(id).use { it.block() }
+
         private fun createPalette(context: Context): List<IntArray> {
-            cache?.get()?.let { return it }
+            cache.get()?.let { return it }
             val resources = context.resources
-            return resources.obtainTypedArray(R.array.material_colors).use { ids ->
-                Array(ids.length()) {
-                    resources.obtainTypedArray(ids.getResourceIdOrThrow(it)).readColorArray()
-                }.toList()
+            return resources.withTypedArray(R.array.material_colors) {
+                (0 until length()).map { resources.readColorArray(getResourceIdOrThrow(it)) }
             }.also {
                 cache = SoftReference(it)
             }
         }
 
-        private fun TypedArray.readColorArray(): IntArray = use {
-            IntArray(length()) { getColorOrThrow(it) }
-        }
+        private fun Resources.readColorArray(id: Int): IntArray =
+            withTypedArray(id) { IntArray(length()) { getColorOrThrow(it) } }
     }
 }
