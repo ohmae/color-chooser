@@ -52,10 +52,7 @@ internal class PaletteCell @JvmOverloads constructor(
         if (color == Color.TRANSPARENT) return
         canvas.drawColor(color)
         if (checked) {
-            DrawableCompat.setTint(
-                icon,
-                if (ColorUtils.shouldUseWhiteForeground(color)) Color.WHITE else Color.BLACK
-            )
+            DrawableCompat.setTint(icon, selectForeground(color))
             icon.draw(canvas)
         }
     }
@@ -70,5 +67,8 @@ internal class PaletteCell @JvmOverloads constructor(
             AppCompatResources.getDrawable(context, drawable.mm2d_cc_ic_check)!!.wrap()
 
         private fun Drawable.wrap(): Drawable = DrawableCompat.wrap(this)
+
+        fun selectForeground(background: Int): Int =
+            if (ColorUtils.shouldUseWhiteForeground(background)) Color.WHITE else  Color.BLACK
     }
 }

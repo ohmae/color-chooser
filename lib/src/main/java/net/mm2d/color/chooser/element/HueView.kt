@@ -58,9 +58,7 @@ internal class HueView
     }
 
     private fun updateHue(h: Float, fromUser: Boolean = false) {
-        if (hue == h) {
-            return
-        }
+        if (hue == h) return
         hue = h
         color = ColorUtils.hsvToColor(hue, 1f, 1f)
         invalidate()

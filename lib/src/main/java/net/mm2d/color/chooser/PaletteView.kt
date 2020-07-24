@@ -39,12 +39,12 @@ internal class PaletteView
     private val colorChangeMediator by lazy {
         findColorChangeMediator()
     }
-    private val cellHeight = (48 * context.resources.displayMetrics.density).roundToInt()
+    private val cellHeight = (48 * resources.displayMetrics.density).roundToInt()
     private val cellAdapter = CellAdapter(context)
     private val linearLayoutManager = LinearLayoutManager(context)
 
     init {
-        val padding = context.resources.getDimensionPixelSize(R.dimen.mm2d_cc_palette_padding)
+        val padding = resources.getDimensionPixelSize(R.dimen.mm2d_cc_palette_padding)
         setPadding(0, padding, 0, padding)
         clipToPadding = false
         setHasFixedSize(true)
@@ -143,13 +143,13 @@ internal class PaletteView
         private var cache: SoftReference<List<IntArray>> = SoftReference<List<IntArray>>(null)
 
         @SuppressLint("Recycle")
-        private fun <R> Resources.withTypedArray(@ArrayRes id: Int, block: TypedArray.() -> R): R =
+        private fun <R> Resources.useTypedArray(@ArrayRes id: Int, block: TypedArray.() -> R): R =
             obtainTypedArray(id).use { it.block() }
 
         private fun createPalette(context: Context): List<IntArray> {
             cache.get()?.let { return it }
             val resources = context.resources
-            return resources.withTypedArray(R.array.material_colors) {
+            return resources.useTypedArray(R.array.material_colors) {
                 (0 until length()).map { resources.readColorArray(getResourceIdOrThrow(it)) }
             }.also {
                 cache = SoftReference(it)
@@ -157,6 +157,6 @@ internal class PaletteView
         }
 
         private fun Resources.readColorArray(id: Int): IntArray =
-            withTypedArray(id) { IntArray(length()) { getColorOrThrow(it) } }
+            useTypedArray(id) { IntArray(length()) { getColorOrThrow(it) } }
     }
 }

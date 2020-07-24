@@ -15,10 +15,10 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.content.withStyledAttributes
 import net.mm2d.color.chooser.R
 import net.mm2d.color.chooser.util.setAlpha
 import net.mm2d.color.chooser.util.toOpacity
-import kotlin.math.max
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -56,20 +56,20 @@ internal class ColorSliderView
     )
     private var checker: Bitmap? = null
     private var _value: Float = 0f
-    private var maxColor: Int
+    private var maxColor: Int = Color.WHITE
     private var gradation: Bitmap
-    private val baseColor: Int
-    private val alphaMode: Boolean
+    private var baseColor: Int = Color.BLACK
+    private var alphaMode: Boolean = true
     var onValueChanged: ((value: Int, fromUser: Boolean) -> Unit)? = null
     val value: Int
         get() = (_value * MAX).toInt()
 
     init {
-        val a = context.obtainStyledAttributes(attrs, R.styleable.ColorSliderView)
-        maxColor = a.getColor(R.styleable.ColorSliderView_maxColor, Color.WHITE)
-        baseColor = a.getColor(R.styleable.ColorSliderView_baseColor, Color.BLACK)
-        alphaMode = a.getBoolean(R.styleable.ColorSliderView_alphaMode, true)
-        a.recycle()
+        context.withStyledAttributes(attrs, R.styleable.ColorSliderView) {
+            maxColor = getColor(R.styleable.ColorSliderView_maxColor, Color.WHITE)
+            baseColor = getColor(R.styleable.ColorSliderView_baseColor, Color.BLACK)
+            alphaMode = getBoolean(R.styleable.ColorSliderView_alphaMode, true)
+        }
         gradation = createGradation(maxColor)
         updateChecker()
     }
@@ -166,12 +166,12 @@ internal class ColorSliderView
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         setMeasuredDimension(
             resolveSizeAndState(
-                max(_width + paddingLeft + paddingRight, suggestedMinimumWidth),
+                maxOf(_width + paddingLeft + paddingRight, suggestedMinimumWidth),
                 widthMeasureSpec,
                 MeasureSpec.UNSPECIFIED
             ),
             resolveSizeAndState(
-                max(_height + paddingTop + paddingBottom, suggestedMinimumHeight),
+                maxOf(_height + paddingTop + paddingBottom, suggestedMinimumHeight),
                 heightMeasureSpec,
                 MeasureSpec.UNSPECIFIED
             )

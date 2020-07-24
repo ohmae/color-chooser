@@ -35,8 +35,7 @@ internal class DialogView
 
     init {
         orientation = VERTICAL
-        val inflater = LayoutInflater.from(context)
-        inflater.inflate(R.layout.mm2d_cc_view_dialog, this)
+        inflate(context, R.layout.mm2d_cc_view_dialog, this)
     }
 
     fun init(color: Int, lifecycleOwner: LifecycleOwner) {
