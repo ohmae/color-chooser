@@ -14,9 +14,11 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.ColorInt
-import androidx.core.content.ContextCompat
 import net.mm2d.color.chooser.R
 import net.mm2d.color.chooser.util.ColorUtils
+import net.mm2d.color.chooser.util.getColor
+import net.mm2d.color.chooser.util.getDimension
+import net.mm2d.color.chooser.util.getPixels
 import kotlin.math.max
 
 /**
@@ -32,25 +34,19 @@ internal class HueView
     private var color: Int = Color.RED
     private val paint = Paint()
     private val bitmap: Bitmap = createMaskBitmap()
-    private val _padding = resources.getDimensionPixelOffset(R.dimen.mm2d_cc_panel_margin)
-    private val _width = resources.getDimensionPixelOffset(R.dimen.mm2d_cc_hue_width) + _padding * 2
-    private val _height = resources.getDimensionPixelOffset(R.dimen.mm2d_cc_hsv_size) + _padding * 2
-    private val _sampleRadius = resources.getDimension(R.dimen.mm2d_cc_sample_radius)
+    private val _padding = getPixels(R.dimen.mm2d_cc_panel_margin)
+    private val _width = getPixels(R.dimen.mm2d_cc_hue_width) + _padding * 2
+    private val _height = getPixels(R.dimen.mm2d_cc_hsv_size) + _padding * 2
+    private val _sampleRadius = getDimension(R.dimen.mm2d_cc_sample_radius)
     private val _sampleFrameRadius =
-        _sampleRadius + resources.getDimension(R.dimen.mm2d_cc_sample_frame)
+        _sampleRadius + getDimension(R.dimen.mm2d_cc_sample_frame)
     private val _sampleShadowRadius =
-        _sampleFrameRadius + resources.getDimension(R.dimen.mm2d_cc_sample_shadow)
+        _sampleFrameRadius + getDimension(R.dimen.mm2d_cc_sample_shadow)
     private val bitmapRect = Rect(0, 0, 1, RANGE)
     private val targetRect = Rect()
     private var hue: Float = 0f
-    private val colorSampleFrame = ContextCompat.getColor(
-        context,
-        R.color.mm2d_cc_sample_frame
-    )
-    private val colorSampleShadow = ContextCompat.getColor(
-        context,
-        R.color.mm2d_cc_sample_shadow
-    )
+    private val colorSampleFrame = getColor(R.color.mm2d_cc_sample_frame)
+    private val colorSampleShadow = getColor(R.color.mm2d_cc_sample_shadow)
     var onHueChanged: ((hue: Float) -> Unit)? = null
 
     fun setColor(@ColorInt color: Int) {
@@ -113,13 +109,8 @@ internal class HueView
         private const val RANGE = 360
 
         private fun createMaskBitmap(): Bitmap {
-            val pixels = IntArray(RANGE) {
-                ColorUtils.hsvToColor(it.toFloat() / RANGE, 1f, 1f)
-            }
-            return Bitmap.createBitmap(
-                pixels, 0, 1, 1,
-                RANGE, Bitmap.Config.ARGB_8888
-            )
+            val pixels = IntArray(RANGE) { ColorUtils.hsvToColor(it.toFloat() / RANGE, 1f, 1f) }
+            return Bitmap.createBitmap(pixels, 1, RANGE, Bitmap.Config.ARGB_8888)
         }
     }
 }

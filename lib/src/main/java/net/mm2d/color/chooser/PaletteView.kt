@@ -24,8 +24,8 @@ import androidx.core.view.children
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import net.mm2d.color.chooser.element.PaletteCell
+import net.mm2d.color.chooser.util.toPixelsAsDp
 import java.lang.ref.SoftReference
-import kotlin.math.roundToInt
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -39,7 +39,7 @@ internal class PaletteView
     private val colorChangeMediator by lazy {
         findColorChangeMediator()
     }
-    private val cellHeight = (48 * resources.displayMetrics.density).roundToInt()
+    private val cellHeight = 48.toPixelsAsDp(context)
     private val cellAdapter = CellAdapter(context)
     private val linearLayoutManager = LinearLayoutManager(context)
 
@@ -84,14 +84,8 @@ internal class PaletteView
             private set
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CellHolder =
-            CellHolder(
-                inflater.inflate(
-                    R.layout.mm2d_cc_item_palette,
-                    parent, false
-                )
-            ).also { holder ->
-                holder.onColorChanged = { onColorChanged?.invoke(it) }
-            }
+            CellHolder(inflater.inflate(R.layout.mm2d_cc_item_palette, parent, false))
+                .also { holder -> holder.onColorChanged = { onColorChanged?.invoke(it) } }
 
         override fun onBindViewHolder(holder: CellHolder, position: Int) =
             holder.apply(list[position], color)
@@ -104,12 +98,8 @@ internal class PaletteView
             val newIndex = list.indexOfFirst { it.contains(newColor) }
             val lastIndex = index
             index = newIndex
-            if (lastIndex >= 0) {
-                notifyItemChanged(lastIndex)
-            }
-            if (newIndex >= 0) {
-                notifyItemChanged(newIndex)
-            }
+            if (lastIndex >= 0) notifyItemChanged(lastIndex)
+            if (newIndex >= 0) notifyItemChanged(newIndex)
         }
     }
 

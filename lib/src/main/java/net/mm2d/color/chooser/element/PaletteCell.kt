@@ -69,6 +69,6 @@ internal class PaletteCell @JvmOverloads constructor(
         private fun Drawable.wrap(): Drawable = DrawableCompat.wrap(this)
 
         fun selectForeground(background: Int): Int =
-            if (ColorUtils.shouldUseWhiteForeground(background)) Color.WHITE else  Color.BLACK
+            if (ColorUtils.shouldUseWhiteForeground(background)) Color.WHITE else Color.BLACK
     }
 }

@@ -12,8 +12,11 @@ import android.graphics.*
 import android.graphics.Paint.Style
 import android.util.AttributeSet
 import android.view.View
-import androidx.core.content.ContextCompat
 import net.mm2d.color.chooser.R
+import net.mm2d.color.chooser.util.drawRectWithOffset
+import net.mm2d.color.chooser.util.getColor
+import net.mm2d.color.chooser.util.getDimension
+import net.mm2d.color.chooser.util.getPixels
 import kotlin.math.max
 
 /**
@@ -28,23 +31,17 @@ internal class PreviewView
     private val paint = Paint().also {
         it.isAntiAlias = true
     }
-    private val _width = resources.getDimensionPixelOffset(R.dimen.mm2d_cc_preview_width)
-    private val _height = resources.getDimensionPixelOffset(R.dimen.mm2d_cc_preview_height)
-    private val frameLineWidth = resources.getDimension(R.dimen.mm2d_cc_sample_frame)
-    private val shadowLineWidth = resources.getDimension(R.dimen.mm2d_cc_sample_shadow)
-    private val colorSampleFrame = ContextCompat.getColor(
-        context,
-        R.color.mm2d_cc_sample_frame
-    )
-    private val colorSampleShadow = ContextCompat.getColor(
-        context,
-        R.color.mm2d_cc_sample_shadow
-    )
+    private val _width = getPixels(R.dimen.mm2d_cc_preview_width)
+    private val _height = getPixels(R.dimen.mm2d_cc_preview_height)
+    private val frameLineWidth = getDimension(R.dimen.mm2d_cc_sample_frame)
+    private val shadowLineWidth = getDimension(R.dimen.mm2d_cc_sample_shadow)
+    private val colorSampleFrame = getColor(R.color.mm2d_cc_sample_frame)
+    private val colorSampleShadow = getColor(R.color.mm2d_cc_sample_shadow)
     private val checkerRect = Rect()
     private val targetRect = Rect()
-    private val checkerSize = resources.getDimensionPixelSize(R.dimen.mm2d_cc_checker_size)
-    private val colorCheckerLight = ContextCompat.getColor(context, R.color.mm2d_cc_checker_light)
-    private val colorCheckerDark = ContextCompat.getColor(context, R.color.mm2d_cc_checker_dark)
+    private val checkerSize = getPixels(R.dimen.mm2d_cc_checker_size)
+    private val colorCheckerLight = getColor(R.color.mm2d_cc_checker_light)
+    private val colorCheckerDark = getColor(R.color.mm2d_cc_checker_dark)
     private var checker: Bitmap? = null
     var color: Int = Color.BLACK
         private set
@@ -54,23 +51,11 @@ internal class PreviewView
         paint.color = colorSampleShadow
         paint.strokeWidth = shadowLineWidth
         val shadow = frameLineWidth + shadowLineWidth / 2
-        canvas.drawRect(
-            targetRect.left - shadow,
-            targetRect.top - shadow,
-            targetRect.right + shadow,
-            targetRect.bottom + shadow,
-            paint
-        )
+        canvas.drawRectWithOffset(targetRect, shadow, paint)
         paint.color = colorSampleFrame
         paint.strokeWidth = frameLineWidth
         val frame = frameLineWidth / 2
-        canvas.drawRect(
-            targetRect.left - frame,
-            targetRect.top - frame,
-            targetRect.right + frame,
-            targetRect.bottom + frame,
-            paint
-        )
+        canvas.drawRectWithOffset(targetRect, frame, paint)
         val checker = checker ?: return
         canvas.drawBitmap(checker, checkerRect, targetRect, paint)
         paint.style = Style.FILL
@@ -118,20 +103,19 @@ internal class PreviewView
 
     companion object {
         private fun createChecker(
-            checkerSize: Int,
+            step: Int,
             width: Int,
             height: Int,
-            lightColor: Int,
-            darkColor: Int
+            color1: Int,
+            color2: Int
         ): Bitmap {
             val pixels = IntArray(width * height)
             for (y in 0 until height) {
                 for (x in 0 until width) {
-                    pixels[x + y * width] =
-                        if ((x / checkerSize + y / checkerSize) % 2 == 0) lightColor else darkColor
+                    pixels[x + y * width] = if ((x / step + y / step) % 2 == 0) color1 else color2
                 }
             }
-            return Bitmap.createBitmap(pixels, 0, width, width, height, Bitmap.Config.ARGB_8888)
+            return Bitmap.createBitmap(pixels, width, height, Bitmap.Config.ARGB_8888)
         }
     }
 }

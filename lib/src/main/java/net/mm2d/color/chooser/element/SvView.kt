@@ -14,9 +14,11 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.ColorInt
-import androidx.core.content.ContextCompat
 import net.mm2d.color.chooser.R
 import net.mm2d.color.chooser.util.ColorUtils
+import net.mm2d.color.chooser.util.getColor
+import net.mm2d.color.chooser.util.getDimension
+import net.mm2d.color.chooser.util.getPixels
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -35,19 +37,18 @@ internal class SvView
     private var maxColor: Int = Color.RED
     private var maskBitmap: Bitmap? = null
     private val paint = Paint().also { it.isAntiAlias = true }
-    private val _padding = resources.getDimensionPixelOffset(R.dimen.mm2d_cc_panel_margin)
-    private val _width = resources.getDimensionPixelOffset(R.dimen.mm2d_cc_hsv_size) + _padding * 2
-    private val _height = resources.getDimensionPixelOffset(R.dimen.mm2d_cc_hsv_size) + _padding * 2
-    private val _sampleRadius = resources.getDimension(R.dimen.mm2d_cc_sample_radius)
-    private val _sampleFrameRadius =
-        _sampleRadius + resources.getDimension(R.dimen.mm2d_cc_sample_frame)
+    private val _padding = getPixels(R.dimen.mm2d_cc_panel_margin)
+    private val _width = getPixels(R.dimen.mm2d_cc_hsv_size) + _padding * 2
+    private val _height = getPixels(R.dimen.mm2d_cc_hsv_size) + _padding * 2
+    private val _sampleRadius = getDimension(R.dimen.mm2d_cc_sample_radius)
+    private val _sampleFrameRadius = _sampleRadius + getDimension(R.dimen.mm2d_cc_sample_frame)
     private val _sampleShadowRadius =
-        _sampleFrameRadius + resources.getDimension(R.dimen.mm2d_cc_sample_shadow)
+        _sampleFrameRadius + getDimension(R.dimen.mm2d_cc_sample_shadow)
     private val maskRect = Rect(0, 0, TONE_SIZE, TONE_SIZE)
     private val targetRect = Rect()
     private var hue: Float = 0f
-    private val colorSampleFrame = ContextCompat.getColor(context, R.color.mm2d_cc_sample_frame)
-    private val colorSampleShadow = ContextCompat.getColor(context, R.color.mm2d_cc_sample_shadow)
+    private val colorSampleFrame = getColor(R.color.mm2d_cc_sample_frame)
+    private val colorSampleShadow = getColor(R.color.mm2d_cc_sample_shadow)
     private val hsvCache = FloatArray(3)
     var saturation: Float = 0f
         private set
@@ -204,14 +205,7 @@ internal class SvView
                         ColorUtils.svToMask(x / TONE_MAX, (TONE_MAX - y) / TONE_MAX)
                 }
             }
-            return Bitmap.createBitmap(
-                pixels,
-                0,
-                TONE_SIZE,
-                TONE_SIZE,
-                TONE_SIZE,
-                Bitmap.Config.ARGB_8888
-            )
+            return Bitmap.createBitmap(pixels, TONE_SIZE, TONE_SIZE, Bitmap.Config.ARGB_8888)
         }
     }
 }

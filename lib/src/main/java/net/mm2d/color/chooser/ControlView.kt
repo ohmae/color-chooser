@@ -19,7 +19,7 @@ import androidx.core.graphics.alpha
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.mm2d_cc_view_control.view.*
-import net.mm2d.color.chooser.util.AttrUtils
+import net.mm2d.color.chooser.util.resolveColor
 import net.mm2d.color.chooser.util.setAlpha
 import net.mm2d.color.chooser.util.toOpacity
 import java.util.*
@@ -37,9 +37,9 @@ internal class ControlView
         findColorChangeMediator()
     }
     private val normalTint =
-        ColorStateList.valueOf(AttrUtils.resolveColor(context, R.attr.colorAccent, Color.BLUE))
+        ColorStateList.valueOf(context.resolveColor(R.attr.colorAccent, Color.BLUE))
     private val errorTint =
-        ColorStateList.valueOf(AttrUtils.resolveColor(context, R.attr.colorError, Color.RED))
+        ColorStateList.valueOf(context.resolveColor(R.attr.colorError, Color.RED))
     private var changeHexTextByUser = true
     private var hasAlpha: Boolean = true
     private val rgbFilter = arrayOf(HexadecimalFilter(), LengthFilter(6))

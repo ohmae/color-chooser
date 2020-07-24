@@ -27,5 +27,4 @@ internal class ViewPagerAdapter(
 
     override fun destroyItem(container: ViewGroup, position: Int, obj: Any) =
         container.removeView(obj as View)
-
 }

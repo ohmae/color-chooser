@@ -14,11 +14,9 @@ import android.graphics.Paint.Style
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.core.content.withStyledAttributes
 import net.mm2d.color.chooser.R
-import net.mm2d.color.chooser.util.setAlpha
-import net.mm2d.color.chooser.util.toOpacity
+import net.mm2d.color.chooser.util.*
 
 /**
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
@@ -32,28 +30,19 @@ internal class ColorSliderView
     private val paint = Paint().also {
         it.isAntiAlias = true
     }
-    private val _padding = resources.getDimensionPixelOffset(R.dimen.mm2d_cc_panel_margin)
-    private val _width =
-        resources.getDimensionPixelOffset(R.dimen.mm2d_cc_slider_width) + _padding * 2
-    private val _height =
-        resources.getDimensionPixelOffset(R.dimen.mm2d_cc_slider_height) + _padding * 2
-    private val _sampleRadius = resources.getDimension(R.dimen.mm2d_cc_sample_radius)
-    private val _sampleFrameRadius =
-        _sampleRadius + resources.getDimension(R.dimen.mm2d_cc_sample_frame)
+    private val _padding = getPixels(R.dimen.mm2d_cc_panel_margin)
+    private val _width = getPixels(R.dimen.mm2d_cc_slider_width) + _padding * 2
+    private val _height = getPixels(R.dimen.mm2d_cc_slider_height) + _padding * 2
+    private val _sampleRadius = getDimension(R.dimen.mm2d_cc_sample_radius)
+    private val _sampleFrameRadius = _sampleRadius + getDimension(R.dimen.mm2d_cc_sample_frame)
     private val _sampleShadowRadius =
-        _sampleFrameRadius + resources.getDimension(R.dimen.mm2d_cc_sample_shadow)
-    private val frameLineWidth = resources.getDimension(R.dimen.mm2d_cc_sample_frame)
-    private val shadowLineWidth = resources.getDimension(R.dimen.mm2d_cc_sample_shadow)
+        _sampleFrameRadius + getDimension(R.dimen.mm2d_cc_sample_shadow)
+    private val frameLineWidth = getDimension(R.dimen.mm2d_cc_sample_frame)
+    private val shadowLineWidth = getDimension(R.dimen.mm2d_cc_sample_shadow)
     private val gradationRect = Rect(0, 0, RANGE, 1)
     private val targetRect = Rect()
-    private val colorSampleFrame = ContextCompat.getColor(
-        context,
-        R.color.mm2d_cc_sample_frame
-    )
-    private val colorSampleShadow = ContextCompat.getColor(
-        context,
-        R.color.mm2d_cc_sample_shadow
-    )
+    private val colorSampleFrame = getColor(R.color.mm2d_cc_sample_frame)
+    private val colorSampleShadow = getColor(R.color.mm2d_cc_sample_shadow)
     private var checker: Bitmap? = null
     private var _value: Float = 0f
     private var maxColor: Int = Color.WHITE
@@ -89,10 +78,10 @@ internal class ColorSliderView
     private fun updateChecker() {
         checker = if (alphaMode) {
             createChecker(
-                resources.getDimensionPixelSize(R.dimen.mm2d_cc_checker_size),
-                resources.getDimensionPixelSize(R.dimen.mm2d_cc_slider_height),
-                ContextCompat.getColor(context, R.color.mm2d_cc_checker_light),
-                ContextCompat.getColor(context, R.color.mm2d_cc_checker_dark)
+                getPixels(R.dimen.mm2d_cc_checker_size),
+                getPixels(R.dimen.mm2d_cc_slider_height),
+                getColor(R.color.mm2d_cc_checker_light),
+                getColor(R.color.mm2d_cc_checker_dark)
             )
         } else {
             null
@@ -121,11 +110,11 @@ internal class ColorSliderView
         paint.color = colorSampleShadow
         paint.strokeWidth = shadowLineWidth
         val shadow = frameLineWidth + shadowLineWidth / 2
-        canvas.drawRectFrame(targetRect, shadow, paint)
+        canvas.drawRectWithOffset(targetRect, shadow, paint)
         paint.color = colorSampleFrame
         paint.strokeWidth = frameLineWidth
         val frame = frameLineWidth / 2
-        canvas.drawRectFrame(targetRect, frame, paint)
+        canvas.drawRectWithOffset(targetRect, frame, paint)
         paint.style = Style.FILL
         if (alphaMode) {
             val checker = checker ?: return
@@ -153,16 +142,6 @@ internal class ColorSliderView
         canvas.drawCircle(x, y, _sampleRadius, paint)
     }
 
-    private fun Canvas.drawRectFrame(rect: Rect, offset: Float, paint: Paint) {
-        drawRect(
-            rect.left - offset,
-            rect.top - offset,
-            rect.right + offset,
-            rect.bottom + offset,
-            paint
-        )
-    }
-
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         setMeasuredDimension(
             resolveSizeAndState(
@@ -184,24 +163,18 @@ internal class ColorSliderView
 
         private fun createGradation(color: Int): Bitmap {
             val pixels = IntArray(RANGE) { color.setAlpha(it) }
-            return Bitmap.createBitmap(pixels, 0, RANGE, RANGE, 1, Bitmap.Config.ARGB_8888)
+            return Bitmap.createBitmap(pixels, RANGE, 1, Bitmap.Config.ARGB_8888)
         }
 
-        private fun createChecker(
-            checkerSize: Int,
-            height: Int,
-            lightColor: Int,
-            darkColor: Int
-        ): Bitmap {
-            val width = checkerSize * 4
+        private fun createChecker(step: Int, height: Int, color1: Int, color2: Int): Bitmap {
+            val width = step * 4
             val pixels = IntArray(width * height)
             for (y in 0 until height) {
                 for (x in 0 until width) {
-                    pixels[x + y * width] =
-                        if ((x / checkerSize + y / checkerSize) % 2 == 0) lightColor else darkColor
+                    pixels[x + y * width] = if ((x / step + y / step) % 2 == 0) color1 else color2
                 }
             }
-            return Bitmap.createBitmap(pixels, 0, width, width, height, Bitmap.Config.ARGB_8888)
+            return Bitmap.createBitmap(pixels, width, height, Bitmap.Config.ARGB_8888)
         }
     }
 }
