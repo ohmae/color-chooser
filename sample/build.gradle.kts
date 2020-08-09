@@ -1,9 +1,11 @@
-import build.Libraries
+import build.*
 
-apply plugin: "com.android.application"
-apply plugin: "kotlin-android"
-apply plugin: "kotlin-android-extensions"
-apply plugin: "com.github.ben-manes.versions"
+plugins {
+    id("com.android.application")
+    id("kotlin-android")
+    id("kotlin-android-extensions")
+    id("com.github.ben-manes.versions")
+}
 
 android {
     compileSdkVersion(29)
@@ -22,8 +24,8 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     buildTypes {
-        release {
-            minifyEnabled = false
+        getByName("release") {
+            isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
@@ -38,14 +40,4 @@ dependencies {
     testImplementation("junit:junit:4.13")
 }
 
-def isNonStable = { String version ->
-    def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { it -> version.toUpperCase().contains(it) }
-    def regex = /^[0-9,.v-]+(-r)?$/
-    return !stableKeyword && !(version ==~ regex)
-}
-
-dependencyUpdates.configure {
-    rejectVersionIf {
-        isNonStable(it.candidate.version) && !isNonStable(it.currentVersion)
-    }
-}
+dependencyUpdates()
