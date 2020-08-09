@@ -33,7 +33,7 @@ android {
 
 dependencies {
     implementation(project(":lib"))
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:${Libraries.Kotlin.version}")
+    implementation(kotlin("stdlib"))
     implementation("androidx.appcompat:appcompat:1.2.0")
     implementation("androidx.constraintlayout:constraintlayout:1.1.3")
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.4")
