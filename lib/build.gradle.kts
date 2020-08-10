@@ -13,8 +13,8 @@ plugins {
 }
 
 base.archivesBaseName = "color-chooser"
-group = Properties.groupId
-version = Properties.versionName
+group = ProjectProperties.groupId
+version = ProjectProperties.versionName
 
 android {
     compileSdkVersion(29)
@@ -22,8 +22,8 @@ android {
     defaultConfig {
         minSdkVersion(16)
         targetSdkVersion(29)
-        versionCode = Properties.versionCode
-        versionName = Properties.versionName
+        versionCode = ProjectProperties.versionCode
+        versionName = ProjectProperties.versionName
         vectorDrawables.useSupportLibrary = true
     }
     compileOptions {

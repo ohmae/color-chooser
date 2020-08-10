@@ -1,6 +1,6 @@
 package build.internal
 
-import build.Properties
+import build.ProjectProperties
 import com.jfrog.bintray.gradle.BintrayExtension
 import org.gradle.api.Project
 import org.gradle.api.internal.HasConvention
@@ -25,14 +25,14 @@ internal fun Project.bintraySettings() {
 
         pkg(closureOf<BintrayExtension.PackageConfig> {
             repo = "maven"
-            name = Properties.groupId + "." + base.archivesBaseName
+            name = ProjectProperties.groupId + "." + base.archivesBaseName
             setLicenses("MIT")
-            websiteUrl = Properties.Url.site
-            vcsUrl = Properties.Url.github + ".git"
-            issueTrackerUrl = Properties.Url.github + "/issues"
+            websiteUrl = ProjectProperties.Url.site
+            vcsUrl = ProjectProperties.Url.github + ".git"
+            issueTrackerUrl = ProjectProperties.Url.github + "/issues"
             publicDownloadNumbers = true
             version = VersionConfig().apply {
-                name = Properties.versionName
+                name = ProjectProperties.versionName
             }
         })
     }
