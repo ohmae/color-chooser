@@ -6,16 +6,13 @@ import org.gradle.kotlin.dsl.named
 
 internal fun Project.dependencyUpdatesSettings() {
     tasks.named<DependencyUpdatesTask>("dependencyUpdates").configure {
-        resolutionStrategy {
-            rejectVersionIf {
-                !isStable(candidate.version) && isStable(currentVersion)
-            }
-        }
+        rejectVersionIf { !isStable(candidate.version) }
     }
 }
 
 private fun isStable(version: String): Boolean {
-    val hasStableKeywords = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+    val versionUpperCase = version.toUpperCase()
+    val hasStableKeyword = listOf("RELEASE", "FINAL", "GA").any { versionUpperCase.contains(it) }
     val regex = "^[0-9,.v-]+(-r)?$".toRegex()
-    return hasStableKeywords || regex.matches(version)
+    return hasStableKeyword || regex.matches(version)
 }

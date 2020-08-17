@@ -7,7 +7,7 @@ plugins {
     id("kotlin-android-extensions")
     maven
     `maven-publish`
-    id("org.jetbrains.dokka-android")
+    id("org.jetbrains.dokka")
     id("com.jfrog.bintray")
     id("com.github.ben-manes.versions")
 }
@@ -49,8 +49,7 @@ dependencies {
     testImplementation("junit:junit:4.13")
 }
 
-tasks.named<DokkaTask>("dokka") {
-    outputFormat = "gfm"
+tasks.named<DokkaTask>("dokkaHtml") {
     outputDirectory = "../docs/dokka"
 }
 
