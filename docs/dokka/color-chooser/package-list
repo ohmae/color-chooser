@@ -1,0 +1,7 @@
+$dokka.format:html
+$dokka.linkExtension:html
+
+net.mm2d.color.chooser
+net.mm2d.color.chooser.element
+net.mm2d.color.chooser.util
+

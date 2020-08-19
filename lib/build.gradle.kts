@@ -1,5 +1,6 @@
 import build.*
 import org.jetbrains.dokka.gradle.DokkaTask
+import org.jetbrains.dokka.plugability.configuration
 
 plugins {
     id("com.android.library")
@@ -51,6 +52,11 @@ dependencies {
 
 tasks.named<DokkaTask>("dokkaHtml") {
     outputDirectory = "../docs/dokka"
+    dokkaSourceSets {
+        configureEach {
+            moduleDisplayName = "color-chooser"
+        }
+    }
 }
 
 commonSettings()
