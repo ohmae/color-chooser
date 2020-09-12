@@ -1,6 +1,5 @@
 import build.*
 import org.jetbrains.dokka.gradle.DokkaTask
-import org.jetbrains.dokka.plugability.configuration
 
 plugins {
     id("com.android.library")
@@ -18,11 +17,11 @@ group = ProjectProperties.groupId
 version = ProjectProperties.versionName
 
 android {
-    compileSdkVersion(29)
+    compileSdkVersion(30)
 
     defaultConfig {
         minSdkVersion(16)
-        targetSdkVersion(29)
+        targetSdkVersion(30)
         versionCode = ProjectProperties.versionCode
         versionName = ProjectProperties.versionName
         vectorDrawables.useSupportLibrary = true
@@ -46,15 +45,15 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation("androidx.appcompat:appcompat:1.2.0")
     implementation("androidx.core:core-ktx:1.3.1")
-    implementation("com.google.android.material:material:1.2.0")
+    implementation("com.google.android.material:material:1.2.1")
     testImplementation("junit:junit:4.13")
 }
 
 tasks.named<DokkaTask>("dokkaHtml") {
-    outputDirectory = "../docs/dokka"
+    outputDirectory.set(File(projectDir, "../docs/dokka"))
     dokkaSourceSets {
         configureEach {
-            moduleDisplayName = "color-chooser"
+            moduleDisplayName.set("color-chooser")
         }
     }
 }
