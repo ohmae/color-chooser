@@ -22,39 +22,11 @@ import androidx.fragment.app.FragmentActivity
  *
  * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
-class ColorChooserDialog : DialogFragment() {
-    private lateinit var dialogView: DialogView
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val activity = requireActivity()
-        dialogView = DialogView(activity)
-        val color = requireArguments().getInt(KEY_INITIAL_COLOR, 0)
-        dialogView.init(color, this)
-        dialogView.setWithAlpha(requireArguments().getBoolean(KEY_WITH_ALPHA))
-        return AlertDialog.Builder(activity)
-            .setView(dialogView)
-            .setPositiveButton("OK") { _, _ ->
-                notifySelect()
-            }
-            .setNegativeButton("Cancel") { dialog, _ ->
-                dialog.cancel()
-            }
-            .create()
-    }
-
-    override fun onCancel(dialog: DialogInterface) {
-        val requestCode = requireArguments().getInt(KEY_REQUEST_CODE)
-        extractCallback()?.onColorChooserResult(requestCode, Activity.RESULT_CANCELED, 0)
-    }
-
-    private fun notifySelect() {
-        val requestCode = requireArguments().getInt(KEY_REQUEST_CODE)
-        extractCallback()?.onColorChooserResult(requestCode, Activity.RESULT_OK, dialogView.color)
-    }
-
-    private fun extractCallback(): Callback? {
-        return targetFragment as? Callback ?: activity as? Callback
-    }
+object ColorChooserDialog {
+    private const val KEY_INITIAL_COLOR = "KEY_INITIAL_COLOR"
+    private const val KEY_REQUEST_CODE = "KEY_REQUEST_CODE"
+    private const val KEY_WITH_ALPHA = "KEY_WITH_ALPHA"
+    private const val TAG = "ColorChooserDialog"
 
     /**
      * Result callback implements to Fragment or Activity
@@ -70,67 +42,99 @@ class ColorChooserDialog : DialogFragment() {
         fun onColorChooserResult(requestCode: Int, resultCode: Int, color: Int)
     }
 
-    companion object {
-        private const val KEY_INITIAL_COLOR = "KEY_INITIAL_COLOR"
-        private const val KEY_REQUEST_CODE = "KEY_REQUEST_CODE"
-        private const val KEY_WITH_ALPHA = "KEY_WITH_ALPHA"
-        private const val TAG = "ColorChooserDialog"
+    /**
+     * Show dialog
+     *
+     * @param activity FragmentActivity
+     * @param requestCode use in listener call
+     * @param initialColor initial color
+     * @param withAlpha if true, alpha section is enabled
+     */
+    fun show(
+        activity: FragmentActivity,
+        requestCode: Int = 0,
+        initialColor: Int = Color.WHITE,
+        withAlpha: Boolean = false
+    ) {
+        val fragmentManager = activity.supportFragmentManager
+        if (fragmentManager.findFragmentByTag(TAG) != null || fragmentManager.isStateSaved) {
+            return
+        }
+        val arguments = Bundle().apply {
+            putInt(KEY_INITIAL_COLOR, initialColor)
+            putInt(KEY_REQUEST_CODE, requestCode)
+            putBoolean(KEY_WITH_ALPHA, withAlpha)
+        }
+        ColorChooserDialogImpl().also {
+            it.arguments = arguments
+        }.show(fragmentManager, TAG)
+    }
 
-        /**
-         * Show dialog
-         *
-         * @param activity FragmentActivity
-         * @param requestCode use in listener call
-         * @param initialColor initial color
-         * @param withAlpha if true, alpha section is enabled
-         */
-        fun show(
-            activity: FragmentActivity,
-            requestCode: Int = 0,
-            initialColor: Int = Color.WHITE,
-            withAlpha: Boolean = false
-        ) {
-            val fragmentManager = activity.supportFragmentManager
-            if (fragmentManager.findFragmentByTag(TAG) != null || fragmentManager.isStateSaved) {
-                return
-            }
-            val arguments = Bundle().apply {
-                putInt(KEY_INITIAL_COLOR, initialColor)
-                putInt(KEY_REQUEST_CODE, requestCode)
-                putBoolean(KEY_WITH_ALPHA, withAlpha)
-            }
-            ColorChooserDialog().also {
-                it.arguments = arguments
-            }.show(fragmentManager, TAG)
+    /**
+     * Show dialog
+     *
+     * @param fragment Fragment
+     * @param requestCode use in listener call
+     * @param initialColor initial color
+     * @param withAlpha if true, alpha section is enabled
+     */
+    fun show(
+        fragment: Fragment,
+        requestCode: Int = 0,
+        initialColor: Int = Color.WHITE,
+        withAlpha: Boolean = false
+    ) {
+        val fragmentManager = fragment.childFragmentManager
+        if (fragmentManager.findFragmentByTag(TAG) != null || fragmentManager.isStateSaved) {
+            return
+        }
+        val arguments = Bundle().apply {
+            putInt(KEY_INITIAL_COLOR, initialColor)
+            putInt(KEY_REQUEST_CODE, requestCode)
+            putBoolean(KEY_WITH_ALPHA, withAlpha)
+        }
+        ColorChooserDialogImpl().also {
+            it.setTargetFragment(fragment, requestCode)
+            it.arguments = arguments
+        }.show(fragmentManager, TAG)
+    }
+
+    internal class ColorChooserDialogImpl : DialogFragment() {
+        private lateinit var dialogView: DialogView
+
+        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+            val activity = requireActivity()
+            dialogView = DialogView(activity)
+            val color = requireArguments().getInt(KEY_INITIAL_COLOR, 0)
+            dialogView.init(color, this)
+            dialogView.setWithAlpha(requireArguments().getBoolean(KEY_WITH_ALPHA))
+            return AlertDialog.Builder(activity)
+                .setView(dialogView)
+                .setPositiveButton("OK") { _, _ ->
+                    notifySelect()
+                }
+                .setNegativeButton("Cancel") { dialog, _ ->
+                    dialog.cancel()
+                }
+                .create()
         }
 
-        /**
-         * Show dialog
-         *
-         * @param fragment Fragment
-         * @param requestCode use in listener call
-         * @param initialColor initial color
-         * @param withAlpha if true, alpha section is enabled
-         */
-        fun show(
-            fragment: Fragment,
-            requestCode: Int = 0,
-            initialColor: Int = Color.WHITE,
-            withAlpha: Boolean = false
-        ) {
-            val fragmentManager = fragment.childFragmentManager
-            if (fragmentManager.findFragmentByTag(TAG) != null || fragmentManager.isStateSaved) {
-                return
-            }
-            val arguments = Bundle().apply {
-                putInt(KEY_INITIAL_COLOR, initialColor)
-                putInt(KEY_REQUEST_CODE, requestCode)
-                putBoolean(KEY_WITH_ALPHA, withAlpha)
-            }
-            ColorChooserDialog().also {
-                it.setTargetFragment(fragment, requestCode)
-                it.arguments = arguments
-            }.show(fragmentManager, TAG)
+        override fun onCancel(dialog: DialogInterface) {
+            val requestCode = requireArguments().getInt(KEY_REQUEST_CODE)
+            extractCallback()?.onColorChooserResult(requestCode, Activity.RESULT_CANCELED, 0)
+        }
+
+        private fun notifySelect() {
+            val requestCode = requireArguments().getInt(KEY_REQUEST_CODE)
+            extractCallback()?.onColorChooserResult(
+                requestCode,
+                Activity.RESULT_OK,
+                dialogView.color
+            )
+        }
+
+        private fun extractCallback(): Callback? {
+            return targetFragment as? Callback ?: activity as? Callback
         }
     }
 }
