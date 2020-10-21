@@ -14,11 +14,12 @@ import android.graphics.Color
 import android.text.*
 import android.text.InputFilter.LengthFilter
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.core.graphics.alpha
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.mm2d_cc_view_control.view.*
+import net.mm2d.color.chooser.databinding.Mm2dCcViewControlBinding
 import net.mm2d.color.chooser.util.resolveColor
 import net.mm2d.color.chooser.util.setAlpha
 import net.mm2d.color.chooser.util.toOpacity
@@ -44,22 +45,23 @@ internal class ControlView
     private var hasAlpha: Boolean = true
     private val rgbFilter = arrayOf(HexadecimalFilter(), LengthFilter(6))
     private val argbFilter = arrayOf(HexadecimalFilter(), LengthFilter(8))
+    private val binding: Mm2dCcViewControlBinding
     var color: Int = Color.BLACK
         private set
 
     init {
         orientation = VERTICAL
-        inflate(context, R.layout.mm2d_cc_view_control, this)
-        color_preview.setColor(color)
-        seek_alpha.setValue(color.alpha)
-        seek_alpha.onValueChanged = { value, fromUser ->
-            text_alpha.text = value.toString()
+        binding = Mm2dCcViewControlBinding.inflate(LayoutInflater.from(context), this)
+        binding.colorPreview.setColor(color)
+        binding.seekAlpha.setValue(color.alpha)
+        binding.seekAlpha.onValueChanged = { value, fromUser ->
+            binding.textAlpha.text = value.toString()
             if (fromUser) {
                 setAlpha(value)
             }
         }
-        edit_hex.filters = argbFilter
-        edit_hex.addTextChangedListener(object : TextWatcher {
+        binding.editHex.filters = argbFilter
+        binding.editHex.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) = Unit
             override fun beforeTextChanged(s: CharSequence?, start: Int, c: Int, a: Int) = Unit
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -73,8 +75,8 @@ internal class ControlView
                 try {
                     color = Color.parseColor("#$s")
                     clearError()
-                    color_preview.setColor(color)
-                    seek_alpha.setValue(color.alpha)
+                    binding.colorPreview.setColor(color)
+                    binding.seekAlpha.setValue(color.alpha)
                     colorChangeMediator?.onChangeColor(color.toOpacity())
                 } catch (e: IllegalArgumentException) {
                     setError()
@@ -84,47 +86,47 @@ internal class ControlView
     }
 
     fun setAlpha(alpha: Int) {
-        seek_alpha.setValue(alpha)
+        binding.seekAlpha.setValue(alpha)
         color = color.setAlpha(alpha)
-        color_preview.setColor(color)
+        binding.colorPreview.setColor(color)
         setColorToHexText()
     }
 
     fun setWithAlpha(withAlpha: Boolean) {
         hasAlpha = withAlpha
-        section_alpha.isVisible = withAlpha
+        binding.sectionAlpha.isVisible = withAlpha
         if (withAlpha) {
-            edit_hex.filters = argbFilter
+            binding.editHex.filters = argbFilter
         } else {
-            edit_hex.filters = rgbFilter
+            binding.editHex.filters = rgbFilter
             setAlpha(0xff)
         }
     }
 
     private fun setError() {
-        ViewCompat.setBackgroundTintList(edit_hex, errorTint)
+        ViewCompat.setBackgroundTintList(binding.editHex, errorTint)
     }
 
     private fun clearError() {
-        ViewCompat.setBackgroundTintList(edit_hex, normalTint)
+        ViewCompat.setBackgroundTintList(binding.editHex, normalTint)
     }
 
     override fun onChanged(color: Int?) {
         if (color == null) return
         if (this.color.toOpacity() == color) return
-        this.color = color.setAlpha(seek_alpha.value)
-        color_preview.setColor(this.color)
+        this.color = color.setAlpha(binding.seekAlpha.value)
+        binding.colorPreview.setColor(this.color)
         setColorToHexText()
-        seek_alpha.setMaxColor(color)
+        binding.seekAlpha.setMaxColor(color)
     }
 
     @SuppressLint("SetTextI18n")
     private fun setColorToHexText() {
         changeHexTextByUser = false
         if (hasAlpha) {
-            edit_hex.setText("%08X".format(color))
+            binding.editHex.setText("%08X".format(color))
         } else {
-            edit_hex.setText("%06X".format(color and 0xffffff))
+            binding.editHex.setText("%06X".format(color and 0xffffff))
         }
         clearError()
         changeHexTextByUser = true

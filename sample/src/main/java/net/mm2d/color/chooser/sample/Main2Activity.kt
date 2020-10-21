@@ -11,29 +11,31 @@ import android.app.Activity
 import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
 import net.mm2d.color.chooser.ColorChooserDialog
+import net.mm2d.color.chooser.sample.databinding.ActivityMain2Binding
 
 class Main2Activity : AppCompatActivity(), ColorChooserDialog.Callback {
     private var color: Int = 0
+    private lateinit var binding: ActivityMain2Binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main2)
-        button1.setOnClickListener {
+        binding = ActivityMain2Binding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.button1.setOnClickListener {
             ColorChooserDialog.show(this, REQUEST_CODE, color)
         }
-        button2.setOnClickListener {
+        binding.button2.setOnClickListener {
             ColorChooserDialog.show(this, REQUEST_CODE, color, true)
         }
         color = Color.parseColor("#B71C1C")
-        sample.setBackgroundColor(color)
+        binding.sample.setBackgroundColor(color)
     }
 
     override fun onColorChooserResult(requestCode: Int, resultCode: Int, color: Int) {
         if (requestCode != REQUEST_CODE || resultCode != Activity.RESULT_OK) return
         this.color = color
-        sample.setBackgroundColor(color)
+        binding.sample.setBackgroundColor(color)
     }
 
     companion object {

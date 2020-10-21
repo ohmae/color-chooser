@@ -9,6 +9,7 @@ package net.mm2d.color.chooser
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -16,7 +17,7 @@ import androidx.core.graphics.alpha
 import androidx.core.view.forEach
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
-import kotlinx.android.synthetic.main.mm2d_cc_view_dialog.view.*
+import net.mm2d.color.chooser.databinding.Mm2dCcViewDialogBinding
 import net.mm2d.color.chooser.util.toOpacity
 
 /**
@@ -29,26 +30,27 @@ internal class DialogView
     defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr), ColorChangeMediator {
     private val liveData: MutableLiveData<Int> = MutableLiveData()
+    private val binding: Mm2dCcViewDialogBinding
     val color: Int
-        get() = control_view.color
+        get() = binding.controlView.color
 
     init {
         orientation = VERTICAL
-        inflate(context, R.layout.mm2d_cc_view_dialog, this)
+        binding = Mm2dCcViewDialogBinding.inflate(LayoutInflater.from(context), this)
     }
 
     fun init(color: Int, lifecycleOwner: LifecycleOwner) {
         onChangeColor(color.toOpacity())
-        control_view.setAlpha(color.alpha)
+        binding.controlView.setAlpha(color.alpha)
         val pages: List<Pair<String, View>> = listOf(
             "palette" to PaletteView(context),
             "hsv" to HsvPage(context),
             "rgb" to SliderPage(context)
         )
-        view_pager.adapter = ViewPagerAdapter(pages)
-        tab_layout.setupWithViewPager(view_pager)
+        binding.viewPager.adapter = ViewPagerAdapter(pages)
+        binding.tabLayout.setupWithViewPager(binding.viewPager)
         pages.forEach { observeRecursively(it.second, lifecycleOwner) }
-        observeRecursively(control_view, lifecycleOwner)
+        observeRecursively(binding.controlView, lifecycleOwner)
     }
 
     private fun observeRecursively(view: View, lifecycleOwner: LifecycleOwner) {
@@ -57,7 +59,7 @@ internal class DialogView
     }
 
     fun setWithAlpha(withAlpha: Boolean) {
-        control_view.setWithAlpha(withAlpha)
+        binding.controlView.setWithAlpha(withAlpha)
     }
 
     override fun onChangeColor(color: Int) {
