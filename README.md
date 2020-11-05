@@ -32,9 +32,10 @@ To show dialog. On `FragmentActivity` or `Fragment`
 ```kotlin
 ColorChooserDialog.show(
     this,         // Fragment or FragmentActivity
-    REQUEST_CODE, // request code for receive result
-    initialColor, // initial color
-    true          // false, if alpha is not needed
+    REQUEST_CODE, // request code for receive result, optional, default 0
+    initialColor, // initial color, optional, default #FFFFFF
+    true,         // need for alpha, optional, default false
+    TAB_RGB       // initial tab, TAB_PALETTE/TAB_HSV/TAB_RGB, optional, default  TAB_PALETTE
 )
 ```
 

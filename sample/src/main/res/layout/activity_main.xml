@@ -6,46 +6,142 @@
     android:layout_height="match_parent"
     >
 
-    <TextView
+    <View
         android:id="@+id/sample"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/button1"
+        android:layout_width="144dp"
+        android:layout_height="72dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"/>
+        app:layout_constraintTop_toTopOf="parent"/>
 
-    <Button
-        android:id="@+id/button1"
+    <TextView
+        android:id="@+id/label1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="select"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"
+        android:text="without ALPHA"
         app:layout_constraintTop_toBottomOf="@+id/sample"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/tab_default"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="with alpha"
-        app:layout_constraintBottom_toTopOf="@+id/button3"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+        android:text="default"
+        app:layout_constraintTop_toBottomOf="@id/label1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button1"
+        app:layout_constraintEnd_toStartOf="@id/tab_palette"
+        app:layout_constraintHorizontal_chainStyle="packed"
         />
+
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/tab_palette"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="palette"
+        app:layout_constraintTop_toTopOf="@id/tab_default"
+        app:layout_constraintStart_toEndOf="@id/tab_default"
+        app:layout_constraintEnd_toStartOf="@id/tab_hsv"
+        />
+
+    <Button
+        android:id="@+id/tab_hsv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="hsv"
+        app:layout_constraintTop_toTopOf="@id/tab_default"
+        app:layout_constraintStart_toEndOf="@id/tab_palette"
+        app:layout_constraintEnd_toStartOf="@id/tab_rgb"
+        />
+
+    <Button
+        android:id="@+id/tab_rgb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="rgb"
+        app:layout_constraintTop_toTopOf="@id/tab_default"
+        app:layout_constraintStart_toEndOf="@id/tab_hsv"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/label2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="with ALPHA"
+        app:layout_constraintTop_toBottomOf="@id/tab_default"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <Button
+        android:id="@+id/tab_default_alpha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="default"
+        app:layout_constraintTop_toBottomOf="@id/label2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tab_palette_alpha"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        />
+
+    <Button
+        android:id="@+id/tab_palette_alpha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="palette"
+        app:layout_constraintTop_toTopOf="@id/tab_default_alpha"
+        app:layout_constraintStart_toEndOf="@id/tab_default_alpha"
+        app:layout_constraintEnd_toStartOf="@id/tab_hsv_alpha"
+        />
+
+    <Button
+        android:id="@+id/tab_hsv_alpha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="hsv"
+        app:layout_constraintTop_toTopOf="@id/tab_default_alpha"
+        app:layout_constraintStart_toEndOf="@id/tab_palette_alpha"
+        app:layout_constraintEnd_toStartOf="@id/tab_rgb_alpha"
+        />
+
+    <Button
+        android:id="@+id/tab_rgb_alpha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="rgb"
+        app:layout_constraintTop_toTopOf="@id/tab_default_alpha"
+        app:layout_constraintStart_toEndOf="@id/tab_hsv_alpha"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+
+    <Button
+        android:id="@+id/light_theme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="light theme"
+        app:layout_constraintTop_toBottomOf="@id/tab_default_alpha"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/dark_theme"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        />
+
+    <Button
+        android:id="@+id/dark_theme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="dark theme"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@id/light_theme"
+        app:layout_constraintStart_toEndOf="@id/light_theme"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
