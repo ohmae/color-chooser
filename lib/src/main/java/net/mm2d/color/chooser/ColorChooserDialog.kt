@@ -53,6 +53,7 @@ object ColorChooserDialog {
      * @param requestCode use in listener call
      * @param initialColor initial color
      * @param withAlpha if true, alpha section is enabled
+     * @param initialTab initial tab, TAB_PALETTE/TAB_HSV/TAB_RGB
      */
     fun show(
         activity: FragmentActivity,
@@ -83,6 +84,7 @@ object ColorChooserDialog {
      * @param requestCode use in listener call
      * @param initialColor initial color
      * @param withAlpha if true, alpha section is enabled
+     * @param initialTab initial tab, TAB_PALETTE/TAB_HSV/TAB_RGB
      */
     fun show(
         fragment: Fragment,
