@@ -18,12 +18,14 @@
 
 Download from jCenter. Add dependencies, such as the following.
 
+latest version: [![Maven metadata URI](https://img.shields.io/maven-metadata/v/https/jcenter.bintray.com/net/mm2d/color-chooser/maven-metadata.xml.svg)](https://bintray.com/ohmae/maven/net.mm2d.color-chooser)
+
 ```gradle
 repositories {
     jcenter()
 }
 dependencies {
-    implementation 'net.mm2d:color-chooser:0.1.4'
+    implementation 'net.mm2d:color-chooser:<version>'
 }
 ```
 
