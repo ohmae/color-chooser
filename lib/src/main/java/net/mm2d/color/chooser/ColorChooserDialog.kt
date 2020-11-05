@@ -26,7 +26,11 @@ object ColorChooserDialog {
     private const val KEY_INITIAL_COLOR = "KEY_INITIAL_COLOR"
     private const val KEY_REQUEST_CODE = "KEY_REQUEST_CODE"
     private const val KEY_WITH_ALPHA = "KEY_WITH_ALPHA"
+    private const val KEY_INITIAL_TAB = "KEY_INITIAL_TAB"
     private const val TAG = "ColorChooserDialog"
+    const val TAB_PALETTE: Int = 0
+    const val TAB_HSV: Int = 1
+    const val TAB_RGB: Int = 2
 
     /**
      * Result callback implements to Fragment or Activity
@@ -54,7 +58,8 @@ object ColorChooserDialog {
         activity: FragmentActivity,
         requestCode: Int = 0,
         initialColor: Int = Color.WHITE,
-        withAlpha: Boolean = false
+        withAlpha: Boolean = false,
+        initialTab: Int = TAB_PALETTE
     ) {
         val fragmentManager = activity.supportFragmentManager
         if (fragmentManager.findFragmentByTag(TAG) != null || fragmentManager.isStateSaved) {
@@ -64,6 +69,7 @@ object ColorChooserDialog {
             putInt(KEY_INITIAL_COLOR, initialColor)
             putInt(KEY_REQUEST_CODE, requestCode)
             putBoolean(KEY_WITH_ALPHA, withAlpha)
+            putInt(KEY_INITIAL_TAB, initialTab)
         }
         ColorChooserDialogImpl().also {
             it.arguments = arguments
@@ -82,7 +88,8 @@ object ColorChooserDialog {
         fragment: Fragment,
         requestCode: Int = 0,
         initialColor: Int = Color.WHITE,
-        withAlpha: Boolean = false
+        withAlpha: Boolean = false,
+        initialTab: Int = TAB_PALETTE
     ) {
         val fragmentManager = fragment.childFragmentManager
         if (fragmentManager.findFragmentByTag(TAG) != null || fragmentManager.isStateSaved) {
@@ -92,6 +99,7 @@ object ColorChooserDialog {
             putInt(KEY_INITIAL_COLOR, initialColor)
             putInt(KEY_REQUEST_CODE, requestCode)
             putBoolean(KEY_WITH_ALPHA, withAlpha)
+            putInt(KEY_INITIAL_TAB, initialTab)
         }
         ColorChooserDialogImpl().also {
             it.setTargetFragment(fragment, requestCode)
@@ -105,6 +113,8 @@ object ColorChooserDialog {
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             val activity = requireActivity()
             dialogView = DialogView(activity)
+            val tab = requireArguments().getInt(KEY_INITIAL_TAB, 0)
+            dialogView.setCurrentItem(tab)
             val color = requireArguments().getInt(KEY_INITIAL_COLOR, 0)
             dialogView.init(color, this)
             dialogView.setWithAlpha(requireArguments().getBoolean(KEY_WITH_ALPHA))

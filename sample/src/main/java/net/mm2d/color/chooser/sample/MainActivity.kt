@@ -24,10 +24,10 @@ class MainActivity : AppCompatActivity(), ColorChooserDialog.Callback {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.button1.setOnClickListener {
-            ColorChooserDialog.show(this, REQUEST_CODE, color)
+            ColorChooserDialog.show(this, REQUEST_CODE, color, initialTab = ColorChooserDialog.TAB_HSV)
         }
         binding.button2.setOnClickListener {
-            ColorChooserDialog.show(this, REQUEST_CODE, color, true)
+            ColorChooserDialog.show(this, REQUEST_CODE, color, true, initialTab = ColorChooserDialog.TAB_RGB)
         }
         binding.button3.setOnClickListener {
             startActivity(Intent(this, Main2Activity::class.java))

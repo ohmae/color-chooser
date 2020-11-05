@@ -23,7 +23,7 @@ class Main2Activity : AppCompatActivity(), ColorChooserDialog.Callback {
         binding = ActivityMain2Binding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.button1.setOnClickListener {
-            ColorChooserDialog.show(this, REQUEST_CODE, color)
+            ColorChooserDialog.show(this, REQUEST_CODE, color, initialTab = ColorChooserDialog.TAB_PALETTE)
         }
         binding.button2.setOnClickListener {
             ColorChooserDialog.show(this, REQUEST_CODE, color, true)

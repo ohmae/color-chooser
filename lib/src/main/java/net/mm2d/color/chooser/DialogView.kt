@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.core.graphics.alpha
+import androidx.core.view.doOnLayout
 import androidx.core.view.forEach
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
@@ -51,6 +52,12 @@ internal class DialogView
         binding.tabLayout.setupWithViewPager(binding.viewPager)
         pages.forEach { observeRecursively(it.second, lifecycleOwner) }
         observeRecursively(binding.controlView, lifecycleOwner)
+    }
+
+    fun setCurrentItem(position: Int) {
+        binding.viewPager.doOnLayout {
+            binding.viewPager.setCurrentItem(position, false)
+        }
     }
 
     private fun observeRecursively(view: View, lifecycleOwner: LifecycleOwner) {
