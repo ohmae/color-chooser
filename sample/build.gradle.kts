@@ -37,7 +37,7 @@ dependencies {
     implementation(project(":lib"))
     implementation(kotlin("stdlib"))
     implementation("androidx.appcompat:appcompat:1.2.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.0.2")
+    implementation("androidx.constraintlayout:constraintlayout:2.0.4")
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.5")
     testImplementation("junit:junit:4.13.1")
 }
