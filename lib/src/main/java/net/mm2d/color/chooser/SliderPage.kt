@@ -11,9 +11,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
 
-/**
- * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
- */
 internal class SliderPage
 @JvmOverloads constructor(
     context: Context,

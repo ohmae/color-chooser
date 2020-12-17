@@ -14,9 +14,6 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import net.mm2d.color.chooser.databinding.Mm2dCcViewSliderBinding
 
-/**
- * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
- */
 internal class SliderView
 @JvmOverloads constructor(
     context: Context,

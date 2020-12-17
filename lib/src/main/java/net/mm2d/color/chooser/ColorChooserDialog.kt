@@ -13,14 +13,13 @@ import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 
 /**
  * Color chooser dialog
- *
- * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
  */
 object ColorChooserDialog {
     private const val KEY_INITIAL_COLOR = "KEY_INITIAL_COLOR"
@@ -63,17 +62,15 @@ object ColorChooserDialog {
         initialTab: Int = TAB_PALETTE
     ) {
         val fragmentManager = activity.supportFragmentManager
-        if (fragmentManager.findFragmentByTag(TAG) != null || fragmentManager.isStateSaved) {
-            return
-        }
-        val arguments = Bundle().apply {
-            putInt(KEY_INITIAL_COLOR, initialColor)
-            putInt(KEY_REQUEST_CODE, requestCode)
-            putBoolean(KEY_WITH_ALPHA, withAlpha)
-            putInt(KEY_INITIAL_TAB, initialTab)
-        }
+        if (fragmentManager.findFragmentByTag(TAG) != null) return
+        if (fragmentManager.isStateSaved) return
         ColorChooserDialogImpl().also {
-            it.arguments = arguments
+            it.arguments = bundleOf(
+                KEY_INITIAL_COLOR to initialColor,
+                KEY_REQUEST_CODE to requestCode,
+                KEY_WITH_ALPHA to withAlpha,
+                KEY_INITIAL_TAB to initialTab,
+            )
         }.show(fragmentManager, TAG)
     }
 
@@ -97,12 +94,12 @@ object ColorChooserDialog {
         if (fragmentManager.findFragmentByTag(TAG) != null || fragmentManager.isStateSaved) {
             return
         }
-        val arguments = Bundle().apply {
-            putInt(KEY_INITIAL_COLOR, initialColor)
-            putInt(KEY_REQUEST_CODE, requestCode)
-            putBoolean(KEY_WITH_ALPHA, withAlpha)
-            putInt(KEY_INITIAL_TAB, initialTab)
-        }
+        val arguments = bundleOf(
+            KEY_INITIAL_COLOR to initialColor,
+            KEY_REQUEST_CODE to requestCode,
+            KEY_WITH_ALPHA to withAlpha,
+            KEY_INITIAL_TAB to initialTab,
+        )
         ColorChooserDialogImpl().also {
             it.setTargetFragment(fragment, requestCode)
             it.arguments = arguments

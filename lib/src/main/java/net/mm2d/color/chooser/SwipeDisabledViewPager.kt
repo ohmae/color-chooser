@@ -14,9 +14,6 @@ import android.view.MotionEvent
 import androidx.core.content.res.use
 import androidx.viewpager.widget.ViewPager
 
-/**
- * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
- */
 internal class SwipeDisabledViewPager
 @JvmOverloads constructor(
     context: Context,

@@ -21,9 +21,6 @@ import androidx.lifecycle.MutableLiveData
 import net.mm2d.color.chooser.databinding.Mm2dCcViewDialogBinding
 import net.mm2d.color.chooser.util.toOpacity
 
-/**
- * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
- */
 internal class DialogView
 @JvmOverloads constructor(
     context: Context,

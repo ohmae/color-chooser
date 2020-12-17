@@ -25,9 +25,6 @@ import net.mm2d.color.chooser.util.setAlpha
 import net.mm2d.color.chooser.util.toOpacity
 import java.util.*
 
-/**
- * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
- */
 internal class ControlView
 @JvmOverloads constructor(
     context: Context,

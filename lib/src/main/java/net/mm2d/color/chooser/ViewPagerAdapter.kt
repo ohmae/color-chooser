@@ -11,9 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
 
-/**
- * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
- */
 internal class ViewPagerAdapter(
     viewList: List<Pair<String, View>>
 ) : PagerAdapter() {

@@ -18,9 +18,6 @@ import androidx.core.content.withStyledAttributes
 import net.mm2d.color.chooser.R
 import net.mm2d.color.chooser.util.*
 
-/**
- * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
- */
 internal class ColorSliderView
 @JvmOverloads constructor(
     context: Context,

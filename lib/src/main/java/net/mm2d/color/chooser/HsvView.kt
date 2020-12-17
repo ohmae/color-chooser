@@ -15,9 +15,6 @@ import android.widget.FrameLayout
 import net.mm2d.color.chooser.databinding.Mm2dCcViewHsvBinding
 import net.mm2d.color.chooser.util.ColorUtils
 
-/**
- * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
- */
 internal class HsvView
 @JvmOverloads constructor(
     context: Context,

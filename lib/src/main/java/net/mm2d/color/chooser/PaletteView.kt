@@ -27,9 +27,6 @@ import net.mm2d.color.chooser.element.PaletteCell
 import net.mm2d.color.chooser.util.toPixelsAsDp
 import java.lang.ref.SoftReference
 
-/**
- * @author [大前良介 (OHMAE Ryosuke)](mailto:ryo@mm2d.net)
- */
 internal class PaletteView
 @JvmOverloads constructor(
     context: Context,
