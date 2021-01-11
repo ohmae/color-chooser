@@ -17,6 +17,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 
 /**
  * Color chooser dialog
@@ -61,17 +62,13 @@ object ColorChooserDialog {
         withAlpha: Boolean = false,
         initialTab: Int = TAB_PALETTE
     ) {
-        val fragmentManager = activity.supportFragmentManager
-        if (fragmentManager.findFragmentByTag(TAG) != null) return
-        if (fragmentManager.isStateSaved) return
-        ColorChooserDialogImpl().also {
-            it.arguments = bundleOf(
-                KEY_INITIAL_COLOR to initialColor,
-                KEY_REQUEST_CODE to requestCode,
-                KEY_WITH_ALPHA to withAlpha,
-                KEY_INITIAL_TAB to initialTab,
-            )
-        }.show(fragmentManager, TAG)
+        show(
+            activity.supportFragmentManager,
+            requestCode,
+            initialColor,
+            withAlpha,
+            initialTab
+        )
     }
 
     /**
@@ -90,18 +87,31 @@ object ColorChooserDialog {
         withAlpha: Boolean = false,
         initialTab: Int = TAB_PALETTE
     ) {
-        val fragmentManager = fragment.childFragmentManager
-        if (fragmentManager.findFragmentByTag(TAG) != null || fragmentManager.isStateSaved) {
-            return
-        }
-        val arguments = bundleOf(
-            KEY_INITIAL_COLOR to initialColor,
-            KEY_REQUEST_CODE to requestCode,
-            KEY_WITH_ALPHA to withAlpha,
-            KEY_INITIAL_TAB to initialTab,
+        show(
+            fragment.childFragmentManager,
+            requestCode,
+            initialColor,
+            withAlpha,
+            initialTab
         )
+    }
+
+    private fun show(
+        fragmentManager: FragmentManager,
+        requestCode: Int = 0,
+        initialColor: Int = Color.WHITE,
+        withAlpha: Boolean = false,
+        initialTab: Int = TAB_PALETTE
+    ) {
+        if (fragmentManager.findFragmentByTag(TAG) != null) return
+        if (fragmentManager.isStateSaved) return
         ColorChooserDialogImpl().also {
-            it.arguments = arguments
+            it.arguments = bundleOf(
+                KEY_INITIAL_COLOR to initialColor,
+                KEY_REQUEST_CODE to requestCode,
+                KEY_WITH_ALPHA to withAlpha,
+                KEY_INITIAL_TAB to initialTab,
+            )
         }.show(fragmentManager, TAG)
     }
 
