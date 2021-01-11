@@ -1,32 +1,24 @@
-/*
- * Copyright (c) 2018 大前良介 (OHMAE Ryosuke)
- *
- * This software is released under the MIT License.
- * http://opensource.org/licenses/MIT
- */
-
 package net.mm2d.color.chooser.sample
 
 import android.app.Activity
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.fragment.app.Fragment
 import net.mm2d.color.chooser.ColorChooserDialog
 import net.mm2d.color.chooser.ColorChooserDialog.TAB_HSV
 import net.mm2d.color.chooser.ColorChooserDialog.TAB_PALETTE
 import net.mm2d.color.chooser.ColorChooserDialog.TAB_RGB
-import net.mm2d.color.chooser.sample.databinding.ActivityMainBinding
+import net.mm2d.color.chooser.sample.databinding.FragmentMain2Binding
 
-class MainActivity : AppCompatActivity(), ColorChooserDialog.Callback {
+class Main2Fragment : Fragment(R.layout.fragment_main2), ColorChooserDialog.Callback {
     private var color: Int = 0
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: FragmentMain2Binding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding = FragmentMain2Binding.bind(view)
         binding.tabDefault.setOnClickListener {
             ColorChooserDialog.show(this, REQUEST_CODE, color)
         }
@@ -57,9 +49,6 @@ class MainActivity : AppCompatActivity(), ColorChooserDialog.Callback {
         binding.darkTheme.setOnClickListener {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
-        binding.next.setOnClickListener {
-            startActivity(Intent(this, MainActivity2::class.java))
-        }
         color = Color.parseColor("#B71C1C")
         binding.sample.setBackgroundColor(color)
     }
@@ -71,6 +60,6 @@ class MainActivity : AppCompatActivity(), ColorChooserDialog.Callback {
     }
 
     companion object {
-        private const val REQUEST_CODE = 10
+        private const val REQUEST_CODE = 11
     }
 }

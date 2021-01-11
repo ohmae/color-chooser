@@ -3,6 +3,7 @@ import build.*
 plugins {
     id("com.android.application")
     id("kotlin-android")
+    id("androidx.navigation.safeargs.kotlin")
     id("com.github.ben-manes.versions")
 }
 
@@ -31,6 +32,9 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
@@ -38,6 +42,9 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation("androidx.appcompat:appcompat:1.2.0")
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
+    implementation("com.google.android.material:material:1.2.1")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.3.2")
+    implementation("androidx.navigation:navigation-ui-ktx:2.3.2")
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.5")
     testImplementation("junit:junit:4.13.1")
 }

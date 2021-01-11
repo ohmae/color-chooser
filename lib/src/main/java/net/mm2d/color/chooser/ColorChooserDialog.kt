@@ -101,7 +101,6 @@ object ColorChooserDialog {
             KEY_INITIAL_TAB to initialTab,
         )
         ColorChooserDialogImpl().also {
-            it.setTargetFragment(fragment, requestCode)
             it.arguments = arguments
         }.show(fragmentManager, TAG)
     }
@@ -143,7 +142,7 @@ object ColorChooserDialog {
         }
 
         private fun extractCallback(): Callback? {
-            return targetFragment as? Callback ?: activity as? Callback
+            return parentFragment as? Callback ?: activity as? Callback
         }
     }
 }
