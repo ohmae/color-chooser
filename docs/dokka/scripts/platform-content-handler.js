@@ -4,6 +4,7 @@ filteringContext = {
     activeFilters: []
 }
 let highlightedAnchor;
+let topNavbarOffset;
 
 window.addEventListener('load', () => {
     document.querySelectorAll("div[data-platform-hinted]")
@@ -18,6 +19,11 @@ window.addEventListener('load', () => {
     initTabs()
     handleAnchor()
     initHidingLeftNavigation()
+
+    document.getElementById('main').addEventListener("scroll", (e) => {
+        document.getElementsByClassName("navigation-wrapper")[0].classList.toggle("sticky-navigation", e.target.scrollTop > 0)
+    })
+    topNavbarOffset = document.getElementById('navigation-wrapper')
 })
 
 const initHidingLeftNavigation = () => {
@@ -38,6 +44,27 @@ const initHidingLeftNavigation = () => {
 // If this is not present user is forced to refresh the site in order to use an anchor
 window.onhashchange = handleAnchor
 
+function scrollToElementInContent(element){
+    const scrollToElement = () => document.getElementById('main').scrollTo({ top: element.offsetTop - topNavbarOffset.offsetHeight, behavior: "smooth"})
+
+    const waitAndScroll = () => {
+        setTimeout(() => {
+            if(topNavbarOffset){
+                scrollToElement()
+            } else {
+                waitForScroll()
+            }
+        }, 50)
+    }
+
+    if(topNavbarOffset){
+        scrollToElement()
+    } else {
+        waitAndScroll()
+    }
+}
+
+
 function handleAnchor() {
     if(highlightedAnchor){
         highlightedAnchor.classList.remove('anchor-highlight')
@@ -57,15 +84,15 @@ function handleAnchor() {
         if (element) {
             let tab = searchForTab(element)
             if (tab) {
-                let found = document.querySelector('.tabs-section > .section-tab[data-togglable="' + tab.getAttribute("data-togglable") + '"]')
                 toggleSections(tab)
-                const content = element.nextElementSibling
-                if(content){
-                    content.classList.add('anchor-highlight')
-                    highlightedAnchor = content
-                }
-                element.scrollIntoView({behavior: "smooth"})
             }
+            const content = element.nextElementSibling
+            if(content){
+                content.classList.add('anchor-highlight')
+                highlightedAnchor = content
+            }
+
+            scrollToElementInContent(element)
         }
     }
 }
@@ -115,6 +142,10 @@ function initializeFiltering() {
     let cached = window.localStorage.getItem('inactive-filters')
     if (cached) {
         let parsed = JSON.parse(cached)
+        //Events are used by react to get values in 'on this page'
+        const event = new CustomEvent('sourceset-filter-change', { detail: parsed });
+        window.dispatchEvent(event);
+
         filteringContext.activeFilters = filteringContext.restrictedDependencies
             .filter(q => parsed.indexOf(q) == -1 )
     } else {
@@ -216,6 +247,9 @@ function refreshFiltering() {
                 elem.setAttribute("data-filterable-current", platformList.join(' '))
             }
         )
+    const event = new CustomEvent('sourceset-filter-change', { detail: sourcesetList });
+    window.dispatchEvent(event);
+    
     refreshFilterButtons()
     refreshPlatformTabs()
 }
@@ -254,4 +288,3 @@ function refreshFilterButtons() {
             }
         })
 }
-
