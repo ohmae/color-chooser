@@ -12,12 +12,14 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
+import net.mm2d.color.chooser.databinding.Mm2dCcDialogBinding
 
 /**
  * Color chooser dialog
@@ -120,7 +122,7 @@ object ColorChooserDialog {
 
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             val activity = requireActivity()
-            dialogView = DialogView(activity)
+            dialogView = Mm2dCcDialogBinding.inflate(LayoutInflater.from(activity)).root
             val tab = requireArguments().getInt(KEY_INITIAL_TAB, 0)
             dialogView.setCurrentItem(tab)
             val color = requireArguments().getInt(KEY_INITIAL_COLOR, 0)
