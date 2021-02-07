@@ -9,7 +9,6 @@ buildscript {
         classpath("org.jetbrains.dokka:dokka-gradle-plugin:1.4.20")
         classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.3.3")
 
-        classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5")
         classpath("com.github.ben-manes:gradle-versions-plugin:0.36.0")
     }
 }

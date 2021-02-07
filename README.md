@@ -4,8 +4,7 @@
 [![GitHub release](https://img.shields.io/github/release/ohmae/color-chooser.svg)](https://github.com/ohmae/color-chooser/releases)
 [![GitHub issues](https://img.shields.io/github/issues/ohmae/color-chooser.svg)](https://github.com/ohmae/color-chooser/issues)
 [![GitHub closed issues](https://img.shields.io/github/issues-closed/ohmae/color-chooser.svg)](https://github.com/ohmae/color-chooser/issues?q=is%3Aissue+is%3Aclosed)
-[![Maven Repository](https://img.shields.io/badge/maven-jcenter-brightgreen.svg)](https://bintray.com/ohmae/maven/net.mm2d.color-chooser)
-[![Maven metadata URI](https://img.shields.io/maven-metadata/v/https/jcenter.bintray.com/net/mm2d/color-chooser/maven-metadata.xml.svg)](https://bintray.com/ohmae/maven/net.mm2d.color-chooser)
+![Maven Central](https://img.shields.io/maven-central/v/net.mm2d.preference/color-chooser)
 
 ## ScreenShots
 
@@ -16,15 +15,28 @@
 
 ## How to use
 
-*jCenter will close in May. I am currently considering migrating to another hosting service. Please wait.*
+jCenter will close in May. In 0.2.4 moved to mavenCentral from jcenter.  
+Please note that the **groupID has changed**
 
-Download from jCenter. Add dependencies, such as the following.
-
-latest version: [![Maven metadata URI](https://img.shields.io/maven-metadata/v/https/jcenter.bintray.com/net/mm2d/color-chooser/maven-metadata.xml.svg)](https://bintray.com/ohmae/maven/net.mm2d.color-chooser)
+Download from mavenCentral.  
+latest version: ![Maven Central](https://img.shields.io/maven-central/v/net.mm2d.preference/color-chooser)
 
 ```gradle
 repositories {
     jcenter()
+}
+dependencies {
+    implementation 'net.mm2d:color-chooser:<version>'
+}
+```
+
+Versions below 0.2.4 were distributed with jCenter.
+However, jCenter will close and old versions are not migrated to mavenCentral.
+If you need an older version, please use the Github Pages repository.
+
+```gradle
+repositories {
+    maven { url = URI("https://ohmae.github.com/maven") }
 }
 dependencies {
     implementation 'net.mm2d:color-chooser:<version>'

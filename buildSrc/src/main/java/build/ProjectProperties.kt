@@ -1,11 +1,15 @@
 package build
 
 object ProjectProperties {
-    const val groupId: String = "net.mm2d"
+    const val groupId: String = "net.mm2d.color-chooser"
+    const val name: String = "color chooser"
+    const val description: String = "Color chooser dialog library for android"
+    const val developerId: String = "ryo"
+    const val developerName: String = "ryosuke"
 
     private const val versionMajor: Int = 0
     private const val versionMinor: Int = 2
-    private const val versionPatch: Int = 3
+    private const val versionPatch: Int = 4
     const val versionName: String = "$versionMajor.$versionMinor.$versionPatch"
     const val versionCode: Int = versionMajor * 10000 + versionMinor * 100 + versionPatch
 
