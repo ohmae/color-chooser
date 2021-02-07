@@ -47,7 +47,7 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation("androidx.appcompat:appcompat:1.2.0")
     implementation("androidx.core:core-ktx:1.3.2")
-    implementation("com.google.android.material:material:1.2.1")
+    implementation("com.google.android.material:material:1.3.0")
     testImplementation("junit:junit:4.13.1")
 }
 
@@ -60,4 +60,16 @@ tasks.named<DokkaTask>("dokkaHtml") {
     }
 }
 
-commonSettings()
+tasks.create("sourcesJar", Jar::class) {
+    archiveClassifier.set("sources")
+    from(android.sourceSets["main"].java.srcDirs)
+}
+
+artifacts {
+    archives(tasks.named<Jar>("sourcesJar"))
+}
+
+uploadArchivesSettings()
+publishingSettings()
+bintraySettings()
+dependencyUpdatesSettings()

@@ -1,6 +1,5 @@
-package build.internal
+package build
 
-import build.ProjectProperties
 import groovy.util.Node
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.NamedDomainObjectProvider
@@ -29,25 +28,27 @@ private val NamedDomainObjectContainer<Configuration>.api: NamedDomainObjectProv
 private val NamedDomainObjectContainer<Configuration>.implementation: NamedDomainObjectProvider<Configuration>
     get() = named<Configuration>("implementation")
 
-internal fun Project.publishingSettings() {
+fun Project.publishingSettings() {
     publishing {
         publications {
             create<MavenPublication>("bintray") {
                 artifact("$buildDir/outputs/aar/${base.archivesBaseName}-release.aar")
+                artifact(tasks["sourcesJar"])
                 groupId = ProjectProperties.groupId
                 artifactId = base.archivesBaseName
                 version = ProjectProperties.versionName
-                artifact(tasks["sourcesJar"])
                 pom.withXml {
                     val node = asNode()
-                    val licenses = node.appendNode("licenses")
-                    appendLicense(
-                        licenses,
-                        "The MIT License",
-                        "https://opensource.org/licenses/MIT",
-                        "repo"
-                    )
-                    appendScm(node, ProjectProperties.Url.scm, ProjectProperties.Url.github)
+                    node.appendNode("licenses").appendNode("license").apply {
+                        appendNode("name", "The MIT License")
+                        appendNode("url", "https://opensource.org/licenses/MIT")
+                        appendNode("distribution", "repo")
+                    }
+                    node.appendNode("scm").apply {
+                        appendNode("connection", ProjectProperties.Url.scm)
+                        appendNode("developerConnection", ProjectProperties.Url.scm)
+                        appendNode("url", ProjectProperties.Url.github)
+                    }
                     val dependencies = node.appendNode("dependencies")
                     configurations.api.get().dependencies.forEach {
                         appendDependency(
@@ -70,21 +71,6 @@ internal fun Project.publishingSettings() {
                 }
             }
         }
-    }
-}
-
-private fun appendLicense(parentNode: Node, name: String, url: String, distribution: String) {
-    parentNode.appendNode("license").apply {
-        appendNode("name", name)
-        appendNode("url", url)
-        appendNode("distribution", distribution)
-    }
-}
-
-private fun appendScm(parentNode: Node, connection: String, url: String) {
-    parentNode.appendNode("scm").apply {
-        appendNode("connection", connection)
-        appendNode("url", url)
     }
 }
 
