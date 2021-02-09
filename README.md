@@ -4,7 +4,7 @@
 [![GitHub release](https://img.shields.io/github/release/ohmae/color-chooser.svg)](https://github.com/ohmae/color-chooser/releases)
 [![GitHub issues](https://img.shields.io/github/issues/ohmae/color-chooser.svg)](https://github.com/ohmae/color-chooser/issues)
 [![GitHub closed issues](https://img.shields.io/github/issues-closed/ohmae/color-chooser.svg)](https://github.com/ohmae/color-chooser/issues?q=is%3Aissue+is%3Aclosed)
-![Maven Central](https://img.shields.io/maven-central/v/net.mm2d.preference/color-chooser)
+![Maven Central](https://img.shields.io/maven-central/v/net.mm2d.color-chooser/color-chooser)
 
 ## ScreenShots
 
@@ -19,14 +19,14 @@ jCenter will close in May. In 0.2.4 moved to mavenCentral from jcenter.
 Please note that the **groupID has changed**
 
 Download from mavenCentral.  
-latest version: ![Maven Central](https://img.shields.io/maven-central/v/net.mm2d.preference/color-chooser)
+latest version: ![Maven Central](https://img.shields.io/maven-central/v/net.mm2d.color-chooser/color-chooser)
 
 ```gradle
 repositories {
     jcenter()
 }
 dependencies {
-    implementation 'net.mm2d:color-chooser:<version>'
+    implementation 'net.mm2d.color-chooser:color-chooser:<version>'
 }
 ```
 
