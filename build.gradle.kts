@@ -1,12 +1,13 @@
 buildscript {
     repositories {
         google()
+        mavenCentral()
         gradlePluginPortal()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:4.1.3")
+        classpath("com.android.tools.build:gradle:4.2.0")
         classpath(kotlin("gradle-plugin", version = "1.5.0"))
-        classpath("org.jetbrains.dokka:dokka-gradle-plugin:1.4.30")
+        classpath("org.jetbrains.dokka:dokka-gradle-plugin:1.4.32")
         classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.3.5")
 
         classpath("com.github.ben-manes:gradle-versions-plugin:0.38.0")
