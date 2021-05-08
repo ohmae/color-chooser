@@ -12,7 +12,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.alpha
 import androidx.core.view.doOnLayout
 import androidx.core.view.forEach
@@ -26,16 +26,12 @@ internal class DialogView
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : LinearLayout(context, attrs, defStyleAttr), ColorChangeMediator {
+) : ConstraintLayout(context, attrs, defStyleAttr), ColorChangeMediator {
     private val liveData: MutableLiveData<Int> = MutableLiveData()
-    private val binding: Mm2dCcViewDialogBinding
+    private val binding: Mm2dCcViewDialogBinding =
+        Mm2dCcViewDialogBinding.inflate(LayoutInflater.from(context), this)
     val color: Int
         get() = binding.controlView.color
-
-    init {
-        orientation = VERTICAL
-        binding = Mm2dCcViewDialogBinding.inflate(LayoutInflater.from(context), this)
-    }
 
     fun init(color: Int, lifecycleOwner: LifecycleOwner) {
         onChangeColor(color.toOpacity())
