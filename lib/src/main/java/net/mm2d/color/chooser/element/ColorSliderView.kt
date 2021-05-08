@@ -144,10 +144,9 @@ internal class ColorSliderView
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         setMeasuredDimension(
-            resolveSizeAndState(
+            getDefaultSize(
                 maxOf(_width + paddingLeft + paddingRight, suggestedMinimumWidth),
-                widthMeasureSpec,
-                MeasureSpec.UNSPECIFIED
+                widthMeasureSpec
             ),
             resolveSizeAndState(
                 maxOf(_height + paddingTop + paddingBottom, suggestedMinimumHeight),

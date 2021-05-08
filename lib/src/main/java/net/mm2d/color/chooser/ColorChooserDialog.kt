@@ -123,9 +123,11 @@ object ColorChooserDialog {
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             val activity = requireActivity()
             dialogView = Mm2dCcDialogBinding.inflate(LayoutInflater.from(activity)).root
-            val tab = requireArguments().getInt(KEY_INITIAL_TAB, 0)
+            val arguments = requireArguments()
+            val tab = arguments.getInt(KEY_INITIAL_TAB, 0)
+            arguments.remove(KEY_INITIAL_TAB)
             dialogView.setCurrentItem(tab)
-            val color = requireArguments().getInt(KEY_INITIAL_COLOR, 0)
+            val color = arguments.getInt(KEY_INITIAL_COLOR, 0)
             dialogView.init(color, this)
             dialogView.setWithAlpha(requireArguments().getBoolean(KEY_WITH_ALPHA))
             return AlertDialog.Builder(activity)

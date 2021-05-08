@@ -18,6 +18,7 @@ import androidx.core.view.doOnLayout
 import androidx.core.view.forEach
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
+import com.google.android.material.tabs.TabLayoutMediator
 import net.mm2d.color.chooser.databinding.Mm2dCcViewDialogBinding
 import net.mm2d.color.chooser.util.toOpacity
 
@@ -38,10 +39,12 @@ internal class DialogView
         binding.controlView.setAlpha(color.alpha)
         val pageTitles: List<String> = listOf("palette", "hsv", "rgb")
         val pageViews: List<View> = listOf(
-            PaletteView(context), HsvView(context), SliderView(context)
+            PaletteView(context), HsvView(context), SliderView(context),
         )
-        binding.viewPager.adapter = ViewPagerAdapter(pageViews, pageTitles)
-        binding.tabLayout.setupWithViewPager(binding.viewPager)
+        binding.viewPager.adapter = ViewPagerAdapter(pageViews)
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            tab.text = pageTitles[position]
+        }.attach()
         pageViews.forEach { observeRecursively(it, lifecycleOwner) }
         observeRecursively(binding.controlView, lifecycleOwner)
     }

@@ -9,22 +9,27 @@ package net.mm2d.color.chooser
 
 import android.view.View
 import android.view.ViewGroup
-import androidx.viewpager.widget.PagerAdapter
+import androidx.core.view.ViewCompat
+import androidx.recyclerview.widget.RecyclerView
+import net.mm2d.color.chooser.ViewPagerAdapter.ViewHolder
 
 internal class ViewPagerAdapter(
-    pageViews: List<View>,
-    pageTitles: List<String>
-) : PagerAdapter() {
-    private val pageViews = pageViews.toList()
-    private val pageTitles = pageTitles.toList()
+    pageViews: List<View>
+) : RecyclerView.Adapter<ViewHolder>() {
+    private val pageViews = pageViews.toList().onEach {
+        it.id = ViewCompat.generateViewId()
+        it.layoutParams = RecyclerView.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+    }
 
-    override fun isViewFromObject(view: View, obj: Any): Boolean = view == obj
-    override fun getCount(): Int = pageViews.size
-    override fun getPageTitle(position: Int): CharSequence = pageTitles[position]
+    class ViewHolder(val view: View) : RecyclerView.ViewHolder(view)
 
-    override fun instantiateItem(container: ViewGroup, position: Int): Any =
-        pageViews[position].also { container.addView(it) }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
+        ViewHolder(pageViews[viewType])
 
-    override fun destroyItem(container: ViewGroup, position: Int, obj: Any) =
-        container.removeView(obj as View)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = Unit
+    override fun getItemViewType(position: Int): Int = position
+    override fun getItemCount(): Int = pageViews.size
 }

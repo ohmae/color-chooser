@@ -8,6 +8,12 @@
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
     >
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        />
+
     <net.mm2d.color.chooser.element.SvView
         android:id="@+id/sv_view"
         android:layout_width="0dp"
