@@ -11,7 +11,7 @@ import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.widget.FrameLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import net.mm2d.color.chooser.databinding.Mm2dCcViewHsvBinding
 import net.mm2d.color.chooser.util.ColorUtils
 
@@ -20,7 +20,7 @@ internal class HsvView
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr), ColorObserver {
+) : ConstraintLayout(context, attrs, defStyleAttr), ColorObserver {
     private val colorChangeMediator by lazy {
         findColorChangeMediator()
     }

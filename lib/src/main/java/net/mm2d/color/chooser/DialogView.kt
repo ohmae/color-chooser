@@ -38,7 +38,7 @@ internal class DialogView
         binding.controlView.setAlpha(color.alpha)
         val pageTitles: List<String> = listOf("palette", "hsv", "rgb")
         val pageViews: List<View> = listOf(
-            PaletteView(context), HsvPage(context), SliderPage(context)
+            PaletteView(context), HsvView(context), SliderView(context)
         )
         binding.viewPager.adapter = ViewPagerAdapter(pageViews, pageTitles)
         binding.tabLayout.setupWithViewPager(binding.viewPager)

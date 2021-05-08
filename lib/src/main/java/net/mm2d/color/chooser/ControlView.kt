@@ -15,7 +15,7 @@ import android.text.*
 import android.text.InputFilter.LengthFilter
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.alpha
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
@@ -30,7 +30,7 @@ internal class ControlView
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : LinearLayout(context, attrs, defStyleAttr), ColorObserver {
+) : ConstraintLayout(context, attrs, defStyleAttr), ColorObserver {
     private val colorChangeMediator by lazy {
         findColorChangeMediator()
     }
@@ -42,13 +42,12 @@ internal class ControlView
     private var hasAlpha: Boolean = true
     private val rgbFilter = arrayOf(HexadecimalFilter(), LengthFilter(6))
     private val argbFilter = arrayOf(HexadecimalFilter(), LengthFilter(8))
-    private val binding: Mm2dCcViewControlBinding
+    private val binding: Mm2dCcViewControlBinding =
+        Mm2dCcViewControlBinding.inflate(LayoutInflater.from(context), this)
     var color: Int = Color.BLACK
         private set
 
     init {
-        orientation = VERTICAL
-        binding = Mm2dCcViewControlBinding.inflate(LayoutInflater.from(context), this)
         binding.colorPreview.setColor(color)
         binding.seekAlpha.setValue(color.alpha)
         binding.seekAlpha.onValueChanged = { value, fromUser ->
@@ -91,7 +90,8 @@ internal class ControlView
 
     fun setWithAlpha(withAlpha: Boolean) {
         hasAlpha = withAlpha
-        binding.sectionAlpha.isVisible = withAlpha
+        binding.seekAlpha.isVisible = withAlpha
+        binding.textAlpha.isVisible = withAlpha
         if (withAlpha) {
             binding.editHex.filters = argbFilter
         } else {
