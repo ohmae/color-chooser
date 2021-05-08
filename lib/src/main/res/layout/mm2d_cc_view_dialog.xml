@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         />
 
-    <net.mm2d.color.chooser.SwipeDisabledViewPager
+    <net.mm2d.color.chooser.MaxHeightViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -12,15 +12,18 @@ import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
 
 internal class ViewPagerAdapter(
-    viewList: List<Pair<String, View>>
+    pageViews: List<View>,
+    pageTitles: List<String>
 ) : PagerAdapter() {
-    private val list = viewList.toList()
+    private val pageViews = pageViews.toList()
+    private val pageTitles = pageTitles.toList()
+
     override fun isViewFromObject(view: View, obj: Any): Boolean = view == obj
-    override fun getCount(): Int = list.size
-    override fun getPageTitle(position: Int): CharSequence? = list[position].first
+    override fun getCount(): Int = pageViews.size
+    override fun getPageTitle(position: Int): CharSequence = pageTitles[position]
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any =
-        list[position].second.also { container.addView(it) }
+        pageViews[position].also { container.addView(it) }
 
     override fun destroyItem(container: ViewGroup, position: Int, obj: Any) =
         container.removeView(obj as View)

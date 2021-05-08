@@ -7,27 +7,20 @@
 
 package net.mm2d.color.chooser
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
-import android.view.MotionEvent
 import androidx.core.content.res.use
 import androidx.viewpager.widget.ViewPager
 
-internal class SwipeDisabledViewPager
+internal class MaxHeightViewPager
 @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
 ) : ViewPager(context, attrs) {
     private val maxHeight: Int =
-        context.obtainStyledAttributes(attrs, R.styleable.SwipeDisabledViewPager).use {
+        context.obtainStyledAttributes(attrs, R.styleable.MaxHeightViewPager).use {
             it.getDimensionPixelSize(R.styleable.SwipeDisabledViewPager_maxHeight, 0)
         }
-
-    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean = false
-
-    @SuppressLint("ClickableViewAccessibility")
-    override fun onTouchEvent(ev: MotionEvent?): Boolean = false
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val mode = MeasureSpec.getMode(heightMeasureSpec)

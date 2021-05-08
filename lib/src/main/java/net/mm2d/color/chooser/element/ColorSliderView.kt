@@ -87,6 +87,9 @@ internal class ColorSliderView
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
+        if (event.action == MotionEvent.ACTION_DOWN) {
+            parent.requestDisallowInterceptTouchEvent(true)
+        }
         _value = ((event.x - targetRect.left) / targetRect.width().toFloat()).coerceIn(0f, 1f)
         onValueChanged?.invoke(value, true)
         invalidate()

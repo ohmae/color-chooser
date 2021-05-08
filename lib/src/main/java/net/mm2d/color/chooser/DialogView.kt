@@ -40,14 +40,13 @@ internal class DialogView
     fun init(color: Int, lifecycleOwner: LifecycleOwner) {
         onChangeColor(color.toOpacity())
         binding.controlView.setAlpha(color.alpha)
-        val pages: List<Pair<String, View>> = listOf(
-            "palette" to PaletteView(context),
-            "hsv" to HsvPage(context),
-            "rgb" to SliderPage(context)
+        val pageTitles: List<String> = listOf("palette", "hsv", "rgb")
+        val pageViews: List<View> = listOf(
+            PaletteView(context), HsvPage(context), SliderPage(context)
         )
-        binding.viewPager.adapter = ViewPagerAdapter(pages)
+        binding.viewPager.adapter = ViewPagerAdapter(pageViews, pageTitles)
         binding.tabLayout.setupWithViewPager(binding.viewPager)
-        pages.forEach { observeRecursively(it.second, lifecycleOwner) }
+        pageViews.forEach { observeRecursively(it, lifecycleOwner) }
         observeRecursively(binding.controlView, lifecycleOwner)
     }
 
