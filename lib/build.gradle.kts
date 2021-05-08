@@ -18,7 +18,7 @@ android {
     compileSdkVersion(30)
 
     defaultConfig {
-        minSdkVersion(16)
+        minSdkVersion(21)
         targetSdkVersion(30)
         versionCode = ProjectProperties.versionCode
         versionName = ProjectProperties.versionName

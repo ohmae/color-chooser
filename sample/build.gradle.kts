@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "net.mm2d.color.chooser.sample"
-        minSdkVersion(16)
+        minSdkVersion(21)
         targetSdkVersion(30)
         versionCode = 1
         versionName = "1.0"
