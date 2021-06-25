@@ -5,14 +5,12 @@ import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.NamedDomainObjectProvider
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
-import org.gradle.api.internal.HasConvention
-import org.gradle.api.plugins.BasePluginConvention
+import org.gradle.api.plugins.BasePluginExtension
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.get
-import org.gradle.kotlin.dsl.getPluginByName
 import org.gradle.kotlin.dsl.named
 import org.gradle.plugins.signing.SigningExtension
 import java.net.URI
@@ -20,9 +18,10 @@ import java.net.URI
 private fun Project.publishing(configure: PublishingExtension.() -> Unit): Unit =
     (this as ExtensionAware).extensions.configure("publishing", configure)
 
-private val Project.base: BasePluginConvention
-    get() = ((this as? Project)?.convention
-        ?: (this as HasConvention).convention).getPluginByName("base")
+val Project.base: BasePluginExtension
+    get() =
+        (this as ExtensionAware).extensions.getByName("base") as BasePluginExtension
+
 
 private val NamedDomainObjectContainer<Configuration>.api: NamedDomainObjectProvider<Configuration>
     get() = named<Configuration>("api")
@@ -45,11 +44,11 @@ fun Project.publishingSettings() {
     publishing {
         publications {
             create<MavenPublication>("mavenJava") {
-                artifact("$buildDir/outputs/aar/${base.archivesBaseName}-release.aar")
+                artifact("$buildDir/outputs/aar/${base.archivesName.get()}-release.aar")
                 artifact(tasks["sourcesJar"])
                 artifact(tasks["javadocJar"])
                 groupId = ProjectProperties.groupId
-                artifactId = base.archivesBaseName
+                artifactId = base.archivesName.get()
                 version = ProjectProperties.versionName
                 pom.withXml {
                     val node = asNode()
