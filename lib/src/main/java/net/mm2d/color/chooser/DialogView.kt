@@ -51,9 +51,13 @@ internal class DialogView
 
     fun setCurrentItem(position: Int) {
         binding.viewPager.doOnLayout {
-            binding.viewPager.setCurrentItem(position, false)
+            binding.viewPager.post {
+                binding.viewPager.setCurrentItem(position, false)
+            }
         }
     }
+
+    fun getCurrentItem(): Int = binding.viewPager.currentItem
 
     private fun observeRecursively(view: View, lifecycleOwner: LifecycleOwner) {
         if (view is ColorObserver) liveData.observe(lifecycleOwner, view)

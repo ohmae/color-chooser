@@ -118,17 +118,26 @@ object ColorChooserDialog {
     }
 
     internal class ColorChooserDialogImpl : DialogFragment() {
-        private lateinit var dialogView: DialogView
+        private var _dialogView: DialogView? = null
+        private val dialogView: DialogView
+            get() = _dialogView ?: throw IllegalStateException()
 
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             val activity = requireActivity()
-            dialogView = Mm2dCcDialogBinding.inflate(LayoutInflater.from(activity)).root
-            val arguments = requireArguments()
-            val tab = arguments.getInt(KEY_INITIAL_TAB, 0)
-            arguments.remove(KEY_INITIAL_TAB)
-            dialogView.setCurrentItem(tab)
-            val color = arguments.getInt(KEY_INITIAL_COLOR, 0)
-            dialogView.init(color, this)
+            _dialogView = Mm2dCcDialogBinding.inflate(LayoutInflater.from(activity)).root
+
+            if (savedInstanceState != null) {
+                val tab = savedInstanceState.getInt(KEY_INITIAL_TAB, 0)
+                dialogView.setCurrentItem(tab)
+                val color = savedInstanceState.getInt(KEY_INITIAL_COLOR, 0)
+                dialogView.init(color, this)
+            } else {
+                val arguments = requireArguments()
+                val tab = arguments.getInt(KEY_INITIAL_TAB, 0)
+                dialogView.setCurrentItem(tab)
+                val color = arguments.getInt(KEY_INITIAL_COLOR, 0)
+                dialogView.init(color, this)
+            }
             dialogView.setWithAlpha(requireArguments().getBoolean(KEY_WITH_ALPHA))
             return AlertDialog.Builder(activity)
                 .setView(dialogView)
@@ -139,6 +148,17 @@ object ColorChooserDialog {
                     dialog.cancel()
                 }
                 .create()
+        }
+
+        override fun onDestroyView() {
+            super.onDestroyView()
+            _dialogView = null
+        }
+
+        override fun onSaveInstanceState(outState: Bundle) {
+            super.onSaveInstanceState(outState)
+            outState.putInt(KEY_INITIAL_TAB, dialogView.getCurrentItem())
+            outState.putInt(KEY_INITIAL_COLOR, dialogView.color)
         }
 
         override fun onCancel(dialog: DialogInterface) {
