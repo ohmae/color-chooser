@@ -4,7 +4,7 @@
 [![GitHub release](https://img.shields.io/github/release/ohmae/color-chooser.svg)](https://github.com/ohmae/color-chooser/releases)
 [![GitHub issues](https://img.shields.io/github/issues/ohmae/color-chooser.svg)](https://github.com/ohmae/color-chooser/issues)
 [![GitHub closed issues](https://img.shields.io/github/issues-closed/ohmae/color-chooser.svg)](https://github.com/ohmae/color-chooser/issues?q=is%3Aissue+is%3Aclosed)
-![Maven Central](https://img.shields.io/maven-central/v/net.mm2d.color-chooser/color-chooser)
+[![Maven Central](https://img.shields.io/maven-central/v/net.mm2d.color-chooser/color-chooser)](https://search.maven.org/artifact/net.mm2d.color-chooser/color-chooser)
 
 ## ScreenShots
 
