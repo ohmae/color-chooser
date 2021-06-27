@@ -19,9 +19,7 @@ private fun Project.publishing(configure: PublishingExtension.() -> Unit): Unit 
     (this as ExtensionAware).extensions.configure("publishing", configure)
 
 val Project.base: BasePluginExtension
-    get() =
-        (this as ExtensionAware).extensions.getByName("base") as BasePluginExtension
-
+    get() = (this as ExtensionAware).extensions.getByName("base") as BasePluginExtension
 
 private val NamedDomainObjectContainer<Configuration>.api: NamedDomainObjectProvider<Configuration>
     get() = named<Configuration>("api")
