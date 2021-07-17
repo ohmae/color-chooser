@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.5.20"
+    kotlin("jvm") version "1.4.31"
     `kotlin-dsl`
 }
 
@@ -10,6 +10,6 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation("com.android.tools.build:gradle:4.2.1")
+    implementation("com.android.tools.build:gradle:4.2.2")
     implementation("com.github.ben-manes:gradle-versions-plugin:0.39.0")
 }
