@@ -1,4 +1,4 @@
-import build.*
+import build.dependencyUpdatesSettings
 
 plugins {
     id("com.android.application")
@@ -8,15 +8,15 @@ plugins {
 }
 
 android {
-    compileSdkVersion(30)
+    compileSdk = 30
 
     defaultConfig {
         applicationId = "net.mm2d.color.chooser.sample"
-        minSdkVersion(21)
-        targetSdkVersion(30)
+        minSdk = 21
+        targetSdk = 30
         versionCode = 1
         versionName = "1.0"
-        resConfigs("en")
+        resourceConfigurations += "en"
         vectorDrawables.useSupportLibrary = true
     }
     compileOptions {
@@ -39,7 +39,7 @@ android {
 
 dependencies {
     implementation(project(":lib"))
-    implementation("androidx.appcompat:appcompat:1.3.0")
+    implementation("androidx.appcompat:appcompat:1.3.1")
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
     implementation("com.google.android.material:material:1.4.0")
     implementation("androidx.navigation:navigation-fragment-ktx:2.3.5")

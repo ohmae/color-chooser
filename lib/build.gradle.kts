@@ -1,4 +1,7 @@
-import build.*
+import build.ProjectProperties
+import build.base
+import build.dependencyUpdatesSettings
+import build.publishingSettings
 import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
@@ -15,13 +18,11 @@ group = ProjectProperties.groupId
 version = ProjectProperties.versionName
 
 android {
-    compileSdkVersion(30)
+    compileSdk = 30
 
     defaultConfig {
-        minSdkVersion(21)
-        targetSdkVersion(30)
-        versionCode = ProjectProperties.versionCode
-        versionName = ProjectProperties.versionName
+        minSdk = 21
+        targetSdk = 30
         vectorDrawables.useSupportLibrary = true
     }
     compileOptions {
@@ -44,7 +45,7 @@ android {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation("androidx.appcompat:appcompat:1.3.0")
+    implementation("androidx.appcompat:appcompat:1.3.1")
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
     implementation("androidx.core:core-ktx:1.6.0")
     implementation("com.google.android.material:material:1.4.0")
