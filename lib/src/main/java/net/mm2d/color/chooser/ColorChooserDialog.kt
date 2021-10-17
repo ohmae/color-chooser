@@ -19,7 +19,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
-import net.mm2d.color.chooser.databinding.Mm2dCcDialogBinding
+import net.mm2d.color.chooser.databinding.Mm2dCcColorChooserBinding
 
 /**
  * Color chooser dialog
@@ -118,29 +118,29 @@ object ColorChooserDialog {
     }
 
     internal class ColorChooserDialogImpl : DialogFragment() {
-        private var _dialogView: DialogView? = null
-        private val dialogView: DialogView
-            get() = _dialogView ?: throw IllegalStateException()
+        private var _colorChooserView: ColorChooserView? = null
+        private val colorChooserView: ColorChooserView
+            get() = _colorChooserView ?: throw IllegalStateException()
 
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             val activity = requireActivity()
-            _dialogView = Mm2dCcDialogBinding.inflate(LayoutInflater.from(activity)).root
+            _colorChooserView = Mm2dCcColorChooserBinding.inflate(LayoutInflater.from(activity)).root
 
             if (savedInstanceState != null) {
                 val tab = savedInstanceState.getInt(KEY_INITIAL_TAB, 0)
-                dialogView.setCurrentItem(tab)
+                colorChooserView.setCurrentItem(tab)
                 val color = savedInstanceState.getInt(KEY_INITIAL_COLOR, 0)
-                dialogView.init(color, this)
+                colorChooserView.init(color, this)
             } else {
                 val arguments = requireArguments()
                 val tab = arguments.getInt(KEY_INITIAL_TAB, 0)
-                dialogView.setCurrentItem(tab)
+                colorChooserView.setCurrentItem(tab)
                 val color = arguments.getInt(KEY_INITIAL_COLOR, 0)
-                dialogView.init(color, this)
+                colorChooserView.init(color, this)
             }
-            dialogView.setWithAlpha(requireArguments().getBoolean(KEY_WITH_ALPHA))
+            colorChooserView.setWithAlpha(requireArguments().getBoolean(KEY_WITH_ALPHA))
             return AlertDialog.Builder(activity)
-                .setView(dialogView)
+                .setView(colorChooserView)
                 .setPositiveButton("OK") { _, _ ->
                     notifySelect()
                 }
@@ -152,13 +152,13 @@ object ColorChooserDialog {
 
         override fun onDestroyView() {
             super.onDestroyView()
-            _dialogView = null
+            _colorChooserView = null
         }
 
         override fun onSaveInstanceState(outState: Bundle) {
             super.onSaveInstanceState(outState)
-            outState.putInt(KEY_INITIAL_TAB, dialogView.getCurrentItem())
-            outState.putInt(KEY_INITIAL_COLOR, dialogView.color)
+            outState.putInt(KEY_INITIAL_TAB, colorChooserView.getCurrentItem())
+            outState.putInt(KEY_INITIAL_COLOR, colorChooserView.color)
         }
 
         override fun onCancel(dialog: DialogInterface) {
@@ -171,7 +171,7 @@ object ColorChooserDialog {
             extractCallback()?.onColorChooserResult(
                 requestCode,
                 Activity.RESULT_OK,
-                dialogView.color
+                colorChooserView.color
             )
         }
 

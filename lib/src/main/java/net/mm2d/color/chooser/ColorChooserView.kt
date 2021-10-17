@@ -22,7 +22,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import net.mm2d.color.chooser.databinding.Mm2dCcViewDialogBinding
 import net.mm2d.color.chooser.util.toOpacity
 
-internal class DialogView
+internal class ColorChooserView
 @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
