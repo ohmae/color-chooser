@@ -43,28 +43,28 @@ dependencies {
 }
 ```
 
+Register the listener to receive the result.
+Write the following process in onViewCreated of Fragment or onCreate of Activity.
+
+```kotlin
+ColorChooserDialog.registerListener(REQUEST_KEY, this) {
+    // it is selected color as @ColorInt
+}
+```
+
 To show dialog. On `FragmentActivity` or `Fragment`
 
 ```kotlin
 ColorChooserDialog.show(
     this,         // Fragment or FragmentActivity
-    REQUEST_CODE, // request code for receive result, optional, default 0
+    REQUEST_KEY,  // request key for receive result
     initialColor, // initial color, optional, default #FFFFFF
     true,         // need for alpha, optional, default false
     TAB_RGB       // initial tab, TAB_PALETTE/TAB_HSV/TAB_RGB, optional, default  TAB_PALETTE
 )
 ```
 
-To receive result. Implement `ColorChooserDialog.Callback` to `Activity` or `Fragment`
-
-```kotlin
-class MainActivity : AppCompatActivity(), ColorChooserDialog.Callback {
-    override fun onColorChooserResult(requestCode: Int, resultCode: Int, color: Int) {
-        if (requestCode != REQUEST_CODE || resultCode != Activity.RESULT_OK) return
-        // use color
-    }
-}
-```
+*The style of implementing a callback interface in Activity and Fragment has been deprecated.*
 
 Please see [Sample code](sample/src/main/java/net/mm2d/color/chooser/sample/MainActivity.kt) for detail.
 
@@ -79,6 +79,7 @@ Please see [Sample code](sample/src/main/java/net/mm2d/color/chooser/sample/Main
 - [Kotlin](https://kotlinlang.org/)
 - [Android Jetpack](https://developer.android.com/jetpack/)
   - androidx.appcompat:appcompat
+  - androidx.constraintlayout:constraintlayout
   - androidx.core:core-ktx
   - com.google.android.material:material
 
@@ -88,6 +89,9 @@ Please see [Sample code](sample/src/main/java/net/mm2d/color/chooser/sample/Main
 - [Android Jetpack](https://developer.android.com/jetpack/)
   - androidx.appcompat:appcompat
   - androidx.constraintlayout:constraintlayout
+  - androidx.navigation:navigation-fragment-ktx
+  - androidx.navigation:navigation-ui-ktx
+  - com.google.android.material:material
 - [LeakCanary](https://github.com/square/leakcanary)
 
 ## Author

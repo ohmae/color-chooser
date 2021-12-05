@@ -7,7 +7,6 @@
 
 package net.mm2d.color.chooser.sample
 
-import android.app.Activity
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -19,7 +18,7 @@ import net.mm2d.color.chooser.ColorChooserDialog.TAB_PALETTE
 import net.mm2d.color.chooser.ColorChooserDialog.TAB_RGB
 import net.mm2d.color.chooser.sample.databinding.FragmentMain2Binding
 
-class Main2Fragment : Fragment(R.layout.fragment_main2), ColorChooserDialog.Callback {
+class Main2Fragment : Fragment(R.layout.fragment_main2) {
     private var color: Int = 0
     private lateinit var binding: FragmentMain2Binding
 
@@ -27,28 +26,28 @@ class Main2Fragment : Fragment(R.layout.fragment_main2), ColorChooserDialog.Call
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentMain2Binding.bind(view)
         binding.tabDefault.setOnClickListener {
-            ColorChooserDialog.show(this, REQUEST_CODE, color)
+            ColorChooserDialog.show(this, REQUEST_KEY, color)
         }
         binding.tabPalette.setOnClickListener {
-            ColorChooserDialog.show(this, REQUEST_CODE, color, initialTab = TAB_PALETTE)
+            ColorChooserDialog.show(this, REQUEST_KEY, color, initialTab = TAB_PALETTE)
         }
         binding.tabHsv.setOnClickListener {
-            ColorChooserDialog.show(this, REQUEST_CODE, color, initialTab = TAB_HSV)
+            ColorChooserDialog.show(this, REQUEST_KEY, color, initialTab = TAB_HSV)
         }
         binding.tabRgb.setOnClickListener {
-            ColorChooserDialog.show(this, REQUEST_CODE, color, initialTab = TAB_RGB)
+            ColorChooserDialog.show(this, REQUEST_KEY, color, initialTab = TAB_RGB)
         }
         binding.tabDefaultAlpha.setOnClickListener {
-            ColorChooserDialog.show(this, REQUEST_CODE, color, true)
+            ColorChooserDialog.show(this, REQUEST_KEY, color, true)
         }
         binding.tabPaletteAlpha.setOnClickListener {
-            ColorChooserDialog.show(this, REQUEST_CODE, color, true, TAB_PALETTE)
+            ColorChooserDialog.show(this, REQUEST_KEY, color, true, TAB_PALETTE)
         }
         binding.tabHsvAlpha.setOnClickListener {
-            ColorChooserDialog.show(this, REQUEST_CODE, color, true, TAB_HSV)
+            ColorChooserDialog.show(this, REQUEST_KEY, color, true, TAB_HSV)
         }
         binding.tabRgbAlpha.setOnClickListener {
-            ColorChooserDialog.show(this, REQUEST_CODE, color, true, TAB_RGB)
+            ColorChooserDialog.show(this, REQUEST_KEY, color, true, TAB_RGB)
         }
         binding.lightTheme.setOnClickListener {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
@@ -58,15 +57,13 @@ class Main2Fragment : Fragment(R.layout.fragment_main2), ColorChooserDialog.Call
         }
         color = Color.parseColor("#B71C1C")
         binding.sample.setBackgroundColor(color)
-    }
-
-    override fun onColorChooserResult(requestCode: Int, resultCode: Int, color: Int) {
-        if (requestCode != REQUEST_CODE || resultCode != Activity.RESULT_OK) return
-        this.color = color
-        binding.sample.setBackgroundColor(color)
+        ColorChooserDialog.registerListener(REQUEST_KEY, this) {
+            this.color = it
+            binding.sample.setBackgroundColor(it)
+        }
     }
 
     companion object {
-        private const val REQUEST_CODE = 11
+        private const val REQUEST_KEY = "REQUEST_KEY"
     }
 }
