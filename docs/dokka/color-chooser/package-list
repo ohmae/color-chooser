@@ -3,11 +3,17 @@ $dokka.linkExtension:html
 $dokka.location:net.mm2d.color.chooser////PointingToDeclaration/color-chooser/net.mm2d.color.chooser/index.html
 $dokka.location:net.mm2d.color.chooser/ColorChooserDialog.Callback///PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-color-chooser-dialog/-callback/index.html
 $dokka.location:net.mm2d.color.chooser/ColorChooserDialog.Callback/onColorChooserResult/#kotlin.Int#kotlin.Int#kotlin.Int/PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-color-chooser-dialog/-callback/on-color-chooser-result.html
+$dokka.location:net.mm2d.color.chooser/ColorChooserDialog.ColorChooserListener///PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-color-chooser-dialog/-color-chooser-listener/index.html
+$dokka.location:net.mm2d.color.chooser/ColorChooserDialog.ColorChooserListener/onColorSelected/#kotlin.Int/PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-color-chooser-dialog/-color-chooser-listener/on-color-selected.html
 $dokka.location:net.mm2d.color.chooser/ColorChooserDialog///PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-color-chooser-dialog/index.html
 $dokka.location:net.mm2d.color.chooser/ColorChooserDialog/TAB_HSV/#/PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-color-chooser-dialog/-t-a-b_-h-s-v.html
 $dokka.location:net.mm2d.color.chooser/ColorChooserDialog/TAB_PALETTE/#/PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-color-chooser-dialog/-t-a-b_-p-a-l-e-t-t-e.html
 $dokka.location:net.mm2d.color.chooser/ColorChooserDialog/TAB_RGB/#/PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-color-chooser-dialog/-t-a-b_-r-g-b.html
+$dokka.location:net.mm2d.color.chooser/ColorChooserDialog/registerListener/#kotlin.String#androidx.fragment.app.Fragment#net.mm2d.color.chooser.ColorChooserDialog.ColorChooserListener/PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-color-chooser-dialog/register-listener.html
+$dokka.location:net.mm2d.color.chooser/ColorChooserDialog/registerListener/#kotlin.String#androidx.fragment.app.FragmentActivity#net.mm2d.color.chooser.ColorChooserDialog.ColorChooserListener/PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-color-chooser-dialog/register-listener.html
 $dokka.location:net.mm2d.color.chooser/ColorChooserDialog/show/#androidx.fragment.app.Fragment#kotlin.Int#kotlin.Int#kotlin.Boolean#kotlin.Int/PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-color-chooser-dialog/show.html
+$dokka.location:net.mm2d.color.chooser/ColorChooserDialog/show/#androidx.fragment.app.Fragment#kotlin.String#kotlin.Int#kotlin.Boolean#kotlin.Int/PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-color-chooser-dialog/show.html
 $dokka.location:net.mm2d.color.chooser/ColorChooserDialog/show/#androidx.fragment.app.FragmentActivity#kotlin.Int#kotlin.Int#kotlin.Boolean#kotlin.Int/PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-color-chooser-dialog/show.html
+$dokka.location:net.mm2d.color.chooser/ColorChooserDialog/show/#androidx.fragment.app.FragmentActivity#kotlin.String#kotlin.Int#kotlin.Boolean#kotlin.Int/PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-color-chooser-dialog/show.html
 net.mm2d.color.chooser
 
