@@ -59,10 +59,55 @@ object ColorChooserDialog {
      *
      * Call at the timing of onCreate of activity.
      *
+     * @param activity Caller fragment activity
+     * @param requestKey Request Key, pass the same value to the `show`
+     * @param listener Listener receiving the result
+     */
+    fun registerListener(
+        activity: FragmentActivity,
+        requestKey: String,
+        listener: ColorChooserListener
+    ) {
+        registerListener(
+            activity.supportFragmentManager,
+            requestKey,
+            activity,
+            listener
+        )
+    }
+
+    /**
+     * Register result listener.
+     *
+     * Call at the timing of onViewCreated of fragment.
+     *
+     * @param fragment Caller fragment
+     * @param requestKey Request Key, pass the same value to the `show`
+     * @param listener Listener receiving the result
+     */
+    fun registerListener(
+        fragment: Fragment,
+        requestKey: String,
+        listener: ColorChooserListener
+    ) {
+        registerListener(
+            fragment.childFragmentManager,
+            requestKey,
+            fragment.viewLifecycleOwner,
+            listener
+        )
+    }
+
+    /**
+     * Register result listener.
+     *
+     * Call at the timing of onCreate of activity.
+     *
      * @param requestKey Request Key, pass the same value to the `show`
      * @param activity Caller fragment activity
      * @param listener Listener receiving the result
      */
+    @Deprecated("should use registerListener(FragmentActivity, String, ColorChooserListener)")
     fun registerListener(
         requestKey: String,
         activity: FragmentActivity,
@@ -85,6 +130,7 @@ object ColorChooserDialog {
      * @param fragment Caller fragment
      * @param listener Listener receiving the result
      */
+    @Deprecated("should use registerListener(Fragment, String, ColorChooserListener)")
     fun registerListener(
         requestKey: String,
         fragment: Fragment,

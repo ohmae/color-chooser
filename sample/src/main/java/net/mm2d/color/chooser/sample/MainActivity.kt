@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         }
         color = Color.parseColor("#B71C1C")
         binding.sample.setBackgroundColor(color)
-        ColorChooserDialog.registerListener(REQUEST_KEY, this) {
+        ColorChooserDialog.registerListener(this, REQUEST_KEY) {
             this.color = it
             binding.sample.setBackgroundColor(it)
         }
