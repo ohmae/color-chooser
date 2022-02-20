@@ -10,7 +10,6 @@ package net.mm2d.color.chooser
 import android.app.Dialog
 import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
@@ -176,7 +175,7 @@ object ColorChooserDialog {
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             val activity = requireActivity()
             _colorChooserView =
-                Mm2dCcColorChooserBinding.inflate(LayoutInflater.from(activity)).root
+                Mm2dCcColorChooserBinding.inflate(activity.layoutInflater).root
 
             if (savedInstanceState != null) {
                 val tab = savedInstanceState.getInt(KEY_INITIAL_TAB, 0)
