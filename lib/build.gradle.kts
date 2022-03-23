@@ -6,7 +6,7 @@ import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
     id("com.android.library")
-    id("kotlin-android")
+    kotlin("android")
     `maven-publish`
     signing
     id("org.jetbrains.dokka")
