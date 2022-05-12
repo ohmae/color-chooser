@@ -20,6 +20,7 @@ version = ProjectProperties.versionName
 android {
     compileSdk = 31
 
+    namespace = "net.mm2d.color.chooser"
     defaultConfig {
         minSdk = 21
         targetSdk = 31
@@ -48,7 +49,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.4.1")
     implementation("androidx.constraintlayout:constraintlayout:2.1.3")
     implementation("androidx.core:core-ktx:1.7.0")
-    implementation("com.google.android.material:material:1.5.0")
+    implementation("com.google.android.material:material:1.6.0")
     testImplementation("junit:junit:4.13.2")
 }
 

@@ -10,6 +10,7 @@ plugins {
 android {
     compileSdk = 31
 
+    namespace = "net.mm2d.color.chooser.sample"
     defaultConfig {
         applicationId = "net.mm2d.color.chooser.sample"
         minSdk = 21
@@ -41,10 +42,10 @@ dependencies {
     implementation(project(":lib"))
     implementation("androidx.appcompat:appcompat:1.4.1")
     implementation("androidx.constraintlayout:constraintlayout:2.1.3")
-    implementation("com.google.android.material:material:1.5.0")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.4.1")
-    implementation("androidx.navigation:navigation-ui-ktx:2.4.1")
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.8.1")
+    implementation("com.google.android.material:material:1.6.0")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.4.2")
+    implementation("androidx.navigation:navigation-ui-ktx:2.4.2")
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.9.1")
     testImplementation("junit:junit:4.13.2")
 }
 
