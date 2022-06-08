@@ -26,6 +26,15 @@ android {
         targetSdk = 31
         vectorDrawables.useSupportLibrary = true
     }
+    buildTypes {
+        debug {
+            isTestCoverageEnabled = true
+        }
+        release {
+            isMinifyEnabled = false
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+        }
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -36,39 +45,32 @@ android {
     buildFeatures {
         viewBinding = true
     }
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
-        }
+    lint {
+        abortOnError = true
+    }
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
     }
 }
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation("androidx.appcompat:appcompat:1.4.1")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.3")
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("com.google.android.material:material:1.6.0")
+
+    implementation("androidx.appcompat:appcompat:1.4.2")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.core:core-ktx:1.8.0")
+    implementation("com.google.android.material:material:1.6.1")
     testImplementation("junit:junit:4.13.2")
 }
 
-tasks.named<DokkaTask>("dokkaHtml") {
+tasks.dokkaHtml.configure {
     outputDirectory.set(File(projectDir, "../docs/dokka"))
-    dokkaSourceSets {
-        configureEach {
-            moduleName.set("color-chooser")
-        }
-    }
+    moduleName.set("color-chooser")
 }
 
-tasks.named<DokkaTask>("dokkaJavadoc") {
+tasks.dokkaJavadoc.configure {
     outputDirectory.set(File(buildDir, "docs/javadoc"))
-    dokkaSourceSets {
-        configureEach {
-            moduleName.set("color-chooser")
-        }
-    }
+    moduleName.set("color-chooser")
 }
 
 tasks.create("javadocJar", Jar::class) {
