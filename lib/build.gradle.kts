@@ -2,7 +2,6 @@ import build.ProjectProperties
 import build.base
 import build.dependencyUpdatesSettings
 import build.publishingSettings
-import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
     id("com.android.library")
