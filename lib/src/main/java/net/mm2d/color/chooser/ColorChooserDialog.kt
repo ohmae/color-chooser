@@ -181,13 +181,13 @@ object ColorChooserDialog {
                 val tab = savedInstanceState.getInt(KEY_INITIAL_TAB, 0)
                 colorChooserView.setCurrentItem(tab)
                 val color = savedInstanceState.getInt(KEY_INITIAL_COLOR, 0)
-                colorChooserView.init(color, this)
+                colorChooserView.init(color)
             } else {
                 val arguments = requireArguments()
                 val tab = arguments.getInt(KEY_INITIAL_TAB, 0)
                 colorChooserView.setCurrentItem(tab)
                 val color = arguments.getInt(KEY_INITIAL_COLOR, 0)
-                colorChooserView.init(color, this)
+                colorChooserView.init(color)
             }
             colorChooserView.setWithAlpha(requireArguments().getBoolean(KEY_WITH_ALPHA))
             return AlertDialog.Builder(activity)
