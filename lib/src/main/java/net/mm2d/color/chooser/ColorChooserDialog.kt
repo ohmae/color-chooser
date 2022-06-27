@@ -168,13 +168,11 @@ object ColorChooserDialog {
     }
 
     internal class ColorChooserDialogImpl : DialogFragment() {
-        private var _colorChooserView: ColorChooserView? = null
-        private val colorChooserView: ColorChooserView
-            get() = _colorChooserView ?: throw IllegalStateException()
+        private lateinit var colorChooserView: ColorChooserView
 
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             val activity = requireActivity()
-            _colorChooserView =
+            colorChooserView =
                 Mm2dCcColorChooserBinding.inflate(activity.layoutInflater).root
 
             if (savedInstanceState != null) {
@@ -199,11 +197,6 @@ object ColorChooserDialog {
                     dialog.cancel()
                 }
                 .create()
-        }
-
-        override fun onDestroyView() {
-            super.onDestroyView()
-            _colorChooserView = null
         }
 
         override fun onSaveInstanceState(outState: Bundle) {
