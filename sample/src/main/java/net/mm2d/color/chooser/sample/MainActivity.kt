@@ -10,6 +10,7 @@ package net.mm2d.color.chooser.sample
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import net.mm2d.color.chooser.ColorChooserDialog
@@ -19,7 +20,7 @@ import net.mm2d.color.chooser.ColorChooserDialog.TAB_RGB
 import net.mm2d.color.chooser.sample.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    private var color: Int = 0
+    private var color: Int = Color.parseColor("#B71C1C")
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,11 +60,13 @@ class MainActivity : AppCompatActivity() {
         binding.next.setOnClickListener {
             startActivity(Intent(this, MainActivity2::class.java))
         }
-        color = Color.parseColor("#B71C1C")
         binding.sample.setBackgroundColor(color)
-        ColorChooserDialog.registerListener(this, REQUEST_KEY) {
+        ColorChooserDialog.registerListener(this, REQUEST_KEY, {
             this.color = it
             binding.sample.setBackgroundColor(it)
+            Toast.makeText(this, "onSelect #${"%08X".format(it)}", Toast.LENGTH_SHORT).show()
+        }) {
+            Toast.makeText(this, "onCancel", Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -10,6 +10,7 @@ package net.mm2d.color.chooser.sample
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import net.mm2d.color.chooser.ColorChooserDialog
@@ -19,7 +20,7 @@ import net.mm2d.color.chooser.ColorChooserDialog.TAB_RGB
 import net.mm2d.color.chooser.sample.databinding.FragmentMain2Binding
 
 class Main2Fragment : Fragment(R.layout.fragment_main2) {
-    private var color: Int = 0
+    private var color: Int = Color.parseColor("#B71C1C")
     private lateinit var binding: FragmentMain2Binding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,11 +56,14 @@ class Main2Fragment : Fragment(R.layout.fragment_main2) {
         binding.darkTheme.setOnClickListener {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
-        color = Color.parseColor("#B71C1C")
         binding.sample.setBackgroundColor(color)
-        ColorChooserDialog.registerListener(this, REQUEST_KEY) {
+        val context = requireContext()
+        ColorChooserDialog.registerListener(this, REQUEST_KEY, {
             this.color = it
             binding.sample.setBackgroundColor(it)
+            Toast.makeText(context, "onSelect #${"%08X".format(it)}", Toast.LENGTH_SHORT).show()
+        }) {
+            Toast.makeText(context, "onCancel", Toast.LENGTH_SHORT).show()
         }
     }
 
