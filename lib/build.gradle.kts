@@ -64,11 +64,21 @@ dependencies {
 }
 
 tasks.dokkaHtml.configure {
+    dokkaSourceSets {
+        named("main") {
+            noAndroidSdkLink.set(false)
+        }
+    }
     outputDirectory.set(File(projectDir, "../docs/dokka"))
     moduleName.set("color-chooser")
 }
 
 tasks.dokkaJavadoc.configure {
+    dokkaSourceSets {
+        named("main") {
+            noAndroidSdkLink.set(false)
+        }
+    }
     outputDirectory.set(File(buildDir, "docs/javadoc"))
     moduleName.set("color-chooser")
 }

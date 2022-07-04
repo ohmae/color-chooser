@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.distinctUntilChanged
 
-class ColorObserverDelegate<T>(
+internal class ColorObserverDelegate<T>(
     private val target: T
 ) where T : View,
         T : Observer<Int> {

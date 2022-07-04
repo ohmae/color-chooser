@@ -3,7 +3,7 @@ package net.mm2d.color.chooser
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 
-interface ColorLiveDataOwner {
+internal interface ColorLiveDataOwner {
     fun getColorLiveData(): MutableLiveData<Int>
 }
 
