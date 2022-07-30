@@ -24,6 +24,7 @@ import androidx.core.view.children
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.*
 import net.mm2d.color.chooser.element.PaletteCell
 import net.mm2d.color.chooser.util.toPixelsAsDp
 import java.lang.ref.SoftReference
@@ -32,12 +33,14 @@ internal class PaletteView
 @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    defStyleAttr: Int = 0,
 ) : RecyclerView(context, attrs, defStyleAttr), Observer<Int> {
     private val delegate = ColorObserverDelegate(this)
     private val cellHeight = 48.toPixelsAsDp(context)
     private val cellAdapter = CellAdapter(context)
     private val linearLayoutManager = LinearLayoutManager(context)
+    private val job = SupervisorJob()
+    private val coroutineScope = CoroutineScope(Dispatchers.Main + job)
 
     init {
         val padding = resources.getDimensionPixelSize(R.dimen.mm2d_cc_palette_padding)
@@ -52,6 +55,9 @@ internal class PaletteView
         setFadingEdgeLength(padding)
         cellAdapter.onColorChanged = {
             delegate.post(it)
+        }
+        coroutineScope.launch {
+            cellAdapter.load()
         }
     }
 
@@ -81,9 +87,18 @@ internal class PaletteView
         }
     }
 
-    private class CellAdapter(context: Context) : Adapter<CellHolder>() {
+    override fun onMeasure(widthSpec: Int, heightSpec: Int) {
+        setMeasuredDimension(
+            getDefaultSize(suggestedMinimumWidth, widthSpec),
+            getDefaultSize(suggestedMinimumHeight, heightSpec)
+        )
+    }
+
+    private class CellAdapter(
+        private val context: Context
+    ) : Adapter<CellHolder>() {
         private val inflater: LayoutInflater = LayoutInflater.from(context)
-        private val list: List<IntArray> = createPalette(context)
+        private var list: List<IntArray> = cache.get() ?: emptyList()
         private var color: Int = 0
         var onColorChanged: ((color: Int) -> Unit)? = null
         var index: Int = -1
@@ -97,6 +112,13 @@ internal class PaletteView
             holder.apply(list[position], color)
 
         override fun getItemCount(): Int = list.size
+
+        suspend fun load() = withContext(Dispatchers.Main) {
+            if (list.isNotEmpty()) return@withContext
+            list = withContext(Dispatchers.IO) { createPalette(context) }
+            notifyItemRangeInserted(0, list.size)
+            index = list.indexOfFirst { it.contains(color) }
+        }
 
         fun setColor(newColor: Int) {
             if (color == newColor) return
