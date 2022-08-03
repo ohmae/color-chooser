@@ -72,7 +72,7 @@ object ColorChooserDialog {
     fun registerListener(
         activity: FragmentActivity,
         requestKey: String,
-        listener: ColorChooserListener
+        listener: ColorChooserListener,
     ) {
         registerListener(
             activity,
@@ -101,7 +101,7 @@ object ColorChooserDialog {
     fun registerListener(
         fragment: Fragment,
         requestKey: String,
-        listener: ColorChooserListener
+        listener: ColorChooserListener,
     ) {
         registerListener(
             fragment,
@@ -191,7 +191,7 @@ object ColorChooserDialog {
         requestKey: String,
         @ColorInt initialColor: Int = Color.WHITE,
         withAlpha: Boolean = false,
-        initialTab: Int = TAB_PALETTE
+        initialTab: Int = TAB_PALETTE,
     ) {
         show(
             activity.supportFragmentManager,
@@ -218,7 +218,7 @@ object ColorChooserDialog {
         requestKey: String,
         @ColorInt initialColor: Int = Color.WHITE,
         withAlpha: Boolean = false,
-        initialTab: Int = TAB_PALETTE
+        initialTab: Int = TAB_PALETTE,
     ) {
         show(
             fragment.childFragmentManager,
