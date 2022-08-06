@@ -5,7 +5,7 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:7.2.1")
+        classpath("com.android.tools.build:gradle:7.2.2")
         classpath(kotlin("gradle-plugin", version = "1.7.10"))
         classpath("org.jetbrains.dokka:dokka-gradle-plugin:1.7.10")
         classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.5.1")
