@@ -91,15 +91,38 @@
         />
 
     <Button
+        android:id="@+id/tab_reorder1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="reorder1"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toStartOf="@id/tab_reorder2"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tab_default_alpha"
+        />
+
+    <Button
+        android:id="@+id/tab_reorder2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="reorder2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@id/tab_reorder1"
+        app:layout_constraintTop_toTopOf="@id/tab_reorder1"
+        />
+
+    <Button
         android:id="@+id/light_theme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:text="light theme"
         app:layout_constraintEnd_toStartOf="@id/dark_theme"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tab_default_alpha"
+        app:layout_constraintTop_toBottomOf="@id/tab_reorder1"
         />
 
     <Button

@@ -50,6 +50,14 @@ class Main2Fragment : Fragment(R.layout.fragment_main2) {
         binding.tabRgbAlpha.setOnClickListener {
             ColorChooserDialog.show(this, REQUEST_KEY, color, true, TAB_RGB)
         }
+        binding.tabReorder1.setOnClickListener {
+            ColorChooserDialog.show(
+                this, REQUEST_KEY, color, tabs = intArrayOf(TAB_RGB, TAB_HSV, TAB_PALETTE)
+            )
+        }
+        binding.tabReorder2.setOnClickListener {
+            ColorChooserDialog.show(this, REQUEST_KEY, color, tabs = intArrayOf(TAB_HSV))
+        }
         binding.lightTheme.setOnClickListener {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }

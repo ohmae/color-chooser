@@ -16,6 +16,9 @@ import androidx.core.graphics.alpha
 import androidx.core.view.doOnLayout
 import androidx.lifecycle.MutableLiveData
 import com.google.android.material.tabs.TabLayoutMediator
+import net.mm2d.color.chooser.ColorChooserDialog.TAB_HSV
+import net.mm2d.color.chooser.ColorChooserDialog.TAB_PALETTE
+import net.mm2d.color.chooser.ColorChooserDialog.TAB_RGB
 import net.mm2d.color.chooser.databinding.Mm2dCcViewDialogBinding
 import net.mm2d.color.chooser.util.toOpacity
 
@@ -30,24 +33,41 @@ internal class ColorChooserView
         Mm2dCcViewDialogBinding.inflate(LayoutInflater.from(context), this)
     val color: Int
         get() = binding.controlView.color
+    var tabs: IntArray = TABS
+        private set
 
-    fun init(color: Int) {
+    fun init(color: Int, tabs: IntArray) {
         colorLiveData.value = color.toOpacity()
         binding.controlView.setAlpha(color.alpha)
-        val pageTitles: List<String> = listOf("palette", "hsv", "rgb")
-        val pageViews: List<View> = listOf(
-            PaletteView(context), HsvView(context), SliderView(context),
-        )
+        val distinctTabs = tabs.filter { TABS.contains(it) }
+            .distinct().toIntArray()
+        val pageTitles: List<String> = distinctTabs.map {
+            when (it) {
+                TAB_PALETTE -> "palette"
+                TAB_HSV -> "hsv"
+                else -> "rgb"
+            }
+        }
+        val pageViews: List<View> = distinctTabs.map {
+            when (it) {
+                TAB_PALETTE -> PaletteView(context)
+                TAB_HSV -> HsvView(context)
+                else -> SliderView(context)
+            }
+        }
         binding.viewPager.adapter = ViewPagerAdapter(pageViews)
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = pageTitles[position]
         }.attach()
+        this.tabs = distinctTabs
     }
 
-    fun setCurrentItem(position: Int) {
+    fun setCurrentItem(tab: Int) {
         binding.viewPager.doOnLayout {
+            val index = tabs.indexOf(tab)
+            if (index < 0) return@doOnLayout
             binding.viewPager.post {
-                binding.viewPager.setCurrentItem(position, false)
+                binding.viewPager.setCurrentItem(index, false)
             }
         }
     }
@@ -59,4 +79,8 @@ internal class ColorChooserView
     }
 
     override fun getColorLiveData(): MutableLiveData<Int> = colorLiveData
+
+    companion object {
+        private val TABS = intArrayOf(TAB_PALETTE, TAB_HSV, TAB_RGB)
+    }
 }

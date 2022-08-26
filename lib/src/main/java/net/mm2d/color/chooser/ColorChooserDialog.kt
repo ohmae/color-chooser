@@ -29,12 +29,14 @@ object ColorChooserDialog {
     private const val KEY_INITIAL_COLOR = "KEY_INITIAL_COLOR"
     private const val KEY_WITH_ALPHA = "KEY_WITH_ALPHA"
     private const val KEY_INITIAL_TAB = "KEY_INITIAL_TAB"
+    private const val KEY_TABS = "KEY_TABS"
     private const val RESULT_KEY_COLOR = "RESULT_KEY_COLOR"
     private const val RESULT_KEY_CANCEL = "RESULT_KEY_CANCEL"
     private const val TAG = "ColorChooserDialog"
     const val TAB_PALETTE: Int = 0
     const val TAB_HSV: Int = 1
     const val TAB_RGB: Int = 2
+    private val DEFAULT_TABS: IntArray = intArrayOf(TAB_PALETTE, TAB_HSV, TAB_RGB)
 
     /**
      * Listener receiving the result.
@@ -185,6 +187,7 @@ object ColorChooserDialog {
      * @param initialColor initial color
      * @param withAlpha if true, alpha section is enabled
      * @param initialTab initial tab, TAB_PALETTE/TAB_HSV/TAB_RGB
+     * @param tabs tabs and order to show, default {TAB_PALETTE, TAB_HSV, TAB_RGB}
      */
     fun show(
         activity: FragmentActivity,
@@ -192,6 +195,7 @@ object ColorChooserDialog {
         @ColorInt initialColor: Int = Color.WHITE,
         withAlpha: Boolean = false,
         initialTab: Int = TAB_PALETTE,
+        tabs: IntArray = DEFAULT_TABS,
     ) {
         show(
             activity.supportFragmentManager,
@@ -200,6 +204,7 @@ object ColorChooserDialog {
                 KEY_INITIAL_COLOR to initialColor,
                 KEY_WITH_ALPHA to withAlpha,
                 KEY_INITIAL_TAB to initialTab,
+                KEY_TABS to tabs,
             )
         )
     }
@@ -212,6 +217,7 @@ object ColorChooserDialog {
      * @param initialColor initial color
      * @param withAlpha if true, alpha section is enabled
      * @param initialTab initial tab, TAB_PALETTE/TAB_HSV/TAB_RGB
+     * @param tabs tabs and order to show, default {TAB_PALETTE, TAB_HSV, TAB_RGB}
      */
     fun show(
         fragment: Fragment,
@@ -219,6 +225,7 @@ object ColorChooserDialog {
         @ColorInt initialColor: Int = Color.WHITE,
         withAlpha: Boolean = false,
         initialTab: Int = TAB_PALETTE,
+        tabs: IntArray = DEFAULT_TABS,
     ) {
         show(
             fragment.childFragmentManager,
@@ -227,6 +234,7 @@ object ColorChooserDialog {
                 KEY_INITIAL_COLOR to initialColor,
                 KEY_WITH_ALPHA to withAlpha,
                 KEY_INITIAL_TAB to initialTab,
+                KEY_TABS to tabs,
             )
         )
     }
@@ -247,17 +255,20 @@ object ColorChooserDialog {
             colorChooserView =
                 Mm2dCcColorChooserBinding.inflate(activity.layoutInflater).root
 
+            val arguments = requireArguments()
+            val tabs = arguments.getIntArray(KEY_TABS).let {
+                if (it != null && it.isNotEmpty()) it else DEFAULT_TABS
+            }
             if (savedInstanceState != null) {
+                val color = savedInstanceState.getInt(KEY_INITIAL_COLOR, 0)
+                colorChooserView.init(color, tabs)
                 val tab = savedInstanceState.getInt(KEY_INITIAL_TAB, 0)
                 colorChooserView.setCurrentItem(tab)
-                val color = savedInstanceState.getInt(KEY_INITIAL_COLOR, 0)
-                colorChooserView.init(color)
             } else {
-                val arguments = requireArguments()
+                val color = arguments.getInt(KEY_INITIAL_COLOR, 0)
+                colorChooserView.init(color, tabs)
                 val tab = arguments.getInt(KEY_INITIAL_TAB, 0)
                 colorChooserView.setCurrentItem(tab)
-                val color = arguments.getInt(KEY_INITIAL_COLOR, 0)
-                colorChooserView.init(color)
             }
             colorChooserView.setWithAlpha(requireArguments().getBoolean(KEY_WITH_ALPHA))
             return AlertDialog.Builder(activity)
