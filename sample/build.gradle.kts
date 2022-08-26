@@ -8,13 +8,13 @@ plugins {
 }
 
 android {
-    compileSdk = 31
+    compileSdk = 33
 
     namespace = "net.mm2d.color.chooser.sample"
     defaultConfig {
         applicationId = "net.mm2d.color.chooser.sample"
         minSdk = 21
-        targetSdk = 31
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
         resourceConfigurations += "en"

@@ -17,12 +17,12 @@ group = ProjectProperties.groupId
 version = ProjectProperties.versionName
 
 android {
-    compileSdk = 31
+    compileSdk = 33
 
     namespace = "net.mm2d.color.chooser"
     defaultConfig {
         minSdk = 21
-        targetSdk = 31
+        targetSdk = 33
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
