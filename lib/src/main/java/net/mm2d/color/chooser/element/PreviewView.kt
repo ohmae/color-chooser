@@ -107,8 +107,8 @@ internal class PreviewView
             color2: Int
         ): Bitmap {
             val pixels = IntArray(width * height)
-            for (y in 0 until height) {
-                for (x in 0 until width) {
+            repeat(height) { y ->
+                repeat(width) { x ->
                     pixels[x + y * width] = if ((x / step + y / step) % 2 == 0) color1 else color2
                 }
             }

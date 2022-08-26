@@ -199,8 +199,8 @@ internal class SvView
 
         private fun createMaskBitmap(): Bitmap {
             val pixels = IntArray(TONE_SIZE * TONE_SIZE)
-            for (y in 0 until TONE_SIZE) {
-                for (x in 0 until TONE_SIZE) {
+            repeat(TONE_SIZE) { y ->
+                repeat(TONE_SIZE) { x ->
                     pixels[x + y * TONE_SIZE] =
                         ColorUtils.svToMask(x / TONE_MAX, (TONE_MAX - y) / TONE_MAX)
                 }

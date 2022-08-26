@@ -148,7 +148,7 @@ internal class PaletteView
         }
 
         fun apply(colors: IntArray, selected: Int) {
-            viewList.withIndex().forEach { (i, view) ->
+            viewList.forEachIndexed { i, view ->
                 val color = if (i < colors.size) colors[i] else Color.TRANSPARENT
                 view.tag = color
                 view.setColor(color)
