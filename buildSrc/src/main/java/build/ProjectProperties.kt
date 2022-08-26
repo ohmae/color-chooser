@@ -9,7 +9,7 @@ object ProjectProperties {
 
     private const val versionMajor: Int = 0
     private const val versionMinor: Int = 5
-    private const val versionPatch: Int = 1
+    private const val versionPatch: Int = 2
     const val versionName: String = "$versionMajor.$versionMinor.$versionPatch"
     const val versionCode: Int = versionMajor * 10000 + versionMinor * 100 + versionPatch
 
