@@ -23,7 +23,7 @@ android {
     buildTypes {
         debug {
             isDebuggable = true
-            isTestCoverageEnabled = true
+            enableAndroidTestCoverage = true
         }
         release {
             isMinifyEnabled = false
@@ -52,10 +52,10 @@ dependencies {
     implementation(project(":lib"))
     implementation("androidx.appcompat:appcompat:1.5.1")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("com.google.android.material:material:1.6.1")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.5.2")
-    implementation("androidx.navigation:navigation-ui-ktx:2.5.2")
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.9.1")
+    implementation("com.google.android.material:material:1.7.0")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
+    implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.10")
     testImplementation("junit:junit:4.13.2")
 }
 

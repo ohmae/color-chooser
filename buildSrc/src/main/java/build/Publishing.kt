@@ -39,68 +39,52 @@ fun Project.publishingSettings() {
         dependsOn("javadocJar")
         dependsOn("sourcesJar")
     }
-    publishing {
-        publications {
-            create<MavenPublication>("mavenJava") {
-                artifact("$buildDir/outputs/aar/${base.archivesName.get()}-release.aar")
-                artifact(tasks["sourcesJar"])
-                artifact(tasks["javadocJar"])
-                groupId = ProjectProperties.groupId
-                artifactId = base.archivesName.get()
-                version = ProjectProperties.versionName
-                pom.withXml {
-                    val node = asNode()
-                    node.appendNode("name", ProjectProperties.name)
-                    node.appendNode("description", ProjectProperties.description)
-                    node.appendNode("url", ProjectProperties.Url.site)
-                    node.appendNode("licenses").appendNode("license").apply {
-                        appendNode("name", "The MIT License")
-                        appendNode("url", "https://opensource.org/licenses/MIT")
-                        appendNode("distribution", "repo")
+    afterEvaluate {
+        publishing {
+            publications {
+                create<MavenPublication>("mavenJava") {
+                    from(components["release"])
+                    groupId = ProjectProperties.groupId
+                    artifactId = base.archivesName.get()
+                    version = ProjectProperties.versionName
+                    pom {
+                        name.set(ProjectProperties.name)
+                        description.set(ProjectProperties.description)
+                        url.set(ProjectProperties.Url.site)
+                        licenses {
+                            license {
+                                name.set("The MIT License")
+                                url.set("https://opensource.org/licenses/MIT")
+                                distribution.set("repo")
+                            }
+                        }
+                        developers {
+                            developer {
+                                id.set(ProjectProperties.developerId)
+                                name.set(ProjectProperties.developerName)
+                            }
+                        }
+                        scm {
+                            connection.set(ProjectProperties.Url.scm)
+                            developerConnection.set(ProjectProperties.Url.scm)
+                            url.set(ProjectProperties.Url.github)
+                        }
                     }
-                    node.appendNode("developers").appendNode("developer").apply {
-                        appendNode("id", ProjectProperties.developerId)
-                        appendNode("name", ProjectProperties.developerName)
-                    }
-                    node.appendNode("scm").apply {
-                        appendNode("connection", ProjectProperties.Url.scm)
-                        appendNode("developerConnection", ProjectProperties.Url.scm)
-                        appendNode("url", ProjectProperties.Url.github)
-                    }
-                    val dependencies = node.appendNode("dependencies")
-                    configurations.api.get().dependencies.forEach {
-                        appendDependency(
-                            dependencies,
-                            groupId = it.group ?: "",
-                            artifactId = it.name,
-                            version = it.version ?: "",
-                            scope = "compile"
-                        )
-                    }
-                    configurations.implementation.get().dependencies.forEach {
-                        appendDependency(
-                            dependencies,
-                            groupId = it.group ?: "",
-                            artifactId = it.name,
-                            version = it.version ?: "",
-                            scope = "runtime"
-                        )
+                }
+            }
+            repositories {
+                maven {
+                    url = URI("https://oss.sonatype.org/service/local/staging/deploy/maven2")
+                    credentials {
+                        username = project.findProperty("sonatype_username") as? String ?: ""
+                        password = project.findProperty("sonatype_password") as? String ?: ""
                     }
                 }
             }
         }
-        repositories {
-            maven {
-                url = URI("https://oss.sonatype.org/service/local/staging/deploy/maven2")
-                credentials {
-                    username = project.findProperty("sonatype_username") as? String ?: ""
-                    password = project.findProperty("sonatype_password") as? String ?: ""
-                }
-            }
+        signing {
+            sign(publishing.publications["mavenJava"])
         }
-    }
-    signing {
-        sign(publishing.publications["mavenJava"])
     }
 }
 

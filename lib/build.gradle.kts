@@ -27,7 +27,7 @@ android {
     }
     buildTypes {
         debug {
-            isTestCoverageEnabled = true
+            enableAndroidTestCoverage = true
         }
         release {
             isMinifyEnabled = false
@@ -50,6 +50,12 @@ android {
     testOptions {
         unitTests.isIncludeAndroidResources = true
     }
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
 }
 
 dependencies {
@@ -60,7 +66,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
-    implementation("com.google.android.material:material:1.6.1")
+    implementation("com.google.android.material:material:1.7.0")
     testImplementation("junit:junit:4.13.2")
 }
 
@@ -93,10 +99,6 @@ tasks.create("javadocJar", Jar::class) {
 tasks.create("sourcesJar", Jar::class) {
     archiveClassifier.set("sources")
     from(android.sourceSets["main"].java.srcDirs)
-}
-
-artifacts {
-    archives(tasks.named<Jar>("sourcesJar"))
 }
 
 publishingSettings()
