@@ -10,7 +10,6 @@ package net.mm2d.color.chooser
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.alpha
 import androidx.core.view.doOnLayout
@@ -47,14 +46,7 @@ internal class ColorChooserView
                 else -> "rgb"
             }
         }
-        val pageViews: List<View> = distinctTabs.map {
-            when (it) {
-                TAB_PALETTE -> PaletteView(context)
-                TAB_HSV -> HsvView(context)
-                else -> SliderView(context)
-            }
-        }
-        binding.viewPager.adapter = ViewPagerAdapter(pageViews)
+        binding.viewPager.adapter = ViewPagerAdapter(context, tabs)
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = pageTitles[position]
         }.attach()
