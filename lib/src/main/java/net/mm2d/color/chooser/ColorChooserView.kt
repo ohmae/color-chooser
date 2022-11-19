@@ -33,8 +33,7 @@ internal class ColorChooserView
         Mm2dCcViewDialogBinding.inflate(LayoutInflater.from(context), this)
     val color: Int
         get() = binding.controlView.color
-    var tabs: IntArray = TABS
-        private set
+    private var tabs: IntArray = TABS
 
     fun init(color: Int, tabs: IntArray) {
         colorLiveData.value = color.toOpacity()

@@ -1,6 +1,5 @@
 package build
 
-import groovy.util.Node
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.NamedDomainObjectProvider
 import org.gradle.api.Project
@@ -85,20 +84,5 @@ fun Project.publishingSettings() {
         signing {
             sign(publishing.publications["mavenJava"])
         }
-    }
-}
-
-private fun appendDependency(
-    parentNode: Node,
-    groupId: String,
-    artifactId: String,
-    version: String,
-    scope: String
-) {
-    parentNode.appendNode("dependency").apply {
-        appendNode("groupId", groupId)
-        appendNode("artifactId", artifactId)
-        appendNode("version", version)
-        appendNode("scope", scope)
     }
 }
