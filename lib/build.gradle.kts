@@ -22,7 +22,7 @@ android {
     namespace = "net.mm2d.color.chooser"
     defaultConfig {
         minSdk = 21
-        targetSdk = 33
+
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -64,7 +64,7 @@ dependencies {
 
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.core:core-ktx:1.10.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
     implementation("com.google.android.material:material:1.8.0")
     testImplementation("junit:junit:4.13.2")
