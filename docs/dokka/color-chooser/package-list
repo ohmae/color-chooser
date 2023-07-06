@@ -1,17 +1,21 @@
 $dokka.format:html-v1
 $dokka.linkExtension:html
 $dokka.location:net.mm2d.color.chooser////PointingToDeclaration/color-chooser/net.mm2d.color.chooser/index.html
-$dokka.location:net.mm2d.color.chooser/ColorChooserDialog.ColorChooserListener///PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-color-chooser-dialog/-color-chooser-listener/index.html
-$dokka.location:net.mm2d.color.chooser/ColorChooserDialog.ColorChooserListener/onColorSelected/#kotlin.Int/PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-color-chooser-dialog/-color-chooser-listener/on-color-selected.html
 $dokka.location:net.mm2d.color.chooser/ColorChooserDialog///PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-color-chooser-dialog/index.html
 $dokka.location:net.mm2d.color.chooser/ColorChooserDialog/TAB_HSV/#/PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-color-chooser-dialog/-t-a-b_-h-s-v.html
 $dokka.location:net.mm2d.color.chooser/ColorChooserDialog/TAB_PALETTE/#/PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-color-chooser-dialog/-t-a-b_-p-a-l-e-t-t-e.html
 $dokka.location:net.mm2d.color.chooser/ColorChooserDialog/TAB_RGB/#/PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-color-chooser-dialog/-t-a-b_-r-g-b.html
 $dokka.location:net.mm2d.color.chooser/ColorChooserDialog/registerListener/#androidx.fragment.app.Fragment#kotlin.String#kotlin.Function1[kotlin.Int,kotlin.Unit]#kotlin.Function0[kotlin.Unit]?/PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-color-chooser-dialog/register-listener.html
-$dokka.location:net.mm2d.color.chooser/ColorChooserDialog/registerListener/#androidx.fragment.app.Fragment#kotlin.String#net.mm2d.color.chooser.ColorChooserDialog.ColorChooserListener/PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-color-chooser-dialog/register-listener.html
 $dokka.location:net.mm2d.color.chooser/ColorChooserDialog/registerListener/#androidx.fragment.app.FragmentActivity#kotlin.String#kotlin.Function1[kotlin.Int,kotlin.Unit]#kotlin.Function0[kotlin.Unit]?/PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-color-chooser-dialog/register-listener.html
-$dokka.location:net.mm2d.color.chooser/ColorChooserDialog/registerListener/#androidx.fragment.app.FragmentActivity#kotlin.String#net.mm2d.color.chooser.ColorChooserDialog.ColorChooserListener/PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-color-chooser-dialog/register-listener.html
 $dokka.location:net.mm2d.color.chooser/ColorChooserDialog/show/#androidx.fragment.app.Fragment#kotlin.String#kotlin.Int#kotlin.Boolean#kotlin.Int#kotlin.IntArray/PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-color-chooser-dialog/show.html
 $dokka.location:net.mm2d.color.chooser/ColorChooserDialog/show/#androidx.fragment.app.FragmentActivity#kotlin.String#kotlin.Int#kotlin.Boolean#kotlin.Int#kotlin.IntArray/PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-color-chooser-dialog/show.html
+$dokka.location:net.mm2d.color.chooser/PageViewHolder///PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-page-view-holder/index.html
+$dokka.location:net.mm2d.color.chooser/PageViewHolder/PageViewHolder/#android.view.View/PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-page-view-holder/-page-view-holder.html
+$dokka.location:net.mm2d.color.chooser/ViewPagerAdapter///PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-view-pager-adapter/index.html
+$dokka.location:net.mm2d.color.chooser/ViewPagerAdapter/ViewPagerAdapter/#android.content.Context#kotlin.IntArray/PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-view-pager-adapter/-view-pager-adapter.html
+$dokka.location:net.mm2d.color.chooser/ViewPagerAdapter/getItemCount/#/PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-view-pager-adapter/get-item-count.html
+$dokka.location:net.mm2d.color.chooser/ViewPagerAdapter/getItemViewType/#kotlin.Int/PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-view-pager-adapter/get-item-view-type.html
+$dokka.location:net.mm2d.color.chooser/ViewPagerAdapter/onBindViewHolder/#net.mm2d.color.chooser.PageViewHolder#kotlin.Int/PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-view-pager-adapter/on-bind-view-holder.html
+$dokka.location:net.mm2d.color.chooser/ViewPagerAdapter/onCreateViewHolder/#android.view.ViewGroup#kotlin.Int/PointingToDeclaration/color-chooser/net.mm2d.color.chooser/-view-pager-adapter/on-create-view-holder.html
 net.mm2d.color.chooser
 
