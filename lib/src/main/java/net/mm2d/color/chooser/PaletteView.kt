@@ -21,10 +21,10 @@ import androidx.core.content.res.getColorOrThrow
 import androidx.core.content.res.getResourceIdOrThrow
 import androidx.core.content.res.use
 import androidx.core.view.children
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.FlowCollector
 import net.mm2d.color.chooser.element.PaletteCell
 import net.mm2d.color.chooser.util.toPixelsAsDp
 import java.lang.ref.SoftReference
@@ -34,7 +34,7 @@ internal class PaletteView
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
-) : RecyclerView(context, attrs, defStyleAttr), Observer<Int> {
+) : RecyclerView(context, attrs, defStyleAttr), FlowCollector<Int> {
     private val delegate = ColorObserverDelegate(this)
     private val cellHeight = 48.toPixelsAsDp(context)
     private val cellAdapter = CellAdapter(context)
@@ -75,7 +75,7 @@ internal class PaletteView
     override fun getTopPaddingOffset(): Int = -paddingTop
     override fun getBottomPaddingOffset(): Int = paddingBottom
 
-    override fun onChanged(value: Int) {
+    override suspend fun emit(value: Int) {
         cellAdapter.setColor(value)
     }
 

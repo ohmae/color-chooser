@@ -12,7 +12,7 @@ import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.lifecycle.Observer
+import kotlinx.coroutines.flow.FlowCollector
 import net.mm2d.color.chooser.databinding.Mm2dCcViewSliderBinding
 
 internal class SliderView
@@ -20,7 +20,7 @@ internal class SliderView
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr), Observer<Int> {
+) : ConstraintLayout(context, attrs, defStyleAttr), FlowCollector<Int> {
     private val delegate = ColorObserverDelegate(this)
     private val binding: Mm2dCcViewSliderBinding =
         Mm2dCcViewSliderBinding.inflate(LayoutInflater.from(context), this)
@@ -50,7 +50,7 @@ internal class SliderView
         delegate.onDetachedFromWindow()
     }
 
-    override fun onChanged(value: Int) {
+    override suspend fun emit(value: Int) {
         binding.seekRed.setValue(Color.red(value))
         binding.seekGreen.setValue(Color.green(value))
         binding.seekBlue.setValue(Color.blue(value))

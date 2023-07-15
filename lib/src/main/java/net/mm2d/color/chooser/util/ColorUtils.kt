@@ -37,26 +37,32 @@ internal object ColorUtils {
                 g *= 1f - s * (1f - d)
                 b *= 1f - s
             }
+
             1 -> { // h:[1.0f, 2.0f)
                 r *= 1f - s * d
                 b *= 1f - s
             }
+
             2 -> { // h:[2.0f, 3.0f)
                 r *= 1f - s
                 b *= 1f - s * (1f - d)
             }
+
             3 -> { // h:[3.0f, 4.0f)
                 r *= 1f - s
                 g *= 1f - s * d
             }
+
             4 -> { // h:[4.0f, 5.0f)
                 r *= 1f - s * (1f - d)
                 g *= 1f - s
             }
+
             5 -> { // h:[5.0f, 6.0f)
                 g *= 1f - s
                 b *= 1f - s * d
             }
+
             else -> {
                 g *= 1f - s * (1f - d)
                 b *= 1f - s

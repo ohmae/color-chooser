@@ -19,7 +19,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.alpha
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
+import kotlinx.coroutines.flow.FlowCollector
 import net.mm2d.color.chooser.databinding.Mm2dCcViewControlBinding
 import net.mm2d.color.chooser.util.resolveColor
 import net.mm2d.color.chooser.util.setAlpha
@@ -31,7 +31,7 @@ internal class ControlView
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr), Observer<Int> {
+) : ConstraintLayout(context, attrs, defStyleAttr), FlowCollector<Int> {
     private val delegate = ColorObserverDelegate(this)
     private val normalTint =
         ColorStateList.valueOf(context.resolveColor(R.attr.colorAccent, Color.BLUE))
@@ -117,7 +117,7 @@ internal class ControlView
         ViewCompat.setBackgroundTintList(binding.editHex, normalTint)
     }
 
-    override fun onChanged(value: Int) {
+    override suspend fun emit(value: Int) {
         if (this.color.toOpacity() == value) return
         this.color = value.setAlpha(binding.seekAlpha.value)
         binding.colorPreview.setColor(this.color)

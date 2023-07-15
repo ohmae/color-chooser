@@ -13,8 +13,9 @@ import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.alpha
 import androidx.core.view.doOnLayout
-import androidx.lifecycle.MutableLiveData
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import net.mm2d.color.chooser.ColorChooserDialog.TAB_HSV
 import net.mm2d.color.chooser.ColorChooserDialog.TAB_PALETTE
 import net.mm2d.color.chooser.ColorChooserDialog.TAB_RGB
@@ -26,8 +27,9 @@ internal class ColorChooserView
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr), ColorLiveDataOwner {
-    private val colorLiveData: MutableLiveData<Int> = MutableLiveData()
+) : ConstraintLayout(context, attrs, defStyleAttr), ColorStreamOwner {
+    private val colorFlow: MutableSharedFlow<Int> =
+        MutableSharedFlow(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
     private val binding: Mm2dCcViewDialogBinding =
         Mm2dCcViewDialogBinding.inflate(LayoutInflater.from(context), this)
     val color: Int
@@ -35,7 +37,7 @@ internal class ColorChooserView
     private var tabs: IntArray = TABS
 
     fun init(color: Int, tabs: IntArray) {
-        colorLiveData.value = color.toOpacity()
+        colorFlow.tryEmit(color.toOpacity())
         binding.controlView.setAlpha(color.alpha)
         val distinctTabs = tabs.filter { TABS.contains(it) }
             .distinct().toIntArray()
@@ -69,7 +71,7 @@ internal class ColorChooserView
         binding.controlView.setWithAlpha(withAlpha)
     }
 
-    override fun getColorLiveData(): MutableLiveData<Int> = colorLiveData
+    override fun getColorStream(): MutableSharedFlow<Int> = colorFlow
 
     companion object {
         private val TABS = intArrayOf(TAB_PALETTE, TAB_HSV, TAB_RGB)

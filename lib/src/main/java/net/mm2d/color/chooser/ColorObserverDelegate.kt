@@ -1,31 +1,39 @@
 package net.mm2d.color.chooser
 
 import android.view.View
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.distinctUntilChanged
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 
 internal class ColorObserverDelegate<T>(
     private val target: T
 ) where T : View,
-        T : Observer<Int> {
-    private var colorLiveData: MutableLiveData<Int>? = null
+        T : FlowCollector<Int> {
+    private val scope = CoroutineScope(Job() + Dispatchers.Main)
+    private var job: Job? = null
+    private var colorFlow: MutableSharedFlow<Int>? = null
 
     fun onAttachedToWindow() {
-        val owner = target.findColorLiveDataOwner()
-            ?: throw IllegalStateException("parent is not ColorLiveDataOwner")
-        val liveData = owner.getColorLiveData()
-        liveData.distinctUntilChanged()
-            .observeForever(target)
-        colorLiveData = liveData
+        val owner = target.findColorStreamOwner()
+            ?: throw IllegalStateException("parent is not ColorStreamOwner")
+        val flow = owner.getColorStream()
+        job = scope.launch {
+            flow.distinctUntilChanged().collect(target)
+        }
+        colorFlow = flow
     }
 
     fun onDetachedFromWindow() {
-        colorLiveData?.removeObserver(target)
-        colorLiveData = null
+        job?.cancel()
+        job = null
+        colorFlow = null
     }
 
     fun post(color: Int) {
-        colorLiveData?.postValue(color)
+        colorFlow?.tryEmit(color)
     }
 }
