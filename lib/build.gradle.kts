@@ -17,13 +17,11 @@ group = ProjectProperties.groupId
 version = ProjectProperties.versionName
 
 android {
-    compileSdk = 33
+    compileSdk = 34
 
     namespace = "net.mm2d.color.chooser"
     defaultConfig {
         minSdk = 21
-
-        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         debug {
@@ -31,7 +29,6 @@ android {
         }
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
     kotlin {
@@ -63,7 +60,7 @@ android {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")

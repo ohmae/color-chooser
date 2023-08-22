@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    compileSdk = 33
+    compileSdk = 34
 
     namespace = "net.mm2d.color.chooser.sample"
     defaultConfig {
@@ -17,8 +17,6 @@ android {
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
-        resourceConfigurations += "en"
-        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         debug {
@@ -26,7 +24,7 @@ android {
             enableAndroidTestCoverage = true
         }
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
@@ -56,8 +54,8 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("com.google.android.material:material:1.9.0")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.6.0")
-    implementation("androidx.navigation:navigation-ui-ktx:2.6.0")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.0")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.0")
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.12")
     testImplementation("junit:junit:4.13.2")
 }
