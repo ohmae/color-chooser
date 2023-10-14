@@ -5,9 +5,9 @@ import build.publishingSettings
 
 plugins {
     id("com.android.library")
-    kotlin("android")
-    `maven-publish`
-    signing
+    id("org.jetbrains.kotlin.android")
+    id("org.gradle.maven-publish")
+    id("org.gradle.signing")
     id("org.jetbrains.dokka")
     id("com.github.ben-manes.versions")
 }
@@ -59,14 +59,14 @@ android {
 }
 
 dependencies {
-    implementation(kotlin("stdlib"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation(libs.kotlinStdlib)
+    implementation(libs.kotlinxCoroutinesAndroid)
 
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("com.google.android.material:material:1.10.0")
-    testImplementation("junit:junit:4.13.2")
+    implementation(libs.androidxAppCompat)
+    implementation(libs.androidxConstraintLayout)
+    implementation(libs.androidxCoreKtx)
+    implementation(libs.androidMaterial)
+    testImplementation(libs.junit)
 }
 
 tasks.dokkaHtml.configure {

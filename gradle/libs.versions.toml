@@ -1,0 +1,33 @@
+[versions]
+androidGradlePlugin = "8.1.2"
+kotlin = "1.9.10"
+dokka = "1.8.20"
+androidxNavigation = "2.7.4"
+gradleVersionsPlugin = "0.49.0"
+kotlinxCoroutines = "1.7.3"
+
+[libraries]
+androidGradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+kotlinGradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+dokkaGradlePlugin = { group = "org.jetbrains.dokka", name = "dokka-gradle-plugin", version.ref = "dokka" }
+navigationSafeArgsGradlePlugin = { group = "androidx.navigation", name = "navigation-safe-args-gradle-plugin", version.ref = "androidxNavigation" }
+gradleVersionsPlugin = { group = "com.github.ben-manes", name = "gradle-versions-plugin", version.ref = "gradleVersionsPlugin" }
+
+kotlinStdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+kotlinxCoroutinesAndroid = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
+androidxAppCompat = { module = "androidx.appcompat:appcompat", version = "1.6.1" }
+androidxConstraintLayout = { module = "androidx.constraintlayout:constraintlayout", version = "2.1.4" }
+androidxCoreKtx = { module = "androidx.core:core-ktx", version = "1.12.0" }
+androidMaterial = { module = "com.google.android.material:material", version = "1.10.0" }
+androidxNavigationFragmentKtx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "androidxNavigation" }
+androidxNavigationUiKtx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "androidxNavigation" }
+
+# debug
+leakCanary = { module = "com.squareup.leakcanary:leakcanary-android", version = "2.12" }
+
+# test
+junit = { module = "junit:junit", version = "4.13.2" }
+
+[plugins]
+
+[bundles]
