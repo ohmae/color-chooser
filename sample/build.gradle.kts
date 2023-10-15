@@ -1,20 +1,16 @@
-import build.dependencyUpdatesSettings
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
-    id("com.android.application")
-    id("kotlin-android")
-    id("androidx.navigation.safeargs.kotlin")
-    id("com.github.ben-manes.versions")
+    id("logic.android.application")
+    id("logic.kotlin.android")
+    id("logic.navigation.safeArgs")
+    id("logic.gradle.versions")
 }
 
 android {
-    compileSdk = 34
-
     namespace = "net.mm2d.color.chooser.sample"
     defaultConfig {
         applicationId = "net.mm2d.color.chooser.sample"
-        minSdk = 21
-        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
     }
@@ -28,36 +24,15 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
-    kotlin {
-        jvmToolchain(11)
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
-    buildFeatures {
-        viewBinding = true
-    }
-    lint {
-        abortOnError = true
-    }
-    testOptions {
-        unitTests.isIncludeAndroidResources = true
-    }
 }
 
 dependencies {
     implementation(project(":lib"))
     implementation(libs.androidxAppCompat)
     implementation(libs.androidxConstraintLayout)
-    implementation(libs.androidMaterial)
     implementation(libs.androidxNavigationFragmentKtx)
     implementation(libs.androidxNavigationUiKtx)
+    implementation(libs.materialComponents)
     debugImplementation(libs.leakCanary)
     testImplementation(libs.junit)
 }
-
-dependencyUpdatesSettings()

@@ -1,6 +1,17 @@
-package build
+package net.mm2d.color.chooser.build
 
-object ProjectProperties {
+import org.gradle.api.JavaVersion
+
+object Config {
+    const val compileSdk: Int = 34
+    const val minSdk: Int = 21
+    const val targetSdk: Int = 34
+
+    val sourceCompatibility: JavaVersion = JavaVersion.VERSION_11
+    val targetCompatibility: JavaVersion = JavaVersion.VERSION_11
+    val jvmTarget: String = JavaVersion.VERSION_11.toString()
+    const val jdkVersion: Int = 11
+
     const val groupId: String = "net.mm2d.color-chooser"
     const val name: String = "color chooser"
     const val description: String = "Color chooser dialog library for android"
