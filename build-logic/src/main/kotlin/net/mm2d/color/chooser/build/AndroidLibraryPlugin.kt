@@ -15,13 +15,13 @@ class AndroidLibraryPlugin : Plugin<Project> {
             }
             androidLibrary {
                 android {
-                    compileSdk = Config.compileSdk
+                    compileSdk = Projects.compileSdk
                     defaultConfig {
-                        minSdk = Config.minSdk
+                        minSdk = Projects.minSdk
                     }
                     compileOptions {
-                        sourceCompatibility = Config.sourceCompatibility
-                        targetCompatibility = Config.targetCompatibility
+                        sourceCompatibility = Projects.sourceCompatibility
+                        targetCompatibility = Projects.targetCompatibility
                     }
                     buildFeatures {
                         viewBinding = true

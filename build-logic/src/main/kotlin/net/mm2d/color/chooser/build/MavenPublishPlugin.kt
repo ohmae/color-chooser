@@ -32,13 +32,13 @@ class MavenPublishPlugin : Plugin<Project> {
                     publications {
                         create<MavenPublication>("mavenJava") {
                             from(components["release"])
-                            groupId = Config.groupId
+                            groupId = Projects.groupId
                             artifactId = base.archivesName.get()
-                            version = Config.versionName
+                            version = Projects.versionName
                             pom {
-                                name.set(Config.name)
-                                description.set(Config.description)
-                                url.set(Config.Url.site)
+                                name.set(Projects.name)
+                                description.set(Projects.description)
+                                url.set(Projects.Url.site)
                                 licenses {
                                     license {
                                         name.set("The MIT License")
@@ -48,14 +48,14 @@ class MavenPublishPlugin : Plugin<Project> {
                                 }
                                 developers {
                                     developer {
-                                        id.set(Config.developerId)
-                                        name.set(Config.developerName)
+                                        id.set(Projects.developerId)
+                                        name.set(Projects.developerName)
                                     }
                                 }
                                 scm {
-                                    connection.set(Config.Url.scm)
-                                    developerConnection.set(Config.Url.scm)
-                                    url.set(Config.Url.github)
+                                    connection.set(Projects.Url.scm)
+                                    developerConnection.set(Projects.Url.scm)
+                                    url.set(Projects.Url.github)
                                 }
                             }
                         }

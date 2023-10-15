@@ -5,7 +5,6 @@ import com.android.build.gradle.TestedExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.Action
 import org.gradle.api.Project
-import org.gradle.api.artifacts.Dependency
 import org.gradle.api.artifacts.MinimalExternalModuleDependency
 import org.gradle.api.artifacts.VersionCatalog
 import org.gradle.api.artifacts.VersionCatalogsExtension
@@ -38,20 +37,19 @@ internal fun Project.kotlin(action: KotlinAndroidProjectExtension.() -> Unit): U
 internal fun TestedExtension.kotlinOptions(block: KotlinJvmOptions.() -> Unit): Unit =
     (this as ExtensionAware).extensions.configure("kotlinOptions", block)
 
-val Project.base: BasePluginExtension
+internal val Project.base: BasePluginExtension
     get() = (this as ExtensionAware).extensions.getByName("base") as BasePluginExtension
 
-val Project.android: LibraryExtension
-    get() =
-        (this as ExtensionAware).extensions.getByName("android") as LibraryExtension
+internal val Project.android: LibraryExtension
+    get() = (this as ExtensionAware).extensions.getByName("android") as LibraryExtension
 
-val Project.publishing: PublishingExtension
+internal val Project.publishing: PublishingExtension
     get() = (this as ExtensionAware).extensions.getByName("publishing") as PublishingExtension
 
-fun Project.publishing(configure: Action<PublishingExtension>): Unit =
+internal fun Project.publishing(configure: Action<PublishingExtension>): Unit =
     (this as ExtensionAware).extensions.configure("publishing", configure)
 
-fun Project.`signing`(configure: Action<SigningExtension>): Unit =
+internal fun Project.`signing`(configure: Action<SigningExtension>): Unit =
     (this as ExtensionAware).extensions.configure("signing", configure)
 
 internal val TaskContainer.dokkaHtml: TaskProvider<DokkaTask>
@@ -59,10 +57,6 @@ internal val TaskContainer.dokkaHtml: TaskProvider<DokkaTask>
 
 internal val TaskContainer.dokkaJavadoc: TaskProvider<DokkaTask>
     get() = named<DokkaTask>("dokkaJavadoc")
-
-internal fun DependencyHandlerScope.implementation(artifact: Dependency) {
-    add("implementation", artifact)
-}
 
 internal fun DependencyHandlerScope.dokkaPlugin(artifact: MinimalExternalModuleDependency) {
     add("dokkaPlugin", artifact)

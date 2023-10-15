@@ -12,15 +12,15 @@ class AndroidApplicationPlugin : Plugin<Project> {
             }
             androidApplication {
                 android {
-                    compileSdk = Config.compileSdk
+                    compileSdk = Projects.compileSdk
 
                     defaultConfig {
-                        minSdk = Config.minSdk
-                        targetSdk = Config.targetSdk
+                        minSdk = Projects.minSdk
+                        targetSdk = Projects.targetSdk
                     }
                     compileOptions {
-                        sourceCompatibility = Config.sourceCompatibility
-                        targetCompatibility = Config.targetCompatibility
+                        sourceCompatibility = Projects.sourceCompatibility
+                        targetCompatibility = Projects.targetCompatibility
                     }
                     buildFeatures {
                         viewBinding = true

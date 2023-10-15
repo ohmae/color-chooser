@@ -2,7 +2,7 @@ package net.mm2d.color.chooser.build
 
 import org.gradle.api.JavaVersion
 
-object Config {
+object Projects {
     const val compileSdk: Int = 34
     const val minSdk: Int = 21
     const val targetSdk: Int = 34
@@ -22,7 +22,6 @@ object Config {
     private const val versionMinor: Int = 6
     private const val versionPatch: Int = 1
     const val versionName: String = "$versionMajor.$versionMinor.$versionPatch"
-    const val versionCode: Int = versionMajor * 10000 + versionMinor * 100 + versionPatch
 
     object Url {
         const val site: String = "https://github.com/ohmae/color-chooser"

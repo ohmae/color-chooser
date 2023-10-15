@@ -12,10 +12,10 @@ class KotlinAndroidPlugin : Plugin<Project> {
             }
             android {
                 kotlin {
-                    jvmToolchain(Config.jdkVersion)
+                    jvmToolchain(Projects.jdkVersion)
                 }
                 kotlinOptions {
-                    jvmTarget = Config.jvmTarget
+                    jvmTarget = Projects.jvmTarget
                 }
             }
         }

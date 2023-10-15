@@ -1,4 +1,4 @@
-import net.mm2d.color.chooser.build.Config
+import net.mm2d.color.chooser.build.Projects
 
 plugins {
     id("logic.android.library")
@@ -9,8 +9,8 @@ plugins {
 }
 
 base.archivesName.set("color-chooser")
-group = Config.groupId
-version = Config.versionName
+group = Projects.groupId
+version = Projects.versionName
 
 android {
     namespace = "net.mm2d.color.chooser"
