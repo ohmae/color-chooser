@@ -1,11 +1,11 @@
 import net.mm2d.color.chooser.build.Projects
 
 plugins {
-    id("logic.android.library")
-    id("logic.kotlin.android")
-    id("logic.documentation.dokka")
-    id("logic.maven.publish")
-    id("logic.gradle.versions")
+    id("build.logic.androidLibrary")
+    id("build.logic.kotlinAndroid")
+    id("build.logic.documentationDokka")
+    id("build.logic.mavenPublish")
+    id("build.logic.gradleVersions")
 }
 
 base.archivesName.set("color-chooser")
@@ -31,9 +31,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.kotlinStdlib)
-    implementation(libs.kotlinxCoroutinesAndroid)
-
     implementation(libs.androidxAppCompat)
     implementation(libs.androidxConstraintLayout)
     implementation(libs.androidxCoreKtx)

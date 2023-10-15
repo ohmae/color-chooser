@@ -25,31 +25,31 @@ dependencies {
 gradlePlugin {
     plugins {
         register("androidApplication") {
-            id = "logic.android.application"
+            id = "build.logic.androidApplication"
             implementationClass = "net.mm2d.color.chooser.build.AndroidApplicationPlugin"
         }
         register("androidLibrary") {
-            id = "logic.android.library"
+            id = "build.logic.androidLibrary"
             implementationClass = "net.mm2d.color.chooser.build.AndroidLibraryPlugin"
         }
         register("kotlinAndroid") {
-            id = "logic.kotlin.android"
+            id = "build.logic.kotlinAndroid"
             implementationClass = "net.mm2d.color.chooser.build.KotlinAndroidPlugin"
         }
         register("navigationSafeArgs") {
-            id = "logic.navigation.safeArgs"
+            id = "build.logic.navigationSafeArgs"
             implementationClass = "net.mm2d.color.chooser.build.NavigationSafeArgsPlugin"
         }
         register("documentationDokka") {
-            id = "logic.documentation.dokka"
+            id = "build.logic.documentationDokka"
             implementationClass = "net.mm2d.color.chooser.build.DocumentationDokkaPlugin"
         }
         register("mavenPublish") {
-            id = "logic.maven.publish"
+            id = "build.logic.mavenPublish"
             implementationClass = "net.mm2d.color.chooser.build.MavenPublishPlugin"
         }
         register("gradleVersions") {
-            id = "logic.gradle.versions"
+            id = "build.logic.gradleVersions"
             implementationClass = "net.mm2d.color.chooser.build.GradleVersionsPlugin"
         }
     }

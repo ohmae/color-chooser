@@ -1,10 +1,10 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
-    id("logic.android.application")
-    id("logic.kotlin.android")
-    id("logic.navigation.safeArgs")
-    id("logic.gradle.versions")
+    id("build.logic.androidApplication")
+    id("build.logic.kotlinAndroid")
+    id("build.logic.navigationSafeArgs")
+    id("build.logic.gradleVersions")
 }
 
 android {

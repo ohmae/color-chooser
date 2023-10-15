@@ -8,21 +8,23 @@ import org.gradle.kotlin.dsl.named
 @Suppress("unused")
 class GradleVersionsPlugin : Plugin<Project> {
     override fun apply(target: Project) {
-        with(target) {
-            with(pluginManager) {
-                apply("com.github.ben-manes.versions")
-            }
-            tasks.named<DependencyUpdatesTask>("dependencyUpdates").configure {
-                rejectVersionIf { !isStable(candidate.version) }
-            }
-        }
+        target.gradleVersionsPlugin()
     }
+}
 
-    private fun isStable(version: String): Boolean {
-        val versionUpperCase = version.uppercase()
-        val hasStableKeyword =
-            listOf("RELEASE", "FINAL", "GA").any { versionUpperCase.contains(it) }
-        val regex = "^[0-9,.v-]+(-r)?$".toRegex()
-        return hasStableKeyword || regex.matches(version)
+private fun Project.gradleVersionsPlugin() {
+    with(pluginManager) {
+        apply("com.github.ben-manes.versions")
     }
+    tasks.named<DependencyUpdatesTask>("dependencyUpdates").configure {
+        rejectVersionIf { !isStable(candidate.version) }
+    }
+}
+
+private fun isStable(version: String): Boolean {
+    val versionUpperCase = version.uppercase()
+    val hasStableKeyword =
+        listOf("RELEASE", "FINAL", "GA").any { versionUpperCase.contains(it) }
+    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+    return hasStableKeyword || regex.matches(version)
 }
