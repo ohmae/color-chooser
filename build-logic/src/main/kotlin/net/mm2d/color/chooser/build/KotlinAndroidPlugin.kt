@@ -16,12 +16,6 @@ class KotlinAndroidPlugin : Plugin<Project> {
     }
 }
 
-private fun Project.kotlin(action: KotlinAndroidProjectExtension.() -> Unit): Unit =
-    extensions.configure(action)
-
-private fun TestedExtension.kotlinOptions(block: KotlinJvmOptions.() -> Unit): Unit =
-    (this as ExtensionAware).extensions.configure("kotlinOptions", block)
-
 private fun Project.kotlinAndroidPlugin() {
     with(pluginManager) {
         apply("org.jetbrains.kotlin.android")
@@ -39,3 +33,10 @@ private fun Project.kotlinAndroidPlugin() {
         implementation(libs.library("kotlinxCoroutinesAndroid"))
     }
 }
+
+// DSL
+private fun Project.kotlin(action: KotlinAndroidProjectExtension.() -> Unit): Unit =
+    extensions.configure(action)
+
+private fun TestedExtension.kotlinOptions(block: KotlinJvmOptions.() -> Unit): Unit =
+    (this as ExtensionAware).extensions.configure("kotlinOptions", block)

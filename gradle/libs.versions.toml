@@ -33,12 +33,12 @@ junit = { group = "junit", name = "junit", version = "4.13.2" }
 dokkaAndroidDocumentationPlugin = { group = "org.jetbrains.dokka", name = "android-documentation-plugin", version.ref = "dokka" }
 
 [plugins]
-androidApplicationGradlePlugin = { id = "com.android.application", version.ref = "androidGradlePlugin" }
-androidLibraryGradlePlugin = { id = "com.android.library", version.ref = "androidGradlePlugin" }
-kotlinGradlePlugin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-dokkaGradlePlugin = { id = "org.jetbrains.dokka", version.ref = "dokka" }
-navigationSafeArgsGradlePlugin = { id = "androidx.navigation.safeargs.kotlin", version.ref = "androidxNavigation" }
-gradleVersionsPlugin = { id = "com.github.ben-manes.versions", version.ref = "gradleVersionsPlugin" }
+androidApplication = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+androidLibrary = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+navigationSafeArgs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "androidxNavigation" }
+gradleVersions = { id = "com.github.ben-manes.versions", version.ref = "gradleVersionsPlugin" }
 
 [bundles]
 plugins = [

@@ -12,9 +12,6 @@ class AndroidApplicationPlugin : Plugin<Project> {
     }
 }
 
-private fun Project.androidApplication(action: BaseAppModuleExtension.() -> Unit): Unit =
-    extensions.configure(action)
-
 private fun Project.androidApplicationPlugin() {
     with(pluginManager) {
         apply("com.android.application")
@@ -43,3 +40,7 @@ private fun Project.androidApplicationPlugin() {
         }
     }
 }
+
+// DSL
+private fun Project.androidApplication(action: BaseAppModuleExtension.() -> Unit): Unit =
+    extensions.configure(action)

@@ -20,15 +20,6 @@ class MavenPublishPlugin : Plugin<Project> {
     }
 }
 
-private val Project.publishing: PublishingExtension
-    get() = (this as ExtensionAware).extensions.getByName("publishing") as PublishingExtension
-
-private fun Project.publishing(configure: Action<PublishingExtension>): Unit =
-    (this as ExtensionAware).extensions.configure("publishing", configure)
-
-private fun Project.signing(configure: Action<SigningExtension>): Unit =
-    (this as ExtensionAware).extensions.configure("signing", configure)
-
 private fun Project.mavenPublishPlugin() {
     with(pluginManager) {
         apply("org.gradle.maven-publish")
@@ -98,3 +89,13 @@ private fun Project.mavenPublishPlugin() {
         }
     }
 }
+
+// DSL
+private val Project.publishing: PublishingExtension
+    get() = (this as ExtensionAware).extensions.getByName("publishing") as PublishingExtension
+
+private fun Project.publishing(configure: Action<PublishingExtension>): Unit =
+    (this as ExtensionAware).extensions.configure("publishing", configure)
+
+private fun Project.signing(configure: Action<SigningExtension>): Unit =
+    (this as ExtensionAware).extensions.configure("signing", configure)

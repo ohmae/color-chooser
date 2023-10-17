@@ -16,12 +16,6 @@ class AndroidLibraryPlugin : Plugin<Project> {
     }
 }
 
-private fun Project.androidLibrary(action: LibraryExtension.() -> Unit): Unit =
-    extensions.configure(action)
-
-private val Project.android: LibraryExtension
-    get() = (this as ExtensionAware).extensions.getByName("android") as LibraryExtension
-
 private fun Project.androidLibraryPlugin() {
     with(pluginManager) {
         apply("com.android.library")
@@ -52,3 +46,10 @@ private fun Project.androidLibraryPlugin() {
         }
     }
 }
+
+// DSL
+private fun Project.androidLibrary(action: LibraryExtension.() -> Unit): Unit =
+    extensions.configure(action)
+
+private val Project.android: LibraryExtension
+    get() = (this as ExtensionAware).extensions.getByName("android") as LibraryExtension

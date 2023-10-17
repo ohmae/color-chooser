@@ -18,16 +18,6 @@ class DocumentationDokkaPlugin : Plugin<Project> {
     }
 }
 
-private val TaskContainer.dokkaHtml: TaskProvider<DokkaTask>
-    get() = named<DokkaTask>("dokkaHtml")
-
-private val TaskContainer.dokkaJavadoc: TaskProvider<DokkaTask>
-    get() = named<DokkaTask>("dokkaJavadoc")
-
-private fun DependencyHandlerScope.dokkaPlugin(artifact: MinimalExternalModuleDependency) {
-    add("dokkaPlugin", artifact)
-}
-
 private fun Project.documentationDokkaPlugin() {
     with(pluginManager) {
         apply("org.jetbrains.dokka")
@@ -43,4 +33,15 @@ private fun Project.documentationDokkaPlugin() {
         outputDirectory.set(File(layout.buildDirectory.asFile.get(), "docs/javadoc"))
         moduleName.set(base.archivesName.get())
     }
+}
+
+// DSL
+private val TaskContainer.dokkaHtml: TaskProvider<DokkaTask>
+    get() = named<DokkaTask>("dokkaHtml")
+
+private val TaskContainer.dokkaJavadoc: TaskProvider<DokkaTask>
+    get() = named<DokkaTask>("dokkaJavadoc")
+
+private fun DependencyHandlerScope.dokkaPlugin(artifact: MinimalExternalModuleDependency) {
+    add("dokkaPlugin", artifact)
 }
