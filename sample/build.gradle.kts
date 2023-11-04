@@ -1,5 +1,3 @@
-import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-
 plugins {
     id("build.logic.androidApplication")
     id("build.logic.kotlinAndroid")
