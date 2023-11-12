@@ -112,7 +112,7 @@ object ColorChooserDialog {
      * @param requestKey Request Key used for registration with registerListener
      * @param initialColor initial color
      * @param withAlpha if true, alpha section is enabled
-     * @param initialTab initial tab, TAB_PALETTE/TAB_HSV/TAB_RGB
+     * @param initialTab initial tab, TAB_PALETTE/TAB_HSV/TAB_RGB/TAB_MATERIAL3(if material3 is added)
      * @param tabs tabs and order to show, default {TAB_PALETTE, TAB_HSV, TAB_RGB}
      */
     fun show(
