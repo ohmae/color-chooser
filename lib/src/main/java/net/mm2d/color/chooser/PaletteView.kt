@@ -50,9 +50,9 @@ internal class PaletteView
         overScrollMode = View.OVER_SCROLL_NEVER
         itemAnimator = null
         layoutManager = linearLayoutManager
-        adapter = cellAdapter
         isVerticalFadingEdgeEnabled = true
         setFadingEdgeLength(padding)
+        adapter = cellAdapter
         cellAdapter.onColorChanged = {
             delegate.post(it)
         }
@@ -99,13 +99,13 @@ internal class PaletteView
         private val inflater: LayoutInflater = LayoutInflater.from(context)
         private var list: List<IntArray> = cache.get() ?: emptyList()
         private var color: Int = 0
-        var onColorChanged: ((color: Int) -> Unit)? = null
+        var onColorChanged: (color: Int) -> Unit = {}
         var index: Int = -1
             private set
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CellHolder =
             CellHolder(inflater.inflate(R.layout.mm2d_cc_item_palette, parent, false))
-                .also { holder -> holder.onColorChanged = { onColorChanged?.invoke(it) } }
+                .also { holder -> holder.onColorChanged = onColorChanged }
 
         override fun onBindViewHolder(holder: CellHolder, position: Int) =
             holder.apply(list[position], color)
@@ -134,7 +134,7 @@ internal class PaletteView
         private val viewList: List<PaletteCell> = (itemView as ViewGroup).children
             .map { it as PaletteCell }
             .toList()
-        var onColorChanged: ((color: Int) -> Unit)? = null
+        var onColorChanged: (color: Int) -> Unit = {}
 
         init {
             viewList.forEach {
@@ -143,7 +143,7 @@ internal class PaletteView
         }
 
         private fun performOnColorChanged(view: View) {
-            onColorChanged?.invoke(view.tag as? Int ?: return)
+            onColorChanged.invoke(view.tag as? Int ?: return)
         }
 
         fun apply(colors: IntArray, selected: Int) {

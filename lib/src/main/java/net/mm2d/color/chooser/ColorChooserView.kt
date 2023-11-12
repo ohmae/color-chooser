@@ -17,6 +17,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import net.mm2d.color.chooser.ColorChooserDialog.TAB_HSV
+import net.mm2d.color.chooser.ColorChooserDialog.TAB_MATERIAL3
 import net.mm2d.color.chooser.ColorChooserDialog.TAB_PALETTE
 import net.mm2d.color.chooser.ColorChooserDialog.TAB_RGB
 import net.mm2d.color.chooser.databinding.Mm2dCcViewDialogBinding
@@ -43,9 +44,10 @@ internal class ColorChooserView
             .distinct().toIntArray()
         val pageTitles: List<String> = distinctTabs.map {
             when (it) {
-                TAB_PALETTE -> "palette"
-                TAB_HSV -> "hsv"
-                else -> "rgb"
+                TAB_PALETTE -> "PALETTE"
+                TAB_HSV -> "HSV"
+                TAB_MATERIAL3 -> "M3"
+                else -> "RGB"
             }
         }
         binding.viewPager.adapter = ViewPagerAdapter(context, tabs)
@@ -74,6 +76,6 @@ internal class ColorChooserView
     override fun getColorStream(): MutableSharedFlow<Int> = colorFlow
 
     companion object {
-        private val TABS = intArrayOf(TAB_PALETTE, TAB_HSV, TAB_RGB)
+        private val TABS = intArrayOf(TAB_PALETTE, TAB_HSV, TAB_RGB, TAB_MATERIAL3)
     }
 }

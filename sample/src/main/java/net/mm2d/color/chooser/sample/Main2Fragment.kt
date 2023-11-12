@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import net.mm2d.color.chooser.ColorChooserDialog
 import net.mm2d.color.chooser.ColorChooserDialog.TAB_HSV
+import net.mm2d.color.chooser.ColorChooserDialog.TAB_MATERIAL3
 import net.mm2d.color.chooser.ColorChooserDialog.TAB_PALETTE
 import net.mm2d.color.chooser.ColorChooserDialog.TAB_RGB
 import net.mm2d.color.chooser.sample.databinding.FragmentMain2Binding
@@ -52,7 +53,8 @@ class Main2Fragment : Fragment(R.layout.fragment_main2) {
         }
         binding.tabReorder1.setOnClickListener {
             ColorChooserDialog.show(
-                this, REQUEST_KEY, color, tabs = intArrayOf(TAB_RGB, TAB_HSV, TAB_PALETTE)
+                this, REQUEST_KEY, color,
+                tabs = intArrayOf(TAB_RGB, TAB_HSV, TAB_PALETTE, TAB_MATERIAL3)
             )
         }
         binding.tabReorder2.setOnClickListener {

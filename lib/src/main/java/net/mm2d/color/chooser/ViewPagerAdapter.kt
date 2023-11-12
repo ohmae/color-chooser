@@ -16,6 +16,7 @@ class ViewPagerAdapter(
             when (viewType) {
                 ColorChooserDialog.TAB_PALETTE -> PaletteView(context)
                 ColorChooserDialog.TAB_HSV -> HsvView(context)
+                ColorChooserDialog.TAB_MATERIAL3 -> Material3View(context)
                 else -> SliderView(context)
             }.also {
                 it.id = ViewCompat.generateViewId()

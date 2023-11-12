@@ -36,6 +36,7 @@ object ColorChooserDialog {
     const val TAB_PALETTE: Int = 0
     const val TAB_HSV: Int = 1
     const val TAB_RGB: Int = 2
+    const val TAB_MATERIAL3: Int = 3
     private val DEFAULT_TABS: IntArray = intArrayOf(TAB_PALETTE, TAB_HSV, TAB_RGB)
 
     /**
