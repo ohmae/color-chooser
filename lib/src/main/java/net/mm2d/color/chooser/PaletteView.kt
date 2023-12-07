@@ -23,8 +23,12 @@ import androidx.core.content.res.use
 import androidx.core.view.children
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import net.mm2d.color.chooser.element.PaletteCell
 import net.mm2d.color.chooser.util.toPixelsAsDp
 import java.lang.ref.SoftReference

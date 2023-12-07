@@ -9,14 +9,23 @@ package net.mm2d.color.chooser.element
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.Paint.Style
+import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.withStyledAttributes
 import net.mm2d.color.chooser.R
-import net.mm2d.color.chooser.util.*
+import net.mm2d.color.chooser.util.drawRectWithOffset
+import net.mm2d.color.chooser.util.getColor
+import net.mm2d.color.chooser.util.getDimension
+import net.mm2d.color.chooser.util.getPixels
+import net.mm2d.color.chooser.util.setAlpha
+import net.mm2d.color.chooser.util.toOpacity
 
 internal class ColorSliderView
 @JvmOverloads constructor(

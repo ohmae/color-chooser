@@ -11,8 +11,13 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.text.*
+import android.text.Editable
+import android.text.InputFilter
 import android.text.InputFilter.LengthFilter
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextUtils
+import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
