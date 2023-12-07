@@ -1,6 +1,6 @@
 [versions]
-androidGradlePlugin = "8.1.4"
-kotlin = "1.9.20"
+androidGradlePlugin = "8.2.0"
+kotlin = "1.9.21"
 dokka = "1.9.10"
 androidxNavigation = "2.7.5"
 gradleVersionsPlugin = "0.49.0"
