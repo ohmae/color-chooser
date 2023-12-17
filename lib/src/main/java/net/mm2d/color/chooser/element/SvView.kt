@@ -31,7 +31,7 @@ internal class SvView
 @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    defStyleAttr: Int = 0,
 ) : View(context, attrs, defStyleAttr) {
     @ColorInt
     private var color: Int = Color.BLACK
@@ -114,7 +114,7 @@ internal class SvView
             paddingLeft + requestPadding,
             paddingTop + requestPadding,
             width - paddingRight - requestPadding,
-            height - paddingBottom - requestPadding
+            height - paddingBottom - requestPadding,
         )
     }
 
@@ -144,13 +144,13 @@ internal class SvView
                 resolveSizeAndState(
                     max(requestWidth + paddingHorizontal, suggestedMinimumWidth),
                     widthMeasureSpec,
-                    MeasureSpec.UNSPECIFIED
+                    MeasureSpec.UNSPECIFIED,
                 ),
                 resolveSizeAndState(
                     max(requestHeight + paddingVertical, suggestedMinimumHeight),
                     heightMeasureSpec,
-                    MeasureSpec.UNSPECIFIED
-                )
+                    MeasureSpec.UNSPECIFIED,
+                ),
             )
             return
         }

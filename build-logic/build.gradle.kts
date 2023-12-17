@@ -26,31 +26,35 @@ gradlePlugin {
     plugins {
         register("androidApplication") {
             id = "build.logic.androidApplication"
-            implementationClass = "net.mm2d.color.chooser.build.AndroidApplicationPlugin"
+            implementationClass = "net.mm2d.build.AndroidApplicationPlugin"
         }
         register("androidLibrary") {
             id = "build.logic.androidLibrary"
-            implementationClass = "net.mm2d.color.chooser.build.AndroidLibraryPlugin"
+            implementationClass = "net.mm2d.build.AndroidLibraryPlugin"
         }
         register("kotlinAndroid") {
             id = "build.logic.kotlinAndroid"
-            implementationClass = "net.mm2d.color.chooser.build.KotlinAndroidPlugin"
+            implementationClass = "net.mm2d.build.KotlinAndroidPlugin"
         }
         register("navigationSafeArgs") {
             id = "build.logic.navigationSafeArgs"
-            implementationClass = "net.mm2d.color.chooser.build.NavigationSafeArgsPlugin"
+            implementationClass = "net.mm2d.build.NavigationSafeArgsPlugin"
         }
         register("documentationDokka") {
             id = "build.logic.documentationDokka"
-            implementationClass = "net.mm2d.color.chooser.build.DocumentationDokkaPlugin"
+            implementationClass = "net.mm2d.build.DocumentationDokkaPlugin"
         }
         register("mavenPublish") {
             id = "build.logic.mavenPublish"
-            implementationClass = "net.mm2d.color.chooser.build.MavenPublishPlugin"
+            implementationClass = "net.mm2d.build.MavenPublishPlugin"
+        }
+        register("ktlint") {
+            id = "build.logic.ktlint"
+            implementationClass = "net.mm2d.build.KtlintPlugin"
         }
         register("gradleVersions") {
             id = "build.logic.gradleVersions"
-            implementationClass = "net.mm2d.color.chooser.build.GradleVersionsPlugin"
+            implementationClass = "net.mm2d.build.GradleVersionsPlugin"
         }
     }
 }

@@ -18,7 +18,7 @@ import androidx.core.content.res.use
 @ColorInt
 internal fun Context.resolveColor(
     @AttrRes attr: Int,
-    @ColorInt defaultColor: Int = Color.TRANSPARENT
+    @ColorInt defaultColor: Int = Color.TRANSPARENT,
 ): Int = resolveColor(0, attr, defaultColor)
 
 @SuppressLint("Recycle")
@@ -26,6 +26,6 @@ internal fun Context.resolveColor(
 internal fun Context.resolveColor(
     @StyleRes style: Int,
     @AttrRes attr: Int,
-    @ColorInt defaultColor: Int
+    @ColorInt defaultColor: Int,
 ): Int = obtainStyledAttributes(style, intArrayOf(attr))
     .use { it.getColor(0, defaultColor) }

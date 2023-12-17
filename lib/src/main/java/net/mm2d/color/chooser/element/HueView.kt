@@ -29,7 +29,7 @@ internal class HueView
 @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    defStyleAttr: Int = 0,
 ) : View(context, attrs, defStyleAttr) {
     @ColorInt
     private var color: Int = Color.RED
@@ -41,7 +41,7 @@ internal class HueView
     private val sampleRadius = getDimension(R.dimen.mm2d_cc_sample_radius)
     private val sampleFrameRadius =
         sampleRadius + getDimension(R.dimen.mm2d_cc_sample_frame)
-    private val _sampleShadowRadius =
+    private val sampleShadowRadius =
         sampleFrameRadius + getDimension(R.dimen.mm2d_cc_sample_shadow)
     private val bitmapRect = Rect(0, 0, 1, RANGE)
     private val targetRect = Rect()
@@ -75,7 +75,7 @@ internal class HueView
             paddingLeft + requestPadding,
             paddingTop + requestPadding,
             width - paddingRight - requestPadding,
-            height - paddingBottom - requestPadding
+            height - paddingBottom - requestPadding,
         )
     }
 
@@ -84,7 +84,7 @@ internal class HueView
         val x = targetRect.centerX().toFloat()
         val y = hue * targetRect.height() + targetRect.top
         paint.color = colorSampleShadow
-        canvas.drawCircle(x, y, _sampleShadowRadius, paint)
+        canvas.drawCircle(x, y, sampleShadowRadius, paint)
         paint.color = colorSampleFrame
         canvas.drawCircle(x, y, sampleFrameRadius, paint)
         paint.color = color
@@ -96,13 +96,13 @@ internal class HueView
             resolveSizeAndState(
                 max(requestWidth + paddingLeft + paddingRight, suggestedMinimumWidth),
                 widthMeasureSpec,
-                MeasureSpec.UNSPECIFIED
+                MeasureSpec.UNSPECIFIED,
             ),
             resolveSizeAndState(
                 max(requestHeight + paddingTop + paddingBottom, suggestedMinimumHeight),
                 heightMeasureSpec,
-                MeasureSpec.UNSPECIFIED
-            )
+                MeasureSpec.UNSPECIFIED,
+            ),
         )
     }
 

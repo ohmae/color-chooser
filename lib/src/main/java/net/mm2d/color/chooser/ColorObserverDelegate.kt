@@ -10,9 +10,9 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 internal class ColorObserverDelegate<T>(
-    private val target: T
+    private val target: T,
 ) where T : View,
-        T : FlowCollector<Int> {
+          T : FlowCollector<Int> {
     private val scope = CoroutineScope(Job() + Dispatchers.Main)
     private var job: Job? = null
     private var colorFlow: MutableSharedFlow<Int>? = null

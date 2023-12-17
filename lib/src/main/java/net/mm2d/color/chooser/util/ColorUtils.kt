@@ -175,7 +175,7 @@ internal object ColorUtils {
             a.to8bit(),
             r.to8bit(),
             g.to8bit(),
-            b.to8bit()
+            b.to8bit(),
         )
 
     /**
@@ -281,7 +281,7 @@ internal fun Int.relativeLuminance(): Float {
     return ColorUtils.luminance(
         red.normalizeForSrgb(),
         green.normalizeForSrgb(),
-        blue.normalizeForSrgb()
+        blue.normalizeForSrgb(),
     )
 }
 

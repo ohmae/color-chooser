@@ -7,6 +7,9 @@ indent_style = space
 trim_trailing_whitespace = true
 insert_final_newline = true
 
+[*.{kt, kts}]
+ktlint_code_style = intellij_idea
+
 [*.json]
 indent_size = 2
 

@@ -131,7 +131,7 @@ object ColorChooserDialog {
                 KEY_WITH_ALPHA to withAlpha,
                 KEY_INITIAL_TAB to initialTab,
                 KEY_TABS to tabs,
-            )
+            ),
         )
     }
 
@@ -161,7 +161,7 @@ object ColorChooserDialog {
                 KEY_WITH_ALPHA to withAlpha,
                 KEY_INITIAL_TAB to initialTab,
                 KEY_TABS to tabs,
-            )
+            ),
         )
     }
 
@@ -217,17 +217,19 @@ object ColorChooserDialog {
         override fun onCancel(dialog: DialogInterface) {
             val key = requireArguments().getString(KEY_REQUEST_KEY) ?: return
             parentFragmentManager.setFragmentResult(
-                key, bundleOf(RESULT_KEY_CANCEL to true)
+                key,
+                bundleOf(RESULT_KEY_CANCEL to true),
             )
         }
 
         private fun notifySelect() {
             val key = requireArguments().getString(KEY_REQUEST_KEY) ?: return
             parentFragmentManager.setFragmentResult(
-                key, bundleOf(
+                key,
+                bundleOf(
                     RESULT_KEY_CANCEL to false,
                     RESULT_KEY_COLOR to colorChooserView.color,
-                )
+                ),
             )
         }
     }

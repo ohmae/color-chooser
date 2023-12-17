@@ -27,7 +27,7 @@ internal class PreviewView
 @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    defStyleAttr: Int = 0,
 ) : View(context, attrs, defStyleAttr) {
     private val paint = Paint().also {
         it.isAntiAlias = true
@@ -75,7 +75,7 @@ internal class PreviewView
             paddingLeft + border,
             paddingTop + border,
             width - paddingRight - border,
-            height - paddingBottom - border
+            height - paddingBottom - border,
         )
         checkerRect.set(0, 0, targetRect.width(), targetRect.height())
         checker = createChecker(
@@ -83,7 +83,7 @@ internal class PreviewView
             checkerRect.width(),
             checkerRect.height(),
             colorCheckerLight,
-            colorCheckerDark
+            colorCheckerDark,
         )
     }
 
@@ -92,13 +92,13 @@ internal class PreviewView
             resolveSizeAndState(
                 max(requestWidth, suggestedMinimumWidth),
                 widthMeasureSpec,
-                MeasureSpec.UNSPECIFIED
+                MeasureSpec.UNSPECIFIED,
             ),
             resolveSizeAndState(
                 max(requestHeight, suggestedMinimumHeight),
                 heightMeasureSpec,
-                MeasureSpec.UNSPECIFIED
-            )
+                MeasureSpec.UNSPECIFIED,
+            ),
         )
     }
 
@@ -108,7 +108,7 @@ internal class PreviewView
             width: Int,
             height: Int,
             color1: Int,
-            color2: Int
+            color2: Int,
         ): Bitmap {
             val pixels = IntArray(width * height)
             repeat(height) { y ->

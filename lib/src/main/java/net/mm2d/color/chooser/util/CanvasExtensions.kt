@@ -17,5 +17,5 @@ internal fun Canvas.drawRectWithOffset(rect: Rect, offset: Float, paint: Paint) 
         rect.top - offset,
         rect.right + offset,
         rect.bottom + offset,
-        paint
+        paint,
     )

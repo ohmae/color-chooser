@@ -1,5 +1,6 @@
-package net.mm2d.color.chooser.build
+package net.mm2d.build
 
+import net.mm2d.build.Projects.Url
 import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -46,7 +47,7 @@ private fun Project.mavenPublishPlugin() {
                     pom {
                         name.set(Projects.name)
                         description.set(Projects.description)
-                        url.set(Projects.Url.site)
+                        url.set(Url.site)
                         licenses {
                             license {
                                 name.set("The MIT License")
@@ -61,9 +62,9 @@ private fun Project.mavenPublishPlugin() {
                             }
                         }
                         scm {
-                            connection.set(Projects.Url.scm)
-                            developerConnection.set(Projects.Url.scm)
-                            url.set(Projects.Url.github)
+                            connection.set(Url.scm)
+                            developerConnection.set(Url.scm)
+                            url.set(Url.github)
                         }
                     }
                 }

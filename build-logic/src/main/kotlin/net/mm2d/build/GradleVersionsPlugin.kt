@@ -1,4 +1,4 @@
-package net.mm2d.color.chooser.build
+package net.mm2d.build
 
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.gradle.api.Plugin

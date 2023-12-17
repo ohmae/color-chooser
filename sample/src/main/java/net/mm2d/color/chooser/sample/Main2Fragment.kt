@@ -53,8 +53,10 @@ class Main2Fragment : Fragment(R.layout.fragment_main2) {
         }
         binding.tabReorder1.setOnClickListener {
             ColorChooserDialog.show(
-                this, REQUEST_KEY, color,
-                tabs = intArrayOf(TAB_RGB, TAB_HSV, TAB_PALETTE, TAB_MATERIAL3)
+                this,
+                REQUEST_KEY,
+                color,
+                tabs = intArrayOf(TAB_RGB, TAB_HSV, TAB_PALETTE, TAB_MATERIAL3),
             )
         }
         binding.tabReorder2.setOnClickListener {

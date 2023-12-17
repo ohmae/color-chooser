@@ -21,9 +21,9 @@ class ViewPagerAdapter(
             }.also {
                 it.id = ViewCompat.generateViewId()
                 it.layoutParams = RecyclerView.LayoutParams(
-                    LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT
+                    LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT,
                 )
-            }
+            },
         )
 
     override fun onBindViewHolder(holder: PageViewHolder, position: Int) = Unit

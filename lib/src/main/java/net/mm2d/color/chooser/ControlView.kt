@@ -36,7 +36,7 @@ internal class ControlView
 @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    defStyleAttr: Int = 0,
 ) : ConstraintLayout(context, attrs, defStyleAttr), FlowCollector<Int> {
     private val delegate = ColorObserverDelegate(this)
     private val normalTint =
@@ -145,7 +145,12 @@ internal class ControlView
 
     private class HexadecimalFilter : InputFilter {
         override fun filter(
-            source: CharSequence?, start: Int, end: Int, dest: Spanned?, dstart: Int, dend: Int
+            source: CharSequence?,
+            start: Int,
+            end: Int,
+            dest: Spanned?,
+            dstart: Int,
+            dend: Int,
         ): CharSequence? {
             val converted = source.toString()
                 .replace("[^0-9a-fA-F]".toRegex(), "")

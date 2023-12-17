@@ -1,4 +1,4 @@
-package net.mm2d.color.chooser.build
+package net.mm2d.build
 
 import com.android.build.gradle.TestedExtension
 import org.gradle.api.Project

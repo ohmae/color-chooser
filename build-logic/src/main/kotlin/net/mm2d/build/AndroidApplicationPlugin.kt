@@ -1,30 +1,28 @@
-package net.mm2d.color.chooser.build
+package net.mm2d.build
 
-import com.android.build.gradle.LibraryExtension
+import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.plugins.ExtensionAware
-import org.gradle.api.tasks.bundling.Jar
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.create
-import org.gradle.kotlin.dsl.get
 
 @Suppress("unused")
-class AndroidLibraryPlugin : Plugin<Project> {
+class AndroidApplicationPlugin : Plugin<Project> {
     override fun apply(target: Project) {
-        target.androidLibraryPlugin()
+        target.androidApplicationPlugin()
     }
 }
 
-private fun Project.androidLibraryPlugin() {
+private fun Project.androidApplicationPlugin() {
     with(pluginManager) {
-        apply("com.android.library")
+        apply("com.android.application")
     }
-    androidLibrary {
+    androidApplication {
         android {
             compileSdk = Projects.compileSdk
+
             defaultConfig {
                 minSdk = Projects.minSdk
+                targetSdk = Projects.targetSdk
             }
             compileOptions {
                 sourceCompatibility = Projects.sourceCompatibility
@@ -40,16 +38,9 @@ private fun Project.androidLibraryPlugin() {
                 unitTests.isIncludeAndroidResources = true
             }
         }
-        tasks.create("sourcesJar", Jar::class) {
-            archiveClassifier.set("sources")
-            from(android.sourceSets["main"].java.srcDirs)
-        }
     }
 }
 
 // DSL
-private fun Project.androidLibrary(action: LibraryExtension.() -> Unit): Unit =
+private fun Project.androidApplication(action: BaseAppModuleExtension.() -> Unit): Unit =
     extensions.configure(action)
-
-private val Project.android: LibraryExtension
-    get() = (this as ExtensionAware).extensions.getByName("android") as LibraryExtension

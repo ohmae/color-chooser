@@ -65,12 +65,12 @@ class Material3View
     override fun onMeasure(widthSpec: Int, heightSpec: Int) {
         setMeasuredDimension(
             getDefaultSize(suggestedMinimumWidth, widthSpec),
-            getDefaultSize(suggestedMinimumHeight, heightSpec)
+            getDefaultSize(suggestedMinimumHeight, heightSpec),
         )
     }
 
     private class CellAdapter(
-        context: Context
+        context: Context,
     ) : Adapter<CellHolder>() {
         private val inflater: LayoutInflater = LayoutInflater.from(context)
         var onColorChanged: (color: Int) -> Unit = {}

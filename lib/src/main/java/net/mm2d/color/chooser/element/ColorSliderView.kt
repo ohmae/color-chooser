@@ -31,7 +31,7 @@ internal class ColorSliderView
 @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    defStyleAttr: Int = 0,
 ) : View(context, attrs, defStyleAttr) {
     private val paint = Paint().also {
         it.isAntiAlias = true
@@ -87,7 +87,7 @@ internal class ColorSliderView
                 getPixels(R.dimen.mm2d_cc_checker_size),
                 getPixels(R.dimen.mm2d_cc_slider_height),
                 getColor(R.color.mm2d_cc_checker_light),
-                getColor(R.color.mm2d_cc_checker_dark)
+                getColor(R.color.mm2d_cc_checker_dark),
             )
         } else {
             null
@@ -110,7 +110,7 @@ internal class ColorSliderView
             paddingLeft + requestPadding,
             paddingTop + requestPadding,
             width - paddingRight - requestPadding,
-            height - paddingBottom - requestPadding
+            height - paddingBottom - requestPadding,
         )
     }
 
@@ -155,13 +155,13 @@ internal class ColorSliderView
         setMeasuredDimension(
             getDefaultSize(
                 maxOf(requestWidth + paddingLeft + paddingRight, suggestedMinimumWidth),
-                widthMeasureSpec
+                widthMeasureSpec,
             ),
             resolveSizeAndState(
                 maxOf(requestHeight + paddingTop + paddingBottom, suggestedMinimumHeight),
                 heightMeasureSpec,
-                MeasureSpec.UNSPECIFIED
-            )
+                MeasureSpec.UNSPECIFIED,
+            ),
         )
     }
 

@@ -93,12 +93,12 @@ internal class PaletteView
     override fun onMeasure(widthSpec: Int, heightSpec: Int) {
         setMeasuredDimension(
             getDefaultSize(suggestedMinimumWidth, widthSpec),
-            getDefaultSize(suggestedMinimumHeight, heightSpec)
+            getDefaultSize(suggestedMinimumHeight, heightSpec),
         )
     }
 
     private class CellAdapter(
-        private val context: Context
+        private val context: Context,
     ) : Adapter<CellHolder>() {
         private val inflater: LayoutInflater = LayoutInflater.from(context)
         private var list: List<IntArray> = cache.get() ?: emptyList()
