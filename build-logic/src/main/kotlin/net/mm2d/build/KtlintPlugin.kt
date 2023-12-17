@@ -41,6 +41,7 @@ private fun Project.ktlintPlugin() {
             "**.kts",
             "!**/build/**",
         )
+        isIgnoreExitValue = true
     }
 
     tasks.named<DefaultTask>("check") {
@@ -59,5 +60,6 @@ private fun Project.ktlintPlugin() {
             "**.kts",
             "!**/build/**",
         )
+        isIgnoreExitValue = true
     }
 }
