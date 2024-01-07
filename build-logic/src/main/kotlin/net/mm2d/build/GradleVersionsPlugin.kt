@@ -8,11 +8,11 @@ import org.gradle.kotlin.dsl.named
 @Suppress("unused")
 class GradleVersionsPlugin : Plugin<Project> {
     override fun apply(target: Project) {
-        target.gradleVersionsPlugin()
+        target.plugin()
     }
 }
 
-private fun Project.gradleVersionsPlugin() {
+private fun Project.plugin() {
     with(pluginManager) {
         apply("com.github.ben-manes.versions")
     }

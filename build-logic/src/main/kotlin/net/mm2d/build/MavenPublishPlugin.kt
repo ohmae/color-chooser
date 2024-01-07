@@ -17,11 +17,11 @@ import java.net.URI
 @Suppress("unused")
 class MavenPublishPlugin : Plugin<Project> {
     override fun apply(target: Project) {
-        target.mavenPublishPlugin()
+        target.plugin()
     }
 }
 
-private fun Project.mavenPublishPlugin() {
+private fun Project.plugin() {
     with(pluginManager) {
         apply("org.gradle.maven-publish")
         apply("org.gradle.signing")

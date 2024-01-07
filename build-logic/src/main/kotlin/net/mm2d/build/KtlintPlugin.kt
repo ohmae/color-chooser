@@ -17,11 +17,11 @@ import org.gradle.language.base.plugins.LifecycleBasePlugin
 @Suppress("unused")
 class KtlintPlugin : Plugin<Project> {
     override fun apply(target: Project) {
-        target.ktlintPlugin()
+        target.plugin()
     }
 }
 
-private fun Project.ktlintPlugin() {
+private fun Project.plugin() {
     val ktlint by configurations.creating
     dependencies {
         ktlint("com.pinterest.ktlint:ktlint-cli:1.1.0") {

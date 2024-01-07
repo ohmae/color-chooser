@@ -8,11 +8,11 @@ import org.gradle.kotlin.dsl.configure
 @Suppress("unused")
 class AndroidApplicationPlugin : Plugin<Project> {
     override fun apply(target: Project) {
-        target.androidApplicationPlugin()
+        target.plugin()
     }
 }
 
-private fun Project.androidApplicationPlugin() {
+private fun Project.plugin() {
     with(pluginManager) {
         apply("com.android.application")
     }

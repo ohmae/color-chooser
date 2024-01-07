@@ -6,11 +6,11 @@ import org.gradle.api.Project
 @Suppress("unused")
 class NavigationSafeArgsPlugin : Plugin<Project> {
     override fun apply(target: Project) {
-        target.navigationSafeArgsPlugin()
+        target.plugin()
     }
 }
 
-private fun Project.navigationSafeArgsPlugin() {
+private fun Project.plugin() {
     with(pluginManager) {
         apply("androidx.navigation.safeargs.kotlin")
     }

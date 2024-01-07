@@ -12,11 +12,11 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 @Suppress("unused")
 class KotlinAndroidPlugin : Plugin<Project> {
     override fun apply(target: Project) {
-        target.kotlinAndroidPlugin()
+        target.plugin()
     }
 }
 
-private fun Project.kotlinAndroidPlugin() {
+private fun Project.plugin() {
     with(pluginManager) {
         apply("org.jetbrains.kotlin.android")
     }
