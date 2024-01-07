@@ -5,7 +5,6 @@ plugins {
     id("build.logic.kotlinAndroid")
     id("build.logic.documentationDokka")
     id("build.logic.mavenPublish")
-    id("build.logic.ktlint")
     id("build.logic.gradleVersions")
 }
 

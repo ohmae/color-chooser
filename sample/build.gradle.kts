@@ -2,7 +2,6 @@ plugins {
     id("build.logic.androidApplication")
     id("build.logic.kotlinAndroid")
     id("build.logic.navigationSafeArgs")
-    id("build.logic.ktlint")
     id("build.logic.gradleVersions")
 }
 

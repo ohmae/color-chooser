@@ -48,10 +48,6 @@ gradlePlugin {
             id = "build.logic.mavenPublish"
             implementationClass = "net.mm2d.build.MavenPublishPlugin"
         }
-        register("ktlint") {
-            id = "build.logic.ktlint"
-            implementationClass = "net.mm2d.build.KtlintPlugin"
-        }
         register("gradleVersions") {
             id = "build.logic.gradleVersions"
             implementationClass = "net.mm2d.build.GradleVersionsPlugin"
