@@ -59,8 +59,7 @@ class Material3View
     override fun getTopPaddingOffset(): Int = -paddingTop
     override fun getBottomPaddingOffset(): Int = paddingBottom
 
-    override suspend fun emit(value: Int) {
-    }
+    override suspend fun emit(value: Int) = Unit
 
     override fun onMeasure(widthSpec: Int, heightSpec: Int) {
         setMeasuredDimension(
