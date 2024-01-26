@@ -5,6 +5,8 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+
+@Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
     repositories {
         google()
@@ -16,4 +18,5 @@ dependencyResolutionManagement {
         }
     }
 }
+
 rootProject.name = "build-logic"
