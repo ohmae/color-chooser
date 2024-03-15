@@ -1,7 +1,7 @@
 [versions]
 androidGradlePlugin = "8.3.0"
 kotlin = "1.9.22"
-dokka = "1.9.10"
+dokka = "1.9.20"
 androidxNavigation = "2.7.7"
 gradleVersionsPlugin = "0.51.0"
 kotlinxCoroutines = "1.8.0"
@@ -12,6 +12,7 @@ androidGradlePlugin = { group = "com.android.tools.build", name = "gradle", vers
 kotlinGradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 dokkaGradlePlugin = { group = "org.jetbrains.dokka", name = "dokka-gradle-plugin", version.ref = "dokka" }
 gradleVersionsPlugin = { group = "com.github.ben-manes", name = "gradle-versions-plugin", version.ref = "gradleVersionsPlugin" }
+ktlint = { group = "com.pinterest.ktlint", name = "ktlint-cli", version = "1.2.1" }
 
 # implementation
 kotlinStdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
@@ -39,6 +40,16 @@ kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 navigationSafeArgs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "androidxNavigation" }
 gradleVersions = { id = "com.github.ben-manes.versions", version.ref = "gradleVersionsPlugin" }
+dependencyGuard = { id = "com.dropbox.dependency-guard", version = "0.5.0" }
+
+# build-logic
+build-logic-androidApplication = { id = "build.logic.androidApplication", version = "unspecified" }
+build-logic-androidLibrary = { id = "build.logic.androidLibrary", version = "unspecified" }
+build-logic-kotlinAndroid = { id = "build.logic.kotlinAndroid", version = "unspecified" }
+build-logic-navigationSafeArgs = { id = "build.logic.navigationSafeArgs", version = "unspecified" }
+build-logic-documentationDokka = { id = "build.logic.documentationDokka", version = "unspecified" }
+build-logic-mavenPublish = { id = "build.logic.mavenPublish", version = "unspecified" }
+build-logic-gradleVersions = { id = "build.logic.gradleVersions", version = "unspecified" }
 
 [bundles]
 plugins = [

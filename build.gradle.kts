@@ -5,12 +5,13 @@ plugins {
     alias(libs.plugins.dokka) apply false
     alias(libs.plugins.navigationSafeArgs) apply false
     alias(libs.plugins.gradleVersions) apply false
+    alias(libs.plugins.dependencyGuard) apply false
 }
 
 val ktlint: Configuration by configurations.creating
 
 dependencies {
-    ktlint("com.pinterest.ktlint:ktlint-cli:1.2.1") {
+    ktlint(libs.ktlint) {
         attributes {
             attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling.EXTERNAL))
         }

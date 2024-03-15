@@ -1,11 +1,12 @@
 import net.mm2d.build.Projects
 
 plugins {
-    id("build.logic.androidLibrary")
-    id("build.logic.kotlinAndroid")
-    id("build.logic.documentationDokka")
-    id("build.logic.mavenPublish")
-    id("build.logic.gradleVersions")
+    alias(libs.plugins.build.logic.androidLibrary)
+    alias(libs.plugins.build.logic.kotlinAndroid)
+    alias(libs.plugins.build.logic.documentationDokka)
+    alias(libs.plugins.build.logic.mavenPublish)
+    alias(libs.plugins.build.logic.gradleVersions)
+    alias(libs.plugins.dependencyGuard)
 }
 
 base.archivesName.set("color-chooser")
@@ -36,4 +37,8 @@ dependencies {
     implementation(libs.androidxCoreKtx)
     implementation(libs.materialComponents)
     testImplementation(libs.junit)
+}
+
+dependencyGuard {
+    configuration("releaseRuntimeClasspath")
 }

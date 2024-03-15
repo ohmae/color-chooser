@@ -1,8 +1,8 @@
 plugins {
-    id("build.logic.androidApplication")
-    id("build.logic.kotlinAndroid")
-    id("build.logic.navigationSafeArgs")
-    id("build.logic.gradleVersions")
+    alias(libs.plugins.build.logic.androidApplication)
+    alias(libs.plugins.build.logic.kotlinAndroid)
+    alias(libs.plugins.build.logic.navigationSafeArgs)
+    alias(libs.plugins.build.logic.gradleVersions)
 }
 
 android {
@@ -25,7 +25,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":lib"))
+    implementation(projects.lib)
     implementation(libs.androidxAppCompat)
     implementation(libs.androidxConstraintLayout)
     implementation(libs.androidxNavigationFragmentKtx)
