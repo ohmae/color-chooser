@@ -4,9 +4,7 @@ import com.android.build.gradle.TestedExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.ExtensionAware
-import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
-import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
 @Suppress("unused")
@@ -21,9 +19,6 @@ private fun Project.plugin() {
         apply("org.jetbrains.kotlin.android")
     }
     android {
-        kotlin {
-            jvmToolchain(Projects.jdkVersion)
-        }
         kotlinOptions {
             jvmTarget = Projects.jvmTarget
         }
@@ -35,8 +30,5 @@ private fun Project.plugin() {
 }
 
 // DSL
-private fun Project.kotlin(action: KotlinAndroidProjectExtension.() -> Unit): Unit =
-    extensions.configure(action)
-
 private fun TestedExtension.kotlinOptions(block: KotlinJvmOptions.() -> Unit): Unit =
     (this as ExtensionAware).extensions.configure("kotlinOptions", block)
