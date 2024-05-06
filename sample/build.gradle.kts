@@ -25,7 +25,7 @@ android {
 }
 
 dependencies {
-    implementation(projects.lib)
+    implementation(projects.chooser)
     implementation(libs.androidxAppCompat)
     implementation(libs.androidxConstraintLayout)
     implementation(libs.androidxNavigationFragmentKtx)

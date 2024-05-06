@@ -30,5 +30,5 @@ dependencyResolutionManagement {
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 rootProject.name = "color-chooser"
-include(":lib")
+include(":chooser")
 include(":sample")
