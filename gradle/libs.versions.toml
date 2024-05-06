@@ -1,5 +1,5 @@
 [versions]
-androidGradlePlugin = "8.3.2"
+androidGradlePlugin = "8.4.0"
 kotlin = "1.9.23"
 dokka = "1.9.20"
 androidxNavigation = "2.7.7"
@@ -9,9 +9,9 @@ dependencyGuard = "0.5.0"
 
 androidxAppCompat = "1.6.1"
 androidxConstraintLayout = "2.1.4"
-androidxCoreKtx = "1.12.0"
-materialComponents = "1.11.0"
-leakCanary = "2.13"
+androidxCoreKtx = "1.13.1"
+materialComponents = "1.12.0"
+leakCanary = "2.14"
 junit = "4.13.2"
 
 [libraries]

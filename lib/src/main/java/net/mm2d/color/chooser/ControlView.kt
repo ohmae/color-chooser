@@ -29,7 +29,7 @@ import net.mm2d.color.chooser.databinding.Mm2dCcViewControlBinding
 import net.mm2d.color.chooser.util.resolveColor
 import net.mm2d.color.chooser.util.setAlpha
 import net.mm2d.color.chooser.util.toOpacity
-import java.util.*
+import java.util.Locale
 import com.google.android.material.R as MR
 
 internal class ControlView
