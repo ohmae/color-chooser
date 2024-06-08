@@ -6,15 +6,17 @@ plugins {
     alias(libs.plugins.build.logic.documentationDokka)
     alias(libs.plugins.build.logic.mavenPublish)
     alias(libs.plugins.build.logic.gradleVersions)
+    alias(libs.plugins.composeCompiler)
     alias(libs.plugins.dependencyGuard)
 }
 
-base.archivesName.set("color-chooser")
+base.archivesName.set("color-chooser-compose")
 group = Projects.groupId
 version = Projects.versionName
 
+
 android {
-    namespace = "net.mm2d.color.chooser"
+    namespace = "net.mm2d.color.chooser.compose"
     buildTypes {
         debug {
             enableAndroidTestCoverage = true
@@ -26,13 +28,10 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidxAppCompat)
-    implementation(libs.androidxConstraintLayout)
     implementation(libs.androidxCoreKtx)
-    implementation(libs.materialComponents)
+    implementation(platform(libs.composeBom))
+    implementation(libs.composeUi)
+    implementation(libs.composeUiGraphics)
+    implementation(libs.composeMaterial3)
     testImplementation(libs.junit)
-}
-
-dependencyGuard {
-    configuration("releaseRuntimeClasspath")
 }

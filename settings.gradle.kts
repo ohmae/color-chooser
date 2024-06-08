@@ -31,4 +31,6 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 rootProject.name = "color-chooser"
 include(":chooser")
+include(":chooser-compose")
 include(":sample")
+include(":sample-compose")
