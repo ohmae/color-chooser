@@ -24,7 +24,8 @@ class Material3View
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
-) : RecyclerView(context, attrs, defStyleAttr), FlowCollector<Int> {
+) : RecyclerView(context, attrs, defStyleAttr),
+    FlowCollector<Int> {
     private val delegate = ColorObserverDelegate(this)
     private val cellAdapter = CellAdapter(context)
     private val linearLayoutManager = GridLayoutManager(context, 2)

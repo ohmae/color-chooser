@@ -21,7 +21,8 @@ internal class HsvView
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
-) : ConstraintLayout(context, attrs, defStyleAttr), FlowCollector<Int> {
+) : ConstraintLayout(context, attrs, defStyleAttr),
+    FlowCollector<Int> {
     private val delegate = ColorObserverDelegate(this)
     private var color: Int = Color.BLACK
     private val binding: Mm2dCcViewHsvBinding =

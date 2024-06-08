@@ -277,13 +277,11 @@ internal fun Int.normalizeForSrgb(): Float = toRatio().normalizeForSrgb()
  * @receiver color
  * @return sRGB luminance
  */
-internal fun Int.relativeLuminance(): Float {
-    return ColorUtils.luminance(
-        red.normalizeForSrgb(),
-        green.normalizeForSrgb(),
-        blue.normalizeForSrgb(),
-    )
-}
+internal fun Int.relativeLuminance(): Float = ColorUtils.luminance(
+    red.normalizeForSrgb(),
+    green.normalizeForSrgb(),
+    blue.normalizeForSrgb(),
+)
 
 /**
  * Calculate contrast between given color and pure white (#ffffff)
@@ -291,6 +289,4 @@ internal fun Int.relativeLuminance(): Float {
  * @receiver color
  * @return contrast [1, 21]
  */
-internal fun Int.contrastWithWhite(): Float {
-    return 1.05f / (relativeLuminance() + 0.05f)
-}
+internal fun Int.contrastWithWhite(): Float = 1.05f / (relativeLuminance() + 0.05f)

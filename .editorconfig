@@ -11,6 +11,7 @@ insert_final_newline = true
 # noinspection EditorConfigKeyCorrectness
 [{*.kt,*.kts}]
 ktlint_code_style = intellij_idea
+ktlint_function_naming_ignore_when_annotated_with = Composable
 
 [*.json]
 indent_size = 2

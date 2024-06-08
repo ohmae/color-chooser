@@ -28,7 +28,8 @@ internal class ColorChooserView
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
-) : ConstraintLayout(context, attrs, defStyleAttr), ColorStreamOwner {
+) : ConstraintLayout(context, attrs, defStyleAttr),
+    ColorStreamOwner {
     private val colorFlow: MutableSharedFlow<Int> =
         MutableSharedFlow(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
     private val binding: Mm2dCcViewDialogBinding =

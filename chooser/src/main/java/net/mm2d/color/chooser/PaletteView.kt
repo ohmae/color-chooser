@@ -38,7 +38,8 @@ internal class PaletteView
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
-) : RecyclerView(context, attrs, defStyleAttr), FlowCollector<Int> {
+) : RecyclerView(context, attrs, defStyleAttr),
+    FlowCollector<Int> {
     private val delegate = ColorObserverDelegate(this)
     private val cellHeight = 48.toPixelsAsDp(context)
     private val cellAdapter = CellAdapter(context)

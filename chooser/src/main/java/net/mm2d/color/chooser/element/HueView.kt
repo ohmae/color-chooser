@@ -34,7 +34,7 @@ internal class HueView
     @ColorInt
     private var color: Int = Color.RED
     private val paint = Paint()
-    private val bitmap: Bitmap = createMaskBitmap()
+    private val bitmap: Bitmap = createHueBitmap()
     private val requestPadding = getPixels(R.dimen.mm2d_cc_panel_margin)
     private val requestWidth = getPixels(R.dimen.mm2d_cc_hue_width) + requestPadding * 2
     private val requestHeight = getPixels(R.dimen.mm2d_cc_hsv_size) + requestPadding * 2
@@ -109,7 +109,7 @@ internal class HueView
     companion object {
         private const val RANGE = 360
 
-        private fun createMaskBitmap(): Bitmap {
+        private fun createHueBitmap(): Bitmap {
             val pixels = IntArray(RANGE) { ColorUtils.hsvToColor(it.toFloat() / RANGE, 1f, 1f) }
             return Bitmap.createBitmap(pixels, 1, RANGE, Bitmap.Config.ARGB_8888)
         }

@@ -37,7 +37,8 @@ internal class ControlView
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
-) : ConstraintLayout(context, attrs, defStyleAttr), FlowCollector<Int> {
+) : ConstraintLayout(context, attrs, defStyleAttr),
+    FlowCollector<Int> {
     private val delegate = ColorObserverDelegate(this)
     private val normalTint =
         ColorStateList.valueOf(context.resolveColor(MR.attr.colorAccent, Color.BLUE))

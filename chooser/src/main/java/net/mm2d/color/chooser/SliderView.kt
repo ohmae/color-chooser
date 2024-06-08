@@ -20,7 +20,8 @@ internal class SliderView
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
-) : ConstraintLayout(context, attrs, defStyleAttr), FlowCollector<Int> {
+) : ConstraintLayout(context, attrs, defStyleAttr),
+    FlowCollector<Int> {
     private val delegate = ColorObserverDelegate(this)
     private val binding: Mm2dCcViewSliderBinding =
         Mm2dCcViewSliderBinding.inflate(LayoutInflater.from(context), this)
