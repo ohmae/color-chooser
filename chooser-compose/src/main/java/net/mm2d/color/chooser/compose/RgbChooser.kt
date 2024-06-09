@@ -39,15 +39,15 @@ import net.mm2d.color.chooser.compose.ColorSource.RGB
 
 @Composable
 fun RgbChooser(
-    colorDataState: MutableState<ColorData>,
+    opacityColorEventState: MutableState<OpacityColorEvent>,
     modifier: Modifier = Modifier,
     touchCapturing: MutableState<Boolean> = mutableStateOf(false),
 ) {
-    val colorData by colorDataState
-    val color = colorData.color
-    var redState = remember { mutableStateOf(color.red) }
-    var greenState = remember { mutableStateOf(color.green) }
-    var blueState = remember { mutableStateOf(color.blue) }
+    val opacityColorEvent by opacityColorEventState
+    val color = opacityColorEvent.color
+    val redState = remember { mutableStateOf(color.red) }
+    val greenState = remember { mutableStateOf(color.green) }
+    val blueState = remember { mutableStateOf(color.blue) }
 
     LaunchedEffect(Unit) {
         snapshotFlow {
@@ -58,14 +58,14 @@ fun RgbChooser(
             )
         }
             .collect {
-                colorDataState.value = ColorData(it.toArgb(), RGB)
+                opacityColorEventState.value = OpacityColorEvent(it.toArgb(), RGB)
             }
     }
     LaunchedEffect(Unit) {
-        snapshotFlow { colorData }
-            .collect { colorData ->
-                if (colorData.source == HSV) return@collect
-                val c = colorData.color
+        snapshotFlow { opacityColorEvent }
+            .collect {
+                if (it.source == HSV) return@collect
+                val c = it.color
                 redState.value = c.red
                 greenState.value = c.green
                 blueState.value = c.blue

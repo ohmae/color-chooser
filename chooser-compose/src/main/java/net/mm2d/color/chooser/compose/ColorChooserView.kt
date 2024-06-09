@@ -27,6 +27,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.alpha
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import net.mm2d.color.chooser.compose.ColorSource.INITIAL
 
@@ -39,11 +41,27 @@ fun ColorChooserView(
     val inputColor = colorState.value
     val alphaState = remember { mutableStateOf(inputColor.alpha) }
     val opacityState = remember { mutableStateOf(inputColor.toOpacity()) }
-    val colorDataState =
-        remember { mutableStateOf(ColorData(opacityState.value, INITIAL)) }
+
+    val opacityColorEventState =
+        remember { mutableStateOf(OpacityColorEvent(inputColor.toOpacity(), INITIAL)) }
+
     LaunchedEffect(Unit) {
-        snapshotFlow { colorDataState.value.color.setAlpha(alphaState.value) }
-            .collect { colorState.value = it }
+        snapshotFlow { opacityColorEventState.value }
+            .distinctUntilChanged()
+            .collect {
+                opacityState.value = it.color
+            }
+    }
+    LaunchedEffect(Unit) {
+        combine(
+            snapshotFlow { opacityColorEventState.value },
+            snapshotFlow { alphaState.value },
+            ::Pair
+        )
+            .distinctUntilChanged()
+            .collect { (opacityColorEvent, alpha) ->
+                colorState.value = opacityColorEvent.color.setAlpha(alpha)
+            }
     }
 
     Column(
@@ -66,7 +84,7 @@ fun ColorChooserView(
             when (it) {
                 0 -> {
                     HsvChooser(
-                        colorDataState = colorDataState,
+                        opacityColorEventState = opacityColorEventState,
                         touchCapturing = touchCapturing,
                         modifier = Modifier.fillMaxSize(),
                     )
@@ -74,14 +92,14 @@ fun ColorChooserView(
 
                 1 -> {
                     PaletteChooser(
-                        colorDataState = colorDataState,
+                        opacityColorEventState = opacityColorEventState,
                         modifier = Modifier.fillMaxSize(),
                     )
                 }
 
                 2 -> {
                     RgbChooser(
-                        colorDataState = colorDataState,
+                        opacityColorEventState = opacityColorEventState,
                         touchCapturing = touchCapturing,
                         modifier = Modifier.fillMaxSize(),
                     )

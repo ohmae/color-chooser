@@ -42,7 +42,7 @@ fun AlphaView(
     val color by colorState
     var alpha by alphaState
     Row(
-        modifier = modifier,
+        modifier = modifier.width(256.dp + 8.dp * 4 + 24.dp),
     ) {
         Box(
             modifier = Modifier.size(width = 256.dp + 8.dp * 2, height = 24.dp + 8.dp * 2),
@@ -109,8 +109,7 @@ fun AlphaView(
             textAlign = TextAlign.End,
             modifier = Modifier
                 .align(Alignment.CenterVertically)
-                .width(48.dp)
-                .padding(horizontal = 8.dp),
+                .weight(1f).padding(end = 8.dp),
         )
     }
 }

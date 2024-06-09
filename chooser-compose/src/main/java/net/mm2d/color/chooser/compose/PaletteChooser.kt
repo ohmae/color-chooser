@@ -25,10 +25,10 @@ import net.mm2d.color.chooser.compose.ColorSource.PALETTE
 
 @Composable
 fun PaletteChooser(
-    colorDataState: MutableState<ColorData>,
+    opacityColorEventState: MutableState<OpacityColorEvent>,
     modifier: Modifier = Modifier,
 ) {
-    var colorData by colorDataState
+    var opacityColorEvent by opacityColorEventState
     LazyColumn(
         modifier = modifier,
     ) {
@@ -45,12 +45,12 @@ fun PaletteChooser(
                             .fillMaxHeight()
                             .background(color)
                             .clickable {
-                                colorData = ColorData(color.toArgb(), PALETTE)
+                                opacityColorEvent = OpacityColorEvent(color.toArgb(), PALETTE)
                             },
                     ) {
-                        if (colorData.color == color.toArgb()) {
+                        if (opacityColorEvent.color == color.toArgb()) {
                             val tint =
-                                if (ColorUtils.shouldUseWhiteForeground(colorData.color)) {
+                                if (ColorUtils.shouldUseWhiteForeground(opacityColorEvent.color)) {
                                     Color.White
                                 } else {
                                     Color.Black
