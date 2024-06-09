@@ -35,17 +35,17 @@ import androidx.compose.ui.util.fastAny
 
 @Composable
 fun AlphaView(
-    colorState: MutableState<Int>,
+    opacityState: MutableState<Int>,
     alphaState: MutableState<Int>,
     modifier: Modifier = Modifier,
 ) {
-    val color by colorState
+    val opacity by opacityState
     var alpha by alphaState
     Row(
-        modifier = modifier.width(256.dp + 8.dp * 4 + 24.dp),
+        modifier = modifier.width(255.dp + 8.dp * 4 + 24.dp),
     ) {
         Box(
-            modifier = Modifier.size(width = 256.dp + 8.dp * 2, height = 24.dp + 8.dp * 2),
+            modifier = Modifier.size(width = 255.dp + 8.dp * 2, height = 24.dp + 8.dp * 2),
         ) {
             var x by remember { mutableStateOf(alpha.dp) }
             Box(
@@ -55,7 +55,7 @@ fun AlphaView(
                     .padding(1.dp)
                     .background(Color.White)
                     .padding(2.dp)
-                    .size(width = 256.dp, height = 24.dp)
+                    .size(width = 255.dp, height = 24.dp)
                     .background(
                         ShaderBrush(
                             ImageShader(
@@ -69,7 +69,7 @@ fun AlphaView(
                         Brush.horizontalGradient(
                             listOf(
                                 Color.Transparent,
-                                Color(color.toOpacity()),
+                                Color(opacity),
                             ),
                         ),
                     )
@@ -80,7 +80,7 @@ fun AlphaView(
                                 val event = awaitPointerEvent()
                                 x = event.changes.first().position.x
                                     .toDp()
-                                    .coerceIn(0.dp, 256.dp)
+                                    .coerceIn(0.dp, 255.dp)
                                 alpha = x.value.toInt().coerceIn(0, 255)
                             } while (event.changes.fastAny { it.pressed })
                         }
@@ -97,7 +97,7 @@ fun AlphaView(
                     .background(Color.White)
                     .padding(2.dp)
                     .clip(CircleShape)
-                    .background(Color(color)),
+                    .background(Color(opacity)),
                 content = {},
             )
         }

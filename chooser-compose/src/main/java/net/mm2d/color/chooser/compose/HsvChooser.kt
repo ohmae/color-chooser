@@ -32,20 +32,20 @@ import net.mm2d.color.chooser.compose.ColorSource.HSV
 @Composable
 fun HsvChooser(
     modifier: Modifier = Modifier,
-    opacityColorEventState: MutableState<OpacityColorEvent>,
+    opacityEventState: MutableState<ColorEvent>,
     touchCapturing: MutableState<Boolean> = mutableStateOf(false),
 ) {
-    val color by opacityColorEventState
+    val opacityEvent by opacityEventState
     val hsv = FloatArray(3)
-    ColorUtils.colorToHsv(color.color, hsv)
+    ColorUtils.colorToHsv(opacityEvent.color, hsv)
     val hueState = remember { mutableStateOf(hsv[0]) }
     val saturationState = remember { mutableStateOf(hsv[1]) }
     val valueState = remember { mutableStateOf(hsv[2]) }
     LaunchedEffect(Unit) {
-        snapshotFlow { color }
-            .collect { colorData ->
-                if (colorData.source == HSV) return@collect
-                val c = colorData.color
+        snapshotFlow { opacityEvent }
+            .collect {
+                if (it.source == HSV) return@collect
+                val c = it.color
                 ColorUtils.colorToHsv(c, hsv)
                 hueState.value = hsv[0]
                 saturationState.value = hsv[1]
@@ -59,7 +59,7 @@ fun HsvChooser(
             modifier = Modifier.align(Alignment.Center),
         ) {
             SvView(
-                opacityColorEventState = opacityColorEventState,
+                opacityEventState = opacityEventState,
                 hueState = hueState,
                 saturationState = saturationState,
                 valueState = valueState,
@@ -67,7 +67,7 @@ fun HsvChooser(
                 modifier = Modifier.align(Alignment.CenterVertically),
             )
             HueView(
-                opacityColorEventState = opacityColorEventState,
+                opacityEventState = opacityEventState,
                 hueState = hueState,
                 saturationState = saturationState,
                 valueState = valueState,
@@ -81,14 +81,14 @@ fun HsvChooser(
 
 @Composable
 fun HueView(
-    opacityColorEventState: MutableState<OpacityColorEvent>,
+    opacityEventState: MutableState<ColorEvent>,
     hueState: MutableState<Float>,
     saturationState: MutableState<Float>,
     valueState: MutableState<Float>,
     touchCapturing: MutableState<Boolean>,
     modifier: Modifier = Modifier,
 ) {
-    var opacityColorEvent by opacityColorEventState
+    var opacityEvent by opacityEventState
     var hue by hueState
     val saturation by saturationState
     val value by valueState
@@ -97,12 +97,12 @@ fun HueView(
     LaunchedEffect(Unit) {
         snapshotFlow { hue }
             .collect {
-                y = (it * 256f).dp
+                y = (it * 255f).dp
             }
     }
 
     Box(
-        modifier = modifier.size(24.dp + 8.dp * 2, 256.dp + 8.dp * 2),
+        modifier = modifier.size(24.dp + 8.dp * 2, 255.dp + 8.dp * 2),
     ) {
         Image(
             modifier = Modifier
@@ -111,7 +111,7 @@ fun HueView(
                 .padding(1.dp)
                 .background(Color.White)
                 .padding(2.dp)
-                .size(24.dp, 256.dp)
+                .size(24.dp, 255.dp)
                 .pointerInput(Unit) {
                     awaitEachGesture {
                         awaitFirstDown()
@@ -120,9 +120,9 @@ fun HueView(
                             val event = awaitPointerEvent()
                             y = event.changes.first().position.y
                                 .toDp()
-                                .coerceIn(0.dp, 256.dp)
-                            hue = (y.value / 256f).coerceIn(0f, 1f)
-                            opacityColorEvent = OpacityColorEvent(
+                                .coerceIn(0.dp, 255.dp)
+                            hue = (y.value / 255f).coerceIn(0f, 1f)
+                            opacityEvent = ColorEvent(
                                 ColorUtils.hsvToColor(hue, saturation, value),
                                 HSV,
                             )
@@ -153,29 +153,29 @@ fun HueView(
 
 @Composable
 fun SvView(
-    opacityColorEventState: MutableState<OpacityColorEvent>,
+    opacityEventState: MutableState<ColorEvent>,
     hueState: MutableState<Float>,
     saturationState: MutableState<Float>,
     valueState: MutableState<Float>,
     touchCapturing: MutableState<Boolean>,
     modifier: Modifier = Modifier,
 ) {
-    var opacityColorEvent by opacityColorEventState
+    var opacityEvent by opacityEventState
     val hue by hueState
     var saturation by saturationState
     var value by valueState
 
     var maxColor by remember { mutableStateOf(ColorUtils.hsvToColor(hue, 1f, 1f)) }
-    var x by remember { mutableStateOf((saturation * 256f).dp) }
-    var y by remember { mutableStateOf((256f - value * 256f).dp) }
+    var x by remember { mutableStateOf((saturation * 255f).dp) }
+    var y by remember { mutableStateOf((255f - value * 255f).dp) }
 
     LaunchedEffect(Unit) {
-        snapshotFlow { opacityColorEvent }
+        snapshotFlow { opacityEvent }
             .collect {
                 if (it.source == HSV) return@collect
                 maxColor = ColorUtils.hsvToColor(hue, 1f, 1f)
-                x = (saturation * 256f).dp
-                y = (256f - value * 256f).dp
+                x = (saturation * 255f).dp
+                y = (255f - value * 255f).dp
             }
     }
     LaunchedEffect(Unit) {
@@ -186,7 +186,7 @@ fun SvView(
     }
 
     Box(
-        modifier = modifier.size(256.dp + 8.dp * 2),
+        modifier = modifier.size(255.dp + 8.dp * 2),
     ) {
         Image(
             modifier = Modifier
@@ -196,7 +196,7 @@ fun SvView(
                 .background(Color.White)
                 .padding(2.dp)
                 .background(Color(maxColor))
-                .size(256.dp)
+                .size(255.dp)
                 .pointerInput(Unit) {
                     awaitEachGesture {
                         awaitFirstDown()
@@ -205,13 +205,13 @@ fun SvView(
                             val event = awaitPointerEvent()
                             x = event.changes.first().position.x
                                 .toDp()
-                                .coerceIn(0.dp, 256.dp)
+                                .coerceIn(0.dp, 255.dp)
                             y = event.changes.first().position.y
                                 .toDp()
-                                .coerceIn(0.dp, 256.dp)
-                            saturation = (x.value / 256f).coerceIn(0f, 1f)
-                            value = ((256f - y.value) / 256f).coerceIn(0f, 1f)
-                            opacityColorEvent = OpacityColorEvent(
+                                .coerceIn(0.dp, 255.dp)
+                            saturation = (x.value / 255f).coerceIn(0f, 1f)
+                            value = ((255f - y.value) / 255f).coerceIn(0f, 1f)
+                            opacityEvent = ColorEvent(
                                 ColorUtils.hsvToColor(hue, saturation, value),
                                 HSV,
                             )
@@ -233,7 +233,7 @@ fun SvView(
                 .background(Color.White)
                 .padding(2.dp)
                 .clip(CircleShape)
-                .background(Color(opacityColorEvent.color)),
+                .background(Color(opacityEvent.color)),
             content = {},
         )
     }
@@ -243,7 +243,7 @@ private val maskBitmap = createMaskBitmap()
 private val hueBitmap = createHueBitmap()
 
 private const val TONE_MAX = 255f
-private const val TONE_SIZE = 256
+private const val TONE_SIZE = 255
 private const val RANGE = 360
 
 private fun createMaskBitmap(): Bitmap {

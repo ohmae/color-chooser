@@ -14,7 +14,6 @@ base.archivesName.set("color-chooser-compose")
 group = Projects.groupId
 version = Projects.versionName
 
-
 android {
     namespace = "net.mm2d.color.chooser.compose"
     buildTypes {

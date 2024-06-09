@@ -39,12 +39,12 @@ import net.mm2d.color.chooser.compose.ColorSource.RGB
 
 @Composable
 fun RgbChooser(
-    opacityColorEventState: MutableState<OpacityColorEvent>,
+    opacityEventState: MutableState<ColorEvent>,
     modifier: Modifier = Modifier,
     touchCapturing: MutableState<Boolean> = mutableStateOf(false),
 ) {
-    val opacityColorEvent by opacityColorEventState
-    val color = opacityColorEvent.color
+    val opacityEvent by opacityEventState
+    val color = opacityEvent.color
     val redState = remember { mutableStateOf(color.red) }
     val greenState = remember { mutableStateOf(color.green) }
     val blueState = remember { mutableStateOf(color.blue) }
@@ -58,11 +58,11 @@ fun RgbChooser(
             )
         }
             .collect {
-                opacityColorEventState.value = OpacityColorEvent(it.toArgb(), RGB)
+                opacityEventState.value = ColorEvent(it.toArgb(), RGB)
             }
     }
     LaunchedEffect(Unit) {
-        snapshotFlow { opacityColorEvent }
+        snapshotFlow { opacityEvent }
             .collect {
                 if (it.source == HSV) return@collect
                 val c = it.color
@@ -118,7 +118,7 @@ fun Slider(
         modifier = modifier,
     ) {
         Box(
-            modifier = Modifier.size(width = 256.dp + 8.dp * 2, height = 24.dp + 8.dp * 2),
+            modifier = Modifier.size(width = 255.dp + 8.dp * 2, height = 24.dp + 8.dp * 2),
         ) {
             var x by remember { mutableStateOf(value.dp) }
             Box(
@@ -128,7 +128,7 @@ fun Slider(
                     .padding(1.dp)
                     .background(Color.White)
                     .padding(2.dp)
-                    .size(width = 256.dp, height = 24.dp)
+                    .size(width = 255.dp, height = 24.dp)
                     .background(
                         Brush.horizontalGradient(
                             listOf(
@@ -145,7 +145,7 @@ fun Slider(
                                 val event = awaitPointerEvent()
                                 x = event.changes.first().position.x
                                     .toDp()
-                                    .coerceIn(0.dp, 256.dp)
+                                    .coerceIn(0.dp, 255.dp)
                                 value = x.value.toInt().coerceIn(0, 255)
                             } while (event.changes.fastAny { it.pressed })
                             touchCapturing.value = false
