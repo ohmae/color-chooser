@@ -17,7 +17,7 @@ private fun Project.plugin() {
         apply("com.github.ben-manes.versions")
     }
     tasks.named<DependencyUpdatesTask>("dependencyUpdates").configure {
-        rejectVersionIf { !isStable(candidate.version) }
+        rejectVersionIf { !isStable(candidate.version) && isStable(currentVersion) }
     }
 }
 
