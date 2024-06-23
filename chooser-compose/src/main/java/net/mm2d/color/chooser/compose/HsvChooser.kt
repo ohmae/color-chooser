@@ -27,22 +27,24 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastAny
+import androidx.core.graphics.alpha
+import net.mm2d.color.chooser.compose.ColorSource.ALPHA
 import net.mm2d.color.chooser.compose.ColorSource.HSV
 
 @Composable
 fun HsvChooser(
     modifier: Modifier = Modifier,
-    opacityEventState: MutableState<ColorEvent>,
+    colorEventState: MutableState<ColorEvent>,
     touchCapturing: MutableState<Boolean> = mutableStateOf(false),
 ) {
-    val opacityEvent by opacityEventState
+    val colorEvent by colorEventState
     val hsv = FloatArray(3)
-    ColorUtils.colorToHsv(opacityEvent.color, hsv)
+    ColorUtils.colorToHsv(colorEvent.color, hsv)
     val hueState = remember { mutableStateOf(hsv[0]) }
     val saturationState = remember { mutableStateOf(hsv[1]) }
     val valueState = remember { mutableStateOf(hsv[2]) }
     LaunchedEffect(Unit) {
-        snapshotFlow { opacityEvent }
+        snapshotFlow { colorEvent }
             .collect {
                 if (it.source == HSV) return@collect
                 val c = it.color
@@ -59,7 +61,7 @@ fun HsvChooser(
             modifier = Modifier.align(Alignment.Center),
         ) {
             SvView(
-                opacityEventState = opacityEventState,
+                colorEventState = colorEventState,
                 hueState = hueState,
                 saturationState = saturationState,
                 valueState = valueState,
@@ -67,7 +69,7 @@ fun HsvChooser(
                 modifier = Modifier.align(Alignment.CenterVertically),
             )
             HueView(
-                opacityEventState = opacityEventState,
+                colorEventState = colorEventState,
                 hueState = hueState,
                 saturationState = saturationState,
                 valueState = valueState,
@@ -81,14 +83,14 @@ fun HsvChooser(
 
 @Composable
 fun HueView(
-    opacityEventState: MutableState<ColorEvent>,
+    colorEventState: MutableState<ColorEvent>,
     hueState: MutableState<Float>,
     saturationState: MutableState<Float>,
     valueState: MutableState<Float>,
     touchCapturing: MutableState<Boolean>,
     modifier: Modifier = Modifier,
 ) {
-    var opacityEvent by opacityEventState
+    var colorEvent by colorEventState
     var hue by hueState
     val saturation by saturationState
     val value by valueState
@@ -122,8 +124,9 @@ fun HueView(
                                 .toDp()
                                 .coerceIn(0.dp, 255.dp)
                             hue = (y.value / 255f).coerceIn(0f, 1f)
-                            opacityEvent = ColorEvent(
-                                ColorUtils.hsvToColor(hue, saturation, value),
+                            colorEvent = ColorEvent(
+                                ColorUtils.hsvToColor(hue, saturation, value)
+                                    .setAlpha(colorEvent.color.alpha),
                                 HSV,
                             )
                         } while (event.changes.fastAny { it.pressed })
@@ -153,14 +156,15 @@ fun HueView(
 
 @Composable
 fun SvView(
-    opacityEventState: MutableState<ColorEvent>,
+    colorEventState: MutableState<ColorEvent>,
     hueState: MutableState<Float>,
     saturationState: MutableState<Float>,
     valueState: MutableState<Float>,
     touchCapturing: MutableState<Boolean>,
     modifier: Modifier = Modifier,
 ) {
-    var opacityEvent by opacityEventState
+    var colorEvent by colorEventState
+    val color = colorEvent.color.toOpacity()
     val hue by hueState
     var saturation by saturationState
     var value by valueState
@@ -170,8 +174,9 @@ fun SvView(
     var y by remember { mutableStateOf((255f - value * 255f).dp) }
 
     LaunchedEffect(Unit) {
-        snapshotFlow { opacityEvent }
+        snapshotFlow { colorEvent }
             .collect {
+                if (it.source == ALPHA) return@collect
                 if (it.source == HSV) return@collect
                 maxColor = ColorUtils.hsvToColor(hue, 1f, 1f)
                 x = (saturation * 255f).dp
@@ -211,8 +216,9 @@ fun SvView(
                                 .coerceIn(0.dp, 255.dp)
                             saturation = (x.value / 255f).coerceIn(0f, 1f)
                             value = ((255f - y.value) / 255f).coerceIn(0f, 1f)
-                            opacityEvent = ColorEvent(
-                                ColorUtils.hsvToColor(hue, saturation, value),
+                            colorEvent = ColorEvent(
+                                ColorUtils.hsvToColor(hue, saturation, value)
+                                    .setAlpha(colorEvent.color.alpha),
                                 HSV,
                             )
                         } while (event.changes.fastAny { it.pressed })
@@ -233,7 +239,7 @@ fun SvView(
                 .background(Color.White)
                 .padding(2.dp)
                 .clip(CircleShape)
-                .background(Color(opacityEvent.color)),
+                .background(Color(color)),
             content = {},
         )
     }

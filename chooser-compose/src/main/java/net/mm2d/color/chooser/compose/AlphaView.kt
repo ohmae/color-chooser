@@ -12,11 +12,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,15 +34,32 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastAny
+import androidx.core.graphics.alpha
+import net.mm2d.color.chooser.compose.ColorSource.ALPHA
 
 @Composable
 fun AlphaView(
-    opacityState: MutableState<Int>,
-    alphaState: MutableState<Int>,
+    colorEventState: MutableState<ColorEvent>,
     modifier: Modifier = Modifier,
 ) {
-    val opacity by opacityState
-    var alpha by alphaState
+    var colorEvent by colorEventState
+    val opacity = colorEvent.color.toOpacity()
+    var alpha by remember { mutableStateOf(colorEvent.color.alpha) }
+
+    LaunchedEffect(Unit) {
+        snapshotFlow { colorEvent }
+            .collect {
+                if (it.source == ALPHA) return@collect
+                alpha = it.color.alpha
+            }
+    }
+    LaunchedEffect(Unit) {
+        snapshotFlow { alpha }
+            .collect {
+                colorEvent = ColorEvent(colorEvent.color.setAlpha(it), ALPHA)
+            }
+    }
+
     Row(
         modifier = modifier.width(255.dp + 8.dp * 4 + 24.dp),
     ) {

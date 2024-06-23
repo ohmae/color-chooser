@@ -24,6 +24,7 @@ import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -44,41 +45,24 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.core.graphics.alpha
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ColorChooserView(
-    colorState: MutableState<Int>,
+    colorState: MutableIntState,
     hasAlpha: Boolean = true,
     modifier: Modifier = Modifier,
 ) {
-    val inputColor = colorState.value
-    val alphaState = remember { mutableStateOf(inputColor.alpha) }
-    val opacityState = remember { mutableStateOf(inputColor.toOpacity()) }
-
-    val opacityEventState =
-        remember { mutableStateOf(ColorEvent(inputColor.toOpacity(), ColorSource.INITIAL)) }
+    val inputColor = colorState.intValue
+    val colorEventState = remember { mutableStateOf(ColorEvent(inputColor, ColorSource.INITIAL)) }
 
     LaunchedEffect(Unit) {
-        snapshotFlow { opacityEventState.value }
+        snapshotFlow { colorEventState.value }
             .distinctUntilChanged()
             .collect {
-                opacityState.value = it.color
-            }
-    }
-    LaunchedEffect(Unit) {
-        combine(
-            snapshotFlow { opacityEventState.value },
-            snapshotFlow { alphaState.value },
-            ::Pair,
-        )
-            .distinctUntilChanged()
-            .collect { (opacityColorEvent, alpha) ->
-                colorState.value = opacityColorEvent.color.setAlpha(alpha)
+                colorState.intValue = it.color
             }
     }
 
@@ -102,7 +86,7 @@ fun ColorChooserView(
             when (it) {
                 0 -> {
                     HsvChooser(
-                        opacityEventState = opacityEventState,
+                        colorEventState = colorEventState,
                         touchCapturing = touchCapturing,
                         modifier = Modifier.fillMaxSize(),
                     )
@@ -110,14 +94,14 @@ fun ColorChooserView(
 
                 1 -> {
                     PaletteChooser(
-                        opacityEventState = opacityEventState,
+                        colorEventState = colorEventState,
                         modifier = Modifier.fillMaxSize(),
                     )
                 }
 
                 2 -> {
                     RgbChooser(
-                        opacityEventState = opacityEventState,
+                        colorEventState = colorEventState,
                         touchCapturing = touchCapturing,
                         modifier = Modifier.fillMaxSize(),
                     )
@@ -133,11 +117,10 @@ fun ColorChooserView(
                     .fillMaxWidth(),
             ) {
                 AlphaView(
+                    colorEventState = colorEventState,
                     modifier = Modifier
                         .align(Alignment.Center)
                         .padding(top = 8.dp),
-                    opacityState = opacityState,
-                    alphaState = alphaState,
                 )
             }
         }
@@ -148,8 +131,7 @@ fun ColorChooserView(
         ) {
             SampleView(
                 hasAlpha = hasAlpha,
-                opacityEventState = opacityEventState,
-                alphaState = alphaState,
+                colorEventState = colorEventState,
                 modifier = Modifier.align(Alignment.Center),
             )
         }
@@ -187,13 +169,10 @@ private fun PagerTab(
 @Composable
 private fun SampleView(
     hasAlpha: Boolean,
-    opacityEventState: MutableState<ColorEvent>,
-    alphaState: MutableState<Int> = mutableStateOf(0xff),
+    colorEventState: MutableState<ColorEvent>,
     modifier: Modifier = Modifier,
 ) {
-    var opacity: Int = opacityEventState.value.color
-    var alpha by alphaState
-    val color = opacity.setAlpha(alpha)
+    val color = colorEventState.value.color
     Row(
         modifier = modifier
             .padding(top = 8.dp)
@@ -247,9 +226,7 @@ private fun SampleView(
                     text = it
                     if (it.length == digit) {
                         val c = it.toLongOrNull(16)?.toInt() ?: return@BasicTextField
-                        opacity = c.toOpacity()
-                        alpha = if (hasAlpha) c.alpha else 0xff
-                        opacityEventState.value = ColorEvent(opacity, ColorSource.TEXT)
+                        colorEventState.value = ColorEvent(c, ColorSource.TEXT)
                         hasError = false
                     } else {
                         hasError = true

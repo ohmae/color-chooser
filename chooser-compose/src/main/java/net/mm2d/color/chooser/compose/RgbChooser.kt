@@ -31,6 +31,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastAny
+import androidx.core.graphics.alpha
 import androidx.core.graphics.blue
 import androidx.core.graphics.green
 import androidx.core.graphics.red
@@ -39,12 +40,12 @@ import net.mm2d.color.chooser.compose.ColorSource.RGB
 
 @Composable
 fun RgbChooser(
-    opacityEventState: MutableState<ColorEvent>,
+    colorEventState: MutableState<ColorEvent>,
     modifier: Modifier = Modifier,
     touchCapturing: MutableState<Boolean> = mutableStateOf(false),
 ) {
-    val opacityEvent by opacityEventState
-    val color = opacityEvent.color
+    var colorEvent by colorEventState
+    val color = colorEvent.color
     val redState = remember { mutableStateOf(color.red) }
     val greenState = remember { mutableStateOf(color.green) }
     val blueState = remember { mutableStateOf(color.blue) }
@@ -58,11 +59,11 @@ fun RgbChooser(
             )
         }
             .collect {
-                opacityEventState.value = ColorEvent(it.toArgb(), RGB)
+                colorEvent = ColorEvent(it.toArgb().setAlpha(colorEvent.color.alpha), RGB)
             }
     }
     LaunchedEffect(Unit) {
-        snapshotFlow { opacityEvent }
+        snapshotFlow { colorEvent }
             .collect {
                 if (it.source == HSV) return@collect
                 val c = it.color

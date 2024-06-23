@@ -21,14 +21,15 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.alpha
 import net.mm2d.color.chooser.compose.ColorSource.PALETTE
 
 @Composable
 fun PaletteChooser(
-    opacityEventState: MutableState<ColorEvent>,
+    colorEventState: MutableState<ColorEvent>,
     modifier: Modifier = Modifier,
 ) {
-    var opacityEvent by opacityEventState
+    var colorEvent by colorEventState
     LazyColumn(
         modifier = modifier,
     ) {
@@ -45,12 +46,15 @@ fun PaletteChooser(
                             .fillMaxHeight()
                             .background(color)
                             .clickable {
-                                opacityEvent = ColorEvent(color.toArgb(), PALETTE)
+                                colorEvent = ColorEvent(
+                                    color.toArgb().setAlpha(colorEvent.color.alpha),
+                                    PALETTE
+                                )
                             },
                     ) {
-                        if (opacityEvent.color == color.toArgb()) {
+                        if (colorEvent.color == color.toArgb()) {
                             val tint =
-                                if (ColorUtils.shouldUseWhiteForeground(opacityEvent.color)) {
+                                if (ColorUtils.shouldUseWhiteForeground(colorEvent.color)) {
                                     Color.White
                                 } else {
                                     Color.Black

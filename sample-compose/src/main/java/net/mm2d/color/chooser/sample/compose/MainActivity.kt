@@ -7,7 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import net.mm2d.color.chooser.compose.ColorChooserView
@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
             SampleTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     val initialColor = 0xFFFF0000.toInt()
-                    val colorState = remember { mutableStateOf(initialColor) }
+                    val colorState = remember { mutableIntStateOf(initialColor) }
                     ColorChooserView(
                         colorState = colorState,
                         modifier = Modifier
