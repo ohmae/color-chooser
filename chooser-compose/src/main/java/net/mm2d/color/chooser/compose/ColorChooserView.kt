@@ -53,12 +53,12 @@ import kotlinx.coroutines.launch
 @Composable
 fun ColorChooserView(
     colorState: MutableState<Int>,
+    hasAlpha: Boolean = true,
     modifier: Modifier = Modifier,
 ) {
     val inputColor = colorState.value
     val alphaState = remember { mutableStateOf(inputColor.alpha) }
     val opacityState = remember { mutableStateOf(inputColor.toOpacity()) }
-    val colorEventState = remember { mutableStateOf(ColorEvent(inputColor, ColorSource.INITIAL)) }
 
     val opacityEventState =
         remember { mutableStateOf(ColorEvent(inputColor.toOpacity(), ColorSource.INITIAL)) }
@@ -127,94 +127,31 @@ fun ColorChooserView(
                 }
             }
         }
-        Box(
-            modifier = Modifier
-                .fillMaxWidth(),
-        ) {
-            AlphaView(
+        if (hasAlpha) {
+            Box(
                 modifier = Modifier
-                    .align(Alignment.Center)
-                    .padding(top = 8.dp),
-                opacityState = opacityState,
-                alphaState = alphaState,
-            )
+                    .fillMaxWidth(),
+            ) {
+                AlphaView(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(top = 8.dp),
+                    opacityState = opacityState,
+                    alphaState = alphaState,
+                )
+            }
         }
 
         Box(
             modifier = Modifier
                 .fillMaxWidth(),
         ) {
-            var opacity by opacityState
-            var alpha by alphaState
-            val color = opacity.setAlpha(alpha)
-            Row(
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .padding(top = 8.dp)
-                    .width(256.dp + 8.dp * 4 + 24.dp),
-            ) {
-                Box(
-                    modifier = Modifier.size(width = 64.dp + 8.dp * 2, height = 24.dp + 8.dp * 2),
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .background(Color(0x1a000000))
-                            .padding(1.dp)
-                            .background(Color.White)
-                            .padding(2.dp)
-                            .size(width = 64.dp, height = 24.dp)
-                            .background(
-                                ShaderBrush(
-                                    ImageShader(
-                                        ImageBitmap.imageResource(id = R.drawable.mm2d_cc_bg_alpha),
-                                        TileMode.Repeated,
-                                        TileMode.Repeated,
-                                    ),
-                                ),
-                            )
-                            .background(Color(color)),
-                    )
-                }
-                var hasError by remember { mutableStateOf(false) }
-                var text by remember(color) { mutableStateOf("%08X".format(color)) }
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                        .height(24.dp + 4.dp * 2)
-                        .border(
-                            2.dp,
-                            if (hasError) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary,
-                        ),
-                ) {
-                    BasicTextField(
-                        value = text,
-                        onValueChange = {
-                            if (it.length > 8 || it.contains("[^0-9a-fA-F]".toRegex())) {
-                                return@BasicTextField
-                            }
-                            text = it
-                            if (it.length == 6 || it.length == 8) {
-                                val c = it.toIntOrNull(16) ?: return@BasicTextField
-                                opacity = c.toOpacity()
-                                alpha = if (it.length == 8) c.alpha else 0xff
-                                hasError = false
-                            } else {
-                                hasError = true
-                            }
-                        },
-                        textStyle = TextStyle.Default.copy(
-                            fontFamily = FontFamily.Monospace,
-                            textAlign = TextAlign.End,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        ),
-                        cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
-                        modifier = Modifier
-                            .align(Alignment.CenterEnd)
-                            .padding(horizontal = 8.dp, vertical = 4.dp),
-                    )
-                }
-            }
+            SampleView(
+                hasAlpha = hasAlpha,
+                opacityEventState = opacityEventState,
+                alphaState = alphaState,
+                modifier = Modifier.align(Alignment.Center),
+            )
         }
     }
 }
@@ -242,6 +179,91 @@ private fun PagerTab(
                 modifier = Modifier
                     .clickable { scope.launch { pagerState.animateScrollToPage(index) } }
                     .padding(8.dp),
+            )
+        }
+    }
+}
+
+@Composable
+private fun SampleView(
+    hasAlpha: Boolean,
+    opacityEventState: MutableState<ColorEvent>,
+    alphaState: MutableState<Int> = mutableStateOf(0xff),
+    modifier: Modifier = Modifier,
+) {
+    var opacity: Int = opacityEventState.value.color
+    var alpha by alphaState
+    val color = opacity.setAlpha(alpha)
+    Row(
+        modifier = modifier
+            .padding(top = 8.dp)
+            .width(256.dp + 8.dp * 4 + 24.dp),
+    ) {
+        Box(
+            modifier = Modifier.size(width = 64.dp + 8.dp * 2, height = 24.dp + 8.dp * 2),
+        ) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .background(Color(0x1a000000))
+                    .padding(1.dp)
+                    .background(Color.White)
+                    .padding(2.dp)
+                    .size(width = 64.dp, height = 24.dp)
+                    .background(
+                        ShaderBrush(
+                            ImageShader(
+                                ImageBitmap.imageResource(id = R.drawable.mm2d_cc_bg_alpha),
+                                TileMode.Repeated,
+                                TileMode.Repeated,
+                            ),
+                        ),
+                    )
+                    .background(Color(color)),
+            )
+        }
+        var hasError by remember(color) { mutableStateOf(false) }
+        val digit = if (hasAlpha) 8 else 6
+        var text by remember(color) {
+            mutableStateOf(
+                (if (hasAlpha) "%08X" else "0x%06X").format(color),
+            )
+        }
+        Box(
+            modifier = Modifier
+                .align(Alignment.CenterVertically)
+                .height(24.dp + 4.dp * 2)
+                .border(
+                    2.dp,
+                    if (hasError) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary,
+                ),
+        ) {
+            BasicTextField(
+                value = text,
+                onValueChange = {
+                    if (it.length > digit || it.contains("[^0-9a-fA-F]".toRegex())) {
+                        return@BasicTextField
+                    }
+                    text = it
+                    if (it.length == digit) {
+                        val c = it.toLongOrNull(16)?.toInt() ?: return@BasicTextField
+                        opacity = c.toOpacity()
+                        alpha = if (hasAlpha) c.alpha else 0xff
+                        opacityEventState.value = ColorEvent(opacity, ColorSource.TEXT)
+                        hasError = false
+                    } else {
+                        hasError = true
+                    }
+                },
+                textStyle = TextStyle.Default.copy(
+                    fontFamily = FontFamily.Monospace,
+                    textAlign = TextAlign.End,
+                    color = MaterialTheme.colorScheme.onSurface,
+                ),
+                cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .padding(horizontal = 8.dp, vertical = 4.dp),
             )
         }
     }

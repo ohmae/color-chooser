@@ -47,7 +47,7 @@ fun AlphaView(
         Box(
             modifier = Modifier.size(width = 255.dp + 8.dp * 2, height = 24.dp + 8.dp * 2),
         ) {
-            var x by remember { mutableStateOf(alpha.dp) }
+            var x by remember(alpha) { mutableStateOf(alpha.dp) }
             Box(
                 modifier = Modifier
                     .align(Alignment.Center)
