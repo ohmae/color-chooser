@@ -233,7 +233,7 @@ private fun Content(
             onDismissRequest = {
                 show = false
             },
-            onConfirmColor = {
+            onChooseColor = {
                 color = it.toArgb()
             },
             withAlpha = withAlpha,
@@ -245,7 +245,7 @@ private fun Content(
             onDismissRequest = {
                 show = false
             },
-            onConfirmColor = {
+            onChooseColor = {
                 color = it.toArgb()
             },
             withAlpha = withAlpha,

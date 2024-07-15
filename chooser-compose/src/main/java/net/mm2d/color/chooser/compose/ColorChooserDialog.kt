@@ -31,7 +31,7 @@ import net.mm2d.color.chooser.compose.util.ColorSaver
  *
  * @param initialColor initial color.
  * @param onDismissRequest callback when the dialog is dismissed.
- * @param onConfirmColor callback when the color is confirmed. confirmed color is passed as argument.
+ * @param onChooseColor callback when the color is chosen. chosen color is passed as argument.
  * @param withAlpha whether to show alpha control.
  * @param initialTab initial tab. default is [Tab.PALETTE]. see [Tab].
  * @param tabs tabs to show. default is [Tab.PALETTE], [Tab.HSV], [Tab.RGB]. see [Tab].
@@ -40,7 +40,7 @@ import net.mm2d.color.chooser.compose.util.ColorSaver
 fun ColorChooserDialog(
     initialColor: Color,
     onDismissRequest: () -> Unit,
-    onConfirmColor: (Color) -> Unit,
+    onChooseColor: (Color) -> Unit,
     withAlpha: Boolean = false,
     initialTab: Tab = Tab.DEFAULT_TAB,
     tabs: List<Tab> = Tab.DEFAULT_TABS,
@@ -77,7 +77,7 @@ fun ColorChooserDialog(
                 }
                 TextButton(
                     onClick = {
-                        onConfirmColor(colorState.value)
+                        onChooseColor(colorState.value)
                         onDismissRequest()
                     },
                     modifier = Modifier.padding(8.dp),
