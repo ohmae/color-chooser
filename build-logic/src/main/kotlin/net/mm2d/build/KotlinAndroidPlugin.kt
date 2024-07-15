@@ -1,13 +1,12 @@
 package net.mm2d.build
 
-import com.android.build.gradle.TestedExtension
+import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.dependencies
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
+import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 
-@Suppress("unused")
 class KotlinAndroidPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         target.plugin()
@@ -19,8 +18,10 @@ private fun Project.plugin() {
         apply("org.jetbrains.kotlin.android")
     }
     android {
-        kotlinOptions {
-            jvmTarget = Projects.jvmTarget
+        kotlin {
+            compilerOptions {
+                jvmTarget.set(Projects.jvmTarget)
+            }
         }
     }
     dependencies {
@@ -30,5 +31,5 @@ private fun Project.plugin() {
 }
 
 // DSL
-private fun TestedExtension.kotlinOptions(block: KotlinJvmOptions.() -> Unit): Unit =
-    (this as ExtensionAware).extensions.configure("kotlinOptions", block)
+private fun Project.kotlin(configure: Action<KotlinAndroidProjectExtension>): Unit =
+    (this as ExtensionAware).extensions.configure("kotlin", configure)

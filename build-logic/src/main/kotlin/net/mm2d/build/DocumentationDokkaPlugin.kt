@@ -11,7 +11,6 @@ import org.gradle.kotlin.dsl.named
 import org.jetbrains.dokka.gradle.DokkaTask
 import java.io.File
 
-@Suppress("unused")
 class DocumentationDokkaPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         target.plugin()

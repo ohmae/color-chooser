@@ -1,4 +1,4 @@
 <resources>
-    <style name="AppTheme" parent="Theme.Material3.DynamicColors.DayNight">
-    </style>
+
+    <style name="AppTheme" parent="Theme.Material3.DynamicColors.DayNight" />
 </resources>

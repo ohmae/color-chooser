@@ -13,7 +13,6 @@ import org.gradle.plugins.signing.SigningExtension
 import java.io.File
 import java.net.URI
 
-@Suppress("unused")
 class MavenPublishPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         target.plugin()

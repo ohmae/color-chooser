@@ -17,6 +17,9 @@
 /.idea/misc.xml
 /.idea/modules.xml
 /.idea/workspace.xml
+/.idea/other.xml
+/.idea/deploymentTargetSelector.xml
+/.idea/inspectionProfiles
 .DS_Store
 /build
 /captures

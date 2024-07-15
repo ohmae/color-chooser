@@ -5,7 +5,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.named
 
-@Suppress("unused")
 class GradleVersionsPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         target.plugin()
@@ -17,7 +16,7 @@ private fun Project.plugin() {
         apply("com.github.ben-manes.versions")
     }
     tasks.named<DependencyUpdatesTask>("dependencyUpdates").configure {
-        rejectVersionIf { !isStable(candidate.version) }
+        rejectVersionIf { !isStable(candidate.version) && isStable(currentVersion) }
     }
 }
 

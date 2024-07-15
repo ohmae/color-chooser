@@ -1,7 +1,9 @@
 package net.mm2d.build
 
 import org.gradle.api.JavaVersion
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
+@Suppress("ConstPropertyName")
 object Projects {
     const val compileSdk: Int = 34
     const val minSdk: Int = 21
@@ -9,7 +11,7 @@ object Projects {
 
     val sourceCompatibility: JavaVersion = JavaVersion.VERSION_1_8
     val targetCompatibility: JavaVersion = JavaVersion.VERSION_1_8
-    val jvmTarget: String = JavaVersion.VERSION_1_8.toString()
+    val jvmTarget: JvmTarget = JvmTarget.JVM_1_8
 
     const val groupId: String = "net.mm2d.color-chooser"
     const val name: String = "color chooser"
