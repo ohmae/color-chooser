@@ -15,31 +15,39 @@
 
 ## How to use
 
-jCenter will close in May. In 0.2.4 moved to mavenCentral from jcenter.  
-Please note that the **groupID has changed**
-
-Download from mavenCentral.  
 latest version: ![Maven Central](https://img.shields.io/maven-central/v/net.mm2d.color-chooser/color-chooser)
 
+### Jetpack Compose
+
 ```gradle
-repositories {
-    jcenter()
-}
 dependencies {
-    implementation 'net.mm2d.color-chooser:color-chooser:<version>'
+    implementation 'net.mm2d.color-chooser:color-chooser-compose:<version>'
 }
 ```
 
-Versions below 0.2.4 were distributed with jCenter.
-However, jCenter will close and old versions are not migrated to mavenCentral.
-If you need an older version, please use the Github Pages repository.
+```kotlin
+var show by rememberSaveable { mutableStateOf(false) }
+
+...
+
+if (!show) return
+ColorChooserDialog(
+    initialColor = Color(color),
+    onDismissRequest = {
+        show = false
+        // dismiss the dialog 
+    },
+    onChooseColor = { color ->
+        // handle chosen color
+    },
+)
+```
+
+### View-base app
 
 ```gradle
-repositories {
-    maven { url = URI("https://ohmae.github.com/maven") }
-}
 dependencies {
-    implementation 'net.mm2d:color-chooser:<version>'
+    implementation 'net.mm2d.color-chooser:color-chooser:<version>'
 }
 ```
 
@@ -74,25 +82,8 @@ Please see [Sample code](sample/src/main/java/net/mm2d/color/chooser/sample/Main
 
 ## Dependent OSS
 
-### color-chooser
-
-- [Kotlin](https://kotlinlang.org/)
-- [Android Jetpack](https://developer.android.com/jetpack/)
-  - androidx.appcompat:appcompat
-  - androidx.constraintlayout:constraintlayout
-  - androidx.core:core-ktx
-  - com.google.android.material:material
-
-### sample app
-
-- [Kotlin](https://kotlinlang.org/)
-- [Android Jetpack](https://developer.android.com/jetpack/)
-  - androidx.appcompat:appcompat
-  - androidx.constraintlayout:constraintlayout
-  - androidx.navigation:navigation-fragment-ktx
-  - androidx.navigation:navigation-ui-ktx
-  - com.google.android.material:material
-- [LeakCanary](https://github.com/square/leakcanary)
+- [color-chooser](./chooser/dependencies/releaseRuntimeClasspath.txt)
+- [color-chooser-compose](./chooser-compose/dependencies/releaseRuntimeClasspath.txt)
 
 ## Author
 

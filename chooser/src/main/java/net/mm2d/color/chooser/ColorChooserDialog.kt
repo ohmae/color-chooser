@@ -9,17 +9,29 @@ package net.mm2d.color.chooser
 
 import android.app.Dialog
 import android.content.DialogInterface
-import android.graphics.Color
 import android.os.Bundle
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AlertDialog
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
-import net.mm2d.color.chooser.databinding.Mm2dCcColorChooserBinding
+import kotlinx.coroutines.flow.distinctUntilChanged
+import net.mm2d.color.chooser.compose.ColorChooserView
+import net.mm2d.color.chooser.ui.theme.ColorChooserTheme
 
 /**
  * Color chooser dialog
@@ -118,7 +130,7 @@ object ColorChooserDialog {
     fun show(
         activity: FragmentActivity,
         requestKey: String,
-        @ColorInt initialColor: Int = Color.WHITE,
+        @ColorInt initialColor: Int = android.graphics.Color.WHITE,
         withAlpha: Boolean = false,
         initialTab: Int = TAB_PALETTE,
         tabs: IntArray = DEFAULT_TABS,
@@ -148,7 +160,7 @@ object ColorChooserDialog {
     fun show(
         fragment: Fragment,
         requestKey: String,
-        @ColorInt initialColor: Int = Color.WHITE,
+        @ColorInt initialColor: Int = android.graphics.Color.WHITE,
         withAlpha: Boolean = false,
         initialTab: Int = TAB_PALETTE,
         tabs: IntArray = DEFAULT_TABS,
@@ -174,31 +186,45 @@ object ColorChooserDialog {
     }
 
     internal class ColorChooserDialogImpl : DialogFragment() {
-        private lateinit var colorChooserView: ColorChooserView
+        private var selectedColor: Int = 0
 
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             val activity = requireActivity()
-            colorChooserView =
-                Mm2dCcColorChooserBinding.inflate(activity.layoutInflater).root
 
             val arguments = requireArguments()
-            val tabs = arguments.getIntArray(KEY_TABS).let {
-                if (it != null && it.isNotEmpty()) it else DEFAULT_TABS
+            val tabs = (arguments.getIntArray(KEY_TABS) ?: intArrayOf())
+                .toList().mapNotNull { Tab.entries.getOrNull(it) }
+                .let { if (it.isEmpty()) Tab.DEFAULT_TABS else it }
+            val initialColor = arguments.getInt(KEY_INITIAL_COLOR, 0)
+            val initialTab = arguments.getInt(KEY_INITIAL_TAB, 0)
+                .let { Tab.entries.getOrNull(it) ?: tabs.first() }
+            val withAlpha = requireArguments().getBoolean(KEY_WITH_ALPHA)
+
+            val composeView = ComposeView(activity)
+            composeView.setContent {
+                ColorChooserTheme {
+                    val colorState = remember { mutableStateOf(Color(initialColor)) }
+                    LaunchedEffect(Unit) {
+                        snapshotFlow { colorState.value }
+                            .distinctUntilChanged()
+                            .collect {
+                                selectedColor = it.toArgb()
+                            }
+                    }
+                    ColorChooserView(
+                        colorState = colorState,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(500.dp),
+                        withAlpha = withAlpha,
+                        initialTab = initialTab,
+                        tabs = tabs,
+                    )
+                }
             }
-            if (savedInstanceState != null) {
-                val color = savedInstanceState.getInt(KEY_INITIAL_COLOR, 0)
-                colorChooserView.init(color, tabs)
-                val tab = savedInstanceState.getInt(KEY_INITIAL_TAB, 0)
-                colorChooserView.setCurrentItem(tab)
-            } else {
-                val color = arguments.getInt(KEY_INITIAL_COLOR, 0)
-                colorChooserView.init(color, tabs)
-                val tab = arguments.getInt(KEY_INITIAL_TAB, 0)
-                colorChooserView.setCurrentItem(tab)
-            }
-            colorChooserView.setWithAlpha(requireArguments().getBoolean(KEY_WITH_ALPHA))
+
             return AlertDialog.Builder(activity)
-                .setView(colorChooserView)
+                .setView(composeView)
                 .setPositiveButton("OK") { _, _ ->
                     notifySelect()
                 }
@@ -206,12 +232,6 @@ object ColorChooserDialog {
                     dialog.cancel()
                 }
                 .create()
-        }
-
-        override fun onSaveInstanceState(outState: Bundle) {
-            super.onSaveInstanceState(outState)
-            outState.putInt(KEY_INITIAL_TAB, colorChooserView.getCurrentItem())
-            outState.putInt(KEY_INITIAL_COLOR, colorChooserView.color)
         }
 
         override fun onCancel(dialog: DialogInterface) {
@@ -228,7 +248,7 @@ object ColorChooserDialog {
                 key,
                 bundleOf(
                     RESULT_KEY_CANCEL to false,
-                    RESULT_KEY_COLOR to colorChooserView.color,
+                    RESULT_KEY_COLOR to selectedColor,
                 ),
             )
         }

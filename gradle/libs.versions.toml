@@ -1,5 +1,5 @@
 [versions]
-androidGradlePlugin = "8.4.1"
+androidGradlePlugin = "8.5.1"
 kotlin = "2.0.0"
 dokka = "1.9.20"
 androidxNavigation = "2.7.7"
@@ -15,7 +15,7 @@ leakCanary = "2.14"
 junit = "4.13.2"
 
 activityCompose = "1.9.0"
-composeBom = "2024.05.00"
+composeBom = "2024.06.00"
 
 [libraries]
 # classPath
@@ -23,7 +23,7 @@ androidGradlePlugin = { group = "com.android.tools.build", name = "gradle", vers
 kotlinGradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 dokkaGradlePlugin = { group = "org.jetbrains.dokka", name = "dokka-gradle-plugin", version.ref = "dokka" }
 gradleVersionsPlugin = { group = "com.github.ben-manes", name = "gradle-versions-plugin", version.ref = "gradleVersionsPlugin" }
-ktlint = { group = "com.pinterest.ktlint", name = "ktlint-cli", version = "1.3.0" }
+ktlint = { group = "com.pinterest.ktlint", name = "ktlint-cli", version = "1.3.1" }
 
 # implementation
 kotlinStdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }

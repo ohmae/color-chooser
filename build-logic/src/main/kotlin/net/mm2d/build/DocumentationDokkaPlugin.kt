@@ -11,7 +11,6 @@ import org.gradle.kotlin.dsl.named
 import org.jetbrains.dokka.gradle.DokkaTask
 import java.io.File
 
-@Suppress("unused")
 class DocumentationDokkaPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         target.plugin()
@@ -26,12 +25,12 @@ private fun Project.plugin() {
         dokkaPlugin(libs.library("dokkaAndroidDocumentationPlugin"))
     }
     tasks.dokkaHtml.configure {
-        outputDirectory.set(File(projectDir, "../docs/dokka"))
         moduleName.set(base.archivesName.get())
+        outputDirectory.set(File(layout.buildDirectory.asFile.get(), "docs/html"))
     }
     tasks.dokkaJavadoc.configure {
-        outputDirectory.set(File(layout.buildDirectory.asFile.get(), "docs/javadoc"))
         moduleName.set(base.archivesName.get())
+        outputDirectory.set(File(layout.buildDirectory.asFile.get(), "docs/javadoc"))
     }
 }
 

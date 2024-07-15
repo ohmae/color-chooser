@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.build.logic.documentationDokka)
     alias(libs.plugins.build.logic.mavenPublish)
     alias(libs.plugins.build.logic.gradleVersions)
+    alias(libs.plugins.composeCompiler)
     alias(libs.plugins.dependencyGuard)
 }
 
@@ -23,19 +24,19 @@ android {
             isMinifyEnabled = false
         }
     }
-    publishing {
-        singleVariant("release") {
-            withSourcesJar()
-            withJavadocJar()
-        }
-    }
 }
 
 dependencies {
-    implementation(libs.androidxAppCompat)
-    implementation(libs.androidxConstraintLayout)
+    implementation(projects.chooserCompose)
+
     implementation(libs.androidxCoreKtx)
+    implementation(libs.androidxAppCompat)
     implementation(libs.materialComponents)
+    implementation(platform(libs.composeBom))
+    implementation(libs.composeUi)
+    implementation(libs.composeUiGraphics)
+    implementation(libs.composeMaterial3)
+
     testImplementation(libs.junit)
 }
 

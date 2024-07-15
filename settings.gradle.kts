@@ -2,10 +2,17 @@ pluginManagement {
     includeBuild("build-logic")
     @Suppress("UnstableApiUsage")
     repositories {
-        google().content {
-            includeGroupAndSubgroups("com.android")
-            includeGroupAndSubgroups("com.google")
-            includeGroupAndSubgroups("androidx")
+        google {
+            content {
+                includeGroupAndSubgroups("com.android")
+                includeGroupAndSubgroups("com.google")
+                includeGroupAndSubgroups("androidx")
+            }
+            metadataSources
+            metadataSources {
+                gradleMetadata()
+                mavenPom()
+            }
         }
         gradlePluginPortal().content {
             includeGroupAndSubgroups("com.github.ben-manes")
@@ -31,4 +38,6 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 rootProject.name = "color-chooser"
 include(":chooser")
+include(":chooser-compose")
 include(":sample")
+include(":sample-compose")
