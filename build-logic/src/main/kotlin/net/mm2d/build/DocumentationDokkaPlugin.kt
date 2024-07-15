@@ -25,12 +25,12 @@ private fun Project.plugin() {
         dokkaPlugin(libs.library("dokkaAndroidDocumentationPlugin"))
     }
     tasks.dokkaHtml.configure {
-        outputDirectory.set(File(projectDir, "../docs/dokka"))
         moduleName.set(base.archivesName.get())
+        outputDirectory.set(File(layout.buildDirectory.asFile.get(), "docs/html"))
     }
     tasks.dokkaJavadoc.configure {
-        outputDirectory.set(File(layout.buildDirectory.asFile.get(), "docs/javadoc"))
         moduleName.set(base.archivesName.get())
+        outputDirectory.set(File(layout.buildDirectory.asFile.get(), "docs/javadoc"))
     }
 }
 

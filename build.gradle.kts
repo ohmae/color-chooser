@@ -1,9 +1,11 @@
+import org.jetbrains.dokka.gradle.DokkaMultiModuleTask
+
 plugins {
     alias(libs.plugins.androidApplication) apply false
     alias(libs.plugins.androidLibrary) apply false
     alias(libs.plugins.kotlinAndroid) apply false
     alias(libs.plugins.composeCompiler) apply false
-    alias(libs.plugins.dokka) apply false
+    alias(libs.plugins.dokka)
     alias(libs.plugins.navigationSafeArgs) apply false
     alias(libs.plugins.gradleVersions) apply false
     alias(libs.plugins.dependencyGuard) apply false
@@ -46,4 +48,8 @@ tasks.register<JavaExec>("ktlintFormat") {
         "!**/build/**",
     )
     isIgnoreExitValue = true
+}
+
+tasks.getByName<DokkaMultiModuleTask>("dokkaHtmlMultiModule") {
+    outputDirectory.set(File(projectDir, "docs/dokka"))
 }
