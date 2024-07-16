@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -109,6 +110,9 @@ private fun Slider(
             text = (alpha * 255f).toInt().toString(),
             style = MaterialTheme.typography.bodySmall.copy(
                 fontSize = LocalDensity.current.run { 12.dp.toSp() },
+                fontFamily = FontFamily.Monospace,
+                textAlign = TextAlign.End,
+                color = MaterialTheme.colorScheme.onSurface,
             ),
             textAlign = TextAlign.End,
             modifier = Modifier

@@ -55,8 +55,9 @@ fun ColorChooserDialog(
                 .clip(RoundedCornerShape(16.dp))
                 .background(MaterialTheme.colorScheme.surface),
         ) {
-            val colorState =
-                rememberSaveable(stateSaver = ColorSaver) { mutableStateOf(initialColor) }
+            val colorState = rememberSaveable(stateSaver = ColorSaver) {
+                mutableStateOf(if (withAlpha) initialColor else initialColor.copy(alpha = 1f))
+            }
             ColorChooserView(
                 colorState = colorState,
                 modifier = Modifier

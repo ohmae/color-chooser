@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
@@ -42,24 +43,27 @@ internal fun SampleView(
             modifier = Modifier.weight(1f),
         )
         Box(
-            modifier = Modifier.size(width = 64.dp + 8.dp * 2, height = 24.dp + 8.dp * 2),
-        ) {
-            Box(
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .background(Color(0x1a000000))
-                    .padding(1.dp)
-                    .background(Color.White)
-                    .padding(2.dp)
-                    .size(width = 64.dp, height = 24.dp)
-                    .background(alphaBackgroundBrush())
-                    .background(color),
-            )
-        }
+            modifier = Modifier
+                .align(Alignment.CenterVertically)
+                .padding(end = 8.dp)
+                .background(Color(0x1a000000))
+                .padding(1.dp)
+                .background(Color.White)
+                .padding(2.dp)
+                .size(width = 64.dp, height = 24.dp)
+                .background(alphaBackgroundBrush())
+                .background(color),
+        )
         var hasError by remember(color) { mutableStateOf(false) }
         val digit = if (withAlpha) 8 else 6
         var text by remember(color) {
-            mutableStateOf((if (withAlpha) "%08X" else "%06X").format(color.toArgb()))
+            mutableStateOf(
+                if (withAlpha) {
+                    "%08X".format(color.toArgb())
+                } else {
+                    "%06X".format(color.toArgb() and 0xFFFFFF)
+                }
+            )
         }
         val borderColor =
             if (hasError) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
@@ -85,6 +89,7 @@ internal fun SampleView(
                     }
                 },
                 textStyle = TextStyle.Default.copy(
+                    fontSize = LocalDensity.current.run { 12.dp.toSp() },
                     fontFamily = FontFamily.Monospace,
                     textAlign = TextAlign.End,
                     color = MaterialTheme.colorScheme.onSurface,
@@ -92,7 +97,7 @@ internal fun SampleView(
                 cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
-                    .padding(horizontal = 8.dp, vertical = 4.dp),
+                    .padding(horizontal = 8.dp, vertical = 2.dp),
             )
         }
     }
