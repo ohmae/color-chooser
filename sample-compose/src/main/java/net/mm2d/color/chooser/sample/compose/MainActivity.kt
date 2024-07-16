@@ -28,8 +28,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import net.mm2d.color.chooser.Tab
 import net.mm2d.color.chooser.compose.ColorChooserDialog
+import net.mm2d.color.chooser.compose.Tab
 import net.mm2d.color.chooser.sample.compose.ui.theme.SampleTheme
 
 class MainActivity : AppCompatActivity() {

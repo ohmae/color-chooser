@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import net.mm2d.color.chooser.Tab
 import net.mm2d.color.chooser.compose.util.ColorSaver
 
 /**

@@ -15,9 +15,9 @@
 
 ## How to use
 
-latest version: ![Maven Central](https://img.shields.io/maven-central/v/net.mm2d.color-chooser/color-chooser)
-
 ### Jetpack Compose
+
+latest version: ![Maven Central](https://img.shields.io/maven-central/v/net.mm2d.color-chooser/color-chooser-compose)
 
 ```gradle
 dependencies {
@@ -44,6 +44,8 @@ ColorChooserDialog(
 ```
 
 ### View-base app
+
+latest version: ![Maven Central](https://img.shields.io/maven-central/v/net.mm2d.color-chooser/color-chooser)
 
 ```gradle
 dependencies {

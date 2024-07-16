@@ -20,6 +20,7 @@ class MavenPublishPlugin : Plugin<Project> {
 }
 
 private fun Project.plugin() {
+    val project: Project = this
     with(pluginManager) {
         apply("org.gradle.maven-publish")
         apply("org.gradle.signing")
@@ -39,9 +40,9 @@ private fun Project.plugin() {
             publications {
                 create<MavenPublication>("mavenJava") {
                     from(components["release"])
-                    groupId = Projects.groupId
-                    artifactId = base.archivesName.get()
-                    version = Projects.versionName
+                    groupId = project.group.toString()
+                    artifactId = project.base.archivesName.get()
+                    version = project.version.toString()
                     pom {
                         name.set(Projects.name)
                         description.set(Projects.description)

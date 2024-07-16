@@ -1,4 +1,4 @@
-package net.mm2d.color.chooser
+package net.mm2d.color.chooser.compose
 
 /**
  * Enum class representing the color chooser tabs.

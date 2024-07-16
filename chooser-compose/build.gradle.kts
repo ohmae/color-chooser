@@ -12,7 +12,7 @@ plugins {
 
 base.archivesName.set("color-chooser-compose")
 group = Projects.groupId
-version = Projects.versionName
+version = Projects.Compose.versionName
 
 android {
     namespace = "net.mm2d.color.chooser.compose"

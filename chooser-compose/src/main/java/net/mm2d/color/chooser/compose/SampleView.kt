@@ -62,7 +62,7 @@ internal fun SampleView(
                     "%08X".format(color.toArgb())
                 } else {
                     "%06X".format(color.toArgb() and 0xFFFFFF)
-                }
+                },
             )
         }
         val borderColor =

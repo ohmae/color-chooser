@@ -19,10 +19,19 @@ object Projects {
     const val developerId: String = "ryo"
     const val developerName: String = "ryosuke"
 
-    private const val versionMajor: Int = 0
-    private const val versionMinor: Int = 7
-    private const val versionPatch: Int = 3
-    const val versionName: String = "$versionMajor.$versionMinor.$versionPatch"
+    object Chooser {
+        private const val versionMajor: Int = 0
+        private const val versionMinor: Int = 7
+        private const val versionPatch: Int = 3
+        const val versionName: String = "$versionMajor.$versionMinor.$versionPatch"
+    }
+
+    object Compose {
+        private const val versionMajor: Int = 0
+        private const val versionMinor: Int = 0
+        private const val versionPatch: Int = 1
+        const val versionName: String = "$versionMajor.$versionMinor.$versionPatch"
+    }
 
     object Url {
         const val site: String = "https://github.com/ohmae/color-chooser"
