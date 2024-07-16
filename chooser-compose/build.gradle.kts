@@ -24,6 +24,12 @@ android {
             isMinifyEnabled = false
         }
     }
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
 }
 
 dependencies {
