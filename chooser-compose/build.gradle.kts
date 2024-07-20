@@ -1,4 +1,6 @@
 import net.mm2d.build.Projects
+import net.mm2d.build.pomDescription
+import net.mm2d.build.pomName
 
 plugins {
     alias(libs.plugins.build.logic.androidLibrary)
@@ -13,6 +15,8 @@ plugins {
 base.archivesName.set("color-chooser-compose")
 group = Projects.groupId
 version = Projects.Compose.versionName
+pomName = "Color Chooser for Jetpack Compose"
+pomDescription = "Color Chooser for Jetpack Compose"
 
 android {
     namespace = "net.mm2d.color.chooser.compose"

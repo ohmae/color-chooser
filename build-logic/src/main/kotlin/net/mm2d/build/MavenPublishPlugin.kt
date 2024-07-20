@@ -20,7 +20,6 @@ class MavenPublishPlugin : Plugin<Project> {
 }
 
 private fun Project.plugin() {
-    val project: Project = this
     with(pluginManager) {
         apply("org.gradle.maven-publish")
         apply("org.gradle.signing")
@@ -40,40 +39,15 @@ private fun Project.plugin() {
             publications {
                 create<MavenPublication>("mavenJava") {
                     from(components["release"])
-                    groupId = project.group.toString()
-                    artifactId = project.base.archivesName.get()
-                    version = project.version.toString()
-                    pom {
-                        name.set(Projects.name)
-                        description.set(Projects.description)
-                        url.set(Projects.Url.site)
-                        licenses {
-                            license {
-                                name.set("The MIT License")
-                                url.set("https://opensource.org/licenses/MIT")
-                                distribution.set("repo")
-                            }
-                        }
-                        developers {
-                            developer {
-                                id.set(Projects.developerId)
-                                name.set(Projects.developerName)
-                            }
-                        }
-                        scm {
-                            connection.set(Projects.Url.scm)
-                            developerConnection.set(Projects.Url.scm)
-                            url.set(Projects.Url.github)
-                        }
-                    }
+                    applyProjectProperty(this@plugin)
                 }
             }
             repositories {
                 maven {
                     url = URI("https://oss.sonatype.org/service/local/staging/deploy/maven2")
                     credentials {
-                        username = project.findProperty("ossrh_username") as? String ?: ""
-                        password = project.findProperty("ossrh_password") as? String ?: ""
+                        username = findPropertyString("ossrh_username")
+                        password = findPropertyString("ossrh_password")
                     }
                 }
             }
@@ -87,6 +61,35 @@ private fun Project.plugin() {
     }
 }
 
+private fun MavenPublication.applyProjectProperty(project: Project) {
+    groupId = project.group.toString()
+    artifactId = project.base.archivesName.get()
+    version = project.version.toString()
+    pom {
+        name.set(project.pomName)
+        description.set(project.pomDescription)
+        url.set(Projects.Url.site)
+        licenses {
+            license {
+                name.set("The MIT License")
+                url.set("https://opensource.org/licenses/MIT")
+                distribution.set("repo")
+            }
+        }
+        developers {
+            developer {
+                id.set(Projects.developerId)
+                name.set(Projects.developerName)
+            }
+        }
+        scm {
+            connection.set(Projects.Url.scm)
+            developerConnection.set(Projects.Url.scm)
+            url.set(Projects.Url.github)
+        }
+    }
+}
+
 // DSL
 private val Project.publishing: PublishingExtension
     get() = (this as ExtensionAware).extensions.getByName("publishing") as PublishingExtension
@@ -96,3 +99,16 @@ private fun Project.publishing(configure: Action<PublishingExtension>): Unit =
 
 private fun Project.signing(configure: Action<SigningExtension>): Unit =
     (this as ExtensionAware).extensions.configure("signing", configure)
+
+private fun Project.findPropertyString(name: String, defaultValue: String = ""): String =
+    (findProperty(name) as String?).let {
+        if (it.isNullOrBlank()) defaultValue else it
+    }
+
+var Project.pomName: String
+    get() = findPropertyString("POM_NAME", Projects.name)
+    set(value) = setProperty("POM_NAME", value)
+
+var Project.pomDescription: String
+    get() = findPropertyString("POM_DESCRIPTION", Projects.description)
+    set(value) = setProperty("POM_DESCRIPTION", value)
