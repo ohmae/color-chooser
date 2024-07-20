@@ -8,11 +8,6 @@ pluginManagement {
                 includeGroupAndSubgroups("com.google")
                 includeGroupAndSubgroups("androidx")
             }
-            metadataSources
-            metadataSources {
-                gradleMetadata()
-                mavenPom()
-            }
         }
         gradlePluginPortal().content {
             includeGroupAndSubgroups("com.github.ben-manes")

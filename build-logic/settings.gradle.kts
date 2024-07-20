@@ -7,9 +7,15 @@ pluginManagement {
 @Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
     repositories {
-        google()
+        google().content {
+            includeGroupAndSubgroups("com.android")
+            includeGroupAndSubgroups("com.google")
+            includeGroupAndSubgroups("androidx")
+        }
+        gradlePluginPortal().content {
+            includeGroupAndSubgroups("com.github.ben-manes")
+        }
         mavenCentral()
-        gradlePluginPortal()
     }
     versionCatalogs {
         create("libs") {

@@ -6,8 +6,8 @@ plugins {
     alias(libs.plugins.build.logic.documentationDokka)
     alias(libs.plugins.build.logic.mavenPublish)
     alias(libs.plugins.build.logic.gradleVersions)
+    alias(libs.plugins.build.logic.dependencyGuard)
     alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.dependencyGuard)
 }
 
 base.archivesName.set("color-chooser-compose")
@@ -24,12 +24,6 @@ android {
             isMinifyEnabled = false
         }
     }
-    publishing {
-        singleVariant("release") {
-            withSourcesJar()
-            withJavadocJar()
-        }
-    }
 }
 
 dependencies {
@@ -39,8 +33,4 @@ dependencies {
     implementation(libs.composeUiGraphics)
     implementation(libs.composeMaterial3)
     testImplementation(libs.junit)
-}
-
-dependencyGuard {
-    configuration("releaseRuntimeClasspath")
 }

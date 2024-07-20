@@ -16,26 +16,25 @@ private fun Project.plugin() {
         apply("com.android.application")
     }
     androidApplication {
-        android {
-            compileSdk = Projects.compileSdk
+        compileSdk = Projects.compileSdk
 
-            defaultConfig {
-                minSdk = Projects.minSdk
-                targetSdk = Projects.targetSdk
-            }
-            compileOptions {
-                sourceCompatibility = Projects.sourceCompatibility
-                targetCompatibility = Projects.targetCompatibility
-            }
-            buildFeatures {
-                viewBinding = true
-            }
-            lint {
-                abortOnError = true
-            }
-            testOptions {
-                unitTests.isIncludeAndroidResources = true
-            }
+        defaultConfig {
+            minSdk = Projects.minSdk
+            targetSdk = Projects.targetSdk
+        }
+        compileOptions {
+            sourceCompatibility = Projects.sourceCompatibility
+            targetCompatibility = Projects.targetCompatibility
+        }
+        buildFeatures {
+            viewBinding = true
+        }
+        lint {
+            abortOnError = true
+        }
+        @Suppress("UnstableApiUsage")
+        testOptions {
+            unitTests.isIncludeAndroidResources = true
         }
     }
 }

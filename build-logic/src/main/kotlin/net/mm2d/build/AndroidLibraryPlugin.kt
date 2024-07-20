@@ -20,28 +20,33 @@ private fun Project.plugin() {
         apply("com.android.library")
     }
     androidLibrary {
-        android {
-            compileSdk = Projects.compileSdk
-            defaultConfig {
-                minSdk = Projects.minSdk
-            }
-            compileOptions {
-                sourceCompatibility = Projects.sourceCompatibility
-                targetCompatibility = Projects.targetCompatibility
-            }
-            buildFeatures {
-                viewBinding = true
-            }
-            lint {
-                abortOnError = true
-            }
-            testOptions {
-                unitTests.isIncludeAndroidResources = true
-            }
+        compileSdk = Projects.compileSdk
+        defaultConfig {
+            minSdk = Projects.minSdk
+        }
+        compileOptions {
+            sourceCompatibility = Projects.sourceCompatibility
+            targetCompatibility = Projects.targetCompatibility
+        }
+        buildFeatures {
+            viewBinding = true
+        }
+        lint {
+            abortOnError = true
+        }
+        @Suppress("UnstableApiUsage")
+        testOptions {
+            unitTests.isIncludeAndroidResources = true
         }
         tasks.create("sourcesJar", Jar::class) {
             archiveClassifier.set("sources")
             from(android.sourceSets["main"].java.srcDirs)
+        }
+        publishing {
+            singleVariant("release") {
+                withSourcesJar()
+                withJavadocJar()
+            }
         }
     }
 }
