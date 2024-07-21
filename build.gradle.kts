@@ -11,6 +11,10 @@ plugins {
     alias(libs.plugins.dependencyGuard) apply false
 }
 
+tasks.dokkaHtmlMultiModule {
+    outputDirectory.set(File(projectDir, "docs/dokka"))
+}
+
 val ktlint: Configuration by configurations.creating
 
 dependencies {
@@ -48,8 +52,4 @@ tasks.register<JavaExec>("ktlintFormat") {
         "!**/build/**",
     )
     isIgnoreExitValue = true
-}
-
-tasks.getByName<DokkaMultiModuleTask>("dokkaHtmlMultiModule") {
-    outputDirectory.set(File(projectDir, "docs/dokka"))
 }

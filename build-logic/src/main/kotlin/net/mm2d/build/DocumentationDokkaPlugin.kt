@@ -7,9 +7,10 @@ import org.gradle.api.tasks.TaskContainer
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.kotlin.dsl.DependencyHandlerScope
 import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.invoke
 import org.gradle.kotlin.dsl.named
 import org.jetbrains.dokka.gradle.DokkaTask
-import java.io.File
+import org.jetbrains.dokka.gradle.DokkaTaskPartial
 
 class DocumentationDokkaPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -24,19 +25,23 @@ private fun Project.plugin() {
     dependencies {
         dokkaPlugin(libs.library("dokkaAndroidDocumentationPlugin"))
     }
-    tasks.dokkaHtml.configure {
+    tasks.dokkaHtml {
         moduleName.set(base.archivesName.get())
-        outputDirectory.set(File(layout.buildDirectory.asFile.get(), "docs/html"))
     }
-    tasks.dokkaJavadoc.configure {
+    tasks.dokkaHtmlPartial {
         moduleName.set(base.archivesName.get())
-        outputDirectory.set(File(layout.buildDirectory.asFile.get(), "docs/javadoc"))
+    }
+    tasks.dokkaJavadoc {
+        moduleName.set(base.archivesName.get())
     }
 }
 
 // DSL
 private val TaskContainer.dokkaHtml: TaskProvider<DokkaTask>
     get() = named<DokkaTask>("dokkaHtml")
+
+private val TaskContainer.dokkaHtmlPartial: TaskProvider<DokkaTaskPartial>
+    get() = named<DokkaTaskPartial>("dokkaHtmlPartial")
 
 private val TaskContainer.dokkaJavadoc: TaskProvider<DokkaTask>
     get() = named<DokkaTask>("dokkaJavadoc")
