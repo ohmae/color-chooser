@@ -10,7 +10,6 @@ import org.gradle.api.tasks.bundling.Jar
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.get
 import org.gradle.plugins.signing.SigningExtension
-import java.io.File
 import java.net.URI
 
 class MavenPublishPlugin : Plugin<Project> {
@@ -27,7 +26,6 @@ private fun Project.plugin() {
     tasks.create("javadocJar", Jar::class) {
         dependsOn("dokkaJavadoc")
         archiveClassifier.set("javadoc")
-        from(File(layout.buildDirectory.asFile.get(), "docs/javadoc"))
     }
     tasks.named("publish") {
         dependsOn("assemble")
