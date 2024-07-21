@@ -20,7 +20,7 @@ private fun Project.plugin() {
     android {
         kotlin {
             compilerOptions {
-                jvmTarget.set(Projects.jvmTarget)
+                jvmTarget.set(Projects.JVM_TARGET)
             }
         }
     }

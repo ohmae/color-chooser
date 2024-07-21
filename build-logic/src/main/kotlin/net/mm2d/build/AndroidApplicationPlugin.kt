@@ -16,15 +16,15 @@ private fun Project.plugin() {
         apply("com.android.application")
     }
     androidApplication {
-        compileSdk = Projects.compileSdk
+        compileSdk = Projects.COMPILE_SDK
 
         defaultConfig {
-            minSdk = Projects.minSdk
-            targetSdk = Projects.targetSdk
+            minSdk = Projects.MIN_SDK
+            targetSdk = Projects.TARGET_SDK
         }
         compileOptions {
-            sourceCompatibility = Projects.sourceCompatibility
-            targetCompatibility = Projects.targetCompatibility
+            sourceCompatibility = Projects.SOURCE_COMPATIBILITY
+            targetCompatibility = Projects.TARGET_COMPATIBILITY
         }
         buildFeatures {
             viewBinding = true

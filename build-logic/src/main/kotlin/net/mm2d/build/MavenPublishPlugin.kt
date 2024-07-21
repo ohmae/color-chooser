@@ -66,7 +66,7 @@ private fun MavenPublication.applyProjectProperty(project: Project) {
     pom {
         name.set(project.pomName)
         description.set(project.pomDescription)
-        url.set(Projects.Url.site)
+        url.set(Projects.Url.SITE)
         licenses {
             license {
                 name.set("The MIT License")
@@ -76,14 +76,14 @@ private fun MavenPublication.applyProjectProperty(project: Project) {
         }
         developers {
             developer {
-                id.set(Projects.developerId)
-                name.set(Projects.developerName)
+                id.set(Projects.DEVELOPER_ID)
+                name.set(Projects.DEVELOPER_NAME)
             }
         }
         scm {
-            connection.set(Projects.Url.scm)
-            developerConnection.set(Projects.Url.scm)
-            url.set(Projects.Url.github)
+            connection.set(Projects.Url.SCM)
+            developerConnection.set(Projects.Url.SCM)
+            url.set(Projects.Url.GITHUB)
         }
     }
 }
@@ -98,15 +98,16 @@ private fun Project.publishing(configure: Action<PublishingExtension>): Unit =
 private fun Project.signing(configure: Action<SigningExtension>): Unit =
     (this as ExtensionAware).extensions.configure("signing", configure)
 
-private fun Project.findPropertyString(name: String, defaultValue: String = ""): String =
-    (findProperty(name) as String?).let {
-        if (it.isNullOrBlank()) defaultValue else it
-    }
+private fun Project.findPropertyString(name: String): String {
+    val value = findProperty(name) as? String
+    require(!value.isNullOrBlank())
+    return value
+}
 
 var Project.pomName: String
-    get() = findPropertyString("POM_NAME", Projects.name)
+    get() = findPropertyString("POM_NAME")
     set(value) = setProperty("POM_NAME", value)
 
 var Project.pomDescription: String
-    get() = findPropertyString("POM_DESCRIPTION", Projects.description)
+    get() = findPropertyString("POM_DESCRIPTION")
     set(value) = setProperty("POM_DESCRIPTION", value)

@@ -20,13 +20,13 @@ private fun Project.plugin() {
         apply("com.android.library")
     }
     androidLibrary {
-        compileSdk = Projects.compileSdk
+        compileSdk = Projects.COMPILE_SDK
         defaultConfig {
-            minSdk = Projects.minSdk
+            minSdk = Projects.MIN_SDK
         }
         compileOptions {
-            sourceCompatibility = Projects.sourceCompatibility
-            targetCompatibility = Projects.targetCompatibility
+            sourceCompatibility = Projects.SOURCE_COMPATIBILITY
+            targetCompatibility = Projects.TARGET_COMPATIBILITY
         }
         buildFeatures {
             viewBinding = true

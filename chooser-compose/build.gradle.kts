@@ -13,8 +13,8 @@ plugins {
 }
 
 base.archivesName.set("color-chooser-compose")
-group = Projects.groupId
-version = Projects.Compose.versionName
+group = Projects.GROUP_ID
+version = Projects.Compose.VERSION_NAME
 pomName = "Color Chooser for Jetpack Compose"
 pomDescription = "Color Chooser for Jetpack Compose"
 

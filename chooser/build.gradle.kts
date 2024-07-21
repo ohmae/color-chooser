@@ -12,8 +12,8 @@ plugins {
 }
 
 base.archivesName.set("color-chooser")
-group = Projects.groupId
-version = Projects.Chooser.versionName
+group = Projects.GROUP_ID
+version = Projects.Chooser.VERSION_NAME
 pomName = "Color Chooser Dialog"
 pomDescription = "Color Chooser Dialog"
 
