@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
@@ -38,6 +39,7 @@ import kotlinx.coroutines.launch
  * @param withAlpha Whether to show the alpha control.
  * @param initialTab The initial tab to be displayed. Default is [Tab.PALETTE]. See [Tab].
  * @param tabs The tabs to be displayed. Default is [Tab.PALETTE], [Tab.HSV], [Tab.RGB]. See [Tab].
+ * @param titleContentColor The color of the title content.
  */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -47,6 +49,7 @@ fun ColorChooserView(
     withAlpha: Boolean = true,
     initialTab: Tab = Tab.DEFAULT_TAB,
     tabs: List<Tab> = Tab.DEFAULT_TABS,
+    titleContentColor: Color = AlertDialogDefaults.titleContentColor,
 ) {
     val inputColor = colorState.value
     val colorEventState = remember { mutableStateOf(ColorEvent(inputColor, ColorSource.INITIAL)) }
@@ -70,6 +73,7 @@ fun ColorChooserView(
         PagerTab(
             titles = tabs.map { it.name },
             pagerState = pagerState,
+            titleContentColor = titleContentColor,
         )
         pagerState.currentPage
         HorizontalPager(
@@ -130,6 +134,7 @@ fun ColorChooserView(
 private fun PagerTab(
     titles: List<String>,
     pagerState: PagerState,
+    titleContentColor: Color,
 ) {
     val scope = rememberCoroutineScope()
     TabRow(
@@ -145,6 +150,7 @@ private fun PagerTab(
             Text(
                 text = title,
                 textAlign = TextAlign.Center,
+                color = titleContentColor,
                 fontSize = 14.sp,
                 maxLines = 1,
                 modifier = Modifier
