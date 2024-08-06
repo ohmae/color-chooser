@@ -1,6 +1,6 @@
 [versions]
 androidGradlePlugin = "8.5.1"
-kotlin = "2.0.0"
+kotlin = "2.0.10"
 dokka = "1.9.20"
 androidxNavigation = "2.7.7"
 gradleVersionsPlugin = "0.51.0"
@@ -14,7 +14,7 @@ materialComponents = "1.12.0"
 leakCanary = "2.14"
 junit = "4.13.2"
 
-activityCompose = "1.9.0"
+activityCompose = "1.9.1"
 composeBom = "2024.06.00"
 
 [libraries]
