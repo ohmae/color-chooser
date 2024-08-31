@@ -28,6 +28,7 @@ internal fun PaletteChooser(
     modifier: Modifier = Modifier,
 ) {
     var colorEvent by colorEventState
+    val opacityColor = colorEvent.color.copy(alpha = 1f)
     LazyColumn(
         modifier = modifier,
     ) {
@@ -50,9 +51,9 @@ internal fun PaletteChooser(
                                 )
                             },
                     ) {
-                        if (colorEvent.color == color) {
+                        if (opacityColor == color) {
                             val tint =
-                                if (colorEvent.color.shouldUseWhiteForeground()) {
+                                if (color.shouldUseWhiteForeground()) {
                                     Color.White
                                 } else {
                                     Color.Black

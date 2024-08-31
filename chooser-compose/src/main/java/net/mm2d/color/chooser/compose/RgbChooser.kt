@@ -57,14 +57,16 @@ internal fun RgbChooser(
             )
         }
             .collect {
-                colorEvent =
-                    ColorEvent(it.copy(alpha = colorEvent.color.alpha), ColorSource.RGB)
+                val newColor = it.copy(alpha = colorEvent.color.alpha)
+                if (newColor == colorEvent.color) return@collect
+                colorEvent = ColorEvent(newColor, ColorSource.RGB)
             }
     }
     LaunchedEffect(Unit) {
         snapshotFlow { colorEvent }
             .collect {
                 if (it.source == ColorSource.RGB) return@collect
+                if (it.source == ColorSource.ALPHA) return@collect
                 redState.floatValue = it.color.red
                 greenState.floatValue = it.color.green
                 blueState.floatValue = it.color.blue

@@ -50,6 +50,7 @@ internal fun HsvChooser(
         snapshotFlow { colorEvent }
             .collect {
                 if (it.source == ColorSource.HSV) return@collect
+                if (it.source == ColorSource.ALPHA) return@collect
                 it.color.toHsv(hsv)
                 hueState.floatValue = hsv[0]
                 saturationState.floatValue = hsv[1]
@@ -168,15 +169,8 @@ private fun SvView(
 
     val maxColor = Color.hsv(hue = hue, saturation = 1f, value = 1f)
 
-    var x by remember { mutableStateOf(0.dp) }
-    var y by remember { mutableStateOf(0.dp) }
-
-    val s = (x.value / size.value).coerceIn(0f, 1f)
-    val v = ((size.value - y.value) / size.value).coerceIn(0f, 1f)
-    if (Color.hsv(hue = hue, saturation = s, value = v) != color) {
-        x = size * saturation
-        y = size - size * value
-    }
+    var x = size * saturation
+    var y = size - size * value
 
     Box(
         modifier = modifier.size(size + 8.dp * 2),
