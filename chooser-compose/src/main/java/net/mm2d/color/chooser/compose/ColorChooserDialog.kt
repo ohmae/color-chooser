@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.AlertDialogDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -55,7 +56,7 @@ fun ColorChooserDialog(
     shape: Shape = AlertDialogDefaults.shape,
     containerColor: Color = AlertDialogDefaults.containerColor,
     titleContentColor: Color = AlertDialogDefaults.titleContentColor,
-    buttonContentColor: Color = AlertDialogDefaults.textContentColor,
+    buttonContentColor: Color = MaterialTheme.colorScheme.primary,
     tonalElevation: Dp = AlertDialogDefaults.TonalElevation,
     properties: DialogProperties = DialogProperties(usePlatformDefaultWidth = false),
 ) {
@@ -86,7 +87,7 @@ fun ColorChooserDialog(
                 DialogButtons(
                     onDismissRequest = onDismissRequest,
                     onChooseColor = { onChooseColor(colorState.value) },
-                    textContentColor = buttonContentColor,
+                    buttonContentColor = buttonContentColor,
                 )
             }
         }
@@ -97,23 +98,25 @@ fun ColorChooserDialog(
 private fun ColumnScope.DialogButtons(
     onDismissRequest: () -> Unit,
     onChooseColor: () -> Unit,
-    textContentColor: Color = AlertDialogDefaults.textContentColor,
+    buttonContentColor: Color,
 ) {
     Row(
-        modifier = Modifier.align(Alignment.End),
+        modifier = Modifier
+            .align(Alignment.End)
+            .padding(vertical = 8.dp),
     ) {
         TextButton(
-            modifier = Modifier.padding(vertical = 8.dp),
             onClick = onDismissRequest,
+            modifier = Modifier.padding(end = 8.dp),
         ) {
             Text(
                 text = stringResource(id = R.string.mm2d_cc_cancel),
-                color = textContentColor,
+                color = buttonContentColor,
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
         }
         TextButton(
-            modifier = Modifier.padding(top = 8.dp, bottom = 8.dp, end = 16.dp),
+            modifier = Modifier.padding(end = 16.dp),
             onClick = {
                 onChooseColor()
                 onDismissRequest()
@@ -121,7 +124,7 @@ private fun ColumnScope.DialogButtons(
         ) {
             Text(
                 text = stringResource(id = R.string.mm2d_cc_ok),
-                color = textContentColor,
+                color = buttonContentColor,
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
         }
