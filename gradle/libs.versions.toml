@@ -1,10 +1,10 @@
 [versions]
-androidGradlePlugin = "8.6.0"
+androidGradlePlugin = "8.6.1"
 kotlin = "2.0.20"
 dokka = "1.9.20"
-androidxNavigation = "2.7.7"
+androidxNavigation = "2.8.1"
 gradleVersionsPlugin = "0.51.0"
-kotlinxCoroutines = "1.8.1"
+kotlinxCoroutines = "1.9.0"
 dependencyGuard = "0.5.0"
 
 androidxAppCompat = "1.7.0"
@@ -14,8 +14,8 @@ materialComponents = "1.12.0"
 leakCanary = "2.14"
 junit = "4.13.2"
 
-activityCompose = "1.9.1"
-composeBom = "2024.08.00"
+activityCompose = "1.9.2"
+composeBom = "2024.09.02"
 
 [libraries]
 # classPath
