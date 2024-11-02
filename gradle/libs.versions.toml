@@ -1,5 +1,5 @@
 [versions]
-androidGradlePlugin = "8.7.1"
+androidGradlePlugin = "8.7.2"
 kotlin = "2.0.21"
 dokka = "2.0.0-Beta"
 androidxNavigation = "2.8.3"
@@ -8,14 +8,14 @@ kotlinxCoroutines = "1.9.0"
 dependencyGuard = "0.5.0"
 
 androidxAppCompat = "1.7.0"
-androidxConstraintLayout = "2.1.4"
-androidxCoreKtx = "1.13.1"
+androidxConstraintLayout = "2.2.0"
+androidxCoreKtx = "1.15.0"
 materialComponents = "1.12.0"
 leakCanary = "2.14"
 junit = "4.13.2"
 
 activityCompose = "1.9.3"
-composeBom = "2024.10.00"
+composeBom = "2024.10.01"
 
 [libraries]
 # classPath
