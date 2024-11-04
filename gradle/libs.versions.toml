@@ -24,7 +24,7 @@ kotlinGradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plu
 dokkaGradlePlugin = { group = "org.jetbrains.dokka", name = "dokka-gradle-plugin", version.ref = "dokka" }
 gradleVersionsPlugin = { group = "com.github.ben-manes", name = "gradle-versions-plugin", version.ref = "gradleVersionsPlugin" }
 dependencyGuardPlugin = { group = "com.dropbox.dependency-guard", name = "dependency-guard", version.ref = "dependencyGuard" }
-ktlint = { group = "com.pinterest.ktlint", name = "ktlint-cli", version = "1.3.1" }
+ktlint = { group = "com.pinterest.ktlint", name = "ktlint-cli", version = "1.4.0" }
 
 # implementation
 kotlinStdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }

@@ -11,6 +11,7 @@ object Projects {
     val SOURCE_COMPATIBILITY: JavaVersion = JavaVersion.VERSION_1_8
     val TARGET_COMPATIBILITY: JavaVersion = JavaVersion.VERSION_1_8
     val JVM_TARGET: JvmTarget = JvmTarget.JVM_1_8
+    val JVM_TOOLCHAIN: Int = 17
 
     const val GROUP_ID: String = "net.mm2d.color-chooser"
     const val DEVELOPER_ID: String = "ryo"

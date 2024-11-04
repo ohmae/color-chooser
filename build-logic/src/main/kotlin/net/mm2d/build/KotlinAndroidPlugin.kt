@@ -22,6 +22,7 @@ private fun Project.plugin() {
             compilerOptions {
                 jvmTarget.set(Projects.JVM_TARGET)
             }
+            jvmToolchain(Projects.JVM_TOOLCHAIN)
         }
     }
     dependencies {
