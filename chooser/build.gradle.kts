@@ -34,5 +34,6 @@ dependencies {
     implementation(libs.androidxConstraintLayout)
     implementation(libs.androidxCoreKtx)
     implementation(libs.materialComponents)
+    implementation(libs.androidxDatabinding)
     testImplementation(libs.junit)
 }
