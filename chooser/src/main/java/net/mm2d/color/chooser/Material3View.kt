@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.FlowCollector
 import net.mm2d.color.chooser.util.resolveColor
 import com.google.android.material.R as MR
 
-class Material3View
+internal class Material3View
 @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

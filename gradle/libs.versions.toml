@@ -6,6 +6,7 @@ androidxNavigation = "2.8.3"
 gradleVersionsPlugin = "0.51.0"
 kotlinxCoroutines = "1.9.0"
 dependencyGuard = "0.5.0"
+kotlinxValidator = "0.16.3"
 
 androidxAppCompat = "1.7.0"
 androidxConstraintLayout = "2.2.0"
@@ -61,6 +62,7 @@ dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 navigationSafeArgs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "androidxNavigation" }
 gradleVersions = { id = "com.github.ben-manes.versions", version.ref = "gradleVersionsPlugin" }
 dependencyGuard = { id = "com.dropbox.dependency-guard", version.ref = "dependencyGuard" }
+kotlinxValidator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "kotlinxValidator" }
 
 # build-logic
 build-logic-androidApplication = { id = "build.logic.androidApplication", version = "unspecified" }

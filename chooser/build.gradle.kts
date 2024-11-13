@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.build.logic.mavenPublish)
     alias(libs.plugins.build.logic.gradleVersions)
     alias(libs.plugins.build.logic.dependencyGuard)
+    alias(libs.plugins.kotlinxValidator)
 }
 
 base.archivesName.set("color-chooser")
@@ -27,6 +28,9 @@ android {
             isMinifyEnabled = false
         }
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -36,4 +40,8 @@ dependencies {
     implementation(libs.materialComponents)
     implementation(libs.androidxDatabinding)
     testImplementation(libs.junit)
+}
+
+apiValidation {
+    ignoredPackages.add("net.mm2d.color.chooser.databinding")
 }

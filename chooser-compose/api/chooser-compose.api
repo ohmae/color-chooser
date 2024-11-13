@@ -1,0 +1,24 @@
+public final class net/mm2d/color/chooser/compose/ColorChooserDialogKt {
+	public static final fun ColorChooserDialog-Jwgv5lI (JLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZLnet/mm2d/color/chooser/compose/Tab;Ljava/util/List;Landroidx/compose/ui/graphics/Shape;JJJFLandroidx/compose/ui/window/DialogProperties;Landroidx/compose/runtime/Composer;III)V
+}
+
+public final class net/mm2d/color/chooser/compose/ColorChooserViewKt {
+	public static final fun ColorChooserView-V-9fs2A (Landroidx/compose/runtime/MutableState;Landroidx/compose/ui/Modifier;ZLnet/mm2d/color/chooser/compose/Tab;Ljava/util/List;JLandroidx/compose/runtime/Composer;II)V
+}
+
+public final class net/mm2d/color/chooser/compose/Tab : java/lang/Enum {
+	public static final field Companion Lnet/mm2d/color/chooser/compose/Tab$Companion;
+	public static final field HSV Lnet/mm2d/color/chooser/compose/Tab;
+	public static final field M3 Lnet/mm2d/color/chooser/compose/Tab;
+	public static final field PALETTE Lnet/mm2d/color/chooser/compose/Tab;
+	public static final field RGB Lnet/mm2d/color/chooser/compose/Tab;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lnet/mm2d/color/chooser/compose/Tab;
+	public static fun values ()[Lnet/mm2d/color/chooser/compose/Tab;
+}
+
+public final class net/mm2d/color/chooser/compose/Tab$Companion {
+	public final fun getDEFAULT_TAB ()Lnet/mm2d/color/chooser/compose/Tab;
+	public final fun getDEFAULT_TABS ()Ljava/util/List;
+}
+

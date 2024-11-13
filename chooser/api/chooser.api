@@ -1,0 +1,16 @@
+public final class net/mm2d/color/chooser/ColorChooserDialog {
+	public static final field INSTANCE Lnet/mm2d/color/chooser/ColorChooserDialog;
+	public static final field TAB_HSV I
+	public static final field TAB_MATERIAL3 I
+	public static final field TAB_PALETTE I
+	public static final field TAB_RGB I
+	public final fun registerListener (Landroidx/fragment/app/Fragment;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;)V
+	public final fun registerListener (Landroidx/fragment/app/FragmentActivity;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;)V
+	public static synthetic fun registerListener$default (Lnet/mm2d/color/chooser/ColorChooserDialog;Landroidx/fragment/app/Fragment;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
+	public static synthetic fun registerListener$default (Lnet/mm2d/color/chooser/ColorChooserDialog;Landroidx/fragment/app/FragmentActivity;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
+	public final fun show (Landroidx/fragment/app/Fragment;Ljava/lang/String;IZI[I)V
+	public final fun show (Landroidx/fragment/app/FragmentActivity;Ljava/lang/String;IZI[I)V
+	public static synthetic fun show$default (Lnet/mm2d/color/chooser/ColorChooserDialog;Landroidx/fragment/app/Fragment;Ljava/lang/String;IZI[IILjava/lang/Object;)V
+	public static synthetic fun show$default (Lnet/mm2d/color/chooser/ColorChooserDialog;Landroidx/fragment/app/FragmentActivity;Ljava/lang/String;IZI[IILjava/lang/Object;)V
+}
+

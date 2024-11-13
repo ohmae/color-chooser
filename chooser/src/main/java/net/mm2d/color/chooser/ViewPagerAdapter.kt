@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
 import androidx.recyclerview.widget.RecyclerView
 
-class ViewPagerAdapter(
+internal class ViewPagerAdapter(
     private val context: Context,
     private val tabs: IntArray,
 ) : RecyclerView.Adapter<PageViewHolder>() {
@@ -31,4 +31,4 @@ class ViewPagerAdapter(
     override fun getItemCount(): Int = tabs.size
 }
 
-class PageViewHolder(view: View) : RecyclerView.ViewHolder(view)
+internal class PageViewHolder(view: View) : RecyclerView.ViewHolder(view)

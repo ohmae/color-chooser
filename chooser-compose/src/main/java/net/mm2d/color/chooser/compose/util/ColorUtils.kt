@@ -20,10 +20,10 @@ import androidx.compose.ui.graphics.toArgb
  */
 private const val MINIMUM_CONTRAST_FOR_LARGE_TEXT = 3f
 
-fun Color.shouldUseWhiteForeground(): Boolean =
+internal fun Color.shouldUseWhiteForeground(): Boolean =
     calculateContrastRatio(this, Color.White) > MINIMUM_CONTRAST_FOR_LARGE_TEXT
 
-fun calculateContrastRatio(foreground: Color, background: Color): Float {
+internal fun calculateContrastRatio(foreground: Color, background: Color): Float {
     val foregroundLuminance = foreground.luminance() + 0.05f
     val backgroundLuminance = background.luminance() + 0.05f
 
@@ -31,7 +31,7 @@ fun calculateContrastRatio(foreground: Color, background: Color): Float {
         minOf(foregroundLuminance, backgroundLuminance)
 }
 
-fun Color.toHsv(outHsv: FloatArray? = null): FloatArray {
+internal fun Color.toHsv(outHsv: FloatArray? = null): FloatArray {
     val r = red
     val g = green
     val b = blue
@@ -58,7 +58,7 @@ private fun hue(r: Float, g: Float, b: Float, max: Float, min: Float): Float {
 private fun saturation(max: Float, min: Float): Float =
     if (max != 0f) (max - min) / max else 0f
 
-object ColorSaver : Saver<Color, Int> {
+internal object ColorSaver : Saver<Color, Int> {
     override fun restore(value: Int): Color = Color(value)
     override fun SaverScope.save(value: Color): Int = value.toArgb()
 }

@@ -28,9 +28,6 @@ private fun Project.plugin() {
             sourceCompatibility = Projects.SOURCE_COMPATIBILITY
             targetCompatibility = Projects.TARGET_COMPATIBILITY
         }
-        buildFeatures {
-            viewBinding = true
-        }
         lint {
             abortOnError = true
         }
