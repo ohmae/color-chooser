@@ -22,6 +22,7 @@ private fun Project.plugin() {
     with(pluginManager) {
         apply("org.gradle.maven-publish")
         apply("org.gradle.signing")
+        apply("org.jetbrains.kotlinx.binary-compatibility-validator")
     }
     tasks.create("javadocJar", Jar::class) {
         dependsOn("dokkaGenerateModuleJavadoc")

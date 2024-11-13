@@ -10,7 +10,6 @@ plugins {
     alias(libs.plugins.build.logic.gradleVersions)
     alias(libs.plugins.build.logic.dependencyGuard)
     alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.kotlinxValidator)
 }
 
 base.archivesName.set("color-chooser-compose")
