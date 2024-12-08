@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 internal class ColorObserverDelegate<T>(
     private val target: T,
 ) where T : View,
-          T : FlowCollector<Int> {
+        T : FlowCollector<Int> {
     private val scope = CoroutineScope(Job() + Dispatchers.Main)
     private var job: Job? = null
     private var colorFlow: MutableSharedFlow<Int>? = null
@@ -33,7 +33,9 @@ internal class ColorObserverDelegate<T>(
         colorFlow = null
     }
 
-    fun post(color: Int) {
+    fun post(
+        color: Int,
+    ) {
         colorFlow?.tryEmit(color)
     }
 }

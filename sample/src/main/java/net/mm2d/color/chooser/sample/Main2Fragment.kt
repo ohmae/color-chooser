@@ -24,7 +24,10 @@ class Main2Fragment : Fragment(R.layout.fragment_main2) {
     private var color: Int = Color.parseColor("#B71C1C")
     private lateinit var binding: FragmentMain2Binding
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentMain2Binding.bind(view)
         binding.tabDefault.setOnClickListener {

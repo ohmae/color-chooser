@@ -165,7 +165,10 @@ object ColorChooserDialog {
         )
     }
 
-    private fun show(manager: FragmentManager, arguments: Bundle) {
+    private fun show(
+        manager: FragmentManager,
+        arguments: Bundle,
+    ) {
         if (manager.findFragmentByTag(TAG) != null) return
         if (manager.isStateSaved) return
         ColorChooserDialogImpl().also {
@@ -176,7 +179,9 @@ object ColorChooserDialog {
     internal class ColorChooserDialogImpl : DialogFragment() {
         private lateinit var colorChooserView: ColorChooserView
 
-        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        override fun onCreateDialog(
+            savedInstanceState: Bundle?,
+        ): Dialog {
             val activity = requireActivity()
             colorChooserView =
                 Mm2dCcColorChooserBinding.inflate(activity.layoutInflater).root
@@ -208,13 +213,17 @@ object ColorChooserDialog {
                 .create()
         }
 
-        override fun onSaveInstanceState(outState: Bundle) {
+        override fun onSaveInstanceState(
+            outState: Bundle,
+        ) {
             super.onSaveInstanceState(outState)
             outState.putInt(KEY_INITIAL_TAB, colorChooserView.getCurrentItem())
             outState.putInt(KEY_INITIAL_COLOR, colorChooserView.color)
         }
 
-        override fun onCancel(dialog: DialogInterface) {
+        override fun onCancel(
+            dialog: DialogInterface,
+        ) {
             val key = requireArguments().getString(KEY_REQUEST_KEY) ?: return
             parentFragmentManager.setFragmentResult(
                 key,

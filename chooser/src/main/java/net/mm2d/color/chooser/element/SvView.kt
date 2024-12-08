@@ -64,19 +64,25 @@ internal class SvView
         }.start()
     }
 
-    fun setColor(@ColorInt color: Int) {
+    fun setColor(
+        @ColorInt color: Int,
+    ) {
         this.color = color
         ColorUtils.colorToHsv(color, hsvCache)
         updateHue(hsvCache[0])
         updateSv(hsvCache[1], hsvCache[2])
     }
 
-    fun setHue(h: Float) {
+    fun setHue(
+        h: Float,
+    ) {
         color = ColorUtils.hsvToColor(h, saturation, value)
         updateHue(h)
     }
 
-    private fun updateHue(h: Float) {
+    private fun updateHue(
+        h: Float,
+    ) {
         if (hue == h) {
             return
         }
@@ -85,7 +91,11 @@ internal class SvView
         invalidate()
     }
 
-    private fun updateSv(s: Float, v: Float, fromUser: Boolean = false) {
+    private fun updateSv(
+        s: Float,
+        v: Float,
+        fromUser: Boolean = false,
+    ) {
         if (saturation == s && value == v) {
             return
         }
@@ -98,7 +108,9 @@ internal class SvView
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    override fun onTouchEvent(event: MotionEvent): Boolean {
+    override fun onTouchEvent(
+        event: MotionEvent,
+    ): Boolean {
         if (event.action == MotionEvent.ACTION_DOWN) {
             parent.requestDisallowInterceptTouchEvent(true)
         }
@@ -109,7 +121,13 @@ internal class SvView
         return true
     }
 
-    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+    override fun onLayout(
+        changed: Boolean,
+        left: Int,
+        top: Int,
+        right: Int,
+        bottom: Int,
+    ) {
         targetRect.set(
             paddingLeft + requestPadding,
             paddingTop + requestPadding,
@@ -118,7 +136,9 @@ internal class SvView
         )
     }
 
-    override fun onDraw(canvas: Canvas) {
+    override fun onDraw(
+        canvas: Canvas,
+    ) {
         val mask = maskBitmap ?: return
         paint.color = maxColor
         canvas.drawRect(targetRect, paint)
@@ -133,7 +153,10 @@ internal class SvView
         canvas.drawCircle(x, y, sampleRadius, paint)
     }
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+    override fun onMeasure(
+        widthMeasureSpec: Int,
+        heightMeasureSpec: Int,
+    ) {
         val paddingHorizontal = paddingLeft + paddingRight
         val paddingVertical = paddingTop + paddingBottom
         val resizeWidth = MeasureSpec.getMode(widthMeasureSpec) != MeasureSpec.EXACTLY
@@ -186,7 +209,10 @@ internal class SvView
         setMeasuredDimension(widthSize, heightSize)
     }
 
-    private fun resolveAdjustedSize(desiredSize: Int, measureSpec: Int): Int {
+    private fun resolveAdjustedSize(
+        desiredSize: Int,
+        measureSpec: Int,
+    ): Int {
         val specMode = MeasureSpec.getMode(measureSpec)
         val specSize = MeasureSpec.getSize(measureSpec)
         return when (specMode) {

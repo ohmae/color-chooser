@@ -64,9 +64,23 @@ internal class ControlView
         }
         binding.editHex.filters = argbFilter
         binding.editHex.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) = Unit
-            override fun beforeTextChanged(s: CharSequence?, start: Int, c: Int, a: Int) = Unit
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            override fun afterTextChanged(
+                s: Editable?,
+            ) = Unit
+
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                c: Int,
+                a: Int,
+            ) = Unit
+
+            override fun onTextChanged(
+                s: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int,
+            ) {
                 if (!changeHexTextByUser) {
                     return
                 }
@@ -97,14 +111,18 @@ internal class ControlView
         delegate.onDetachedFromWindow()
     }
 
-    fun setAlpha(alpha: Int) {
+    fun setAlpha(
+        alpha: Int,
+    ) {
         binding.seekAlpha.setValue(alpha)
         color = color.setAlpha(alpha)
         binding.colorPreview.setColor(color)
         setColorToHexText()
     }
 
-    fun setWithAlpha(withAlpha: Boolean) {
+    fun setWithAlpha(
+        withAlpha: Boolean,
+    ) {
         hasAlpha = withAlpha
         binding.seekAlpha.isVisible = withAlpha
         binding.textAlpha.isVisible = withAlpha
@@ -124,7 +142,9 @@ internal class ControlView
         ViewCompat.setBackgroundTintList(binding.editHex, normalTint)
     }
 
-    override suspend fun emit(value: Int) {
+    override suspend fun emit(
+        value: Int,
+    ) {
         if (this.color.toOpacity() == value) return
         this.color = value.setAlpha(binding.seekAlpha.value)
         binding.colorPreview.setColor(this.color)

@@ -60,9 +60,14 @@ internal class Material3View
     override fun getTopPaddingOffset(): Int = -paddingTop
     override fun getBottomPaddingOffset(): Int = paddingBottom
 
-    override suspend fun emit(value: Int) = Unit
+    override suspend fun emit(
+        value: Int,
+    ) = Unit
 
-    override fun onMeasure(widthSpec: Int, heightSpec: Int) {
+    override fun onMeasure(
+        widthSpec: Int,
+        heightSpec: Int,
+    ) {
         setMeasuredDimension(
             getDefaultSize(suggestedMinimumWidth, widthSpec),
             getDefaultSize(suggestedMinimumHeight, heightSpec),
@@ -75,23 +80,33 @@ internal class Material3View
         private val inflater: LayoutInflater = LayoutInflater.from(context)
         var onColorChanged: (color: Int) -> Unit = {}
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CellHolder =
+        override fun onCreateViewHolder(
+            parent: ViewGroup,
+            viewType: Int,
+        ): CellHolder =
             CellHolder(inflater.inflate(R.layout.mm2d_cc_item_material3, parent, false))
                 .also { holder -> holder.onColorChanged = onColorChanged }
 
-        override fun onBindViewHolder(holder: CellHolder, position: Int) {
+        override fun onBindViewHolder(
+            holder: CellHolder,
+            position: Int,
+        ) {
             holder.apply(material3List[position])
         }
 
         override fun getItemCount(): Int = material3List.size
     }
 
-    private class CellHolder(itemView: View) : ViewHolder(itemView) {
+    private class CellHolder(
+        itemView: View,
+    ) : ViewHolder(itemView) {
         private val context = itemView.context
         private val title: TextView = itemView.findViewById(R.id.name)
         var onColorChanged: (color: Int) -> Unit = {}
 
-        fun apply(material3: Material3) {
+        fun apply(
+            material3: Material3,
+        ) {
             title.text = material3.name
             title.setTextColor(context.resolveColor(material3.textColor))
             val color = context.resolveColor(material3.color)

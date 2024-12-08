@@ -33,19 +33,28 @@ internal class PaletteCell @JvmOverloads constructor(
     }
     var checked: Boolean = false
 
-    fun setColor(color: Int) {
+    fun setColor(
+        color: Int,
+    ) {
         this.color = color
         paint.color = color
         isEnabled = color != Color.TRANSPARENT
         invalidate()
     }
 
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+    override fun onSizeChanged(
+        w: Int,
+        h: Int,
+        oldw: Int,
+        oldh: Int,
+    ) {
         val size = min(min(width, height), icon.intrinsicWidth)
         icon.setBounds((w - size) / 2, (h - size) / 2, (w + size) / 2, (h + size) / 2)
     }
 
-    override fun onDraw(canvas: Canvas) {
+    override fun onDraw(
+        canvas: Canvas,
+    ) {
         if (color == Color.TRANSPARENT) return
         canvas.drawColor(color)
         if (checked) {
@@ -57,15 +66,18 @@ internal class PaletteCell @JvmOverloads constructor(
     companion object {
         private var icon: Drawable? = null
 
-        private fun loadIcon(context: Context): Drawable =
-            icon ?: loadIconInner(context).also { icon = it }
+        private fun loadIcon(
+            context: Context,
+        ): Drawable = icon ?: loadIconInner(context).also { icon = it }
 
-        private fun loadIconInner(context: Context): Drawable =
-            AppCompatResources.getDrawable(context, drawable.mm2d_cc_ic_check)!!.wrap()
+        private fun loadIconInner(
+            context: Context,
+        ): Drawable = AppCompatResources.getDrawable(context, drawable.mm2d_cc_ic_check)!!.wrap()
 
         private fun Drawable.wrap(): Drawable = DrawableCompat.wrap(this)
 
-        fun selectForeground(background: Int): Int =
-            if (ColorUtils.shouldUseWhiteForeground(background)) Color.WHITE else Color.BLACK
+        fun selectForeground(
+            background: Int,
+        ): Int = if (ColorUtils.shouldUseWhiteForeground(background)) Color.WHITE else Color.BLACK
     }
 }

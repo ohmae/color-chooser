@@ -103,8 +103,9 @@ internal fun RgbChooser(
     }
 }
 
-private fun calculateSize(maxWidth: Dp): Dp =
-    (maxWidth - 8.dp * 6 - 42.dp).value.toInt().dp
+private fun calculateSize(
+    maxWidth: Dp,
+): Dp = (maxWidth - 8.dp * 6 - 42.dp).value.toInt().dp
 
 @Composable
 private fun Slider(
@@ -171,7 +172,9 @@ private fun Slider(
     }
 }
 
-private fun Color.applyValue(ratio: Float): Color =
+private fun Color.applyValue(
+    ratio: Float,
+): Color =
     Color(
         red = red * ratio,
         green = green * ratio,

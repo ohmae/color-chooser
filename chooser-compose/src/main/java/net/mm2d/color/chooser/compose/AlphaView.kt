@@ -51,8 +51,9 @@ internal fun AlphaView(
     }
 }
 
-private fun calculateSize(maxWidth: Dp): Dp =
-    (maxWidth - 8.dp * 6 - 42.dp).value.toInt().dp
+private fun calculateSize(
+    maxWidth: Dp,
+): Dp = (maxWidth - 8.dp * 6 - 42.dp).value.toInt().dp
 
 @Composable
 private fun Slider(

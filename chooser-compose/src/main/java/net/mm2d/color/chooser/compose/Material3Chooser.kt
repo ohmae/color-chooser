@@ -68,7 +68,9 @@ private data class MaterialItem(
     val textColor: Color = Color.Unspecified,
 )
 
-private fun makeMaterialItems(colorScheme: ColorScheme): List<List<MaterialItem>> =
+private fun makeMaterialItems(
+    colorScheme: ColorScheme,
+): List<List<MaterialItem>> =
     listOf(
         listOf(
             MaterialItem(

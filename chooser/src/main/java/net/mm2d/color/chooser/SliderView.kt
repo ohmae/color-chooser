@@ -51,13 +51,17 @@ internal class SliderView
         delegate.onDetachedFromWindow()
     }
 
-    override suspend fun emit(value: Int) {
+    override suspend fun emit(
+        value: Int,
+    ) {
         binding.seekRed.setValue(Color.red(value))
         binding.seekGreen.setValue(Color.green(value))
         binding.seekBlue.setValue(Color.blue(value))
     }
 
-    private fun updateBySeekBar(fromUser: Boolean) {
+    private fun updateBySeekBar(
+        fromUser: Boolean,
+    ) {
         if (!fromUser) return
         val color = Color.rgb(
             binding.seekRed.value,

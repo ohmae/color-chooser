@@ -47,7 +47,9 @@ internal class PreviewView
     var color: Int = Color.BLACK
         private set
 
-    override fun onDraw(canvas: Canvas) {
+    override fun onDraw(
+        canvas: Canvas,
+    ) {
         paint.style = Style.STROKE
         paint.color = colorSampleShadow
         paint.strokeWidth = shadowLineWidth
@@ -64,12 +66,20 @@ internal class PreviewView
         canvas.drawRect(targetRect, paint)
     }
 
-    fun setColor(color: Int) {
+    fun setColor(
+        color: Int,
+    ) {
         this.color = color
         invalidate()
     }
 
-    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+    override fun onLayout(
+        changed: Boolean,
+        left: Int,
+        top: Int,
+        right: Int,
+        bottom: Int,
+    ) {
         val border = (frameLineWidth + shadowLineWidth).toInt()
         targetRect.set(
             paddingLeft + border,
@@ -87,7 +97,10 @@ internal class PreviewView
         )
     }
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+    override fun onMeasure(
+        widthMeasureSpec: Int,
+        heightMeasureSpec: Int,
+    ) {
         setMeasuredDimension(
             resolveSizeAndState(
                 max(requestWidth, suggestedMinimumWidth),

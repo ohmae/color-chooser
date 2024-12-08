@@ -17,17 +17,21 @@ import androidx.annotation.Dimension
 import androidx.core.content.ContextCompat
 
 @ColorInt
-internal fun View.getColor(@ColorRes id: Int): Int =
-    ContextCompat.getColor(context, id)
+internal fun View.getColor(
+    @ColorRes id: Int,
+): Int = ContextCompat.getColor(context, id)
 
 @Dimension
-internal fun View.getDimension(@DimenRes id: Int): Float =
-    resources.getDimension(id)
+internal fun View.getDimension(
+    @DimenRes id: Int,
+): Float = resources.getDimension(id)
 
 @Dimension
-internal fun View.getPixels(@DimenRes id: Int): Int =
-    resources.getDimensionPixelSize(id)
+internal fun View.getPixels(
+    @DimenRes id: Int,
+): Int = resources.getDimensionPixelSize(id)
 
 @Dimension
-internal fun Int.toPixelsAsDp(context: Context): Int =
-    TypedValue.complexToDimensionPixelSize(this, context.resources.displayMetrics)
+internal fun Int.toPixelsAsDp(
+    context: Context,
+): Int = TypedValue.complexToDimensionPixelSize(this, context.resources.displayMetrics)

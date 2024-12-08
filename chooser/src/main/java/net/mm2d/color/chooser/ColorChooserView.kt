@@ -38,7 +38,10 @@ internal class ColorChooserView
         get() = binding.controlView.color
     private var tabs: IntArray = TABS
 
-    fun init(color: Int, tabs: IntArray) {
+    fun init(
+        color: Int,
+        tabs: IntArray,
+    ) {
         colorFlow.tryEmit(color.toOpacity())
         binding.controlView.setAlpha(color.alpha)
         val distinctTabs = tabs.filter { TABS.contains(it) }
@@ -58,7 +61,9 @@ internal class ColorChooserView
         this.tabs = distinctTabs
     }
 
-    fun setCurrentItem(tab: Int) {
+    fun setCurrentItem(
+        tab: Int,
+    ) {
         binding.viewPager.doOnLayout {
             val index = tabs.indexOf(tab)
             if (index < 0) return@doOnLayout
@@ -70,7 +75,9 @@ internal class ColorChooserView
 
     fun getCurrentItem(): Int = binding.viewPager.currentItem
 
-    fun setWithAlpha(withAlpha: Boolean) {
+    fun setWithAlpha(
+        withAlpha: Boolean,
+    ) {
         binding.controlView.setWithAlpha(withAlpha)
     }
 

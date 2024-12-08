@@ -27,5 +27,6 @@ internal fun Context.resolveColor(
     @StyleRes style: Int,
     @AttrRes attr: Int,
     @ColorInt defaultColor: Int,
-): Int = obtainStyledAttributes(style, intArrayOf(attr))
-    .use { it.getColor(0, defaultColor) }
+): Int =
+    obtainStyledAttributes(style, intArrayOf(attr))
+        .use { it.getColor(0, defaultColor) }

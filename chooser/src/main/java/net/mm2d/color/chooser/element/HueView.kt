@@ -50,11 +50,16 @@ internal class HueView
     private val colorSampleShadow = getColor(R.color.mm2d_cc_sample_shadow)
     var onHueChanged: ((hue: Float) -> Unit)? = null
 
-    fun setColor(@ColorInt color: Int) {
+    fun setColor(
+        @ColorInt color: Int,
+    ) {
         updateHue(ColorUtils.hue(color))
     }
 
-    private fun updateHue(h: Float, fromUser: Boolean = false) {
+    private fun updateHue(
+        h: Float,
+        fromUser: Boolean = false,
+    ) {
         if (hue == h) return
         hue = h
         color = ColorUtils.hsvToColor(hue, 1f, 1f)
@@ -65,12 +70,20 @@ internal class HueView
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    override fun onTouchEvent(event: MotionEvent): Boolean {
+    override fun onTouchEvent(
+        event: MotionEvent,
+    ): Boolean {
         updateHue(((event.y - targetRect.top) / targetRect.height()).coerceIn(0f, 1f), true)
         return true
     }
 
-    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+    override fun onLayout(
+        changed: Boolean,
+        left: Int,
+        top: Int,
+        right: Int,
+        bottom: Int,
+    ) {
         targetRect.set(
             paddingLeft + requestPadding,
             paddingTop + requestPadding,
@@ -79,7 +92,9 @@ internal class HueView
         )
     }
 
-    override fun onDraw(canvas: Canvas) {
+    override fun onDraw(
+        canvas: Canvas,
+    ) {
         canvas.drawBitmap(bitmap, bitmapRect, targetRect, paint)
         val x = targetRect.centerX().toFloat()
         val y = hue * targetRect.height() + targetRect.top
@@ -91,7 +106,10 @@ internal class HueView
         canvas.drawCircle(x, y, sampleRadius, paint)
     }
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+    override fun onMeasure(
+        widthMeasureSpec: Int,
+        heightMeasureSpec: Int,
+    ) {
         setMeasuredDimension(
             resolveSizeAndState(
                 max(requestWidth + paddingLeft + paddingRight, suggestedMinimumWidth),

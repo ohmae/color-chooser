@@ -88,8 +88,10 @@ internal fun HsvChooser(
     }
 }
 
-private fun calculateSize(maxWidth: Dp, maxHeight: Dp): Dp =
-    minOf(maxWidth - 8.dp * 6 - 24.dp, maxHeight - 8.dp * 2).value.toInt().dp
+private fun calculateSize(
+    maxWidth: Dp,
+    maxHeight: Dp,
+): Dp = minOf(maxWidth - 8.dp * 6 - 24.dp, maxHeight - 8.dp * 2).value.toInt().dp
 
 @Composable
 private fun HueView(
@@ -235,7 +237,10 @@ private fun createMaskBitmap(): Bitmap {
     return Bitmap.createBitmap(pixels, TONE_SIZE, TONE_SIZE, Bitmap.Config.ARGB_8888)
 }
 
-private fun svToMask(s: Float, v: Float): Int {
+private fun svToMask(
+    s: Float,
+    v: Float,
+): Int {
     val a = 1f - (s * v)
     val g = if (a == 0f) 0f else (v * (1f - s) / a).coerceIn(0f, 1f)
     return Color(red = g, blue = g, green = g, alpha = a).toArgb()

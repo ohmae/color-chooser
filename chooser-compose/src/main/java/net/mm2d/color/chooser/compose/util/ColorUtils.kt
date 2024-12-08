@@ -23,7 +23,10 @@ private const val MINIMUM_CONTRAST_FOR_LARGE_TEXT = 3f
 internal fun Color.shouldUseWhiteForeground(): Boolean =
     calculateContrastRatio(this, Color.White) > MINIMUM_CONTRAST_FOR_LARGE_TEXT
 
-internal fun calculateContrastRatio(foreground: Color, background: Color): Float {
+internal fun calculateContrastRatio(
+    foreground: Color,
+    background: Color,
+): Float {
     val foregroundLuminance = foreground.luminance() + 0.05f
     val backgroundLuminance = background.luminance() + 0.05f
 
@@ -31,7 +34,9 @@ internal fun calculateContrastRatio(foreground: Color, background: Color): Float
         minOf(foregroundLuminance, backgroundLuminance)
 }
 
-internal fun Color.toHsv(outHsv: FloatArray? = null): FloatArray {
+internal fun Color.toHsv(
+    outHsv: FloatArray? = null,
+): FloatArray {
     val r = red
     val g = green
     val b = blue
@@ -44,7 +49,13 @@ internal fun Color.toHsv(outHsv: FloatArray? = null): FloatArray {
     return hsv
 }
 
-private fun hue(r: Float, g: Float, b: Float, max: Float, min: Float): Float {
+private fun hue(
+    r: Float,
+    g: Float,
+    b: Float,
+    max: Float,
+    min: Float,
+): Float {
     val range = max - min
     if (range == 0f) return 0f
     val hue = when (max) {
@@ -55,10 +66,17 @@ private fun hue(r: Float, g: Float, b: Float, max: Float, min: Float): Float {
     return (hue * 60f).coerceIn(0f, 360f)
 }
 
-private fun saturation(max: Float, min: Float): Float =
-    if (max != 0f) (max - min) / max else 0f
+private fun saturation(
+    max: Float,
+    min: Float,
+): Float = if (max != 0f) (max - min) / max else 0f
 
 internal object ColorSaver : Saver<Color, Int> {
-    override fun restore(value: Int): Color = Color(value)
-    override fun SaverScope.save(value: Color): Int = value.toArgb()
+    override fun restore(
+        value: Int,
+    ): Color = Color(value)
+
+    override fun SaverScope.save(
+        value: Color,
+    ): Int = value.toArgb()
 }

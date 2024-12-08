@@ -34,7 +34,9 @@ import net.mm2d.color.chooser.sample.compose.ui.theme.SampleTheme
 
 class MainActivity : AppCompatActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(
+        savedInstanceState: Bundle?,
+    ) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {

@@ -24,7 +24,11 @@ internal object ColorUtils {
      * @param v Value
      * @return color
      */
-    fun hsvToColor(h: Float, s: Float, v: Float): Int {
+    fun hsvToColor(
+        h: Float,
+        s: Float,
+        v: Float,
+    ): Int {
         if (s <= 0f) return toColor(v, v, v)
         val hue = h * 6f // [0.0f, 6.0f]
         val i = hue.toInt() // hueの整数部
@@ -78,7 +82,10 @@ internal object ColorUtils {
      * @param v Value
      * @return pixel value of mask
      */
-    fun svToMask(s: Float, v: Float): Int {
+    fun svToMask(
+        s: Float,
+        v: Float,
+    ): Int {
         val a = 1f - (s * v)
         val g = if (a == 0f) 0f else (v * (1f - s) / a).coerceIn(0f, 1f)
         return toColor(a, g, g, g)
@@ -91,7 +98,10 @@ internal object ColorUtils {
      * @param outHsv hsv buffer if not specify or null, allocate new array
      * @return hsv array
      */
-    fun colorToHsv(color: Int, outHsv: FloatArray? = null): FloatArray {
+    fun colorToHsv(
+        color: Int,
+        outHsv: FloatArray? = null,
+    ): FloatArray {
         val r = color.red / 255f
         val g = color.green / 255f
         val b = color.blue / 255f
@@ -110,7 +120,9 @@ internal object ColorUtils {
      * @param color color
      * @return hue
      */
-    fun hue(color: Int): Float {
+    fun hue(
+        color: Int,
+    ): Float {
         val r = color.red / 255f
         val g = color.green / 255f
         val b = color.blue / 255f
@@ -119,13 +131,25 @@ internal object ColorUtils {
         return hue(r, g, b, max, min)
     }
 
-    private fun max(v1: Float, v2: Float, v3: Float): Float =
-        maxOf(maxOf(v1, v2), v3)
+    private fun max(
+        v1: Float,
+        v2: Float,
+        v3: Float,
+    ): Float = maxOf(maxOf(v1, v2), v3)
 
-    private fun min(v1: Float, v2: Float, v3: Float): Float =
-        minOf(minOf(v1, v2), v3)
+    private fun min(
+        v1: Float,
+        v2: Float,
+        v3: Float,
+    ): Float = minOf(minOf(v1, v2), v3)
 
-    private fun hue(r: Float, g: Float, b: Float, max: Float, min: Float): Float {
+    private fun hue(
+        r: Float,
+        g: Float,
+        b: Float,
+        max: Float,
+        min: Float,
+    ): Float {
         val range = max - min
         if (range == 0f) return 0f
         val hue = when (max) {
@@ -136,8 +160,10 @@ internal object ColorUtils {
         return (hue / 6f).coerceIn(0f, 1f)
     }
 
-    private fun saturation(max: Float, min: Float): Float =
-        if (max != 0.0f) (max - min) / max else 0f
+    private fun saturation(
+        max: Float,
+        min: Float,
+    ): Float = if (max != 0.0f) (max - min) / max else 0f
 
     /**
      * Convert [0.0f, 1.0f] ARGB value to color
@@ -147,8 +173,11 @@ internal object ColorUtils {
      * @param b Blue value
      * @return color
      */
-    private fun toColor(r: Float, g: Float, b: Float): Int =
-        toColor(r.to8bit(), g.to8bit(), b.to8bit())
+    private fun toColor(
+        r: Float,
+        g: Float,
+        b: Float,
+    ): Int = toColor(r.to8bit(), g.to8bit(), b.to8bit())
 
     /**
      * Convert [0, 255] RGB value to color
@@ -158,8 +187,11 @@ internal object ColorUtils {
      * @param b Blue value
      * @return color
      */
-    private fun toColor(r: Int, g: Int, b: Int): Int =
-        (0xff shl 24) or (0xff and r shl 16) or (0xff and g shl 8) or (0xff and b)
+    private fun toColor(
+        r: Int,
+        g: Int,
+        b: Int,
+    ): Int = (0xff shl 24) or (0xff and r shl 16) or (0xff and g shl 8) or (0xff and b)
 
     /**
      * Convert [0.0f, 1.0f] ARGB value to color
@@ -170,7 +202,12 @@ internal object ColorUtils {
      * @param b Blue value
      * @return color
      */
-    private fun toColor(a: Float, r: Float, g: Float, b: Float): Int =
+    private fun toColor(
+        a: Float,
+        r: Float,
+        g: Float,
+        b: Float,
+    ): Int =
         toColor(
             a.to8bit(),
             r.to8bit(),
@@ -187,8 +224,12 @@ internal object ColorUtils {
      * @param b Blue value
      * @return color
      */
-    private fun toColor(a: Int, r: Int, g: Int, b: Int): Int =
-        (0xff and a shl 24) or (0xff and r shl 16) or (0xff and g shl 8) or (0xff and b)
+    private fun toColor(
+        a: Int,
+        r: Int,
+        g: Int,
+        b: Int,
+    ): Int = (0xff and a shl 24) or (0xff and r shl 16) or (0xff and g shl 8) or (0xff and b)
 
     /**
      * Calculate luminance based on ITU-R BT.709 and sRGB
@@ -200,8 +241,11 @@ internal object ColorUtils {
      * @param b Blue ratio
      * @return luminance
      */
-    fun luminance(r: Float, g: Float, b: Float): Float =
-        r * 0.2126f + g * 0.7152f + b * 0.0722f
+    fun luminance(
+        r: Float,
+        g: Float,
+        b: Float,
+    ): Float = r * 0.2126f + g * 0.7152f + b * 0.0722f
 
     /**
      * Minimum contrast for large text based on W3C guideline
@@ -216,8 +260,9 @@ internal object ColorUtils {
      * @param color
      * @return if true, should use white foreground, else avoid white foreground
      */
-    fun shouldUseWhiteForeground(color: Int): Boolean =
-        color.contrastWithWhite() > MINIMUM_CONTRAST_FOR_LARGE_TEXT
+    fun shouldUseWhiteForeground(
+        color: Int,
+    ): Boolean = color.contrastWithWhite() > MINIMUM_CONTRAST_FOR_LARGE_TEXT
 }
 
 /**
@@ -227,7 +272,9 @@ internal object ColorUtils {
  * @param alpha Alpha
  * @return alpha applied color
  */
-internal fun Int.setAlpha(alpha: Int): Int = this and 0xffffff or (alpha shl 24)
+internal fun Int.setAlpha(
+    alpha: Int,
+): Int = this and 0xffffff or (alpha shl 24)
 
 /**
  * Overwrite alpha value to completely opaque
@@ -277,11 +324,12 @@ internal fun Int.normalizeForSrgb(): Float = toRatio().normalizeForSrgb()
  * @receiver color
  * @return sRGB luminance
  */
-internal fun Int.relativeLuminance(): Float = ColorUtils.luminance(
-    red.normalizeForSrgb(),
-    green.normalizeForSrgb(),
-    blue.normalizeForSrgb(),
-)
+internal fun Int.relativeLuminance(): Float =
+    ColorUtils.luminance(
+        red.normalizeForSrgb(),
+        green.normalizeForSrgb(),
+        blue.normalizeForSrgb(),
+    )
 
 /**
  * Calculate contrast between given color and pure white (#ffffff)

@@ -50,7 +50,9 @@ internal class HsvView
         delegate.onDetachedFromWindow()
     }
 
-    override suspend fun emit(value: Int) {
+    override suspend fun emit(
+        value: Int,
+    ) {
         if (this.color == value) return
         this.color = value
         binding.svView.setColor(value)

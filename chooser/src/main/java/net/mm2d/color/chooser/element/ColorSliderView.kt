@@ -69,13 +69,17 @@ internal class ColorSliderView
         updateChecker()
     }
 
-    fun setMaxColor(maxColor: Int) {
+    fun setMaxColor(
+        maxColor: Int,
+    ) {
         this.maxColor = maxColor.toOpacity()
         gradation = createGradation(this.maxColor)
         invalidate()
     }
 
-    fun setValue(value: Int) {
+    fun setValue(
+        value: Int,
+    ) {
         floatValue = (value / MAX.toFloat()).coerceIn(0f, 1f)
         onValueChanged?.invoke(value, false)
         invalidate()
@@ -95,7 +99,9 @@ internal class ColorSliderView
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    override fun onTouchEvent(event: MotionEvent): Boolean {
+    override fun onTouchEvent(
+        event: MotionEvent,
+    ): Boolean {
         if (event.action == MotionEvent.ACTION_DOWN) {
             parent.requestDisallowInterceptTouchEvent(true)
         }
@@ -105,7 +111,13 @@ internal class ColorSliderView
         return true
     }
 
-    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+    override fun onLayout(
+        changed: Boolean,
+        left: Int,
+        top: Int,
+        right: Int,
+        bottom: Int,
+    ) {
         targetRect.set(
             paddingLeft + requestPadding,
             paddingTop + requestPadding,
@@ -114,7 +126,9 @@ internal class ColorSliderView
         )
     }
 
-    override fun onDraw(canvas: Canvas) {
+    override fun onDraw(
+        canvas: Canvas,
+    ) {
         paint.style = Style.STROKE
         paint.color = colorSampleShadow
         paint.strokeWidth = shadowLineWidth
@@ -151,7 +165,10 @@ internal class ColorSliderView
         canvas.drawCircle(x, y, sampleRadius, paint)
     }
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+    override fun onMeasure(
+        widthMeasureSpec: Int,
+        heightMeasureSpec: Int,
+    ) {
         setMeasuredDimension(
             getDefaultSize(
                 maxOf(requestWidth + paddingLeft + paddingRight, suggestedMinimumWidth),
@@ -169,12 +186,19 @@ internal class ColorSliderView
         private const val MAX = 255
         private const val RANGE = 256
 
-        private fun createGradation(color: Int): Bitmap {
+        private fun createGradation(
+            color: Int,
+        ): Bitmap {
             val pixels = IntArray(RANGE) { color.setAlpha(it) }
             return Bitmap.createBitmap(pixels, RANGE, 1, Bitmap.Config.ARGB_8888)
         }
 
-        private fun createChecker(step: Int, height: Int, color1: Int, color2: Int): Bitmap {
+        private fun createChecker(
+            step: Int,
+            height: Int,
+            color1: Int,
+            color2: Int,
+        ): Bitmap {
             val width = step * 4
             val pixels = IntArray(width * height)
             repeat(height) { y ->

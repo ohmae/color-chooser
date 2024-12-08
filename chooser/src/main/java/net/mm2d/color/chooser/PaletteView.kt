@@ -80,18 +80,28 @@ internal class PaletteView
     override fun getTopPaddingOffset(): Int = -paddingTop
     override fun getBottomPaddingOffset(): Int = paddingBottom
 
-    override suspend fun emit(value: Int) {
+    override suspend fun emit(
+        value: Int,
+    ) {
         cellAdapter.setColor(value)
     }
 
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+    override fun onSizeChanged(
+        w: Int,
+        h: Int,
+        oldw: Int,
+        oldh: Int,
+    ) {
         super.onSizeChanged(w, h, oldw, oldh)
         if (oldh == 0 && h > 0) {
             linearLayoutManager.scrollToPositionWithOffset(cellAdapter.index, (h - cellHeight) / 2)
         }
     }
 
-    override fun onMeasure(widthSpec: Int, heightSpec: Int) {
+    override fun onMeasure(
+        widthSpec: Int,
+        heightSpec: Int,
+    ) {
         setMeasuredDimension(
             getDefaultSize(suggestedMinimumWidth, widthSpec),
             getDefaultSize(suggestedMinimumHeight, heightSpec),
@@ -108,23 +118,31 @@ internal class PaletteView
         var index: Int = -1
             private set
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CellHolder =
+        override fun onCreateViewHolder(
+            parent: ViewGroup,
+            viewType: Int,
+        ): CellHolder =
             CellHolder(inflater.inflate(R.layout.mm2d_cc_item_palette, parent, false))
                 .also { holder -> holder.onColorChanged = onColorChanged }
 
-        override fun onBindViewHolder(holder: CellHolder, position: Int) =
-            holder.apply(list[position], color)
+        override fun onBindViewHolder(
+            holder: CellHolder,
+            position: Int,
+        ) = holder.apply(list[position], color)
 
         override fun getItemCount(): Int = list.size
 
-        suspend fun load() = withContext(Dispatchers.Main) {
-            if (list.isNotEmpty()) return@withContext
-            list = withContext(Dispatchers.IO) { createPalette(context) }
-            notifyItemRangeInserted(0, list.size)
-            index = list.indexOfFirst { it.contains(color) }
-        }
+        suspend fun load() =
+            withContext(Dispatchers.Main) {
+                if (list.isNotEmpty()) return@withContext
+                list = withContext(Dispatchers.IO) { createPalette(context) }
+                notifyItemRangeInserted(0, list.size)
+                index = list.indexOfFirst { it.contains(color) }
+            }
 
-        fun setColor(newColor: Int) {
+        fun setColor(
+            newColor: Int,
+        ) {
             if (color == newColor) return
             color = newColor
             val newIndex = list.indexOfFirst { it.contains(newColor) }
@@ -135,7 +153,9 @@ internal class PaletteView
         }
     }
 
-    private class CellHolder(itemView: View) : ViewHolder(itemView) {
+    private class CellHolder(
+        itemView: View,
+    ) : ViewHolder(itemView) {
         private val viewList: List<PaletteCell> = (itemView as ViewGroup).children
             .map { it as PaletteCell }
             .toList()
@@ -147,11 +167,16 @@ internal class PaletteView
             }
         }
 
-        private fun performOnColorChanged(view: View) {
+        private fun performOnColorChanged(
+            view: View,
+        ) {
             onColorChanged.invoke(view.tag as? Int ?: return)
         }
 
-        fun apply(colors: IntArray, selected: Int) {
+        fun apply(
+            colors: IntArray,
+            selected: Int,
+        ) {
             viewList.forEachIndexed { i, view ->
                 val color = if (i < colors.size) colors[i] else Color.TRANSPARENT
                 view.tag = color
@@ -165,10 +190,14 @@ internal class PaletteView
         private var cache: SoftReference<List<IntArray>> = SoftReference<List<IntArray>>(null)
 
         @SuppressLint("Recycle")
-        private fun <R> Resources.useTypedArray(@ArrayRes id: Int, block: TypedArray.() -> R): R =
-            obtainTypedArray(id).use { it.block() }
+        private fun <R> Resources.useTypedArray(
+            @ArrayRes id: Int,
+            block: TypedArray.() -> R,
+        ): R = obtainTypedArray(id).use { it.block() }
 
-        private fun createPalette(context: Context): List<IntArray> {
+        private fun createPalette(
+            context: Context,
+        ): List<IntArray> {
             cache.get()?.let { return it }
             val resources = context.resources
             return resources.useTypedArray(R.array.material_colors) {
@@ -178,7 +207,8 @@ internal class PaletteView
             }
         }
 
-        private fun Resources.readColorArray(id: Int): IntArray =
-            useTypedArray(id) { IntArray(length()) { getColorOrThrow(it) } }
+        private fun Resources.readColorArray(
+            id: Int,
+        ): IntArray = useTypedArray(id) { IntArray(length()) { getColorOrThrow(it) } }
     }
 }
