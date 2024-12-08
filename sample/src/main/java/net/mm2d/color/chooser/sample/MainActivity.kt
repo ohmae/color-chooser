@@ -11,8 +11,11 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import net.mm2d.color.chooser.ColorChooserDialog
 import net.mm2d.color.chooser.ColorChooserDialog.TAB_HSV
 import net.mm2d.color.chooser.ColorChooserDialog.TAB_MATERIAL3
@@ -28,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         savedInstanceState: Bundle?,
     ) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.tabDefault.setOnClickListener {
@@ -81,6 +85,16 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "onSelect #${"%08X".format(it)}", Toast.LENGTH_SHORT).show()
         }) {
             Toast.makeText(this, "onCancel", Toast.LENGTH_SHORT).show()
+        }
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(
+                systemBars.left,
+                systemBars.top,
+                systemBars.right,
+                systemBars.bottom
+            )
+            insets
         }
     }
 
