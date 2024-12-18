@@ -11,12 +11,16 @@ plugins {
 }
 
 dependencies {
-    dokka(projects.chooser)
-    dokka(projects.chooserCompose)
+    val dokkaPluginId = libs.plugins.build.logic.documentationDokka.get().pluginId
+    subprojects {
+        plugins.withId(dokkaPluginId) {
+            dokka(this@subprojects)
+        }
+    }
 }
 
 dokka {
-    dokkaPublicationDirectory.set(File(projectDir, "docs/dokka"))
+    basePublicationsDirectory.set(File(projectDir, "docs/dokka"))
 }
 
 val ktlint: Configuration by configurations.creating

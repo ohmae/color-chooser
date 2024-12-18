@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
                 systemBars.left,
                 systemBars.top,
                 systemBars.right,
-                systemBars.bottom
+                systemBars.bottom,
             )
             insets
         }

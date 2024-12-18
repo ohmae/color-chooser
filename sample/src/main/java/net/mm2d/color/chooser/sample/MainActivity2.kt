@@ -28,7 +28,7 @@ class MainActivity2 : AppCompatActivity() {
                 systemBars.left,
                 systemBars.top,
                 systemBars.right,
-                systemBars.bottom
+                systemBars.bottom,
             )
             insets
         }
