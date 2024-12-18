@@ -5,4 +5,3 @@ module:chooser
 net.mm2d.color.chooser
 module:chooser-compose
 net.mm2d.color.chooser.compose
-net.mm2d.color.chooser.compose.util
