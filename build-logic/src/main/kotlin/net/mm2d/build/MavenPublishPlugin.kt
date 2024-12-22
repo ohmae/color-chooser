@@ -9,6 +9,7 @@ import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.get
+import org.gradle.kotlin.dsl.register
 import org.gradle.plugins.signing.SigningExtension
 import java.net.URI
 
@@ -24,7 +25,7 @@ private fun Project.plugin() {
         apply("org.gradle.signing")
         apply("org.jetbrains.kotlinx.binary-compatibility-validator")
     }
-    tasks.create("javadocJar", Jar::class) {
+    tasks.register("javadocJar", Jar::class) {
         dependsOn("dokkaGenerateModuleJavadoc")
         archiveClassifier.set("javadoc")
         from(layout.buildDirectory.dir("dokka-module/javadoc/module"))
