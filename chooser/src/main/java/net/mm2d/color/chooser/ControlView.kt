@@ -57,7 +57,7 @@ internal class ControlView
         binding.colorPreview.setColor(color)
         binding.seekAlpha.setValue(color.alpha)
         binding.seekAlpha.onValueChanged = { value, fromUser ->
-            binding.textAlpha.text = value.toString()
+            binding.textAlpha.text = "%d".format(value)
             if (fromUser) {
                 setAlpha(value)
             }

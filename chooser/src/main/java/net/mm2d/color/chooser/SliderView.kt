@@ -28,15 +28,15 @@ internal class SliderView
 
     init {
         binding.seekRed.onValueChanged = { value, fromUser ->
-            binding.textRed.text = value.toString()
+            binding.textRed.text = "%d".format(value)
             updateBySeekBar(fromUser)
         }
         binding.seekGreen.onValueChanged = { value, fromUser ->
-            binding.textGreen.text = value.toString()
+            binding.textGreen.text = "%d".format(value)
             updateBySeekBar(fromUser)
         }
         binding.seekBlue.onValueChanged = { value, fromUser ->
-            binding.textBlue.text = value.toString()
+            binding.textBlue.text = "%d".format(value)
             updateBySeekBar(fromUser)
         }
     }

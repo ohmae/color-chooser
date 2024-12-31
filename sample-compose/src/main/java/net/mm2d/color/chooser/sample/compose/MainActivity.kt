@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -66,7 +67,7 @@ class MainActivity : AppCompatActivity() {
 private fun Content(
     modifier: Modifier = Modifier,
 ) {
-    var color by rememberSaveable { mutableStateOf(Color.Red.toArgb()) }
+    var color by rememberSaveable { mutableIntStateOf(Color.Red.toArgb()) }
     var tabs by rememberSaveable { mutableStateOf(emptyList<Tab>()) }
     var initialTab by rememberSaveable { mutableStateOf(Tab.PALETTE) }
     var withAlpha by rememberSaveable { mutableStateOf(false) }
