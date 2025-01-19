@@ -15,8 +15,8 @@ materialComponents = "1.12.0"
 leakCanary = "2.14"
 junit = "4.13.2"
 
-activityCompose = "1.9.3"
-composeBom = "2024.12.01"
+activityCompose = "1.10.0"
+composeBom = "2025.01.00"
 
 ktlint = "1.5.0"
 
