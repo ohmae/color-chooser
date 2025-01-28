@@ -1,6 +1,6 @@
 [versions]
 androidGradlePlugin = "8.8.0"
-kotlin = "2.1.0"
+kotlin = "2.1.10"
 dokka = "2.0.0"
 androidxNavigation = "2.8.5"
 gradleVersionsPlugin = "0.51.0"
