@@ -1,21 +1,21 @@
 [versions]
-androidGradlePlugin = "8.8.1"
+androidGradlePlugin = "8.8.2"
 kotlin = "2.1.10"
 dokka = "2.0.0"
-androidxNavigation = "2.8.7"
+androidxNavigation = "2.8.8"
 gradleVersionsPlugin = "0.52.0"
 kotlinxCoroutines = "1.10.1"
 dependencyGuard = "0.5.0"
 kotlinxValidator = "0.17.0"
 
 androidxAppCompat = "1.7.0"
-androidxConstraintLayout = "2.2.0"
+androidxConstraintLayout = "2.2.1"
 androidxCoreKtx = "1.15.0"
 materialComponents = "1.12.0"
 leakCanary = "2.14"
 junit = "4.13.2"
 
-activityCompose = "1.10.0"
+activityCompose = "1.10.1"
 composeBom = "2025.02.00"
 
 ktlint = "1.5.0"
