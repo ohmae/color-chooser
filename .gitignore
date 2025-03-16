@@ -21,6 +21,8 @@
 /.idea/deploymentTargetSelector.xml
 /.idea/inspectionProfiles
 /.idea/CamelCaseConfigNew.xml
+/.idea/AndroidProjectSystem.xml
+/.idea/runConfigurations.xml
 .DS_Store
 /build
 /captures
