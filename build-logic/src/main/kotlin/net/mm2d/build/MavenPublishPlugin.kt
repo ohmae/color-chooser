@@ -70,6 +70,7 @@ private fun MavenPublication.applyProjectProperty(project: Project) {
         name.set(project.pomName)
         description.set(project.pomDescription)
         url.set(Projects.Url.SITE)
+        inceptionYear.set(project.pomInceptionYear)
         licenses {
             license {
                 name.set("The MIT License")
@@ -114,3 +115,7 @@ var Project.pomName: String
 var Project.pomDescription: String
     get() = findPropertyString("POM_DESCRIPTION")
     set(value) = setProperty("POM_DESCRIPTION", value)
+
+var Project.pomInceptionYear: String
+    get() = findPropertyString("POM_INCEPTION_YEAR")
+    set(value) = setProperty("POM_INCEPTION_YEAR", value)

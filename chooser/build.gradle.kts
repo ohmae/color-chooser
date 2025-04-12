@@ -1,5 +1,6 @@
 import net.mm2d.build.Projects
 import net.mm2d.build.pomDescription
+import net.mm2d.build.pomInceptionYear
 import net.mm2d.build.pomName
 
 plugins {
@@ -16,6 +17,7 @@ group = Projects.GROUP_ID
 version = Projects.Chooser.VERSION_NAME
 pomName = "Color Chooser Dialog"
 pomDescription = "Color Chooser Dialog"
+pomInceptionYear = "2018"
 
 android {
     namespace = "net.mm2d.color.chooser"
