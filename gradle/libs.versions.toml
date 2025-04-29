@@ -1,5 +1,5 @@
 [versions]
-androidGradlePlugin = "8.9.1"
+androidGradlePlugin = "8.9.2"
 kotlin = "2.1.20"
 dokka = "2.0.0"
 androidxNavigation = "2.8.9"
@@ -16,7 +16,7 @@ leakCanary = "2.14"
 junit = "4.13.2"
 
 activityCompose = "1.10.1"
-composeBom = "2025.04.00"
+composeBom = "2025.04.01"
 
 ktlint = "1.5.0"
 
