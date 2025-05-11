@@ -2,7 +2,7 @@
 androidGradlePlugin = "8.10.0"
 kotlin = "2.1.20"
 dokka = "2.0.0"
-androidxNavigation = "2.8.9"
+androidxNavigation = "2.9.0"
 gradleVersionsPlugin = "0.52.0"
 kotlinxCoroutines = "1.10.2"
 dependencyGuard = "0.5.0"
@@ -16,7 +16,7 @@ leakCanary = "2.14"
 junit = "4.13.2"
 
 activityCompose = "1.10.1"
-composeBom = "2025.04.01"
+composeBom = "2025.05.00"
 
 ktlint = "1.5.0"
 
@@ -31,7 +31,6 @@ ktlint = { group = "com.pinterest.ktlint", name = "ktlint-cli", version.ref = "k
 kotlinxValidator = { group = "org.jetbrains.kotlinx", name = "binary-compatibility-validator", version.ref = "kotlinxValidator" }
 
 # implementation
-kotlinStdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 kotlinxCoroutinesAndroid = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 androidxAppCompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppCompat" }
 androidxConstraintLayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidxConstraintLayout" }

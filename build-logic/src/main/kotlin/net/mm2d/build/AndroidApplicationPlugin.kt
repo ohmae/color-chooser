@@ -29,7 +29,6 @@ private fun Project.plugin() {
         lint {
             abortOnError = true
         }
-        @Suppress("UnstableApiUsage")
         testOptions {
             unitTests.isIncludeAndroidResources = true
         }

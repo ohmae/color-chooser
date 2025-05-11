@@ -26,7 +26,6 @@ private fun Project.plugin() {
         }
     }
     dependencies {
-        implementation(libs.library("kotlinStdlib"))
         implementation(libs.library("kotlinxCoroutinesAndroid"))
     }
 }
