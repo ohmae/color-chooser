@@ -4,9 +4,9 @@ import org.gradle.api.JavaVersion
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 object Projects {
-    const val COMPILE_SDK: Int = 35
+    const val COMPILE_SDK: Int = 36
     const val MIN_SDK: Int = 21
-    const val TARGET_SDK: Int = 35
+    const val TARGET_SDK: Int = 36
 
     val SOURCE_COMPATIBILITY: JavaVersion = JavaVersion.VERSION_1_8
     val TARGET_COMPATIBILITY: JavaVersion = JavaVersion.VERSION_1_8
