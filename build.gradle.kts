@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlinAndroid) apply false
     alias(libs.plugins.kotlinCompose) apply false
     alias(libs.plugins.dokka)
+    alias(libs.plugins.vanniktechMavenPublish) apply false
     alias(libs.plugins.navigationSafeArgs) apply false
     alias(libs.plugins.gradleVersions) apply false
     alias(libs.plugins.dependencyGuard) apply false

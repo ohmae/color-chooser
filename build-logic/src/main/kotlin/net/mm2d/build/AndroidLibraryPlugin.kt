@@ -38,12 +38,6 @@ private fun Project.plugin() {
             archiveClassifier.set("sources")
             from(android.sourceSets["main"].java.srcDirs)
         }
-        publishing {
-            singleVariant("release") {
-                withSourcesJar()
-                withJavadocJar()
-            }
-        }
     }
 }
 

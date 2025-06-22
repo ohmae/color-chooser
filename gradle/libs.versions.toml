@@ -7,6 +7,7 @@ gradleVersionsPlugin = "0.52.0"
 kotlinxCoroutines = "1.10.2"
 dependencyGuard = "0.5.0"
 kotlinxValidator = "0.17.0"
+vanniktechMavenPublish = "0.32.0"
 
 androidxAppCompat = "1.7.1"
 androidxConstraintLayout = "2.2.1"
@@ -16,7 +17,7 @@ leakCanary = "2.14"
 junit = "4.13.2"
 
 activityCompose = "1.10.1"
-composeBom = "2025.06.00"
+composeBom = "2025.06.01"
 
 ktlint = "1.6.0"
 
@@ -29,6 +30,7 @@ gradleVersionsPlugin = { group = "com.github.ben-manes", name = "gradle-versions
 dependencyGuardPlugin = { group = "com.dropbox.dependency-guard", name = "dependency-guard", version.ref = "dependencyGuard" }
 ktlint = { group = "com.pinterest.ktlint", name = "ktlint-cli", version.ref = "ktlint" }
 kotlinxValidator = { group = "org.jetbrains.kotlinx", name = "binary-compatibility-validator", version.ref = "kotlinxValidator" }
+vanniktechMavenPublish = { group = "com.vanniktech", name = "gradle-maven-publish-plugin", version.ref = "vanniktechMavenPublish" }
 
 # implementation
 kotlinxCoroutinesAndroid = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
@@ -65,6 +67,7 @@ navigationSafeArgs = { id = "androidx.navigation.safeargs.kotlin", version.ref =
 gradleVersions = { id = "com.github.ben-manes.versions", version.ref = "gradleVersionsPlugin" }
 dependencyGuard = { id = "com.dropbox.dependency-guard", version.ref = "dependencyGuard" }
 kotlinxValidator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "kotlinxValidator" }
+vanniktechMavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktechMavenPublish" }
 
 # build-logic
 build-logic-androidApplication = { id = "build.logic.androidApplication", version = "unspecified" }
@@ -84,4 +87,5 @@ plugins = [
     "gradleVersionsPlugin",
     "dependencyGuardPlugin",
     "kotlinxValidator",
+    "vanniktechMavenPublish",
 ]
