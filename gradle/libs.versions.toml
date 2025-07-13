@@ -1,13 +1,13 @@
 [versions]
-androidGradlePlugin = "8.10.1"
-kotlin = "2.1.21"
+androidGradlePlugin = "8.11.1"
+kotlin = "2.2.0"
 dokka = "2.0.0"
-androidxNavigation = "2.9.0"
+androidxNavigation = "2.9.1"
 gradleVersionsPlugin = "0.52.0"
 kotlinxCoroutines = "1.10.2"
 dependencyGuard = "0.5.0"
-kotlinxValidator = "0.17.0"
-vanniktechMavenPublish = "0.32.0"
+kotlinxValidator = "0.18.1"
+vanniktechMavenPublish = "0.33.0"
 
 androidxAppCompat = "1.7.1"
 androidxConstraintLayout = "2.2.1"
