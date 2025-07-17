@@ -2,7 +2,7 @@
 androidGradlePlugin = "8.11.1"
 kotlin = "2.2.0"
 dokka = "2.0.0"
-androidxNavigation = "2.9.1"
+androidxNavigation = "2.9.2"
 gradleVersionsPlugin = "0.52.0"
 kotlinxCoroutines = "1.10.2"
 dependencyGuard = "0.5.0"
@@ -17,7 +17,7 @@ leakCanary = "2.14"
 junit = "4.13.2"
 
 activityCompose = "1.10.1"
-composeBom = "2025.06.01"
+composeBom = "2025.07.00"
 
 ktlint = "1.6.0"
 
