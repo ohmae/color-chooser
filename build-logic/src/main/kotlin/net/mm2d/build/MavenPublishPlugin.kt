@@ -2,7 +2,6 @@ package net.mm2d.build
 
 import com.vanniktech.maven.publish.AndroidSingleVariantLibrary
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
-import com.vanniktech.maven.publish.SonatypeHost
 import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -27,7 +26,7 @@ private fun Project.plugin() {
                 publishJavadocJar = true,
             )
         )
-        publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+        publishToMavenCentral()
         signAllPublications()
         coordinates(
             groupId = project.group.toString(),

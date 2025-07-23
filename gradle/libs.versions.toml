@@ -7,7 +7,7 @@ gradleVersionsPlugin = "0.52.0"
 kotlinxCoroutines = "1.10.2"
 dependencyGuard = "0.5.0"
 kotlinxValidator = "0.18.1"
-vanniktechMavenPublish = "0.33.0"
+vanniktechMavenPublish = "0.34.0"
 
 androidxAppCompat = "1.7.1"
 androidxConstraintLayout = "2.2.1"
@@ -19,7 +19,7 @@ junit = "4.13.2"
 activityCompose = "1.10.1"
 composeBom = "2025.07.00"
 
-ktlint = "1.6.0"
+ktlint = "1.7.1"
 
 [libraries]
 # classPath
