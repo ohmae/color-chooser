@@ -68,7 +68,7 @@ internal fun HsvChooser(
         modifier = modifier,
     ) {
         val sizeState = remember { mutableStateOf(255.dp) }
-        sizeState.value = calculateSize(maxWidth, maxHeight)
+        sizeState.value = calculateSize(this.maxWidth, this.maxHeight)
         Row(
             modifier = Modifier.align(Alignment.Center),
         ) {

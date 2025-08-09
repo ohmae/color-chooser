@@ -22,6 +22,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.alpha
+import androidx.core.graphics.toColorInt
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import kotlinx.coroutines.flow.FlowCollector
@@ -89,12 +90,12 @@ internal class ControlView
                     return
                 }
                 try {
-                    color = Color.parseColor("#$s")
+                    color = "#$s".toColorInt()
                     clearError()
                     binding.colorPreview.setColor(color)
                     binding.seekAlpha.setValue(color.alpha)
                     delegate.post(color.toOpacity())
-                } catch (e: IllegalArgumentException) {
+                } catch (_: IllegalArgumentException) {
                     setError()
                 }
             }

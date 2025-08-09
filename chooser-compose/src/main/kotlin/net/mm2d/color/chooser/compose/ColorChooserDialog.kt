@@ -25,7 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
@@ -140,8 +140,8 @@ private fun ColumnScope.DialogButtons(
 
 @Composable
 private fun calculateDialogSize(): DpSize {
-    val screenWith = LocalConfiguration.current.screenWidthDp
-    val screenHeight = LocalConfiguration.current.screenHeightDp
+    val screenWith = LocalWindowInfo.current.containerSize.width
+    val screenHeight = LocalWindowInfo.current.containerSize.height
     val portraitHeight = (screenHeight * 0.7f).dp
 
     val width = minOf((screenWith * 0.9f).dp, 480.dp)

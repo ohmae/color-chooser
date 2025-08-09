@@ -48,7 +48,7 @@ internal fun AlphaView(
         modifier = modifier,
     ) {
         val sizeState = remember { mutableStateOf(255.dp) }
-        sizeState.value = calculateSize(maxWidth)
+        sizeState.value = calculateSize(this.maxWidth)
         Box(modifier = Modifier.align(Alignment.Center)) {
             Slider(
                 colorEventState = colorEventState,

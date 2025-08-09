@@ -83,7 +83,7 @@ internal fun RgbChooser(
         modifier = modifier,
     ) {
         val sizeState = remember { mutableStateOf(255.dp) }
-        sizeState.value = calculateSize(maxWidth)
+        sizeState.value = calculateSize(this.maxWidth)
         Column(
             modifier = Modifier
                 .align(Alignment.Center),

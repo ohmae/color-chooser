@@ -7,11 +7,11 @@
 
 package net.mm2d.color.chooser.sample
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.graphics.toColorInt
 import androidx.fragment.app.Fragment
 import net.mm2d.color.chooser.ColorChooserDialog
 import net.mm2d.color.chooser.ColorChooserDialog.TAB_HSV
@@ -21,7 +21,7 @@ import net.mm2d.color.chooser.ColorChooserDialog.TAB_RGB
 import net.mm2d.color.chooser.sample.databinding.FragmentMain2Binding
 
 class Main2Fragment : Fragment(R.layout.fragment_main2) {
-    private var color: Int = Color.parseColor("#B71C1C")
+    private var color: Int = "#B71C1C".toColorInt()
     private lateinit var binding: FragmentMain2Binding
 
     override fun onViewCreated(

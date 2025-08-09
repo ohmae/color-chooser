@@ -52,7 +52,7 @@ internal class PaletteView
         setPadding(0, padding, 0, padding)
         clipToPadding = false
         setHasFixedSize(true)
-        overScrollMode = View.OVER_SCROLL_NEVER
+        overScrollMode = OVER_SCROLL_NEVER
         itemAnimator = null
         layoutManager = linearLayoutManager
         isVerticalFadingEdgeEnabled = true

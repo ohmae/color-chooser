@@ -8,12 +8,12 @@
 package net.mm2d.color.chooser.sample
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.graphics.toColorInt
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import net.mm2d.color.chooser.ColorChooserDialog
@@ -24,7 +24,7 @@ import net.mm2d.color.chooser.ColorChooserDialog.TAB_RGB
 import net.mm2d.color.chooser.sample.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    private var color: Int = Color.parseColor("#B71C1C")
+    private var color: Int = "#B71C1C".toColorInt()
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(

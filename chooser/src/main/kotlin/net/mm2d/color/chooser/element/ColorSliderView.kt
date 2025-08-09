@@ -19,6 +19,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.withStyledAttributes
+import androidx.core.graphics.withClip
 import net.mm2d.color.chooser.R
 import net.mm2d.color.chooser.util.drawRectWithOffset
 import net.mm2d.color.chooser.util.getColor
@@ -141,13 +142,12 @@ internal class ColorSliderView
         paint.style = Style.FILL
         if (alphaMode) {
             val checker = checker ?: return
-            canvas.save()
-            canvas.clipRect(targetRect)
-            val top = targetRect.top.toFloat()
-            for (left in targetRect.left until targetRect.right step checker.width) {
-                canvas.drawBitmap(checker, left.toFloat(), top, paint)
+            canvas.withClip(targetRect) {
+                val top = targetRect.top.toFloat()
+                for (left in targetRect.left until targetRect.right step checker.width) {
+                    drawBitmap(checker, left.toFloat(), top, paint)
+                }
             }
-            canvas.restore()
         } else {
             paint.color = baseColor
             canvas.drawRect(targetRect, paint)
