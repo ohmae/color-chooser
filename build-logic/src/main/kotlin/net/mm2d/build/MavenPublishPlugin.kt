@@ -28,11 +28,13 @@ private fun Project.plugin() {
         )
         publishToMavenCentral()
         signAllPublications()
-        coordinates(
-            groupId = project.group.toString(),
-            artifactId = project.base.archivesName.get(),
-            version = project.version.toString()
-        )
+        afterEvaluate {
+            coordinates(
+                groupId = project.group.toString(),
+                artifactId = project.base.archivesName.get(),
+                version = project.version.toString()
+            )
+        }
         pom {
             name.set(project.pomName)
             description.set(project.pomDescription)
