@@ -13,12 +13,12 @@ androidx.concurrent:concurrent-futures:1.1.0
 androidx.constraintlayout:constraintlayout-core:1.1.1
 androidx.constraintlayout:constraintlayout:2.2.1
 androidx.coordinatorlayout:coordinatorlayout:1.1.0
-androidx.core:core-ktx:1.16.0
+androidx.core:core-ktx:1.17.0
 androidx.core:core-viewtree:1.0.0
-androidx.core:core:1.16.0
+androidx.core:core:1.17.0
 androidx.cursoradapter:cursoradapter:1.0.0
 androidx.customview:customview:1.1.0
-androidx.databinding:viewbinding:8.12.0
+androidx.databinding:viewbinding:8.12.1
 androidx.documentfile:documentfile:1.0.0
 androidx.drawerlayout:drawerlayout:1.1.1
 androidx.dynamicanimation:dynamicanimation:1.0.0
@@ -53,7 +53,7 @@ com.google.android.material:material:1.12.0
 com.google.errorprone:error_prone_annotations:2.15.0
 com.google.guava:listenablefuture:1.0
 org.jetbrains.kotlin:kotlin-bom:1.8.22
-org.jetbrains.kotlin:kotlin-stdlib:2.2.0
+org.jetbrains.kotlin:kotlin-stdlib:2.2.10
 org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2
 org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.10.2
 org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.10.2
