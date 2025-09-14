@@ -34,6 +34,5 @@ dependencies {
     implementation(libs.androidxNavigationFragmentKtx)
     implementation(libs.androidxNavigationUiKtx)
     implementation(libs.materialComponents)
-    debugImplementation(libs.leakCanary)
     testImplementation(libs.junit)
 }

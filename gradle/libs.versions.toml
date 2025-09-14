@@ -13,7 +13,6 @@ androidxAppCompat = "1.7.1"
 androidxConstraintLayout = "2.2.1"
 androidxCoreKtx = "1.17.0"
 materialComponents = "1.13.0"
-leakCanary = "2.14"
 junit = "4.13.2"
 
 activityCompose = "1.11.0"
@@ -47,9 +46,6 @@ composeBom = { group = "androidx.compose", name = "compose-bom", version.ref = "
 composeUi = { group = "androidx.compose.ui", name = "ui" }
 composeUiGraphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 composeMaterial3 = { group = "androidx.compose.material3", name = "material3" }
-
-# debugImplementation
-leakCanary = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakCanary" }
 
 # testImplementation
 junit = { group = "junit", name = "junit", version.ref = "junit" }
