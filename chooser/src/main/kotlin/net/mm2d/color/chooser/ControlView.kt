@@ -31,7 +31,7 @@ import net.mm2d.color.chooser.util.resolveColor
 import net.mm2d.color.chooser.util.setAlpha
 import net.mm2d.color.chooser.util.toOpacity
 import java.util.Locale
-import com.google.android.material.R as MR
+import androidx.appcompat.R as AR
 
 internal class ControlView
 @JvmOverloads constructor(
@@ -42,9 +42,9 @@ internal class ControlView
     FlowCollector<Int> {
     private val delegate = ColorObserverDelegate(this)
     private val normalTint =
-        ColorStateList.valueOf(context.resolveColor(MR.attr.colorAccent, Color.BLUE))
+        ColorStateList.valueOf(context.resolveColor(AR.attr.colorAccent, Color.BLUE))
     private val errorTint =
-        ColorStateList.valueOf(context.resolveColor(MR.attr.colorError, Color.RED))
+        ColorStateList.valueOf(context.resolveColor(AR.attr.colorError, Color.RED))
     private var changeHexTextByUser = true
     private var hasAlpha: Boolean = true
     private val rgbFilter = arrayOf(HexadecimalFilter(), LengthFilter(6))

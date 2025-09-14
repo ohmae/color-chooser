@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.FlowCollector
 import net.mm2d.color.chooser.util.resolveColor
+import androidx.appcompat.R as AR
 import com.google.android.material.R as MR
 
 internal class Material3View
@@ -127,13 +128,13 @@ internal class Material3View
         private val material3List: List<Material3> = listOf(
             Material3(
                 name = "Primary",
-                color = MR.attr.colorPrimary,
+                color = AR.attr.colorPrimary,
                 textColor = MR.attr.colorOnPrimary,
             ),
             Material3(
                 name = "On Primary",
                 color = MR.attr.colorOnPrimary,
-                textColor = MR.attr.colorPrimary,
+                textColor = AR.attr.colorPrimary,
             ),
             Material3(
                 name = "Primary Container",
@@ -187,13 +188,13 @@ internal class Material3View
             ),
             Material3(
                 name = "Error",
-                color = MR.attr.colorError,
+                color = AR.attr.colorError,
                 textColor = MR.attr.colorOnError,
             ),
             Material3(
                 name = "On Error",
                 color = MR.attr.colorOnError,
-                textColor = MR.attr.colorError,
+                textColor = AR.attr.colorError,
             ),
             Material3(
                 name = "Error Container",
@@ -338,7 +339,7 @@ internal class Material3View
             Material3(
                 name = "Inverse Primary",
                 color = MR.attr.colorPrimaryInverse,
-                textColor = MR.attr.colorPrimary,
+                textColor = AR.attr.colorPrimary,
             ),
         )
     }
