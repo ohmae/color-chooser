@@ -38,6 +38,7 @@ private fun Project.plugin() {
             archiveClassifier.set("sources")
             from(android.sourceSets["main"].java.srcDirs)
         }
+        resourcePrefix = "mm2d_cc_"
     }
 }
 

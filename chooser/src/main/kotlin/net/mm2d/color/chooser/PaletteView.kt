@@ -200,7 +200,7 @@ internal class PaletteView
         ): List<IntArray> {
             cache.get()?.let { return it }
             val resources = context.resources
-            return resources.useTypedArray(R.array.material_colors) {
+            return resources.useTypedArray(R.array.mm2d_cc_material_colors) {
                 (0 until length()).map { resources.readColorArray(getResourceIdOrThrow(it)) }
             }.also {
                 cache = SoftReference(it)
