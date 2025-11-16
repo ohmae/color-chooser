@@ -1,5 +1,5 @@
 [versions]
-androidGradlePlugin = "8.13.0"
+androidGradlePlugin = "8.13.1"
 kotlin = "2.2.21"
 dokka = "2.1.0"
 androidxNavigation = "2.9.6"
@@ -7,7 +7,7 @@ gradleVersionsPlugin = "0.53.0"
 kotlinxCoroutines = "1.10.2"
 dependencyGuard = "0.5.0"
 kotlinxValidator = "0.18.1"
-vanniktechMavenPublish = "0.34.0"
+vanniktechMavenPublish = "0.35.0"
 
 androidxAppCompat = "1.7.1"
 androidxConstraintLayout = "2.2.1"
@@ -18,7 +18,7 @@ junit = "4.13.2"
 activityCompose = "1.11.0"
 composeBom = "2025.11.00"
 
-ktlint = "1.7.1"
+ktlint = "1.8.0"
 
 [libraries]
 # classPath

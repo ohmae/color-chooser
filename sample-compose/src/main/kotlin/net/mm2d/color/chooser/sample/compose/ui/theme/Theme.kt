@@ -23,6 +23,7 @@ fun SampleTheme(
         }
 
         darkTheme -> darkColorScheme()
+
         else -> lightColorScheme()
     }
 
