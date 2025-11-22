@@ -15,8 +15,8 @@ androidxCoreKtx = "1.17.0"
 materialComponents = "1.13.0"
 junit = "4.13.2"
 
-activityCompose = "1.11.0"
-composeBom = "2025.11.00"
+activityCompose = "1.12.0"
+composeBom = "2025.11.01"
 
 ktlint = "1.8.0"
 
