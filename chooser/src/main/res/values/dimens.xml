@@ -1,5 +1,5 @@
 <resources>
-    <dimen name="mm2d_cc_seek_padding">4dp</dimen>
+    <dimen name="mm2d_cc_seek_padding">0dp</dimen>
     <dimen name="mm2d_cc_sample_radius">5dp</dimen>
     <dimen name="mm2d_cc_sample_frame">2dp</dimen>
     <dimen name="mm2d_cc_sample_shadow">1dp</dimen>
