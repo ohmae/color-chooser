@@ -16,7 +16,7 @@ materialComponents = "1.13.0"
 junit = "4.13.2"
 
 activityCompose = "1.12.2"
-composeBom = "2025.12.01"
+composeBom = "2026.01.00"
 
 ktlint = "1.8.0"
 
