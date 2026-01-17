@@ -1,9 +1,10 @@
 package net.mm2d.build
 
-import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
+import com.android.build.api.dsl.ApplicationExtension
+import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.configure
+import org.gradle.api.plugins.ExtensionAware
 
 class AndroidApplicationPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -36,5 +37,5 @@ private fun Project.plugin() {
 }
 
 // DSL
-private fun Project.androidApplication(action: BaseAppModuleExtension.() -> Unit): Unit =
-    extensions.configure(action)
+private fun Project.androidApplication(configure: Action<ApplicationExtension>): Unit =
+    (this as ExtensionAware).extensions.configure("android", configure)

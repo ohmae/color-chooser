@@ -14,16 +14,11 @@ class KotlinAndroidPlugin : Plugin<Project> {
 }
 
 private fun Project.plugin() {
-    with(pluginManager) {
-        apply("org.jetbrains.kotlin.android")
-    }
-    android {
-        kotlin {
-            compilerOptions {
-                jvmTarget.set(Projects.JVM_TARGET)
-            }
-            jvmToolchain(Projects.JVM_TOOLCHAIN)
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(Projects.JVM_TARGET)
         }
+        jvmToolchain(Projects.JVM_TOOLCHAIN)
     }
     dependencies {
         implementation(libs.library("kotlinxCoroutinesAndroid"))

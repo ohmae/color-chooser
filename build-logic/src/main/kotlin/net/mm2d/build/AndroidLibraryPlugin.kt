@@ -1,11 +1,11 @@
 package net.mm2d.build
 
-import com.android.build.gradle.LibraryExtension
+import com.android.build.gradle.internal.dsl.LibraryExtensionImpl
+import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.tasks.bundling.Jar
-import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.register
 
@@ -43,8 +43,8 @@ private fun Project.plugin() {
 }
 
 // DSL
-private fun Project.androidLibrary(action: LibraryExtension.() -> Unit): Unit =
-    extensions.configure(action)
+private fun Project.androidLibrary(configure: Action<LibraryExtensionImpl>): Unit =
+    (this as ExtensionAware).extensions.configure("android", configure)
 
-private val Project.android: LibraryExtension
-    get() = (this as ExtensionAware).extensions.getByName("android") as LibraryExtension
+private val Project.android: LibraryExtensionImpl
+    get() = (this as ExtensionAware).extensions.getByName("android") as LibraryExtensionImpl

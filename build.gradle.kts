@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.androidApplication) apply false
     alias(libs.plugins.androidLibrary) apply false
-    alias(libs.plugins.kotlinAndroid) apply false
     alias(libs.plugins.kotlinCompose) apply false
     alias(libs.plugins.dokka)
     alias(libs.plugins.vanniktechMavenPublish) apply false
@@ -9,6 +8,12 @@ plugins {
     alias(libs.plugins.gradleVersions) apply false
     alias(libs.plugins.dependencyGuard) apply false
     alias(libs.plugins.kotlinxValidator) apply false
+}
+
+buildscript {
+    dependencies {
+        classpath(libs.kotlinGradlePlugin)
+    }
 }
 
 dependencies {
