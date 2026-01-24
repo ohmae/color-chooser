@@ -6,7 +6,6 @@ androidxNavigation = "2.9.6"
 gradleVersionsPlugin = "0.53.0"
 kotlinxCoroutines = "1.10.2"
 dependencyGuard = "0.5.0"
-kotlinxValidator = "0.18.1"
 vanniktechMavenPublish = "0.35.0"
 
 androidxAppCompat = "1.7.1"
@@ -28,7 +27,6 @@ dokkaGradlePlugin = { group = "org.jetbrains.dokka", name = "dokka-gradle-plugin
 gradleVersionsPlugin = { group = "com.github.ben-manes", name = "gradle-versions-plugin", version.ref = "gradleVersionsPlugin" }
 dependencyGuardPlugin = { group = "com.dropbox.dependency-guard", name = "dependency-guard", version.ref = "dependencyGuard" }
 ktlint = { group = "com.pinterest.ktlint", name = "ktlint-cli", version.ref = "ktlint" }
-kotlinxValidator = { group = "org.jetbrains.kotlinx", name = "binary-compatibility-validator", version.ref = "kotlinxValidator" }
 vanniktechMavenPublish = { group = "com.vanniktech", name = "gradle-maven-publish-plugin", version.ref = "vanniktechMavenPublish" }
 
 # implementation
