@@ -4,8 +4,10 @@
 /.idea/assetWizardSettings.xml
 /.idea/appInsightsSettings.xml
 /.idea/caches
+/.idea/copilot.*.xml
 /.idea/copyright
 /.idea/deploymentTargetDropDown.xml
+/.idea/deviceManager.xml
 /.idea/dictionaries
 /.idea/encodings.xml
 /.idea/gradle.xml
@@ -14,6 +16,7 @@
 /.idea/libraries
 /.idea/migrations.xml
 /.idea/navEditor.xml
+/.idea/markdown.xml
 /.idea/misc.xml
 /.idea/modules.xml
 /.idea/workspace.xml

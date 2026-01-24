@@ -1,3 +1,6 @@
+import nl.littlerobots.vcu.plugin.resolver.VersionSelectors
+import nl.littlerobots.vcu.plugin.versionCatalogUpdate
+
 plugins {
     alias(libs.plugins.androidApplication) apply false
     alias(libs.plugins.androidLibrary) apply false
@@ -5,8 +8,8 @@ plugins {
     alias(libs.plugins.dokka)
     alias(libs.plugins.vanniktechMavenPublish) apply false
     alias(libs.plugins.navigationSafeArgs) apply false
-    alias(libs.plugins.gradleVersions) apply false
     alias(libs.plugins.dependencyGuard) apply false
+    alias(libs.plugins.versionCatalogUpdate)
 }
 
 buildscript {
@@ -26,6 +29,10 @@ dependencies {
 
 dokka {
     basePublicationsDirectory.set(File(projectDir, "docs/dokka"))
+}
+
+versionCatalogUpdate {
+    versionSelector(VersionSelectors.STABLE)
 }
 
 val ktlint: Configuration by configurations.creating

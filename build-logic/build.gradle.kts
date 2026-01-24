@@ -32,10 +32,6 @@ gradlePlugin {
             id = "build.logic.mavenPublish"
             implementationClass = "net.mm2d.build.MavenPublishPlugin"
         }
-        register("gradleVersions") {
-            id = "build.logic.gradleVersions"
-            implementationClass = "net.mm2d.build.GradleVersionsPlugin"
-        }
         register("dependencyGuard") {
             id = "build.logic.dependencyGuard"
             implementationClass = "net.mm2d.build.DependencyGuardPlugin"

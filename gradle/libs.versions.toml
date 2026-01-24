@@ -3,10 +3,10 @@ androidGradlePlugin = "9.0.0"
 kotlin = "2.3.0"
 dokka = "2.1.0"
 androidxNavigation = "2.9.6"
-gradleVersionsPlugin = "0.53.0"
 kotlinxCoroutines = "1.10.2"
 dependencyGuard = "0.5.0"
 vanniktechMavenPublish = "0.35.0"
+versionCatalogUpdate = "1.0.1"
 
 androidxAppCompat = "1.7.1"
 androidxConstraintLayout = "2.2.1"
@@ -24,7 +24,6 @@ ktlint = "1.8.0"
 androidGradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 kotlinGradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 dokkaGradlePlugin = { group = "org.jetbrains.dokka", name = "dokka-gradle-plugin", version.ref = "dokka" }
-gradleVersionsPlugin = { group = "com.github.ben-manes", name = "gradle-versions-plugin", version.ref = "gradleVersionsPlugin" }
 dependencyGuardPlugin = { group = "com.dropbox.dependency-guard", name = "dependency-guard", version.ref = "dependencyGuard" }
 ktlint = { group = "com.pinterest.ktlint", name = "ktlint-cli", version.ref = "ktlint" }
 vanniktechMavenPublish = { group = "com.vanniktech", name = "gradle-maven-publish-plugin", version.ref = "vanniktechMavenPublish" }
@@ -57,9 +56,9 @@ androidLibrary = { id = "com.android.library", version.ref = "androidGradlePlugi
 kotlinCompose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 navigationSafeArgs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "androidxNavigation" }
-gradleVersions = { id = "com.github.ben-manes.versions", version.ref = "gradleVersionsPlugin" }
 dependencyGuard = { id = "com.dropbox.dependency-guard", version.ref = "dependencyGuard" }
 vanniktechMavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktechMavenPublish" }
+versionCatalogUpdate = { id = "nl.littlerobots.version-catalog-update", version.ref = "versionCatalogUpdate" }
 
 # build-logic
 build-logic-androidApplication = { id = "build.logic.androidApplication", version = "unspecified" }
@@ -68,7 +67,6 @@ build-logic-kotlinAndroid = { id = "build.logic.kotlinAndroid", version = "unspe
 build-logic-navigationSafeArgs = { id = "build.logic.navigationSafeArgs", version = "unspecified" }
 build-logic-documentationDokka = { id = "build.logic.documentationDokka", version = "unspecified" }
 build-logic-mavenPublish = { id = "build.logic.mavenPublish", version = "unspecified" }
-build-logic-gradleVersions = { id = "build.logic.gradleVersions", version = "unspecified" }
 build-logic-dependencyGuard = { id = "build.logic.dependencyGuard", version = "unspecified" }
 
 [bundles]
@@ -76,7 +74,6 @@ plugins = [
     "androidGradlePlugin",
     "kotlinGradlePlugin",
     "dokkaGradlePlugin",
-    "gradleVersionsPlugin",
     "dependencyGuardPlugin",
     "vanniktechMavenPublish",
 ]

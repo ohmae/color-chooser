@@ -8,7 +8,6 @@ plugins {
     alias(libs.plugins.build.logic.kotlinAndroid)
     alias(libs.plugins.build.logic.documentationDokka)
     alias(libs.plugins.build.logic.mavenPublish)
-    alias(libs.plugins.build.logic.gradleVersions)
     alias(libs.plugins.build.logic.dependencyGuard)
     alias(libs.plugins.kotlinCompose)
 }
