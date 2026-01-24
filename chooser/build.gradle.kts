@@ -42,7 +42,3 @@ dependencies {
     implementation(libs.androidxDatabinding)
     testImplementation(libs.junit)
 }
-
-apiValidation {
-    ignoredPackages.add("net.mm2d.color.chooser.databinding")
-}

@@ -61,7 +61,6 @@ dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 navigationSafeArgs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "androidxNavigation" }
 gradleVersions = { id = "com.github.ben-manes.versions", version.ref = "gradleVersionsPlugin" }
 dependencyGuard = { id = "com.dropbox.dependency-guard", version.ref = "dependencyGuard" }
-kotlinxValidator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "kotlinxValidator" }
 vanniktechMavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktechMavenPublish" }
 
 # build-logic
@@ -81,6 +80,5 @@ plugins = [
     "dokkaGradlePlugin",
     "gradleVersionsPlugin",
     "dependencyGuardPlugin",
-    "kotlinxValidator",
     "vanniktechMavenPublish",
 ]

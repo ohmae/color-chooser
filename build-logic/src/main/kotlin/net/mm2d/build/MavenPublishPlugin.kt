@@ -16,7 +16,6 @@ class MavenPublishPlugin : Plugin<Project> {
 private fun Project.plugin() {
     with(pluginManager) {
         apply("com.vanniktech.maven.publish")
-        apply("org.jetbrains.kotlinx.binary-compatibility-validator")
     }
     mavenPublishing {
         configure(

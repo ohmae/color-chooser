@@ -7,7 +7,6 @@ plugins {
     alias(libs.plugins.navigationSafeArgs) apply false
     alias(libs.plugins.gradleVersions) apply false
     alias(libs.plugins.dependencyGuard) apply false
-    alias(libs.plugins.kotlinxValidator) apply false
 }
 
 buildscript {
