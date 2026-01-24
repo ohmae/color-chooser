@@ -5,7 +5,7 @@ dokka = "2.1.0"
 androidxNavigation = "2.9.6"
 kotlinxCoroutines = "1.10.2"
 dependencyGuard = "0.5.0"
-vanniktechMavenPublish = "0.35.0"
+vanniktechMavenPublish = "0.36.0"
 versionCatalogUpdate = "1.0.1"
 
 androidxAppCompat = "1.7.1"
