@@ -39,6 +39,8 @@ private fun Project.plugin() {
             from(android.sourceSets["main"].java.srcDirs)
         }
         resourcePrefix = "mm2d_cc_"
+
+        configureBinaryCompatibilityValidator()
     }
 }
 
