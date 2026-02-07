@@ -1,6 +1,6 @@
 [versions]
 androidGradlePlugin = "9.0.0"
-kotlin = "2.3.0"
+kotlin = "2.3.10"
 dokka = "2.1.0"
 dependencyGuard = "0.5.0"
 kotlinxValidator = "0.18.1"
