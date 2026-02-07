@@ -2,16 +2,17 @@
 androidGradlePlugin = "9.0.0"
 kotlin = "2.3.0"
 dokka = "2.1.0"
-androidxNavigation = "2.9.7"
-kotlinxCoroutines = "1.10.2"
 dependencyGuard = "0.5.0"
+kotlinxValidator = "0.18.1"
 vanniktechMavenPublish = "0.36.0"
 versionCatalogUpdate = "1.0.1"
 
+kotlinxCoroutines = "1.10.2"
 androidxAppCompat = "1.7.1"
 androidxConstraintLayout = "2.2.1"
 androidxCoreKtx = "1.17.0"
 materialComponents = "1.13.0"
+androidxNavigation = "2.9.7"
 junit = "4.13.2"
 
 activityCompose = "1.12.3"
@@ -25,8 +26,10 @@ androidGradlePlugin = { group = "com.android.tools.build", name = "gradle", vers
 kotlinGradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 dokkaGradlePlugin = { group = "org.jetbrains.dokka", name = "dokka-gradle-plugin", version.ref = "dokka" }
 dependencyGuardPlugin = { group = "com.dropbox.dependency-guard", name = "dependency-guard", version.ref = "dependencyGuard" }
-ktlint = { group = "com.pinterest.ktlint", name = "ktlint-cli", version.ref = "ktlint" }
 vanniktechMavenPublish = { group = "com.vanniktech", name = "gradle-maven-publish-plugin", version.ref = "vanniktechMavenPublish" }
+kotlinxValidator = { group = "org.jetbrains.kotlinx", name = "binary-compatibility-validator", version.ref = "kotlinxValidator" }
+
+ktlint = { group = "com.pinterest.ktlint", name = "ktlint-cli", version.ref = "ktlint" }
 
 # implementation
 kotlinxCoroutinesAndroid = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
@@ -54,10 +57,12 @@ dokkaAndroidDocumentationPlugin = { group = "org.jetbrains.dokka", name = "andro
 androidApplication = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 androidLibrary = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 kotlinCompose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 navigationSafeArgs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "androidxNavigation" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 dependencyGuard = { id = "com.dropbox.dependency-guard", version.ref = "dependencyGuard" }
 vanniktechMavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktechMavenPublish" }
+kotlinxValidator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "kotlinxValidator" }
+
 versionCatalogUpdate = { id = "nl.littlerobots.version-catalog-update", version.ref = "versionCatalogUpdate" }
 
 # build-logic
@@ -76,4 +81,5 @@ plugins = [
     "dokkaGradlePlugin",
     "dependencyGuardPlugin",
     "vanniktechMavenPublish",
+    "kotlinxValidator",
 ]

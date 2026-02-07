@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.vanniktechMavenPublish) apply false
     alias(libs.plugins.navigationSafeArgs) apply false
     alias(libs.plugins.dependencyGuard) apply false
+    alias(libs.plugins.kotlinxValidator) apply false
     alias(libs.plugins.versionCatalogUpdate)
 }
 
