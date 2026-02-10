@@ -27,13 +27,18 @@ internal fun Project.configureBinaryCompatibilityValidator() {
     val apiFileName = "$projectName.api"
     val apiDir = layout.projectDirectory.dir(extension.apiDumpDirectory)
     val apiFile = apiDir.file(apiFileName)
-    val intermediatePath = "intermediates/built_in_kotlinc/release/compileReleaseKotlin/classes"
+    val intermediatePaths = listOf(
+        "intermediates/built_in_kotlinc/release/compileReleaseKotlin/classes",
+        "intermediates/javac/release/compileReleaseJavaWithJavac/classes",
+    )
 
     val apiBuild = tasks.register<KotlinApiBuildTask>("apiBuild") {
-        dependsOn("compileReleaseKotlin")
+        dependsOn("compileReleaseJavaWithJavac")
         isEnabled = enabled
         group = LifecycleBasePlugin.VERIFICATION_GROUP
-        inputClassesDirs.from(layout.buildDirectory.dir(intermediatePath))
+        inputClassesDirs.from(
+            *intermediatePaths.map { layout.buildDirectory.dir(it) }.toTypedArray()
+        )
         outputApiFile.set(layout.buildDirectory.dir("api").map { it.file(apiFileName) })
         runtimeClasspath.from(bcvRuntimeClasspath)
     }
