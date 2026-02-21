@@ -10,7 +10,6 @@ pluginManagement {
             }
         }
         gradlePluginPortal().content {
-            includeGroupAndSubgroups("com.github.ben-manes")
             includeGroupAndSubgroups("org.gradle.toolchains")
         }
         mavenCentral()
