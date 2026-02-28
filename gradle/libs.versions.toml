@@ -5,7 +5,7 @@ dokka = "2.1.0"
 dependencyGuard = "0.5.0"
 kotlinxValidator = "0.18.1"
 vanniktechMavenPublish = "0.36.0"
-versionCatalogUpdate = "1.0.1"
+versionCatalogUpdate = "1.1.0"
 
 kotlinxCoroutines = "1.10.2"
 androidxAppCompat = "1.7.1"
@@ -16,7 +16,7 @@ androidxNavigation = "2.9.7"
 junit = "4.13.2"
 
 activityCompose = "1.12.4"
-composeBom = "2026.02.00"
+composeBom = "2026.02.01"
 
 ktlint = "1.8.0"
 
