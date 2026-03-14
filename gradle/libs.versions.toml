@@ -1,5 +1,5 @@
 [versions]
-androidGradlePlugin = "9.0.1"
+androidGradlePlugin = "9.1.0"
 kotlin = "2.3.10"
 dokka = "2.1.0"
 dependencyGuard = "0.5.0"
@@ -10,13 +10,13 @@ versionCatalogUpdate = "1.1.0"
 kotlinxCoroutines = "1.10.2"
 androidxAppCompat = "1.7.1"
 androidxConstraintLayout = "2.2.1"
-androidxCoreKtx = "1.17.0"
+androidxCoreKtx = "1.18.0"
 materialComponents = "1.13.0"
 androidxNavigation = "2.9.7"
 junit = "4.13.2"
 
-activityCompose = "1.12.4"
-composeBom = "2026.02.01"
+activityCompose = "1.13.0"
+composeBom = "2026.03.00"
 
 ktlint = "1.8.0"
 
