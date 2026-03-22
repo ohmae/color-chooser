@@ -18,9 +18,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.AlertDialogDefaults
-import androidx.compose.material3.TabRow
-import androidx.compose.material3.TabRowDefaults
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
+import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -144,14 +142,9 @@ private fun PagerTab(
     titleContentColor: Color,
 ) {
     val scope = rememberCoroutineScope()
-    TabRow(
+    SecondaryTabRow(
         selectedTabIndex = pagerState.currentPage,
         modifier = Modifier.fillMaxWidth(),
-        indicator = { tabPositions ->
-            TabRowDefaults.SecondaryIndicator(
-                modifier = Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
-            )
-        },
     ) {
         titles.forEachIndexed { index, title ->
             Text(

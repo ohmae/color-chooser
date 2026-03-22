@@ -77,6 +77,7 @@ internal fun SampleView(
         Box(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
+                .background(MaterialTheme.colorScheme.surface)
                 .height(24.dp + 4.dp * 2)
                 .border(2.dp, borderColor),
         ) {

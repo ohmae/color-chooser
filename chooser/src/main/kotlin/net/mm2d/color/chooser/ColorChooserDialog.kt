@@ -13,13 +13,13 @@ import android.graphics.Color
 import android.os.Bundle
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AlertDialog
-import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import net.mm2d.color.chooser.databinding.Mm2dCcColorChooserBinding
+import net.mm2d.color.chooser.util.buildBundle
 
 /**
  * Color chooser dialog
@@ -125,13 +125,13 @@ object ColorChooserDialog {
     ) {
         show(
             activity.supportFragmentManager,
-            bundleOf(
-                KEY_REQUEST_KEY to requestKey,
-                KEY_INITIAL_COLOR to initialColor,
-                KEY_WITH_ALPHA to withAlpha,
-                KEY_INITIAL_TAB to initialTab,
-                KEY_TABS to tabs,
-            ),
+            buildBundle {
+                putString(KEY_REQUEST_KEY, requestKey)
+                putInt(KEY_INITIAL_COLOR, initialColor)
+                putBoolean(KEY_WITH_ALPHA, withAlpha)
+                putInt(KEY_INITIAL_TAB, initialTab)
+                putIntArray(KEY_TABS, tabs)
+            },
         )
     }
 
@@ -155,13 +155,13 @@ object ColorChooserDialog {
     ) {
         show(
             fragment.childFragmentManager,
-            bundleOf(
-                KEY_REQUEST_KEY to requestKey,
-                KEY_INITIAL_COLOR to initialColor,
-                KEY_WITH_ALPHA to withAlpha,
-                KEY_INITIAL_TAB to initialTab,
-                KEY_TABS to tabs,
-            ),
+            buildBundle {
+                putString(KEY_REQUEST_KEY, requestKey)
+                putInt(KEY_INITIAL_COLOR, initialColor)
+                putBoolean(KEY_WITH_ALPHA, withAlpha)
+                putInt(KEY_INITIAL_TAB, initialTab)
+                putIntArray(KEY_TABS, tabs)
+            },
         )
     }
 
@@ -227,7 +227,7 @@ object ColorChooserDialog {
             val key = requireArguments().getString(KEY_REQUEST_KEY) ?: return
             parentFragmentManager.setFragmentResult(
                 key,
-                bundleOf(RESULT_KEY_CANCEL to true),
+                buildBundle { putBoolean(RESULT_KEY_CANCEL, true) },
             )
         }
 
@@ -235,10 +235,10 @@ object ColorChooserDialog {
             val key = requireArguments().getString(KEY_REQUEST_KEY) ?: return
             parentFragmentManager.setFragmentResult(
                 key,
-                bundleOf(
-                    RESULT_KEY_CANCEL to false,
-                    RESULT_KEY_COLOR to colorChooserView.color,
-                ),
+                buildBundle {
+                    putBoolean(RESULT_KEY_CANCEL, false)
+                    putInt(RESULT_KEY_COLOR, colorChooserView.color)
+                },
             )
         }
     }
