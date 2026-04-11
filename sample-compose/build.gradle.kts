@@ -32,7 +32,7 @@ android {
 dependencies {
     implementation(projects.chooserCompose)
 
-    implementation(libs.androidxCoreKtx)
+    implementation(libs.androidxCore)
     implementation(libs.androidxAppCompat)
     implementation(libs.androidxActivityCompose)
     implementation(libs.materialComponents)

@@ -36,7 +36,7 @@ android {
 dependencies {
     implementation(libs.androidxAppCompat)
     implementation(libs.androidxConstraintLayout)
-    implementation(libs.androidxCoreKtx)
+    implementation(libs.androidxCore)
     implementation(libs.materialComponents)
     implementation(libs.androidxDatabinding)
     testImplementation(libs.junit)

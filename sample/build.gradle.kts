@@ -33,8 +33,8 @@ dependencies {
     implementation(projects.chooser)
     implementation(libs.androidxAppCompat)
     implementation(libs.androidxConstraintLayout)
-    implementation(libs.androidxNavigationFragmentKtx)
-    implementation(libs.androidxNavigationUiKtx)
+    implementation(libs.androidxNavigationFragment)
+    implementation(libs.androidxNavigationUi)
     implementation(libs.materialComponents)
     testImplementation(libs.junit)
 }

@@ -32,7 +32,7 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidxCoreKtx)
+    implementation(libs.androidxCore)
     implementation(platform(libs.composeBom))
     implementation(libs.composeUi)
     implementation(libs.composeUiGraphics)

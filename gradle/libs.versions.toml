@@ -10,7 +10,7 @@ versionCatalogUpdate = "1.1.0"
 kotlinxCoroutines = "1.10.2"
 androidxAppCompat = "1.7.1"
 androidxConstraintLayout = "2.2.1"
-androidxCoreKtx = "1.18.0"
+androidxCore = "1.18.0"
 materialComponents = "1.13.0"
 androidxNavigation = "2.9.7"
 junit = "4.13.2"
@@ -35,9 +35,9 @@ ktlint = { group = "com.pinterest.ktlint", name = "ktlint-cli", version.ref = "k
 kotlinxCoroutinesAndroid = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 androidxAppCompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppCompat" }
 androidxConstraintLayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidxConstraintLayout" }
-androidxCoreKtx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCoreKtx" }
-androidxNavigationFragmentKtx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "androidxNavigation" }
-androidxNavigationUiKtx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "androidxNavigation" }
+androidxCore = { group = "androidx.core", name = "core", version.ref = "androidxCore" }
+androidxNavigationFragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "androidxNavigation" }
+androidxNavigationUi = { group = "androidx.navigation", name = "navigation-ui", version.ref = "androidxNavigation" }
 materialComponents = { group = "com.google.android.material", name = "material", version.ref = "materialComponents" }
 androidxDatabinding = { group = "androidx.databinding", name = "viewbinding", version.ref = "androidGradlePlugin" }
 
