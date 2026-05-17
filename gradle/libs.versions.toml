@@ -11,7 +11,7 @@ kotlinxCoroutines = "1.11.0"
 androidxAppCompat = "1.7.1"
 androidxConstraintLayout = "2.2.1"
 androidxCore = "1.18.0"
-materialComponents = "1.13.0"
+materialComponents = "1.14.0"
 androidxNavigation = "2.9.8"
 junit = "4.13.2"
 
