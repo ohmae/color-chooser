@@ -4,7 +4,7 @@ import org.gradle.api.JavaVersion
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 object Projects {
-    const val COMPILE_SDK: Int = 36
+    const val COMPILE_SDK: Int = 37
     const val MIN_SDK: Int = 23
     const val TARGET_SDK: Int = 36
 

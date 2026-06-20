@@ -20,7 +20,10 @@ private fun Project.plugin() {
         apply("com.android.library")
     }
     androidLibrary {
-        compileSdk = Projects.COMPILE_SDK
+        compileSdk {
+            version = release(Projects.COMPILE_SDK)
+        }
+
         defaultConfig {
             minSdk = Projects.MIN_SDK
         }
