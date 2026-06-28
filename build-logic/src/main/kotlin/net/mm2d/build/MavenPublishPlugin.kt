@@ -1,6 +1,7 @@
 package net.mm2d.build
 
 import com.vanniktech.maven.publish.AndroidSingleVariantLibrary
+import com.vanniktech.maven.publish.JavadocJar
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
 import org.gradle.api.Action
 import org.gradle.api.Plugin
@@ -20,9 +21,7 @@ private fun Project.plugin() {
     mavenPublishing {
         configure(
             AndroidSingleVariantLibrary(
-                variant = "release",
-                sourcesJar = true,
-                publishJavadocJar = true,
+                javadocJar = JavadocJar.Javadoc(),
             )
         )
         publishToMavenCentral()
