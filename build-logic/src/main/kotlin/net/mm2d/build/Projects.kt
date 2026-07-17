@@ -8,10 +8,10 @@ object Projects {
     const val MIN_SDK: Int = 23
     const val TARGET_SDK: Int = 36
 
-    val SOURCE_COMPATIBILITY: JavaVersion = JavaVersion.VERSION_1_8
-    val TARGET_COMPATIBILITY: JavaVersion = JavaVersion.VERSION_1_8
-    val JVM_TARGET: JvmTarget = JvmTarget.JVM_1_8
-    const val JVM_TOOLCHAIN: Int = 17
+    val SOURCE_COMPATIBILITY: JavaVersion = JavaVersion.VERSION_11
+    val TARGET_COMPATIBILITY: JavaVersion = JavaVersion.VERSION_11
+    val JVM_TARGET: JvmTarget = JvmTarget.JVM_11
+    const val JVM_TOOLCHAIN: Int = 21
 
     const val GROUP_ID: String = "net.mm2d.color-chooser"
     const val DEVELOPER_ID: String = "ryo"
