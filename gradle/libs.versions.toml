@@ -1,5 +1,5 @@
 [versions]
-androidGradlePlugin = "9.3.0"
+androidGradlePlugin = "9.3.1"
 kotlin = "2.4.10"
 dokka = "2.2.0"
 dependencyGuard = "0.5.0"
