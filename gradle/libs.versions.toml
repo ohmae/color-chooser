@@ -9,7 +9,7 @@ versionCatalogUpdate = "1.1.0"
 
 kotlinxCoroutines = "1.11.0"
 androidxAppCompat = "1.7.1"
-androidxConstraintLayout = "2.2.1"
+androidxConstraintLayout = "2.2.2"
 androidxCore = "1.19.0"
 materialComponents = "1.14.0"
 androidxNavigation = "2.9.8"

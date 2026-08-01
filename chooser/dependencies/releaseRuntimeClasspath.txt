@@ -10,8 +10,8 @@ androidx.cardview:cardview:1.0.0
 androidx.collection:collection-jvm:1.4.2
 androidx.collection:collection:1.4.2
 androidx.concurrent:concurrent-futures:1.1.0
-androidx.constraintlayout:constraintlayout-core:1.1.1
-androidx.constraintlayout:constraintlayout:2.2.1
+androidx.constraintlayout:constraintlayout-core:1.1.2
+androidx.constraintlayout:constraintlayout:2.2.2
 androidx.coordinatorlayout:coordinatorlayout:1.1.0
 androidx.core:core-ktx:1.19.0
 androidx.core:core-viewtree:1.0.0
