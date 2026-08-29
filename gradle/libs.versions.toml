@@ -12,7 +12,7 @@ androidxAppCompat = "1.8.0"
 androidxConstraintLayout = "2.2.2"
 androidxCore = "1.19.0"
 materialComponents = "1.14.0"
-androidxNavigation = "2.9.8"
+androidxNavigation = "2.10.0"
 junit = "4.13.2"
 
 activityCompose = "1.13.0"
