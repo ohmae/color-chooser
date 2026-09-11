@@ -6,7 +6,7 @@ import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
 @OptIn(ExperimentalContracts::class)
-inline fun buildBundle(
+internal inline fun buildBundle(
     action: Bundle.() -> Unit,
 ): Bundle {
     contract { callsInPlace(action, InvocationKind.EXACTLY_ONCE) }
