@@ -7,8 +7,6 @@
 
 package net.mm2d.color.chooser.compose
 
-import android.graphics.Bitmap
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -29,11 +27,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.graphics.MeshGradientPainter
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastAny
@@ -117,14 +116,25 @@ private fun HueView(
     val size by sizeState
     var y = size * (hue / 360f)
 
+    val brush = remember {
+        val grid = 36
+        Brush.verticalGradient(
+            buildList {
+                repeat(grid + 1) {
+                    add(Color.hsv(it.toFloat() / grid * 360f, 1f, 1f))
+                }
+            },
+        )
+    }
     Box(
         modifier = modifier.size(24.dp + 8.dp * 2, size + 8.dp * 2),
     ) {
-        Image(
+        Box(
             modifier = Modifier
                 .align(Alignment.Center)
                 .frameDecoration()
                 .size(24.dp, size)
+                .background(brush)
                 .pointerInput(Unit) {
                     awaitEachGesture {
                         awaitFirstDown()
@@ -148,9 +158,6 @@ private fun HueView(
                         touchCapturing.value = false
                     }
                 },
-            bitmap = hueBitmap.asImageBitmap(),
-            contentScale = ContentScale.FillBounds,
-            contentDescription = null,
         )
         ColorControlGrip(
             color = Color.hsv(hue = hue, saturation = 1f, value = 1f),
@@ -178,18 +185,34 @@ private fun SvView(
 
     val maxColor = Color.hsv(hue = hue, saturation = 1f, value = 1f)
 
+    val gradientPainter = remember(maxColor) {
+        val grid = 15
+        val step = 1f / grid
+        MeshGradientPainter(grid, grid) {
+            repeat(grid + 1) { y ->
+                repeat(grid + 1) { x ->
+                    setVertex(
+                        x,
+                        y,
+                        Offset(x * step, y * step),
+                        Color.hsv(hue = hue, saturation = x * step, value = 1 - y * step),
+                    )
+                }
+            }
+        }
+    }
     var x = size * saturation
     var y = size - size * value
 
     Box(
         modifier = modifier.size(size + 8.dp * 2),
     ) {
-        Image(
+        Box(
             modifier = Modifier
                 .align(Alignment.Center)
                 .frameDecoration()
-                .background(maxColor)
                 .size(size)
+                .paint(gradientPainter)
                 .pointerInput(Unit) {
                     awaitEachGesture {
                         awaitFirstDown()
@@ -217,43 +240,10 @@ private fun SvView(
                         touchCapturing.value = false
                     }
                 },
-            bitmap = maskBitmap.asImageBitmap(),
-            contentDescription = null,
         )
         ColorControlGrip(
             color = color,
             modifier = Modifier.padding(start = x, top = y),
         )
     }
-}
-
-private val maskBitmap = createMaskBitmap()
-private val hueBitmap = createHueBitmap()
-
-private const val TONE_MAX = 255f
-private const val TONE_SIZE = 255
-private const val RANGE = 360
-
-private fun createMaskBitmap(): Bitmap {
-    val pixels = IntArray(TONE_SIZE * TONE_SIZE)
-    repeat(TONE_SIZE) { y ->
-        repeat(TONE_SIZE) { x ->
-            pixels[x + y * TONE_SIZE] = svToMask(x / TONE_MAX, (TONE_MAX - y) / TONE_MAX)
-        }
-    }
-    return Bitmap.createBitmap(pixels, TONE_SIZE, TONE_SIZE, Bitmap.Config.ARGB_8888)
-}
-
-private fun svToMask(
-    s: Float,
-    v: Float,
-): Int {
-    val a = 1f - (s * v)
-    val g = if (a == 0f) 0f else (v * (1f - s) / a).coerceIn(0f, 1f)
-    return Color(red = g, blue = g, green = g, alpha = a).toArgb()
-}
-
-private fun createHueBitmap(): Bitmap {
-    val pixels = IntArray(RANGE) { Color.hsv(it.toFloat() / RANGE * 360f, 1f, 1f).toArgb() }
-    return Bitmap.createBitmap(pixels, 1, RANGE, Bitmap.Config.ARGB_8888)
 }
