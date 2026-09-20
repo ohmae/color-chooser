@@ -1,5 +1,5 @@
 [versions]
-androidGradlePlugin = "9.4.0"
+androidGradlePlugin = "9.4.1"
 kotlin = "2.4.20"
 dokka = "2.2.0"
 dependencyGuard = "0.5.0"
@@ -32,6 +32,7 @@ kotlinxValidator = { group = "org.jetbrains.kotlinx", name = "binary-compatibili
 ktlint = { group = "com.pinterest.ktlint", name = "ktlint-cli", version.ref = "ktlint" }
 
 # implementation
+#noinspection UnusedVersionCatalogEntry
 kotlinxCoroutinesAndroid = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 androidxAppCompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppCompat" }
 androidxConstraintLayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidxConstraintLayout" }
@@ -51,6 +52,7 @@ composeMaterial3 = { group = "androidx.compose.material3", name = "material3" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 
 # dokkaPlugin
+#noinspection UnusedVersionCatalogEntry
 dokkaAndroidDocumentationPlugin = { group = "org.jetbrains.dokka", name = "android-documentation-plugin", version.ref = "dokka" }
 
 [plugins]
