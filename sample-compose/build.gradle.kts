@@ -6,16 +6,15 @@ plugins {
 
 android {
     namespace = "net.mm2d.color.chooser.sample.compose"
-
     defaultConfig {
         applicationId = "net.mm2d.color.chooser.sample.compose"
         versionCode = 1
         versionName = "1.0"
     }
-
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
