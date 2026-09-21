@@ -12,6 +12,7 @@ import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.toArgb
+import kotlin.math.roundToInt
 
 /**
  * Minimum contrast for large text based on W3C guideline
@@ -80,3 +81,5 @@ internal object ColorSaver : Saver<Color, Int> {
         value: Color,
     ): Int = value.toArgb()
 }
+
+internal fun Float.to8bitInt(): Int = (this * 255f).roundToInt().coerceIn(0, 255)

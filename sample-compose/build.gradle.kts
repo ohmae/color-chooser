@@ -35,8 +35,8 @@ dependencies {
     implementation(libs.androidxAppCompat)
     implementation(libs.androidxActivityCompose)
     implementation(libs.materialComponents)
-    implementation(platform(libs.composeBom))
-    implementation(libs.composeUi)
-    implementation(libs.composeUiGraphics)
-    implementation(libs.composeMaterial3)
+    implementation(platform(libs.androidxComposeBom))
+    implementation(libs.androidxComposeUi)
+    implementation(libs.androidxComposeUiGraphics)
+    implementation(libs.androidxComposeMaterial3)
 }

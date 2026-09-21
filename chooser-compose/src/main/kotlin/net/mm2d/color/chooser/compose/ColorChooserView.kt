@@ -8,33 +8,21 @@
 package net.mm2d.color.chooser.compose
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PagerState
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.AlertDialogDefaults
-import androidx.compose.material3.SecondaryTabRow
-import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.snapshotFlow
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.launch
 
 /**
  * ColorChooserView provides a color chooser.
@@ -46,6 +34,7 @@ import kotlinx.coroutines.launch
  * @param tabs The tabs to be displayed. Default is [Tab.PALETTE], [Tab.HSV], [Tab.RGB]. See [Tab].
  * @param titleContentColor The color of the title content.
  */
+@Deprecated("Use ColorChooserScreen instead.")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ColorChooserView(
@@ -56,106 +45,29 @@ fun ColorChooserView(
     tabs: List<Tab> = Tab.DEFAULT_TABS,
     titleContentColor: Color = AlertDialogDefaults.titleContentColor,
 ) {
-    val inputColor = colorState.value
-    val colorEventState = remember { mutableStateOf(ColorEvent(inputColor, ColorSource.INITIAL)) }
-
-    LaunchedEffect(Unit) {
-        snapshotFlow { colorEventState.value }
-            .distinctUntilChanged()
-            .collect {
-                colorState.value = it.color
-            }
-    }
-
-    Column(
-        modifier = modifier,
-    ) {
-        val pagerState = rememberPagerState(
-            initialPage = tabs.indexOf(initialTab).coerceAtLeast(0),
-            pageCount = { tabs.size },
-        )
-        val touchCapturing = remember { mutableStateOf(false) }
-        PagerTab(
-            titles = tabs.map { it.name },
-            pagerState = pagerState,
-            titleContentColor = titleContentColor,
-        )
-        pagerState.currentPage
-        HorizontalPager(
-            state = pagerState,
-            userScrollEnabled = !touchCapturing.value,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .defaultMinSize(minHeight = 255.dp + 32.dp),
-        ) {
-            val tab = tabs.getOrNull(it) ?: return@HorizontalPager
-            when (tab) {
-                Tab.PALETTE -> PaletteChooser(
-                    colorEventState = colorEventState,
-                    modifier = Modifier.fillMaxSize(),
-                )
-
-                Tab.HSV -> HsvChooser(
-                    colorEventState = colorEventState,
-                    touchCapturing = touchCapturing,
-                    modifier = Modifier.fillMaxSize(),
-                )
-
-                Tab.RGB -> RgbChooser(
-                    colorEventState = colorEventState,
-                    touchCapturing = touchCapturing,
-                    modifier = Modifier.fillMaxSize(),
-                )
-
-                Tab.M3 -> Material3Chooser(
-                    colorEventState = colorEventState,
-                    modifier = Modifier.fillMaxSize(),
-                )
-            }
-        }
-        if (withAlpha) {
-            AlphaView(
-                colorEventState = colorEventState,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp)
-                    .align(Alignment.CenterHorizontally),
-            )
-        }
-
-        SampleView(
-            withAlpha = withAlpha,
-            colorEventState = colorEventState,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 4.dp, end = 16.dp),
-        )
-    }
+    val initialColor = remember { colorState.value }
+    ColorChooserScreen(
+        initialColor = initialColor,
+        onColorChanged = { colorState.value = it },
+        modifier = modifier
+            .padding(16.dp),
+        withAlpha = withAlpha,
+        choosers = tabs.map { it.toChooser() },
+        initialChooser = initialTab.toChooser(),
+    )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@PreviewLightDark
 @Composable
-private fun PagerTab(
-    titles: List<String>,
-    pagerState: PagerState,
-    titleContentColor: Color,
-) {
-    val scope = rememberCoroutineScope()
-    SecondaryTabRow(
-        selectedTabIndex = pagerState.currentPage,
-        modifier = Modifier.fillMaxWidth(),
+private fun PreviewColorChooserScreen() {
+    MaterialTheme(
+        colorScheme = if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme(),
     ) {
-        titles.forEachIndexed { index, title ->
-            Text(
-                text = title,
-                textAlign = TextAlign.Center,
-                color = titleContentColor,
-                fontSize = 14.sp,
-                maxLines = 1,
+        Scaffold {
+            ColorChooserView(
+                colorState = remember { mutableStateOf(Color.Red) },
                 modifier = Modifier
-                    .clickable { scope.launch { pagerState.animateScrollToPage(index) } }
-                    .padding(vertical = 16.dp),
+                    .padding(it),
             )
         }
     }

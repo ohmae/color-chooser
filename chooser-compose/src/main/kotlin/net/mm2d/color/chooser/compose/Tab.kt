@@ -10,6 +10,7 @@ package net.mm2d.color.chooser.compose
 /**
  * Enum class representing the color chooser tabs.
  */
+@Deprecated("Use ColorChooserScreen instead")
 enum class Tab {
     /**
      * Select from palette.

@@ -33,9 +33,10 @@ android {
 
 dependencies {
     implementation(libs.androidxCore)
-    implementation(platform(libs.composeBom))
-    implementation(libs.composeUi)
-    implementation(libs.composeUiGraphics)
-    implementation(libs.composeMaterial3)
+    implementation(libs.androidxComposeUi)
+    implementation(libs.androidxComposeUiGraphics)
+    implementation(libs.androidxComposeMaterial3)
+    debugImplementation(libs.androidxComposeUiTooling)
+    implementation(libs.androidxComposeUiToolingPreview)
     testImplementation(libs.junit)
 }

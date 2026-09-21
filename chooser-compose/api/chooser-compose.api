@@ -1,9 +1,63 @@
+public final class net/mm2d/color/chooser/compose/Chooser : java/lang/Enum {
+	public static final field HSV Lnet/mm2d/color/chooser/compose/Chooser;
+	public static final field M2 Lnet/mm2d/color/chooser/compose/Chooser;
+	public static final field M3 Lnet/mm2d/color/chooser/compose/Chooser;
+	public static final field RGB Lnet/mm2d/color/chooser/compose/Chooser;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lnet/mm2d/color/chooser/compose/Chooser;
+	public static fun values ()[Lnet/mm2d/color/chooser/compose/Chooser;
+}
+
+public final class net/mm2d/color/chooser/compose/ColorChooserColors {
+	public static final field $stable I
+	public final fun copy-4JmcsL4 (JJJJJJJ)Lnet/mm2d/color/chooser/compose/ColorChooserColors;
+	public static synthetic fun copy-4JmcsL4$default (Lnet/mm2d/color/chooser/compose/ColorChooserColors;JJJJJJJILjava/lang/Object;)Lnet/mm2d/color/chooser/compose/ColorChooserColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getPreviewLabelBackgroundColor-0d7_KjU ()J
+	public final fun getPreviewLabelColor-0d7_KjU ()J
+	public final fun getSelectedTabContainerColor-0d7_KjU ()J
+	public final fun getSelectedTabContentColor-0d7_KjU ()J
+	public final fun getSliderLabelColor-0d7_KjU ()J
+	public final fun getUnselectedTabContainerColor-0d7_KjU ()J
+	public final fun getUnselectedTabContentColor-0d7_KjU ()J
+	public fun hashCode ()I
+}
+
+public final class net/mm2d/color/chooser/compose/ColorChooserDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lnet/mm2d/color/chooser/compose/ColorChooserDefaults;
+	public final fun colors-69fazGs (JJJJJJJLandroidx/compose/runtime/Composer;II)Lnet/mm2d/color/chooser/compose/ColorChooserColors;
+	public final fun getContentSpacing-D9Ej5fM ()F
+	public final fun getPreviewHeight-D9Ej5fM ()F
+	public final fun getPreviewLabelStyle ()Landroidx/compose/ui/text/TextStyle;
+	public final fun getSliderLabelStyle (Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/text/TextStyle;
+	public final fun getTabTextStyle ()Landroidx/compose/ui/text/TextStyle;
+}
+
 public final class net/mm2d/color/chooser/compose/ColorChooserDialogKt {
 	public static final fun ColorChooserDialog-Jwgv5lI (JLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZLnet/mm2d/color/chooser/compose/Tab;Ljava/util/List;Landroidx/compose/ui/graphics/Shape;JJJFLandroidx/compose/ui/window/DialogProperties;Landroidx/compose/runtime/Composer;III)V
 }
 
+public final class net/mm2d/color/chooser/compose/ColorChooserScreenKt {
+	public static final fun ColorChooserScreen-K2TO0qc (JLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZLjava/util/List;Lnet/mm2d/color/chooser/compose/Chooser;Lnet/mm2d/color/chooser/compose/ColorChooserColors;FFLandroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;ZLandroidx/compose/runtime/Composer;III)V
+}
+
 public final class net/mm2d/color/chooser/compose/ColorChooserViewKt {
 	public static final fun ColorChooserView-V-9fs2A (Landroidx/compose/runtime/MutableState;Landroidx/compose/ui/Modifier;ZLnet/mm2d/color/chooser/compose/Tab;Ljava/util/List;JLandroidx/compose/runtime/Composer;II)V
+}
+
+public final class net/mm2d/color/chooser/compose/ComposableSingletons$ColorChooserScreenKt {
+	public static final field INSTANCE Lnet/mm2d/color/chooser/compose/ComposableSingletons$ColorChooserScreenKt;
+	public fun <init> ()V
+	public final fun getLambda$-441881617$chooser_compose ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1896007808$chooser_compose ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class net/mm2d/color/chooser/compose/ComposableSingletons$ColorChooserViewKt {
+	public static final field INSTANCE Lnet/mm2d/color/chooser/compose/ComposableSingletons$ColorChooserViewKt;
+	public fun <init> ()V
+	public final fun getLambda$-1139504921$chooser_compose ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-140821482$chooser_compose ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class net/mm2d/color/chooser/compose/Tab : java/lang/Enum {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 大前良介 (OHMAE Ryosuke)
+ * Copyright (c) 2026 大前良介 (OHMAE Ryosuke)
  *
  * This software is released under the MIT License.
  * http://opensource.org/licenses/MIT
@@ -7,183 +7,64 @@
 
 package net.mm2d.color.chooser.compose
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.awaitEachGesture
-import androidx.compose.foundation.gestures.awaitFirstDown
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableFloatState
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.fastAny
-import net.mm2d.color.chooser.compose.util.ColorControlGrip
-import net.mm2d.color.chooser.compose.util.frameDecoration
+import net.mm2d.color.chooser.compose.util.to8bitInt
 
 @Composable
 internal fun RgbChooser(
-    colorEventState: MutableState<ColorEvent>,
+    currentColor: Color,
+    onColorChanged: (Color) -> Unit,
     modifier: Modifier = Modifier,
-    touchCapturing: MutableState<Boolean> = mutableStateOf(false),
+    sliderLabelColor: Color,
+    sliderLabelStyle: TextStyle,
 ) {
-    var colorEvent by colorEventState
-    val color = colorEvent.color
-    val redState = remember { mutableFloatStateOf(color.red) }
-    val greenState = remember { mutableFloatStateOf(color.green) }
-    val blueState = remember { mutableFloatStateOf(color.blue) }
+    val red = currentColor.red.to8bitInt()
+    val green = currentColor.green.to8bitInt()
+    val blue = currentColor.blue.to8bitInt()
 
-    LaunchedEffect(Unit) {
-        snapshotFlow {
-            Color(
-                red = redState.floatValue,
-                green = greenState.floatValue,
-                blue = blueState.floatValue,
-            )
-        }
-            .collect {
-                val newColor = it.copy(alpha = colorEvent.color.alpha)
-                if (newColor == colorEvent.color) return@collect
-                colorEvent = ColorEvent(newColor, ColorSource.RGB)
-            }
-    }
-    LaunchedEffect(Unit) {
-        snapshotFlow { colorEvent }
-            .collect {
-                if (it.source == ColorSource.RGB) return@collect
-                if (it.source == ColorSource.ALPHA) return@collect
-                redState.floatValue = it.color.red
-                greenState.floatValue = it.color.green
-                blueState.floatValue = it.color.blue
-            }
-    }
-    BoxWithConstraints(
-        modifier = modifier,
+    Column(
+        modifier = modifier.fillMaxWidth(),
     ) {
-        val sizeState = remember { mutableStateOf(255.dp) }
-        sizeState.value = calculateSize(this.maxWidth)
-        Column(
+        ColorSlider(
+            value = red,
+            onValueChange = { newRed ->
+                onColorChanged(Color(newRed, green, blue))
+            },
+            color = Color.Red,
+            labelColor = sliderLabelColor,
+            labelStyle = sliderLabelStyle,
+            modifier = Modifier.fillMaxWidth(),
+        )
+        ColorSlider(
+            value = green,
+            onValueChange = { newGreen ->
+                onColorChanged(Color(red, newGreen, blue))
+            },
+            color = Color.Green,
+            labelColor = sliderLabelColor,
+            labelStyle = sliderLabelStyle,
             modifier = Modifier
-                .align(Alignment.Center),
-        ) {
-            Slider(
-                maxColor = Color.Red,
-                valueState = redState,
-                sizeState = sizeState,
-                touchCapturing = touchCapturing,
-            )
-            Slider(
-                maxColor = Color.Green,
-                valueState = greenState,
-                sizeState = sizeState,
-                touchCapturing = touchCapturing,
-            )
-            Slider(
-                maxColor = Color.Blue,
-                valueState = blueState,
-                sizeState = sizeState,
-                touchCapturing = touchCapturing,
-            )
-        }
-    }
-}
-
-private fun calculateSize(
-    maxWidth: Dp,
-): Dp = (maxWidth - 8.dp * 6 - 42.dp).value.toInt().dp
-
-@Composable
-private fun Slider(
-    maxColor: Color,
-    valueState: MutableFloatState,
-    sizeState: MutableState<Dp>,
-    modifier: Modifier = Modifier,
-    touchCapturing: MutableState<Boolean> = mutableStateOf(false),
-) {
-    var value by valueState
-    val size by sizeState
-    var x = size * value
-
-    Row(
-        modifier = modifier,
-    ) {
-        Box(
-            modifier = Modifier.size(width = size + 8.dp * 2, height = 32.dp + 8.dp * 2),
-        ) {
-            Box(
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .frameDecoration()
-                    .size(width = size, height = 32.dp)
-                    .background(
-                        Brush.horizontalGradient(
-                            listOf(Color.Black, maxColor),
-                        ),
-                    )
-                    .pointerInput(Unit) {
-                        awaitEachGesture {
-                            awaitFirstDown()
-                            touchCapturing.value = true
-                            do {
-                                val event = awaitPointerEvent()
-                                x = event.changes.first().position.x
-                                    .toDp()
-                                    .coerceIn(0.dp, size)
-                                value = (x.value / size.value).coerceIn(0f, 1f)
-                            } while (event.changes.fastAny { it.pressed })
-                            touchCapturing.value = false
-                        }
-                    },
-            )
-            ColorControlGrip(
-                color = maxColor.applyValue(value),
-                modifier = Modifier.padding(start = x, top = 16.dp),
-            )
-        }
-        Text(
-            text = (value * 255f).toInt().toString(),
-            style = MaterialTheme.typography.bodySmall.copy(
-                fontSize = LocalDensity.current.run { 12.dp.toSp() },
-                fontFamily = FontFamily.Monospace,
-                textAlign = TextAlign.End,
-                color = MaterialTheme.colorScheme.onSurface,
-            ),
-            textAlign = TextAlign.End,
+                .fillMaxWidth()
+                .padding(top = 16.dp),
+        )
+        ColorSlider(
+            value = blue,
+            onValueChange = { newBlue ->
+                onColorChanged(Color(red, green, newBlue))
+            },
+            color = Color.Blue,
+            labelColor = sliderLabelColor,
+            labelStyle = sliderLabelStyle,
             modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .width(42.dp)
-                .padding(horizontal = 8.dp),
+                .fillMaxWidth()
+                .padding(top = 16.dp),
         )
     }
 }
-
-private fun Color.applyValue(
-    ratio: Float,
-): Color =
-    Color(
-        red = red * ratio,
-        green = green * ratio,
-        blue = blue * ratio,
-    )

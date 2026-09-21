@@ -19,8 +19,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -52,6 +54,7 @@ import net.mm2d.color.chooser.compose.util.ColorSaver
  * @param tonalElevation tonal elevation.
  * @param properties dialog properties.
  */
+@Deprecated("use ColorChooserScreen instead.")
 @Composable
 fun ColorChooserDialog(
     initialColor: Color,
@@ -79,22 +82,24 @@ fun ColorChooserDialog(
             tonalElevation = tonalElevation,
         ) {
             Column {
-                val colorState = rememberSaveable(stateSaver = ColorSaver) {
-                    mutableStateOf(if (withAlpha) initialColor else initialColor.copy(alpha = 1f))
+                var selectedColor by rememberSaveable(stateSaver = ColorSaver) {
+                    mutableStateOf(initialColor)
                 }
-                ColorChooserView(
-                    colorState = colorState,
+                ColorChooserScreen(
+                    initialColor = initialColor,
+                    onColorChanged = { selectedColor = it },
                     modifier = Modifier
                         .fillMaxWidth()
+                        .padding(top = 16.dp)
+                        .padding(horizontal = 16.dp)
                         .weight(1f),
                     withAlpha = withAlpha,
-                    initialTab = initialTab,
-                    tabs = tabs,
-                    titleContentColor = titleContentColor,
+                    choosers = tabs.map { it.toChooser() },
+                    initialChooser = initialTab.toChooser(),
                 )
                 DialogButtons(
                     onDismissRequest = onDismissRequest,
-                    onChooseColor = { onChooseColor(colorState.value) },
+                    onChooseColor = { onChooseColor(selectedColor) },
                     buttonContentColor = buttonContentColor,
                 )
             }
@@ -142,15 +147,24 @@ private fun ColumnScope.DialogButtons(
 @Composable
 private fun calculateDialogSize(): DpSize {
     val density = LocalDensity.current
-    val screenWith = with(density) { LocalWindowInfo.current.containerSize.width.toDp() }
+    val screenWidth = with(density) { LocalWindowInfo.current.containerSize.width.toDp() }
     val screenHeight = with(density) { LocalWindowInfo.current.containerSize.height.toDp() }
-    val portraitHeight = screenHeight * 0.7f
 
-    val width = minOf((screenWith * 0.9f), 480.dp)
-    val height = if (portraitHeight < 500.dp) {
+    val width = minOf((screenWidth * 0.9f), 480.dp)
+    val height = if (screenHeight < 526.dp) {
         screenHeight * 0.95f
+    } else if (screenHeight < 714.dp) {
+        500.dp
     } else {
-        minOf(portraitHeight, 640.dp)
+        screenHeight * 0.7f
     }
     return DpSize(width, height)
 }
+
+internal fun Tab.toChooser(): Chooser =
+    when (this) {
+        Tab.PALETTE -> Chooser.M2
+        Tab.HSV -> Chooser.HSV
+        Tab.RGB -> Chooser.RGB
+        Tab.M3 -> Chooser.M3
+    }

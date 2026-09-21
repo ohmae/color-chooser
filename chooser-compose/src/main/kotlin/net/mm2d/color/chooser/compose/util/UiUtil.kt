@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.ImageShader
 import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import net.mm2d.color.chooser.compose.R
 
@@ -62,3 +63,13 @@ internal fun ColorControlGrip(
             .background(color),
     )
 }
+
+internal fun ratio(
+    target: Dp,
+    range: Dp,
+): Float =
+    if (range.value != 0f) {
+        (target.value / range.value).coerceIn(0f, 1f)
+    } else {
+        0f
+    }
