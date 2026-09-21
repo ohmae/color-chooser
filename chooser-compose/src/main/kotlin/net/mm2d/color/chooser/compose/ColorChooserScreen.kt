@@ -119,8 +119,8 @@ object ColorChooserDefaults {
 
     val tabTextStyle: TextStyle = TextStyle.Default.copy(
         fontFamily = FontFamily.Monospace,
-        fontWeight = FontWeight.Medium,
-        fontSize = 12.sp,
+        fontWeight = FontWeight.Bold,
+        fontSize = 14.sp,
         letterSpacing = 0.5.sp,
     )
 
@@ -132,10 +132,10 @@ object ColorChooserDefaults {
 
     @Composable
     fun colors(
-        selectedTabContentColor: Color = MaterialTheme.colorScheme.onPrimary,
+        selectedTabContentColor: Color = MaterialTheme.colorScheme.onSecondaryContainer,
         unselectedTabContentColor: Color = MaterialTheme.colorScheme.onSurface,
-        selectedTabContainerColor: Color = MaterialTheme.colorScheme.primary,
-        unselectedTabContainerColor: Color = MaterialTheme.colorScheme.surfaceContainer,
+        selectedTabContainerColor: Color = MaterialTheme.colorScheme.secondaryContainer,
+        unselectedTabContainerColor: Color = Color.Transparent,
         sliderLabelColor: Color = MaterialTheme.colorScheme.onSurface,
         previewLabelColor: Color = Color.White,
         previewLabelBackgroundColor: Color = Color.Black.copy(alpha = 0.5f),

@@ -7,23 +7,17 @@
 
 package net.mm2d.color.chooser.compose
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.material3.ButtonGroupDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
-import androidx.compose.material3.ToggleButton
-import androidx.compose.material3.ToggleButtonDefaults
-import androidx.compose.material3.ToggleButtonSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.role
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.dp
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun ChooserSwitch(
     currentChooser: Chooser,
@@ -36,34 +30,30 @@ internal fun ChooserSwitch(
     tabTextStyle: TextStyle,
     modifier: Modifier = Modifier,
 ) {
-    Row(
+    SingleChoiceSegmentedButtonRow(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(1.dp),
     ) {
         choosers.forEachIndexed { index, chooser ->
-            ToggleButton(
-                checked = chooser == currentChooser,
-                onCheckedChange = { onChooserChanged(chooser) },
-                modifier = Modifier.semantics { role = Role.RadioButton },
-                buttonSize = ToggleButtonSize.Small,
-                contentPadding = PaddingValues(horizontal = 20.dp, vertical = 4.dp),
-                colors = ToggleButtonDefaults.colors(
-                    checkedContentColor = selectedContentColor,
-                    contentColor = unselectedContentColor,
-                    checkedContainerColor = selectedContainerColor,
-                    containerColor = unselectedContainerColor,
+            SegmentedButton(
+                selected = chooser == currentChooser,
+                onClick = { onChooserChanged(chooser) },
+                shape = SegmentedButtonDefaults.itemShape(
+                    index = index,
+                    count = choosers.size,
                 ),
-                shapes = when (index) {
-                    0 -> ButtonGroupDefaults.connectedLeadingButtonShapes()
-                    choosers.lastIndex -> ButtonGroupDefaults.connectedTrailingButtonShapes()
-                    else -> ButtonGroupDefaults.connectedMiddleButtonShapes()
+                colors = SegmentedButtonDefaults.colors(
+                    activeContainerColor = selectedContainerColor,
+                    activeContentColor = selectedContentColor,
+                    inactiveContainerColor = unselectedContainerColor,
+                    inactiveContentColor = unselectedContentColor,
+                ),
+                label = {
+                    Text(
+                        text = chooser.name,
+                        style = tabTextStyle,
+                    )
                 },
-            ) {
-                Text(
-                    text = chooser.name,
-                    style = tabTextStyle,
-                )
-            }
+            )
         }
     }
 }

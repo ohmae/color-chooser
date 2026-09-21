@@ -18,7 +18,7 @@ junit = "4.13.2"
 activityCompose = "1.13.0"
 composeBom = "2026.09.00"
 compose = "1.12.1"
-material3 = "1.5.0-alpha28"
+material3 = "1.4.0"
 
 ktlint = "1.8.0"
 
