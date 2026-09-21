@@ -14,6 +14,7 @@ androidxCore = "1.19.0"
 materialComponents = "1.14.0"
 androidxNavigation = "2.10.1"
 junit = "4.13.2"
+robolectric = "4.17"
 
 activityCompose = "1.13.0"
 composeBom = "2026.09.00"
@@ -54,6 +55,9 @@ androidxComposeMaterial3 = { group = "androidx.compose.material3", name = "mater
 
 # testImplementation
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
+androidxComposeUiTestJunit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "compose" }
+androidxComposeUiTestManifest = { group = "androidx.compose.ui", name = "ui-test-manifest", version.ref = "compose" }
 
 # dokkaPlugin
 #noinspection UnusedVersionCatalogEntry

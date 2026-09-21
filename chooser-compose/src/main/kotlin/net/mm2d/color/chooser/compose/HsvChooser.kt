@@ -7,6 +7,7 @@
 
 package net.mm2d.color.chooser.compose
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -24,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,12 +42,14 @@ import net.mm2d.color.chooser.compose.util.frameDecoration
 import net.mm2d.color.chooser.compose.util.ratio
 import net.mm2d.color.chooser.compose.util.toHsv
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 internal fun HsvChooser(
     currentColor: Color,
     onColorChanged: (Color) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val currentOnColorChanged by rememberUpdatedState(onColorChanged)
     val hsvBuffer = remember { FloatArray(3).also { currentColor.toHsv(it) } }
     var hue by remember { mutableFloatStateOf(hsvBuffer[0]) }
     var saturation by remember { mutableFloatStateOf(hsvBuffer[1]) }
@@ -58,7 +62,7 @@ internal fun HsvChooser(
             hue = newHue
             val newColor = Color.hsv(newHue, saturation, value)
             lastEmittedColor = newColor
-            onColorChanged(newColor)
+            currentOnColorChanged(newColor)
         }
     }
     val updateSv = remember {
@@ -67,7 +71,7 @@ internal fun HsvChooser(
             value = newVal
             val newColor = Color.hsv(hue, newSat, newVal)
             lastEmittedColor = newColor
-            onColorChanged(newColor)
+            currentOnColorChanged(newColor)
         }
     }
     SideEffect(currentColor) {

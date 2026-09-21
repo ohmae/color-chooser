@@ -39,4 +39,8 @@ dependencies {
     debugImplementation(libs.androidxComposeUiTooling)
     implementation(libs.androidxComposeUiToolingPreview)
     testImplementation(libs.junit)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.androidxComposeUiTestJunit4)
+    testImplementation(libs.androidxActivityCompose)
+    debugImplementation(libs.androidxComposeUiTestManifest)
 }

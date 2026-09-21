@@ -30,6 +30,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,6 +44,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import net.mm2d.color.chooser.compose.util.ColorSaver
 import net.mm2d.color.chooser.compose.util.alphaBackgroundBrush
 import net.mm2d.color.chooser.compose.util.to8bitInt
 
@@ -154,6 +156,10 @@ object ColorChooserDefaults {
 /**
  * Color chooser screen.
  *
+ * The edited color and selected tab are saved across activity and process recreation.
+ * Callers that retain the result for a confirmation action should save that result as well.
+ * Restoring the screen does not invoke [onColorChanged].
+ *
  * @param initialColor initial color.
  * @param onColorChanged callback invoked when the selected color changes.
  * @param modifier modifier for the container layout.
@@ -166,7 +172,9 @@ object ColorChooserDefaults {
  * @param previewLabelStyle text style for the preview color code.
  * @param tabTextStyle text style for the chooser tabs.
  * @param sliderLabelStyle text style for the slider value labels.
- * @param disableInnerScroll whether to disable inner scroll.
+ * @param disableInnerScroll whether to disable vertical scrolling inside palettes. Set to true when
+ * placing this screen in a vertically scrolling parent without a fixed height. Horizontal palette
+ * scrolling remains enabled, so the parent must provide a bounded width.
  */
 @Composable
 fun ColorChooserScreen(
@@ -187,8 +195,10 @@ fun ColorChooserScreen(
     val initialAlpha = remember(initialColor, withAlpha) {
         if (withAlpha) initialColor.alpha.to8bitInt() else 255
     }
-    var currentOpaque by remember(initialColor) { mutableStateOf(initialColor.copy(alpha = 1f)) }
-    var currentAlpha by remember(initialColor, withAlpha) { mutableIntStateOf(initialAlpha) }
+    var currentOpaque by rememberSaveable(initialColor, stateSaver = ColorSaver) {
+        mutableStateOf(initialColor.copy(alpha = 1f))
+    }
+    var currentAlpha by rememberSaveable(initialColor, withAlpha) { mutableIntStateOf(initialAlpha) }
 
     val currentColor = currentOpaque.copy(alpha = if (withAlpha) currentAlpha / 255f else 1f)
 
@@ -227,7 +237,7 @@ fun ColorChooserScreen(
             )
         }
         val validatedChoosers = choosers.ifEmpty { listOf(Chooser.M2) }
-        var currentChooser by remember(validatedChoosers, initialChooser) {
+        var currentChooser by rememberSaveable(validatedChoosers, initialChooser) {
             val validatedInitialChooser =
                 validatedChoosers.firstOrNull { it == initialChooser } ?: validatedChoosers.first()
             mutableStateOf(validatedInitialChooser)
@@ -255,6 +265,7 @@ fun ColorChooserScreen(
                 M2Chooser(
                     currentColor = currentOpaque,
                     onColorChanged = onOpaqueChanged,
+                    disableInnerScroll = disableInnerScroll,
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally),
                 )
@@ -281,6 +292,7 @@ fun ColorChooserScreen(
                 M3Chooser(
                     currentColor = currentOpaque,
                     onColorChanged = onOpaqueChanged,
+                    disableInnerScroll = disableInnerScroll,
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally),
                 )
