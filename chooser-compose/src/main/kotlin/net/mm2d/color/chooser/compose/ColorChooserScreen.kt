@@ -109,8 +109,8 @@ class ColorChooserColors internal constructor(
 }
 
 object ColorChooserDefaults {
-    val ContentSpacing: Dp = 12.dp
-    val PreviewHeight: Dp = 64.dp
+    val contentSpacing: Dp = 12.dp
+    val previewHeight: Dp = 64.dp
 
     val previewLabelStyle: TextStyle = TextStyle.Default.copy(
         fontFamily = FontFamily.Monospace,
@@ -188,8 +188,8 @@ fun ColorChooserScreen(
     choosers: List<Chooser> = Chooser.entries,
     initialChooser: Chooser = Chooser.M2,
     colors: ColorChooserColors = ColorChooserDefaults.colors(),
-    contentSpacing: Dp = ColorChooserDefaults.ContentSpacing,
-    previewHeight: Dp = ColorChooserDefaults.PreviewHeight,
+    contentSpacing: Dp = ColorChooserDefaults.contentSpacing,
+    previewHeight: Dp = ColorChooserDefaults.previewHeight,
     previewLabelStyle: TextStyle = ColorChooserDefaults.previewLabelStyle,
     tabTextStyle: TextStyle = ColorChooserDefaults.tabTextStyle,
     sliderLabelStyle: TextStyle = ColorChooserDefaults.sliderLabelStyle,
@@ -256,8 +256,8 @@ fun ColorChooserScreen(
     choosers: List<Chooser> = Chooser.entries,
     initialChooser: Chooser = Chooser.M2,
     colors: ColorChooserColors = ColorChooserDefaults.colors(),
-    contentSpacing: Dp = ColorChooserDefaults.ContentSpacing,
-    previewHeight: Dp = ColorChooserDefaults.PreviewHeight,
+    contentSpacing: Dp = ColorChooserDefaults.contentSpacing,
+    previewHeight: Dp = ColorChooserDefaults.previewHeight,
     previewLabelStyle: TextStyle = ColorChooserDefaults.previewLabelStyle,
     tabTextStyle: TextStyle = ColorChooserDefaults.tabTextStyle,
     sliderLabelStyle: TextStyle = ColorChooserDefaults.sliderLabelStyle,
@@ -295,8 +295,8 @@ internal fun ColorChooserContent(
     choosers: List<Chooser> = Chooser.entries,
     initialChooser: Chooser = Chooser.M2,
     colors: ColorChooserColors = ColorChooserDefaults.colors(),
-    contentSpacing: Dp = ColorChooserDefaults.ContentSpacing,
-    previewHeight: Dp = ColorChooserDefaults.PreviewHeight,
+    contentSpacing: Dp = ColorChooserDefaults.contentSpacing,
+    previewHeight: Dp = ColorChooserDefaults.previewHeight,
     previewLabelStyle: TextStyle = ColorChooserDefaults.previewLabelStyle,
     tabTextStyle: TextStyle = ColorChooserDefaults.tabTextStyle,
     sliderLabelStyle: TextStyle = ColorChooserDefaults.sliderLabelStyle,
