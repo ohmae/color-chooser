@@ -7,24 +7,21 @@
 
 package net.mm2d.color.chooser.compose
 
-import android.annotation.SuppressLint
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
-import androidx.compose.foundation.gestures.awaitEachGesture
-import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
@@ -32,17 +29,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.paint
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.MeshGradientPainter
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.layout
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.ProgressBarRangeInfo
@@ -52,17 +49,20 @@ import androidx.compose.ui.semantics.progressBarRangeInfo
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.setProgress
 import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.fastAny
-import net.mm2d.color.chooser.compose.util.ColorControlGrip
+import net.mm2d.color.chooser.compose.util.CONTROL_GRIP_RADIUS
+import net.mm2d.color.chooser.compose.util.ControlGrip
+import net.mm2d.color.chooser.compose.util.detectTapAndDragGestures
 import net.mm2d.color.chooser.compose.util.frameDecoration
 import net.mm2d.color.chooser.compose.util.ratio
 import net.mm2d.color.chooser.compose.util.toHsv
 import kotlin.math.roundToInt
 
 private const val HUE_MAX = 360f
+private val TRACK_HEIGHT = 32.dp
 
-@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 internal fun HsvChooser(
     currentColor: Color,
@@ -86,10 +86,10 @@ internal fun HsvChooser(
         }
     }
     val updateSv = remember {
-        { newSat: Float, newVal: Float ->
-            saturation = newSat
-            value = newVal
-            val newColor = Color.hsv(hue, newSat, newVal)
+        { newSaturation: Float, newValue: Float ->
+            saturation = newSaturation
+            value = newValue
+            val newColor = Color.hsv(hue, newSaturation, newValue)
             lastEmittedColor = newColor
             currentOnColorChanged(newColor)
         }
@@ -125,17 +125,26 @@ internal fun HsvChooser(
         CustomAccessibilityAction(stringResource(R.string.mm2d_cc_increase_value)) { adjustSv(0f, 0.01f) },
         CustomAccessibilityAction(stringResource(R.string.mm2d_cc_decrease_value)) { adjustSv(0f, -0.01f) },
     )
+    val density = LocalDensity.current
+    val gripRadiusPx = remember(density) {
+        with(density) { CONTROL_GRIP_RADIUS.roundToPx() }
+    }
+    val topMarginPx = remember(density) {
+        with(density) { (TRACK_HEIGHT / 2 - CONTROL_GRIP_RADIUS).roundToPx() }
+    }
+    var trackWidthPx by remember { mutableIntStateOf(0) }
+    var svSizePx by remember { mutableIntStateOf(0) }
+
     Column(
         modifier = modifier.fillMaxWidth(),
     ) {
-        BoxWithConstraints(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(32.dp),
+                .height(TRACK_HEIGHT)
+                .onSizeChanged { trackWidthPx = it.width },
         ) {
-            val trackWidth = (maxWidth - 16.dp).coerceAtLeast(0.dp)
             val currentRatio = (hue / HUE_MAX).coerceIn(0f, 1f)
-            val gripStartX = trackWidth * currentRatio
 
             val colorBrush = remember {
                 val grid = 36
@@ -153,79 +162,80 @@ internal fun HsvChooser(
                     .fillMaxSize()
                     .background(colorBrush),
             )
-            ColorControlGrip(
+            ControlGrip(
                 color = Color.hsv(hue = hue, saturation = 1f, value = 1f),
                 modifier = Modifier
                     .align(AbsoluteAlignment.TopLeft)
-                    .absoluteOffset(x = gripStartX, y = 8.dp),
+                    .absoluteOffset {
+                        val rangeXPx = (trackWidthPx - gripRadiusPx * 2).coerceAtLeast(0)
+                        val x = (rangeXPx * currentRatio).roundToInt()
+                        IntOffset(x = x, y = topMarginPx)
+                    },
             )
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .hueAccessibility(stringResource(R.string.mm2d_cc_hue), hue, updateHue)
-                    .pointerInput(trackWidth) {
-                        awaitEachGesture {
-                            val down = awaitFirstDown()
-                            val updatePosition = { position: Offset ->
-                                val targetX = (position.x.toDp() - 8.dp).coerceIn(0.dp, trackWidth)
-                                val newHue = ratio(targetX, trackWidth) * 360f
-                                updateHue(newHue)
-                            }
-                            updatePosition(down.position)
-                            down.consume()
-                            do {
-                                val event = awaitPointerEvent()
-                                val change = event.changes.first()
-                                updatePosition(change.position)
-                                change.consume()
-                            } while (event.changes.fastAny { it.pressed })
+                    .pointerInput(trackWidthPx, density) {
+                        if (trackWidthPx <= 0) return@pointerInput
+                        val rangeXPx = (trackWidthPx - gripRadiusPx * 2).coerceAtLeast(0)
+                        detectTapAndDragGestures { position ->
+                            val targetX = position.x - gripRadiusPx
+                            val ratio = ratio(targetX, rangeXPx.toFloat())
+                            updateHue(ratio * 360f)
                         }
                     },
             )
         }
-        BoxWithConstraints(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp),
             contentAlignment = Alignment.Center,
         ) {
-            val maxColor = Color.hsv(hue, 1f, 1f)
-            val gradientPainter = remember(maxColor) {
-                val grid = 16
-                val step = 1f / grid
-                MeshGradientPainter(grid, grid) {
-                    repeat(grid + 1) { y ->
-                        repeat(grid + 1) { x ->
-                            setVertex(
-                                x,
-                                y,
-                                Offset(x * step, y * step),
-                                Color.hsv(hue = hue, saturation = x * step, value = 1 - y * step),
-                            )
-                        }
-                    }
-                }
+            val horizontalBrush = remember(hue) {
+                Brush.horizontalGradient(
+                    listOf(Color.White, Color.hsv(hue, 1f, 1f)),
+                )
             }
-            val size = minOf(maxWidth, maxHeight).coerceAtLeast(0.dp)
-            val rangeSize = (size - 16.dp).coerceAtLeast(0.dp)
-            val gripStartX = rangeSize * saturation.coerceIn(0f, 1f)
-            val gripStartY = rangeSize * (1f - value).coerceIn(0f, 1f)
+            val verticalBrush = remember {
+                Brush.verticalGradient(
+                    listOf(Color.Transparent, Color.Black),
+                )
+            }
 
             Box(
-                modifier = Modifier.size(size),
+                modifier = Modifier
+                    .layout { measurable, constraints ->
+                        val squareSize = minOf(constraints.maxWidth, constraints.maxHeight).coerceAtLeast(0)
+                        val placeable = measurable.measure(
+                            Constraints.fixed(squareSize, squareSize),
+                        )
+                        layout(squareSize, squareSize) {
+                            placeable.place(0, 0)
+                        }
+                    }
+                    .onSizeChanged { svSizePx = it.width },
             ) {
-                Box(
+                Canvas(
                     modifier = Modifier
                         .padding(5.dp)
                         .frameDecoration()
-                        .fillMaxSize()
-                        .paint(gradientPainter),
-                )
-                ColorControlGrip(
+                        .fillMaxSize(),
+                ) {
+                    drawRect(brush = horizontalBrush)
+                    drawRect(brush = verticalBrush)
+                }
+                ControlGrip(
                     color = Color.hsv(hue, saturation, value),
                     modifier = Modifier
                         .align(AbsoluteAlignment.TopLeft)
-                        .absoluteOffset(x = gripStartX, y = gripStartY),
+                        .absoluteOffset {
+                            val rangeSizePx = (svSizePx - gripRadiusPx * 2).coerceAtLeast(0)
+                            val x = (rangeSizePx * saturation.coerceIn(0f, 1f)).roundToInt()
+                            val y = (rangeSizePx * (1f - value).coerceIn(0f, 1f)).roundToInt()
+                            IntOffset(x = x, y = y)
+                        },
                 )
                 Box(
                     modifier = Modifier
@@ -247,24 +257,15 @@ internal fun HsvChooser(
                             true
                         }
                         .focusable()
-                        .pointerInput(rangeSize) {
-                            awaitEachGesture {
-                                val down = awaitFirstDown()
-                                val updatePosition = { position: Offset ->
-                                    val targetX = (position.x.toDp() - 8.dp).coerceIn(0.dp, rangeSize)
-                                    val targetY = (position.y.toDp() - 8.dp).coerceIn(0.dp, rangeSize)
-                                    val newSat = ratio(targetX, rangeSize)
-                                    val newVal = 1f - ratio(targetY, rangeSize)
-                                    updateSv(newSat, newVal)
-                                }
-                                updatePosition(down.position)
-                                down.consume()
-                                do {
-                                    val event = awaitPointerEvent()
-                                    val change = event.changes.first()
-                                    updatePosition(change.position)
-                                    change.consume()
-                                } while (event.changes.fastAny { it.pressed })
+                        .pointerInput(svSizePx, density) {
+                            if (svSizePx <= 0) return@pointerInput
+                            val rangeSizePx = (svSizePx - gripRadiusPx * 2).coerceAtLeast(0)
+                            detectTapAndDragGestures { position ->
+                                val targetX = position.x - gripRadiusPx
+                                val targetY = position.y - gripRadiusPx
+                                val newSaturation = ratio(targetX, rangeSizePx.toFloat())
+                                val newValue = 1f - ratio(targetY, rangeSizePx.toFloat())
+                                updateSv(newSaturation, newValue)
                             }
                         },
                 )

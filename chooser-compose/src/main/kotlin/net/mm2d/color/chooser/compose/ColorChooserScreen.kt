@@ -198,18 +198,77 @@ fun ColorChooserScreen(
     val normalizedInitialColor = remember(initialColor, withAlpha) {
         initialColor.toChooserColor(withAlpha)
     }
-    var currentColor by rememberSaveable(initialColor, stateSaver = ColorSaver) {
+    var currentColor by rememberSaveable(initialColor, withAlpha, stateSaver = ColorSaver) {
         mutableStateOf(normalizedInitialColor)
     }
-    if (!withAlpha && currentColor.alpha != 1f) currentColor = currentColor.copy(alpha = 1f)
 
-    ColorChooserContent(
-        initialColor = normalizedInitialColor,
-        currentColor = currentColor,
+    ColorChooserScreen(
+        color = currentColor,
         onColorChanged = {
             currentColor = it
             onColorChanged(it)
         },
+        modifier = modifier,
+        initialColor = normalizedInitialColor,
+        withAlpha = withAlpha,
+        choosers = choosers,
+        initialChooser = initialChooser,
+        colors = colors,
+        contentSpacing = contentSpacing,
+        previewHeight = previewHeight,
+        previewLabelStyle = previewLabelStyle,
+        tabTextStyle = tabTextStyle,
+        sliderLabelStyle = sliderLabelStyle,
+        disableInnerScroll = disableInnerScroll,
+    )
+}
+
+/**
+ * Stateless color chooser screen.
+ *
+ * External updates to [color] are reflected immediately.
+ * [color] is converted to 8-bit sRGB; [Color.Unspecified] is not supported.
+ * Disabling alpha discards transparency, and callbacks return 8-bit sRGB colors.
+ *
+ * @param color current color to display and edit.
+ * @param onColorChanged callback invoked when the selected color changes.
+ * @param modifier modifier for the container layout.
+ * @param initialColor initial color displayed in the preview for comparison. If null, [color] is used.
+ * @param withAlpha whether to edit alpha. If false, the preview and result are always opaque.
+ * @param choosers list of choosers to display as tabs. Default is all choosers in [Chooser].
+ * @param initialChooser initial chooser tab to select. Default is [Chooser.M2].
+ * @param colors color palette for UI elements.
+ * @param contentSpacing vertical spacing between sections.
+ * @param previewHeight height of the color preview area.
+ * @param previewLabelStyle text style for the preview color code.
+ * @param tabTextStyle text style for the chooser tabs.
+ * @param sliderLabelStyle text style for the slider value labels.
+ * @param disableInnerScroll whether to disable vertical scrolling inside palettes.
+ */
+@Composable
+fun ColorChooserScreen(
+    color: Color,
+    onColorChanged: (Color) -> Unit,
+    modifier: Modifier = Modifier,
+    initialColor: Color? = null,
+    withAlpha: Boolean = true,
+    choosers: List<Chooser> = Chooser.entries,
+    initialChooser: Chooser = Chooser.M2,
+    colors: ColorChooserColors = ColorChooserDefaults.colors(),
+    contentSpacing: Dp = ColorChooserDefaults.ContentSpacing,
+    previewHeight: Dp = ColorChooserDefaults.PreviewHeight,
+    previewLabelStyle: TextStyle = ColorChooserDefaults.previewLabelStyle,
+    tabTextStyle: TextStyle = ColorChooserDefaults.tabTextStyle,
+    sliderLabelStyle: TextStyle = ColorChooserDefaults.sliderLabelStyle,
+    disableInnerScroll: Boolean = false,
+) {
+    val normalizedCurrentColor = color.toChooserColor(withAlpha)
+    val effectiveInitialColor = (initialColor ?: color).toChooserColor(withAlpha)
+
+    ColorChooserContent(
+        initialColor = effectiveInitialColor,
+        currentColor = normalizedCurrentColor,
+        onColorChanged = onColorChanged,
         modifier = modifier,
         withAlpha = withAlpha,
         choosers = choosers,

@@ -40,6 +40,7 @@ public final class net/mm2d/color/chooser/compose/ColorChooserDialogKt {
 
 public final class net/mm2d/color/chooser/compose/ColorChooserScreenKt {
 	public static final fun ColorChooserScreen-K2TO0qc (JLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZLjava/util/List;Lnet/mm2d/color/chooser/compose/Chooser;Lnet/mm2d/color/chooser/compose/ColorChooserColors;FFLandroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;ZLandroidx/compose/runtime/Composer;III)V
+	public static final fun ColorChooserScreen-KqpAKB0 (JLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/Color;ZLjava/util/List;Lnet/mm2d/color/chooser/compose/Chooser;Lnet/mm2d/color/chooser/compose/ColorChooserColors;FFLandroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;ZLandroidx/compose/runtime/Composer;III)V
 }
 
 public final class net/mm2d/color/chooser/compose/ColorChooserViewKt {

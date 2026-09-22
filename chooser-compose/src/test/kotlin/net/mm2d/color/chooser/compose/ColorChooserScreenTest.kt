@@ -192,6 +192,29 @@ class ColorChooserScreenTest {
         composeRule.onNodeWithText("M3").performClick().assertIsSelected()
     }
 
+    @Test
+    fun statelessScreenReflectsExternalColorUpdatesImmediately() {
+        var color by mutableStateOf(Color.Red)
+        var changedColor = Color.Unspecified
+        composeRule.setContent {
+            MaterialTheme {
+                ColorChooserScreen(
+                    color = color,
+                    onColorChanged = { changedColor = it },
+                    initialColor = Color.Yellow,
+                    modifier = Modifier
+                        .width(320.dp)
+                        .testTag("screen"),
+                )
+            }
+        }
+        composeRule.onNodeWithText("#FFFFFF00").assertExists()
+        composeRule.onNodeWithText("#FFFF0000").assertExists()
+
+        composeRule.runOnIdle { color = Color.Green }
+        composeRule.onNodeWithText("#FF00FF00").assertExists()
+    }
+
     private fun clickSlider(
         label: String,
         fraction: Float,
