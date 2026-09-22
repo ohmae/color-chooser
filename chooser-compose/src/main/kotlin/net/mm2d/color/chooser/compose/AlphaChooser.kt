@@ -10,6 +10,7 @@ package net.mm2d.color.chooser.compose
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 
 @Composable
@@ -25,6 +26,7 @@ internal fun AlphaChooser(
         value = currentAlpha,
         onValueChange = onAlphaChanged,
         color = currentColor,
+        accessibilityLabel = stringResource(R.string.mm2d_cc_alpha),
         alphaMode = true,
         labelColor = labelColor,
         labelStyle = labelStyle,

@@ -26,7 +26,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import net.mm2d.color.chooser.compose.util.shouldUseWhiteForeground
 
@@ -64,7 +70,12 @@ internal fun PaletteChooser(
                         onClick = { onColorChanged(color) },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(32.dp),
+                            .height(32.dp)
+                            .semantics {
+                                contentDescription = "#%08X".format(color.toArgb())
+                                this.selected = selected
+                                role = Role.RadioButton
+                            },
                         shape = shape,
                         color = color,
                     ) {

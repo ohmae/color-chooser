@@ -9,6 +9,7 @@ package net.mm2d.color.chooser.compose
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.Box
@@ -36,13 +37,30 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.MeshGradientPainter
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.CustomAccessibilityAction
+import androidx.compose.ui.semantics.ProgressBarRangeInfo
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.customActions
+import androidx.compose.ui.semantics.progressBarRangeInfo
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.setProgress
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastAny
 import net.mm2d.color.chooser.compose.util.ColorControlGrip
 import net.mm2d.color.chooser.compose.util.frameDecoration
 import net.mm2d.color.chooser.compose.util.ratio
 import net.mm2d.color.chooser.compose.util.toHsv
+import kotlin.math.roundToInt
+
+private const val HUE_MAX = 360f
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
@@ -85,6 +103,28 @@ internal fun HsvChooser(
             lastEmittedColor = currentColor
         }
     }
+    val svLabel = stringResource(R.string.mm2d_cc_saturation_value)
+    val svState = stringResource(
+        R.string.mm2d_cc_saturation_value_state,
+        (saturation * 100f).roundToInt(),
+        (value * 100f).roundToInt(),
+    )
+    val adjustSv = { saturationDelta: Float, valueDelta: Float ->
+        val newSaturation = (saturation + saturationDelta).coerceIn(0f, 1f)
+        val newValue = (value + valueDelta).coerceIn(0f, 1f)
+        if (newSaturation == saturation && newValue == value) {
+            false
+        } else {
+            updateSv(newSaturation, newValue)
+            true
+        }
+    }
+    val svActions = listOf(
+        CustomAccessibilityAction(stringResource(R.string.mm2d_cc_increase_saturation)) { adjustSv(0.01f, 0f) },
+        CustomAccessibilityAction(stringResource(R.string.mm2d_cc_decrease_saturation)) { adjustSv(-0.01f, 0f) },
+        CustomAccessibilityAction(stringResource(R.string.mm2d_cc_increase_value)) { adjustSv(0f, 0.01f) },
+        CustomAccessibilityAction(stringResource(R.string.mm2d_cc_decrease_value)) { adjustSv(0f, -0.01f) },
+    )
     Column(
         modifier = modifier.fillMaxWidth(),
     ) {
@@ -94,14 +134,14 @@ internal fun HsvChooser(
                 .height(32.dp),
         ) {
             val trackWidth = (maxWidth - 16.dp).coerceAtLeast(0.dp)
-            val currentRatio = (hue / 360f).coerceIn(0f, 1f)
+            val currentRatio = (hue / HUE_MAX).coerceIn(0f, 1f)
             val gripStartX = trackWidth * currentRatio
 
             val colorBrush = remember {
                 val grid = 36
                 Brush.horizontalGradient(
                     (0..grid).map {
-                        Color.hsv(it.toFloat() / grid * 360f, 1f, 1f)
+                        Color.hsv(it.toFloat() / grid * HUE_MAX, 1f, 1f)
                     },
                 )
             }
@@ -122,6 +162,7 @@ internal fun HsvChooser(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
+                    .hueAccessibility(stringResource(R.string.mm2d_cc_hue), hue, updateHue)
                     .pointerInput(trackWidth) {
                         awaitEachGesture {
                             val down = awaitFirstDown()
@@ -189,6 +230,23 @@ internal fun HsvChooser(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
+                        .semantics {
+                            contentDescription = svLabel
+                            stateDescription = svState
+                            customActions = svActions
+                        }
+                        .onKeyEvent {
+                            if (it.type != KeyEventType.KeyDown) return@onKeyEvent false
+                            when (it.key) {
+                                Key.DirectionRight -> adjustSv(0.01f, 0f)
+                                Key.DirectionLeft -> adjustSv(-0.01f, 0f)
+                                Key.DirectionUp -> adjustSv(0f, 0.01f)
+                                Key.DirectionDown -> adjustSv(0f, -0.01f)
+                                else -> return@onKeyEvent false
+                            }
+                            true
+                        }
+                        .focusable()
                         .pointerInput(rangeSize) {
                             awaitEachGesture {
                                 val down = awaitFirstDown()
@@ -213,4 +271,43 @@ internal fun HsvChooser(
             }
         }
     }
+}
+
+internal fun Modifier.hueAccessibility(
+    label: String,
+    value: Float,
+    onValueChange: (Float) -> Unit,
+): Modifier {
+    val update = { requested: Float ->
+        if (!requested.isFinite()) {
+            false
+        } else {
+            val newValue = requested.coerceIn(0f, HUE_MAX)
+            if (newValue == value) {
+                false
+            } else {
+                onValueChange(newValue)
+                true
+            }
+        }
+    }
+    return this
+        .semantics {
+            contentDescription = label
+            progressBarRangeInfo = ProgressBarRangeInfo(value, 0f..HUE_MAX, 359)
+            setProgress(action = update)
+        }
+        .onKeyEvent {
+            if (it.type != KeyEventType.KeyDown) return@onKeyEvent false
+            val target = when (it.key) {
+                Key.DirectionRight, Key.DirectionUp -> value + 1f
+                Key.DirectionLeft, Key.DirectionDown -> value - 1f
+                Key.MoveHome -> 0f
+                Key.MoveEnd -> HUE_MAX
+                else -> return@onKeyEvent false
+            }
+            update(target)
+            true
+        }
+        .focusable()
 }

@@ -2,4 +2,15 @@
 <resources>
     <string name="mm2d_cc_cancel">Cancel</string>
     <string name="mm2d_cc_ok">OK</string>
+    <string name="mm2d_cc_red">Red</string>
+    <string name="mm2d_cc_green">Green</string>
+    <string name="mm2d_cc_blue">Blue</string>
+    <string name="mm2d_cc_alpha">Opacity</string>
+    <string name="mm2d_cc_hue">Hue</string>
+    <string name="mm2d_cc_saturation_value">Saturation and brightness</string>
+    <string name="mm2d_cc_saturation_value_state">Saturation %1$d%%, brightness %2$d%%</string>
+    <string name="mm2d_cc_increase_saturation">Increase saturation</string>
+    <string name="mm2d_cc_decrease_saturation">Decrease saturation</string>
+    <string name="mm2d_cc_increase_value">Increase brightness</string>
+    <string name="mm2d_cc_decrease_value">Decrease brightness</string>
 </resources>

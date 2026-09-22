@@ -9,6 +9,7 @@ package net.mm2d.color.chooser.compose
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.Arrangement
@@ -31,7 +32,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.semantics.ProgressBarRangeInfo
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.progressBarRangeInfo
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.setProgress
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -42,12 +53,18 @@ import net.mm2d.color.chooser.compose.util.frameDecoration
 import net.mm2d.color.chooser.compose.util.ratio
 import kotlin.math.roundToInt
 
+private const val MAX_INT = 255
+private val RANGE_INT = 0..MAX_INT
+private const val MAX_FLOAT = MAX_INT.toFloat()
+private val RANGE_FLOAT = 0f..MAX_FLOAT
+
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 internal fun ColorSlider(
     value: Int,
     onValueChange: (Int) -> Unit,
     color: Color,
+    accessibilityLabel: String,
     modifier: Modifier = Modifier,
     alphaMode: Boolean = false,
     labelColor: Color,
@@ -103,13 +120,14 @@ internal fun ColorSlider(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
+                    .accessibility(accessibilityLabel, value, currentOnValueChanged)
                     .pointerInput(rangeX) {
                         awaitEachGesture {
                             val down = awaitFirstDown()
                             val updateValue = { positionX: Float ->
                                 val targetX = (positionX.toDp() - 8.dp).coerceIn(0.dp, rangeX)
                                 val ratio = ratio(targetX, rangeX)
-                                currentOnValueChanged((ratio * 255f).roundToInt().coerceIn(0, 255))
+                                currentOnValueChanged((ratio * MAX_FLOAT).roundToInt().coerceIn(RANGE_INT))
                             }
                             updateValue(down.position.x)
                             down.consume()
@@ -133,4 +151,43 @@ internal fun ColorSlider(
                 .width(28.dp),
         )
     }
+}
+
+private fun Modifier.accessibility(
+    label: String,
+    value: Int,
+    onValueChange: (Int) -> Unit,
+): Modifier {
+    val updateValue = { requested: Float ->
+        if (!requested.isFinite()) {
+            false
+        } else {
+            val newValue = requested.roundToInt().coerceIn(RANGE_INT)
+            if (newValue == value) {
+                false
+            } else {
+                onValueChange(newValue)
+                true
+            }
+        }
+    }
+    return this
+        .semantics {
+            contentDescription = label
+            progressBarRangeInfo = ProgressBarRangeInfo(value.toFloat(), RANGE_FLOAT, MAX_INT - 1)
+            setProgress(action = updateValue)
+        }
+        .onKeyEvent {
+            if (it.type != KeyEventType.KeyDown) return@onKeyEvent false
+            val target = when (it.key) {
+                Key.DirectionRight, Key.DirectionUp -> value + 1f
+                Key.DirectionLeft, Key.DirectionDown -> value - 1f
+                Key.MoveHome -> 0f
+                Key.MoveEnd -> MAX_FLOAT
+                else -> return@onKeyEvent false
+            }
+            updateValue(target)
+            true
+        }
+        .focusable()
 }

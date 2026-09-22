@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import net.mm2d.color.chooser.compose.util.to8bitInt
@@ -38,6 +39,7 @@ internal fun RgbChooser(
                 onColorChanged(Color(newRed, green, blue))
             },
             color = Color.Red,
+            accessibilityLabel = stringResource(R.string.mm2d_cc_red),
             labelColor = sliderLabelColor,
             labelStyle = sliderLabelStyle,
             modifier = Modifier.fillMaxWidth(),
@@ -48,6 +50,7 @@ internal fun RgbChooser(
                 onColorChanged(Color(red, newGreen, blue))
             },
             color = Color.Green,
+            accessibilityLabel = stringResource(R.string.mm2d_cc_green),
             labelColor = sliderLabelColor,
             labelStyle = sliderLabelStyle,
             modifier = Modifier
@@ -60,6 +63,7 @@ internal fun RgbChooser(
                 onColorChanged(Color(red, green, newBlue))
             },
             color = Color.Blue,
+            accessibilityLabel = stringResource(R.string.mm2d_cc_blue),
             labelColor = sliderLabelColor,
             labelStyle = sliderLabelStyle,
             modifier = Modifier
