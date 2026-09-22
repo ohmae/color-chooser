@@ -26,8 +26,8 @@ object Projects {
 
     object Compose {
         private const val VERSION_MAJOR: Int = 0
-        private const val VERSION_MINOR: Int = 1
-        private const val VERSION_PATCH: Int = 2
+        private const val VERSION_MINOR: Int = 2
+        private const val VERSION_PATCH: Int = 0
         const val VERSION_NAME: String = "$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH"
     }
 
