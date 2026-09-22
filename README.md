@@ -72,6 +72,8 @@ fun ColorPickerScreen(
   and tab changes, including hue at gray and saturation at black.
 - When embedding in a `verticalScroll` or `LazyColumn` without a fixed item height, pass
   `disableInnerScroll = true`. Palette horizontal scrolling still requires a bounded width.
+- RGB, opacity and hue bars update on tap release or horizontal drag; vertical swipes can scroll
+  the parent without changing the color. The saturation/brightness plane uses both drag directions for editing.
 - Color ramps keep a left-to-right direction in RTL layouts. RGB, opacity and hue support
   accessibility value adjustment, arrow keys and Home/End. The saturation/brightness area supports
   accessibility increase/decrease actions and arrow keys (left/right for saturation, up/down for brightness).

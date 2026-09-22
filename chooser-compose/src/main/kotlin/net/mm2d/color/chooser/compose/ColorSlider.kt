@@ -50,7 +50,7 @@ import androidx.compose.ui.unit.dp
 import net.mm2d.color.chooser.compose.util.CONTROL_GRIP_RADIUS
 import net.mm2d.color.chooser.compose.util.ControlGrip
 import net.mm2d.color.chooser.compose.util.alphaBackgroundBrush
-import net.mm2d.color.chooser.compose.util.detectTapAndDragGestures
+import net.mm2d.color.chooser.compose.util.detectHorizontalTapAndDragGestures
 import net.mm2d.color.chooser.compose.util.frameDecoration
 import net.mm2d.color.chooser.compose.util.ratio
 import kotlin.math.roundToInt
@@ -140,7 +140,7 @@ internal fun ColorSlider(
                         if (trackWidthPx <= 0) return@pointerInput
                         val rangeXPx = (trackWidthPx - gripRadiusPx * 2).coerceAtLeast(0)
                         if (rangeXPx == 0) return@pointerInput
-                        detectTapAndDragGestures { position ->
+                        detectHorizontalTapAndDragGestures { position ->
                             val targetX = position.x - gripRadiusPx
                             val ratio = ratio(targetX, rangeXPx.toFloat())
                             currentOnValueChanged((ratio * MAX_FLOAT).roundToInt())

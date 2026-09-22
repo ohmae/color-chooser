@@ -10,6 +10,9 @@ package net.mm2d.color.chooser.compose.util
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.drag
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -28,6 +31,9 @@ import androidx.compose.ui.input.pointer.PointerInputScope
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import net.mm2d.color.chooser.compose.R
 
 private val colorBorder1 = Color.White
@@ -54,18 +60,32 @@ internal fun alphaBackgroundBrush(): ShaderBrush {
     }
 }
 
+// A vertical scroll can cancel the pending tap before it changes the color.
+internal suspend fun PointerInputScope.detectHorizontalTapAndDragGestures(
+    onPositionChange: (Offset) -> Unit,
+) {
+    coroutineScope {
+        // Register both detectors before pointerInput dispatches its first down event.
+        launch(start = CoroutineStart.UNDISPATCHED) {
+            detectTapGestures(onTap = onPositionChange)
+        }
+        launch(start = CoroutineStart.UNDISPATCHED) {
+            detectHorizontalDragGestures { change, _ ->
+                onPositionChange(change.position)
+            }
+        }
+    }
+}
+
+// The saturation/value plane owns drags in both directions, starting at the press position.
 internal suspend fun PointerInputScope.detectTapAndDragGestures(
     onPositionChange: (Offset) -> Unit,
 ) {
     awaitEachGesture {
-        val down = awaitFirstDown(requireUnconsumed = false)
+        val down = awaitFirstDown()
         onPositionChange(down.position)
         down.consume()
-        val pointerId = down.id
-        while (true) {
-            val event = awaitPointerEvent()
-            val change = event.changes.firstOrNull { it.id == pointerId } ?: break
-            if (!change.pressed) break
+        drag(down.id) { change ->
             onPositionChange(change.position)
             change.consume()
         }
