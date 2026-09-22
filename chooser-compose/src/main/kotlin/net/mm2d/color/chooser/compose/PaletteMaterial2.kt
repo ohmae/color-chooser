@@ -9,7 +9,7 @@ package net.mm2d.color.chooser.compose
 
 import androidx.compose.ui.graphics.Color
 
-internal fun paletteMaterial2() =
+internal val paletteMaterial2: List<List<Color>> =
     listOf(
         listOf(
             Color(0xFFFFEBEE),

@@ -8,7 +8,6 @@
 package net.mm2d.color.chooser.compose
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 
@@ -19,9 +18,8 @@ internal fun M2Chooser(
     modifier: Modifier = Modifier,
     disableInnerScroll: Boolean = false,
 ) {
-    val palette = remember { paletteMaterial2() }
     PaletteChooser(
-        palette = palette,
+        palette = paletteMaterial2,
         currentColor = currentColor,
         onColorChanged = onColorChanged,
         modifier = modifier,
