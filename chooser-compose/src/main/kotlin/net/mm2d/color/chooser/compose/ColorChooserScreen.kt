@@ -156,7 +156,7 @@ object ColorChooserDefaults {
 /**
  * Color chooser screen.
  *
- * The edited color and selected tab are saved across activity and process recreation.
+ * The edited color, selected tab and HSV editing coordinates are saved across activity and process recreation.
  * Callers that retain the result for a confirmation action should save that result as well.
  * Restoring the screen does not invoke [onColorChanged].
  * Inputs are converted to 8-bit sRGB for previews and editing; callbacks return 8-bit sRGB colors.
@@ -198,9 +198,10 @@ fun ColorChooserScreen(
     val normalizedInitialColor = remember(initialColor, withAlpha) {
         initialColor.toChooserColor(withAlpha)
     }
-    var currentColor by rememberSaveable(initialColor, withAlpha, stateSaver = ColorSaver) {
+    var currentColor by rememberSaveable(initialColor, stateSaver = ColorSaver) {
         mutableStateOf(normalizedInitialColor)
     }
+    if (!withAlpha && currentColor.alpha != 1f) currentColor = currentColor.copy(alpha = 1f)
 
     ColorChooserScreen(
         color = currentColor,
@@ -302,6 +303,7 @@ internal fun ColorChooserContent(
     disableInnerScroll: Boolean = false,
 ) {
     val currentOpaque = currentColor.copy(alpha = 1f)
+    val hsvState = rememberHsvChooserState(currentOpaque)
     val currentAlpha = currentColor.alpha.to8bitInt()
     val updateColor = { color: Color, alphaInt: Int ->
         val alphaFloat = if (withAlpha) alphaInt / 255f else 1f
@@ -372,6 +374,7 @@ internal fun ColorChooserContent(
             Chooser.HSV ->
                 HsvChooser(
                     currentColor = currentOpaque,
+                    state = hsvState,
                     onColorChanged = onOpaqueChanged,
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally),

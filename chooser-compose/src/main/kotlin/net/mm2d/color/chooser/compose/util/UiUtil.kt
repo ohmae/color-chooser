@@ -97,7 +97,7 @@ internal fun ratio(
     target: Float,
     range: Float,
 ): Float =
-    if (range >= 0f) {
+    if (range > 0f) {
         (target / range).coerceIn(0f, 1f)
     } else {
         0f

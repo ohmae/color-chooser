@@ -45,6 +45,7 @@ fun ColorPickerScreen(
 
     Column(Modifier.fillMaxSize().padding(16.dp)) {
         ColorChooserScreen(
+            color = Color(selectedArgb),
             initialColor = initialColor,
             onColorChanged = { selectedArgb = it.toArgb() },
             withAlpha = withAlpha,
@@ -63,9 +64,12 @@ fun ColorPickerScreen(
   `Color.Unspecified` is not supported.
 - `withAlpha = false` discards transparency: previews and results are opaque, even when confirmed
   without editing. Turning alpha back on during editing starts with full opacity.
-- Edited color and selected tab survive activity/process recreation. Restoration does not invoke
-  `onColorChanged`, so also save the pending confirmation result, as in the example above.
-  Keep `initialColor` as the session's starting color; changing it resets the edited color.
+- The `color` overload lets the caller own the edited color, as in the confirmation example above.
+  Save that color to retain the pending result across activity/process recreation.
+- The `initialColor` overload owns and saves its edited color internally. Keep `initialColor` as the
+  session's starting color; changing it resets the edited color. Restoration does not invoke `onColorChanged`.
+- Both overloads preserve the selected tab and HSV editing coordinates across activity/process recreation
+  and tab changes, including hue at gray and saturation at black.
 - When embedding in a `verticalScroll` or `LazyColumn` without a fixed item height, pass
   `disableInnerScroll = true`. Palette horizontal scrolling still requires a bounded width.
 - Color ramps keep a left-to-right direction in RTL layouts. RGB, opacity and hue support

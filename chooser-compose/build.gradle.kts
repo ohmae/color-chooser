@@ -33,8 +33,11 @@ android {
 
 dependencies {
     implementation(libs.androidxCore)
-    implementation(libs.androidxComposeUi)
-    implementation(libs.androidxComposeUiGraphics)
+    api(libs.androidxComposeRuntime)
+    api(libs.androidxComposeUi)
+    api(libs.androidxComposeUiGraphics)
+    api(libs.androidxComposeUiText)
+    api(libs.androidxComposeUiUnit)
     implementation(libs.androidxComposeMaterial3)
     debugImplementation(libs.androidxComposeUiTooling)
     implementation(libs.androidxComposeUiToolingPreview)

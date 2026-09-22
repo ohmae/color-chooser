@@ -25,15 +25,18 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.click
 import androidx.compose.ui.test.junit4.StateRestorationTester
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.unit.dp
 import org.junit.Assert.assertEquals
@@ -213,6 +216,113 @@ class ColorChooserScreenTest {
 
         composeRule.runOnIdle { color = Color.Green }
         composeRule.onNodeWithText("#FF00FF00").assertExists()
+    }
+
+    @Test
+    fun alphaTogglePreservesEditedRgbAndDoesNotRestoreTransparency() {
+        var withAlpha by mutableStateOf(true)
+        var result = Color.Unspecified
+        composeRule.setContent {
+            MaterialTheme {
+                ColorChooserScreen(
+                    initialColor = Color(0x40336699),
+                    onColorChanged = { result = it },
+                    withAlpha = withAlpha,
+                    initialChooser = Chooser.RGB,
+                    modifier = Modifier.width(320.dp),
+                )
+            }
+        }
+        composeRule.onNodeWithContentDescription("Red").performSemanticsAction(SemanticsActions.SetProgress) {
+            it(18f)
+        }
+        composeRule.runOnIdle { withAlpha = false }
+        composeRule.onNodeWithText("#126699").assertExists()
+        composeRule.runOnIdle { withAlpha = true }
+        composeRule.onNodeWithText("#FF126699").assertExists()
+        composeRule.onNodeWithContentDescription("Green").performSemanticsAction(SemanticsActions.SetProgress) {
+            it(52f)
+        }
+        composeRule.runOnIdle { assertEquals(Color(0xFF123499), result) }
+    }
+
+    @Test
+    fun hsvBlackPreservesHueAndSaturationAcrossTabsAndRestoration() {
+        val restoration = StateRestorationTester(composeRule)
+        var result = Color.Blue
+        restoration.setContent {
+            MaterialTheme {
+                ColorChooserScreen(
+                    initialColor = Color.Blue,
+                    onColorChanged = { result = it },
+                    initialChooser = Chooser.HSV,
+                    modifier = Modifier.width(320.dp),
+                )
+            }
+        }
+        composeRule.onNodeWithContentDescription("Saturation and brightness").performTouchInput {
+            click(Offset(width.toFloat(), height.toFloat()) - Offset(1f, 1f))
+        }
+        composeRule.runOnIdle { assertEquals(Color.Black, result) }
+        composeRule.onNodeWithText("RGB").performClick()
+        restoration.emulateSavedInstanceStateRestore()
+        composeRule.onNodeWithText("HSV").performClick()
+        assertHue(240f)
+        val increaseBrightness = composeRule.onNodeWithContentDescription("Saturation and brightness")
+            .fetchSemanticsNode().config[SemanticsActions.CustomActions]
+            .single { it.label == "Increase brightness" }.action
+        composeRule.runOnIdle { increaseBrightness() }
+        composeRule.runOnIdle { assertEquals(Color.hsv(240f, 1f, 0.01f), result) }
+    }
+
+    @Test
+    fun hsvGrayPreservesHueEndpointAcrossTabsAndRestoration() {
+        val restoration = StateRestorationTester(composeRule)
+        restoration.setContent {
+            MaterialTheme {
+                ColorChooserScreen(
+                    initialColor = Color.White,
+                    onColorChanged = {},
+                    initialChooser = Chooser.HSV,
+                    modifier = Modifier.width(320.dp),
+                )
+            }
+        }
+        composeRule.onNodeWithContentDescription("Hue").performSemanticsAction(SemanticsActions.SetProgress) {
+            it(360f)
+        }
+        composeRule.onNodeWithText("RGB").performClick()
+        composeRule.onNodeWithText("HSV").performClick()
+        assertHue(360f)
+        restoration.emulateSavedInstanceStateRestore()
+        assertHue(360f)
+    }
+
+    @Test
+    fun hsvSynchronizesColorChangesMadeWhileItsTabIsHidden() {
+        var color by mutableStateOf(Color.Blue)
+        composeRule.setContent {
+            MaterialTheme {
+                ColorChooserScreen(
+                    color = color,
+                    onColorChanged = { color = it },
+                    initialChooser = Chooser.HSV,
+                    modifier = Modifier.width(320.dp),
+                )
+            }
+        }
+        composeRule.onNodeWithText("RGB").performClick()
+        composeRule.runOnIdle { color = Color.Green }
+        composeRule.onNodeWithText("HSV").performClick()
+        assertHue(120f)
+    }
+
+    private fun assertHue(
+        expected: Float,
+    ) {
+        val actual = composeRule.onNodeWithContentDescription("Hue")
+            .fetchSemanticsNode().config[SemanticsProperties.ProgressBarRangeInfo].current
+        assertEquals(expected, actual, 0.001f)
     }
 
     private fun clickSlider(

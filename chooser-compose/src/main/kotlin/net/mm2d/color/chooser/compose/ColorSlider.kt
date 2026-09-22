@@ -139,6 +139,7 @@ internal fun ColorSlider(
                     .pointerInput(trackWidthPx, density) {
                         if (trackWidthPx <= 0) return@pointerInput
                         val rangeXPx = (trackWidthPx - gripRadiusPx * 2).coerceAtLeast(0)
+                        if (rangeXPx == 0) return@pointerInput
                         detectTapAndDragGestures { position ->
                             val targetX = position.x - gripRadiusPx
                             val ratio = ratio(targetX, rangeXPx.toFloat())

@@ -89,6 +89,7 @@ fun ChooserScreen(
             contentAlignment = Alignment.TopCenter,
         ) {
             ColorChooserScreen(
+                color = selectedColor,
                 initialColor = initialColor,
                 onColorChanged = { selectedColor = it },
                 modifier = Modifier

@@ -18,11 +18,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
@@ -57,7 +54,6 @@ import net.mm2d.color.chooser.compose.util.ControlGrip
 import net.mm2d.color.chooser.compose.util.detectTapAndDragGestures
 import net.mm2d.color.chooser.compose.util.frameDecoration
 import net.mm2d.color.chooser.compose.util.ratio
-import net.mm2d.color.chooser.compose.util.toHsv
 import kotlin.math.roundToInt
 
 private const val HUE_MAX = 360f
@@ -68,40 +64,17 @@ internal fun HsvChooser(
     currentColor: Color,
     onColorChanged: (Color) -> Unit,
     modifier: Modifier = Modifier,
+    state: HsvChooserState = rememberHsvChooserState(currentColor),
 ) {
     val currentOnColorChanged by rememberUpdatedState(onColorChanged)
-    val hsvBuffer = remember { FloatArray(3).also { currentColor.toHsv(it) } }
-    var hue by remember { mutableFloatStateOf(hsvBuffer[0]) }
-    var saturation by remember { mutableFloatStateOf(hsvBuffer[1]) }
-    var value by remember { mutableFloatStateOf(hsvBuffer[2]) }
-
-    var lastEmittedColor by remember { mutableStateOf<Color?>(null) }
-
-    val updateHue = remember {
-        { newHue: Float ->
-            hue = newHue
-            val newColor = Color.hsv(newHue, saturation, value)
-            lastEmittedColor = newColor
-            currentOnColorChanged(newColor)
-        }
+    val hue = state.hue
+    val saturation = state.saturation
+    val value = state.value
+    val updateHue = { newHue: Float ->
+        currentOnColorChanged(state.update(newHue, state.saturation, state.value))
     }
-    val updateSv = remember {
-        { newSaturation: Float, newValue: Float ->
-            saturation = newSaturation
-            value = newValue
-            val newColor = Color.hsv(hue, newSaturation, newValue)
-            lastEmittedColor = newColor
-            currentOnColorChanged(newColor)
-        }
-    }
-    SideEffect(currentColor) {
-        if (currentColor != lastEmittedColor) {
-            currentColor.toHsv(hsvBuffer)
-            hue = hsvBuffer[0]
-            saturation = hsvBuffer[1]
-            value = hsvBuffer[2]
-            lastEmittedColor = currentColor
-        }
+    val updateSv = { newSaturation: Float, newValue: Float ->
+        currentOnColorChanged(state.update(state.hue, newSaturation, newValue))
     }
     val svLabel = stringResource(R.string.mm2d_cc_saturation_value)
     val svState = stringResource(
@@ -179,6 +152,7 @@ internal fun HsvChooser(
                     .pointerInput(trackWidthPx, density) {
                         if (trackWidthPx <= 0) return@pointerInput
                         val rangeXPx = (trackWidthPx - gripRadiusPx * 2).coerceAtLeast(0)
+                        if (rangeXPx == 0) return@pointerInput
                         detectTapAndDragGestures { position ->
                             val targetX = position.x - gripRadiusPx
                             val ratio = ratio(targetX, rangeXPx.toFloat())
@@ -260,6 +234,7 @@ internal fun HsvChooser(
                         .pointerInput(svSizePx, density) {
                             if (svSizePx <= 0) return@pointerInput
                             val rangeSizePx = (svSizePx - gripRadiusPx * 2).coerceAtLeast(0)
+                            if (rangeSizePx == 0) return@pointerInput
                             detectTapAndDragGestures { position ->
                                 val targetX = position.x - gripRadiusPx
                                 val targetY = position.y - gripRadiusPx

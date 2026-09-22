@@ -47,6 +47,9 @@ androidxDatabinding = { group = "androidx.databinding", name = "viewbinding", ve
 
 androidxActivityCompose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidxComposeBom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidxComposeRuntime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "compose" }
+androidxComposeUiText = { group = "androidx.compose.ui", name = "ui-text", version.ref = "compose" }
+androidxComposeUiUnit = { group = "androidx.compose.ui", name = "ui-unit", version.ref = "compose" }
 androidxComposeUi = { group = "androidx.compose.ui", name = "ui", version.ref = "compose" }
 androidxComposeUiGraphics = { group = "androidx.compose.ui", name = "ui-graphics", version.ref = "compose" }
 androidxComposeUiTooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "compose" }

@@ -7,6 +7,7 @@
 
 package net.mm2d.color.chooser.compose
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.CompositionLocalProvider
@@ -22,6 +23,7 @@ import androidx.compose.ui.test.click
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import org.junit.Assert.assertEquals
@@ -37,6 +39,41 @@ import org.robolectric.annotation.Config
 class HsvChooserTest {
     @get:Rule
     val composeRule = createComposeRule()
+
+    @Test
+    fun controlsIgnoreTouchesWhenTheGripHasNoTravelRange() {
+        var calls = 0
+        composeRule.setContent {
+            Column {
+                HsvChooser(
+                    currentColor = Color.Red,
+                    onColorChanged = { calls++ },
+                    modifier = Modifier
+                        .size(16.dp, 56.dp)
+                        .testTag("tinyHsv"),
+                )
+                ColorSlider(
+                    value = 128,
+                    onValueChange = { calls++ },
+                    color = Color.Red,
+                    accessibilityLabel = "Red",
+                    labelColor = Color.Black,
+                    labelStyle = TextStyle.Default,
+                    modifier = Modifier
+                        .size(52.dp, 32.dp)
+                        .testTag("tinySlider"),
+                )
+            }
+        }
+        composeRule.onNodeWithTag("tinyHsv").performTouchInput {
+            click(with(composeRule.density) { Offset(8.dp.toPx(), 16.dp.toPx()) })
+            click(with(composeRule.density) { Offset(8.dp.toPx(), 48.dp.toPx()) })
+        }
+        composeRule.onNodeWithTag("tinySlider").performTouchInput {
+            click(with(composeRule.density) { Offset(8.dp.toPx(), 16.dp.toPx()) })
+        }
+        composeRule.runOnIdle { assertEquals(0, calls) }
+    }
 
     @Test
     fun smallHsvAreaCanReachBothSaturationAndValueEndpoints() {
