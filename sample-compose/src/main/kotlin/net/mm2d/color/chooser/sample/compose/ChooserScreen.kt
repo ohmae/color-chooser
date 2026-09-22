@@ -51,9 +51,10 @@ fun ChooserScreen(
 ) {
     BackHandler(onBack = onCancel)
 
-    var selectedColor by rememberSaveable(stateSaver = ColorSaver) {
-        mutableStateOf(initialColor)
+    var selectedColor by rememberSaveable(initialColor, stateSaver = ColorSaver) {
+        mutableStateOf(Color(initialColor.toArgb()))
     }
+    if (!withAlpha && selectedColor.alpha != 1f) selectedColor = selectedColor.copy(alpha = 1f)
 
     Scaffold(
         modifier = modifier.fillMaxSize(),

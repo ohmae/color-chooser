@@ -36,20 +36,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import net.mm2d.color.chooser.compose.util.ColorSaver
+import net.mm2d.color.chooser.compose.util.toChooserColor
 
 /**
  * Color chooser dialog.
  *
- * @param initialColor initial color.
+ * @param initialColor initial color, converted to 8-bit sRGB. Must not be [Color.Unspecified].
  * @param onDismissRequest callback when the dialog is dismissed.
  * @param onChooseColor callback when the color is chosen. chosen color is passed as argument.
  * @param modifier modifier.
- * @param withAlpha whether to show alpha control.
+ * @param withAlpha whether to edit alpha. If false, previews and the chosen color are opaque,
+ * including when confirmed without editing. Disabling alpha discards transparency.
  * @param initialTab initial tab. default is [Tab.PALETTE]. see [Tab].
  * @param tabs tabs to show. default is [Tab.PALETTE], [Tab.HSV], [Tab.RGB]. see [Tab].
  * @param shape shape of the dialog.
  * @param containerColor color of the dialog container.
- * @param titleContentColor color of the title content.
+ * @param titleContentColor color of the chooser tab labels, both selected and unselected.
  * @param buttonContentColor color of the button content.
  * @param tonalElevation tonal elevation.
  * @param properties dialog properties.
@@ -82,11 +84,13 @@ fun ColorChooserDialog(
             tonalElevation = tonalElevation,
         ) {
             Column {
-                var selectedColor by rememberSaveable(stateSaver = ColorSaver) {
-                    mutableStateOf(initialColor)
+                var selectedColor by rememberSaveable(initialColor, stateSaver = ColorSaver) {
+                    mutableStateOf(initialColor.toChooserColor(withAlpha))
                 }
-                ColorChooserScreen(
-                    initialColor = initialColor,
+                if (!withAlpha && selectedColor.alpha != 1f) selectedColor = selectedColor.copy(alpha = 1f)
+                ColorChooserContent(
+                    initialColor = initialColor.toChooserColor(withAlpha),
+                    currentColor = selectedColor,
                     onColorChanged = { selectedColor = it },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -96,6 +100,10 @@ fun ColorChooserDialog(
                     withAlpha = withAlpha,
                     choosers = tabs.map { it.toChooser() },
                     initialChooser = initialTab.toChooser(),
+                    colors = ColorChooserDefaults.colors(
+                        selectedTabContentColor = titleContentColor,
+                        unselectedTabContentColor = titleContentColor,
+                    ),
                 )
                 DialogButtons(
                     onDismissRequest = onDismissRequest,

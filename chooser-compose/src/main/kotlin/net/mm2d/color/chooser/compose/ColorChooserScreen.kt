@@ -27,7 +27,6 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -47,6 +46,7 @@ import androidx.compose.ui.unit.sp
 import net.mm2d.color.chooser.compose.util.ColorSaver
 import net.mm2d.color.chooser.compose.util.alphaBackgroundBrush
 import net.mm2d.color.chooser.compose.util.to8bitInt
+import net.mm2d.color.chooser.compose.util.toChooserColor
 
 private val PreviewShape = RoundedCornerShape(16.dp)
 
@@ -159,11 +159,14 @@ object ColorChooserDefaults {
  * The edited color and selected tab are saved across activity and process recreation.
  * Callers that retain the result for a confirmation action should save that result as well.
  * Restoring the screen does not invoke [onColorChanged].
+ * Inputs are converted to 8-bit sRGB for previews and editing; callbacks return 8-bit sRGB colors.
+ * [Color.Unspecified] is not supported. Disabling alpha discards transparency, including when
+ * toggled during editing. Enabling it again starts with full opacity.
  *
  * @param initialColor initial color.
  * @param onColorChanged callback invoked when the selected color changes.
  * @param modifier modifier for the container layout.
- * @param withAlpha whether to show alpha control slider.
+ * @param withAlpha whether to edit alpha. If false, the preview and result are always opaque.
  * @param choosers list of choosers to display as tabs. Default is all choosers in [Chooser].
  * @param initialChooser initial chooser tab to select. Default is [Chooser.M2].
  * @param colors color palette for UI elements.
@@ -192,16 +195,55 @@ fun ColorChooserScreen(
     sliderLabelStyle: TextStyle = ColorChooserDefaults.sliderLabelStyle,
     disableInnerScroll: Boolean = false,
 ) {
-    val initialAlpha = remember(initialColor, withAlpha) {
-        if (withAlpha) initialColor.alpha.to8bitInt() else 255
+    val normalizedInitialColor = remember(initialColor, withAlpha) {
+        initialColor.toChooserColor(withAlpha)
     }
-    var currentOpaque by rememberSaveable(initialColor, stateSaver = ColorSaver) {
-        mutableStateOf(initialColor.copy(alpha = 1f))
+    var currentColor by rememberSaveable(initialColor, stateSaver = ColorSaver) {
+        mutableStateOf(normalizedInitialColor)
     }
-    var currentAlpha by rememberSaveable(initialColor, withAlpha) { mutableIntStateOf(initialAlpha) }
+    if (!withAlpha && currentColor.alpha != 1f) currentColor = currentColor.copy(alpha = 1f)
 
-    val currentColor = currentOpaque.copy(alpha = if (withAlpha) currentAlpha / 255f else 1f)
+    ColorChooserContent(
+        initialColor = normalizedInitialColor,
+        currentColor = currentColor,
+        onColorChanged = {
+            currentColor = it
+            onColorChanged(it)
+        },
+        modifier = modifier,
+        withAlpha = withAlpha,
+        choosers = choosers,
+        initialChooser = initialChooser,
+        colors = colors,
+        contentSpacing = contentSpacing,
+        previewHeight = previewHeight,
+        previewLabelStyle = previewLabelStyle,
+        tabTextStyle = tabTextStyle,
+        sliderLabelStyle = sliderLabelStyle,
+        disableInnerScroll = disableInnerScroll,
+    )
+}
 
+// Shared UI for the stateful screen and the legacy APIs that own their selected color.
+@Composable
+internal fun ColorChooserContent(
+    initialColor: Color,
+    currentColor: Color,
+    onColorChanged: (Color) -> Unit,
+    modifier: Modifier = Modifier,
+    withAlpha: Boolean = true,
+    choosers: List<Chooser> = Chooser.entries,
+    initialChooser: Chooser = Chooser.M2,
+    colors: ColorChooserColors = ColorChooserDefaults.colors(),
+    contentSpacing: Dp = ColorChooserDefaults.ContentSpacing,
+    previewHeight: Dp = ColorChooserDefaults.PreviewHeight,
+    previewLabelStyle: TextStyle = ColorChooserDefaults.previewLabelStyle,
+    tabTextStyle: TextStyle = ColorChooserDefaults.tabTextStyle,
+    sliderLabelStyle: TextStyle = ColorChooserDefaults.sliderLabelStyle,
+    disableInnerScroll: Boolean = false,
+) {
+    val currentOpaque = currentColor.copy(alpha = 1f)
+    val currentAlpha = currentColor.alpha.to8bitInt()
     val updateColor = { color: Color, alphaInt: Int ->
         val alphaFloat = if (withAlpha) alphaInt / 255f else 1f
         onColorChanged(color.copy(alpha = alphaFloat))
@@ -227,7 +269,6 @@ fun ColorChooserScreen(
                 currentColor = currentOpaque,
                 currentAlpha = currentAlpha,
                 onAlphaChanged = { newAlpha ->
-                    currentAlpha = newAlpha
                     updateColor(currentOpaque, newAlpha)
                 },
                 labelColor = colors.sliderLabelColor,
@@ -257,7 +298,6 @@ fun ColorChooserScreen(
             )
         }
         val onOpaqueChanged = { newColor: Color ->
-            currentOpaque = newColor
             updateColor(newColor, currentAlpha)
         }
         when (currentChooser) {

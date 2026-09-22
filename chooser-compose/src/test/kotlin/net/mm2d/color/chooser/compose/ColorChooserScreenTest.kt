@@ -153,7 +153,7 @@ class ColorChooserScreenTest {
                     Modifier
                         .width(320.dp)
                         .height(600.dp)
-                        .verticalScroll(rememberScrollState())
+                        .verticalScroll(rememberScrollState()),
                 ) {
                     ColorChooserScreen(
                         initialColor = Color.Red,
@@ -175,7 +175,7 @@ class ColorChooserScreenTest {
                 LazyColumn(
                     Modifier
                         .width(320.dp)
-                        .height(600.dp)
+                        .height(600.dp),
                 ) {
                     item {
                         ColorChooserScreen(

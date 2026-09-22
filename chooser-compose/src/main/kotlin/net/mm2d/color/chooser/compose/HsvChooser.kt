@@ -14,6 +14,7 @@ import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -27,6 +28,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
@@ -114,7 +116,8 @@ internal fun HsvChooser(
             ColorControlGrip(
                 color = Color.hsv(hue = hue, saturation = 1f, value = 1f),
                 modifier = Modifier
-                    .padding(start = gripStartX, top = 8.dp),
+                    .align(AbsoluteAlignment.TopLeft)
+                    .absoluteOffset(x = gripStartX, y = 8.dp),
             )
             Box(
                 modifier = Modifier
@@ -162,7 +165,7 @@ internal fun HsvChooser(
                     }
                 }
             }
-            val size = minOf(maxWidth, maxHeight).coerceAtLeast(271.dp)
+            val size = minOf(maxWidth, maxHeight).coerceAtLeast(0.dp)
             val rangeSize = (size - 16.dp).coerceAtLeast(0.dp)
             val gripStartX = rangeSize * saturation.coerceIn(0f, 1f)
             val gripStartY = rangeSize * (1f - value).coerceIn(0f, 1f)
@@ -179,7 +182,9 @@ internal fun HsvChooser(
                 )
                 ColorControlGrip(
                     color = Color.hsv(hue, saturation, value),
-                    modifier = Modifier.padding(start = gripStartX, top = gripStartY),
+                    modifier = Modifier
+                        .align(AbsoluteAlignment.TopLeft)
+                        .absoluteOffset(x = gripStartX, y = gripStartY),
                 )
                 Box(
                     modifier = Modifier

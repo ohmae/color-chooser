@@ -10,6 +10,7 @@ package net.mm2d.color.chooser.compose.util
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.isSpecified
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.toArgb
 import kotlin.math.roundToInt
@@ -83,3 +84,12 @@ internal object ColorSaver : Saver<Color, Int> {
 }
 
 internal fun Float.to8bitInt(): Int = (this * 255f).roundToInt().coerceIn(0, 255)
+
+/** Converts an input color to the chooser's 8-bit sRGB representation. */
+internal fun Color.toChooserColor(
+    withAlpha: Boolean = true,
+): Color {
+    require(isSpecified) { "The chooser requires a specified color." }
+    val color = Color(toArgb())
+    return if (withAlpha) color else color.copy(alpha = 1f)
+}

@@ -17,22 +17,27 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import net.mm2d.color.chooser.compose.util.ColorSaver
+import net.mm2d.color.chooser.compose.util.toChooserColor
 
 /**
  * ColorChooserView provides a color chooser.
  *
- * @param colorState The state of the color to be displayed.
+ * @param colorState The state of the color to be displayed. External updates are reflected immediately.
+ * The state is normalized to 8-bit sRGB; [Color.Unspecified] is not supported.
  * @param modifier The modifier to be applied to the layout.
- * @param withAlpha Whether to show the alpha control.
+ * @param withAlpha Whether to edit alpha. If false, the displayed and stored color are opaque.
  * @param initialTab The initial tab to be displayed. Default is [Tab.PALETTE]. See [Tab].
  * @param tabs The tabs to be displayed. Default is [Tab.PALETTE], [Tab.HSV], [Tab.RGB]. See [Tab].
- * @param titleContentColor The color of the title content.
+ * @param titleContentColor The color of the chooser tab labels, both selected and unselected.
  */
 @Deprecated("Use ColorChooserScreen instead.")
 @OptIn(ExperimentalFoundationApi::class)
@@ -45,15 +50,24 @@ fun ColorChooserView(
     tabs: List<Tab> = Tab.DEFAULT_TABS,
     titleContentColor: Color = AlertDialogDefaults.titleContentColor,
 ) {
-    val initialColor = remember { colorState.value }
-    ColorChooserScreen(
-        initialColor = initialColor,
+    val initialColor = rememberSaveable(saver = ColorSaver) { colorState.value.toChooserColor() }
+    val currentColor = colorState.value.toChooserColor(withAlpha)
+    SideEffect {
+        if (colorState.value != currentColor) colorState.value = currentColor
+    }
+    ColorChooserContent(
+        initialColor = initialColor.toChooserColor(withAlpha),
+        currentColor = currentColor,
         onColorChanged = { colorState.value = it },
         modifier = modifier
             .padding(16.dp),
         withAlpha = withAlpha,
         choosers = tabs.map { it.toChooser() },
         initialChooser = initialTab.toChooser(),
+        colors = ColorChooserDefaults.colors(
+            selectedTabContentColor = titleContentColor,
+            unselectedTabContentColor = titleContentColor,
+        ),
     )
 }
 
