@@ -25,6 +25,36 @@ dependencies {
 }
 ```
 
+#### Dialog
+
+To show a modal color chooser dialog, use `ColorChooserDialog`:
+
+```kotlin
+var showDialog by rememberSaveable { mutableStateOf(false) }
+var selectedColor by rememberSaveable { mutableStateOf(Color.Blue) }
+
+if (showDialog) {
+    ColorChooserDialog(
+        onDismissRequest = { showDialog = false },
+        onConfirm = {
+            selectedColor = it
+            showDialog = false
+        },
+        initialColor = selectedColor,
+        withAlpha = true,
+    )
+}
+```
+
+- Default "OK" and "Cancel" buttons are provided.
+- Custom buttons can be provided via `confirmButton: @Composable (selectedColor: Color) -> Unit` and
+  `dismissButton: @Composable (() -> Unit)?` slots.
+- Optional `onColorChanged: ((Color) -> Unit)?` can be used to observe real-time color changes during editing.
+- Tabs can be configured with `choosers` and `initialChooser` using `Chooser` (`Chooser.M2`, `Chooser.HSV`,
+  `Chooser.RGB`, `Chooser.M3`).
+
+#### Screen / Embed
+
 Use `ColorChooserScreen` inside your screen or a dialog with a bounded width and height.
 It reports edits through `onColorChanged`; the caller owns confirmation and cancellation.
 
@@ -78,14 +108,18 @@ fun ColorPickerScreen(
   accessibility value adjustment, arrow keys and Home/End. The saturation/brightness area supports
   accessibility increase/decrease actions and arrow keys (left/right for saturation, up/down for brightness).
 
-`ColorChooserView`, `ColorChooserDialog` and `Tab` are deprecated but remain available for compatibility.
-Migrate tab selections to `Chooser` (`Tab.PALETTE` becomes `Chooser.M2`) and use `ColorChooserScreen`.
+`ColorChooserView`, the legacy `ColorChooserDialog` (accepting `Tab`), and `Tab` are deprecated but remain available for
+compatibility.
+Migrate tab selections to `Chooser` (`Tab.PALETTE` becomes `Chooser.M2`) and use `ColorChooserScreen` or the modern
+`ColorChooserDialog`.
 The old `titleContentColor` maps to both `selectedTabContentColor` and `unselectedTabContentColor`
 in `ColorChooserDefaults.colors()`. The legacy `ColorChooserView` reflects external `colorState`
 updates and normalizes that state to the same sRGB/alpha rules.
 
-See the [Compose sample screen](sample-compose/src/main/kotlin/net/mm2d/color/chooser/sample/compose/ChooserScreen.kt)
-for confirmation, cancellation and saved-state handling.
+See the [Compose sample](sample-compose/src/main/kotlin/net/mm2d/color/chooser/sample/compose/MainScreen.kt)
+for dialog usage,
+and [sample screen](sample-compose/src/main/kotlin/net/mm2d/color/chooser/sample/compose/ChooserScreen.kt)
+for confirmation, cancellation and saved-state handling with `ColorChooserScreen`.
 
 ### View-base app
 

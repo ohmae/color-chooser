@@ -66,7 +66,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import net.mm2d.color.chooser.compose.Chooser
 import net.mm2d.color.chooser.compose.ColorChooserDialog
-import net.mm2d.color.chooser.compose.Tab
 
 enum class ThemeMode {
     SYSTEM,
@@ -179,25 +178,22 @@ fun MainScreen(
 
     if (showDialog) {
         val currentChoosers = selectedChoosers.toList().ifEmpty { listOf(Chooser.M2) }
-        val dialogTabs = currentChoosers.map { it.toTab() }
-        val dialogInitialTab = initialChooser.toTab()
-        @Suppress("DEPRECATION")
         ColorChooserDialog(
-            initialColor = currentColor,
             onDismissRequest = {
                 showDialog = false
             },
-            onChooseColor = {
+            onConfirm = {
                 onColorChanged(it)
                 showDialog = false
             },
+            initialColor = currentColor,
             withAlpha = withAlpha,
-            initialTab = if (dialogTabs.contains(dialogInitialTab)) {
-                dialogInitialTab
+            choosers = currentChoosers,
+            initialChooser = if (currentChoosers.contains(initialChooser)) {
+                initialChooser
             } else {
-                dialogTabs.first()
+                currentChoosers.first()
             },
-            tabs = dialogTabs,
         )
     }
 }
@@ -571,12 +567,4 @@ private fun Modifier.checkerboardBackground(
                 }
             }
         }
-    }
-
-private fun Chooser.toTab(): Tab =
-    when (this) {
-        Chooser.M2 -> Tab.PALETTE
-        Chooser.HSV -> Tab.HSV
-        Chooser.RGB -> Tab.RGB
-        Chooser.M3 -> Tab.M3
     }

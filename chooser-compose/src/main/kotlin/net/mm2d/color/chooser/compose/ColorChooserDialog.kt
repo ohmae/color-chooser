@@ -10,9 +10,11 @@ package net.mm2d.color.chooser.compose
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -21,15 +23,18 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.isSpecified
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
@@ -37,6 +42,137 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import net.mm2d.color.chooser.compose.util.ColorSaver
 import net.mm2d.color.chooser.compose.util.toChooserColor
+
+/**
+ * Color chooser dialog.
+ *
+ * @param onDismissRequest callback when the dialog is dismissed.
+ * @param onConfirm callback when the color is confirmed. The chosen color is passed as argument.
+ * @param modifier modifier for the dialog surface.
+ * @param initialColor initial color, converted to 8-bit sRGB. If [Color.Unspecified], [Color.Black] is used.
+ * @param withAlpha whether to edit alpha. If false, previews and the chosen color are opaque,
+ * including when confirmed without editing. Disabling alpha discards transparency.
+ * @param choosers list of choosers to show. Default is [Chooser.entries].
+ * @param initialChooser initial chooser tab to select. Default is [Chooser.M2].
+ * @param onColorChanged callback invoked whenever the editing color changes in the dialog.
+ * @param colors colors used for styling tabs and sliders. See [ColorChooserDefaults.colors].
+ * @param shape shape of the dialog.
+ * @param containerColor color of the dialog container.
+ * @param tonalElevation tonal elevation.
+ * @param properties dialog properties.
+ * @param contentSpacing spacing between content blocks in the chooser.
+ * @param previewHeight height of the preview area.
+ * @param previewLabelStyle text style of preview labels.
+ * @param tabTextStyle text style of tab labels.
+ * @param sliderLabelStyle text style of slider labels.
+ * @param confirmButton composable slot for the confirmation button, receiving the currently selected color.
+ * Default is a [TextButton] labeled "OK" calling [onConfirm] and [onDismissRequest].
+ * @param dismissButton optional composable slot for the dismiss button.
+ * Default is a [TextButton] labeled "Cancel" calling [onDismissRequest].
+ */
+@Composable
+fun ColorChooserDialog(
+    onDismissRequest: () -> Unit,
+    onConfirm: (Color) -> Unit,
+    modifier: Modifier = Modifier,
+    initialColor: Color = Color.Unspecified,
+    withAlpha: Boolean = false,
+    choosers: List<Chooser> = Chooser.entries,
+    initialChooser: Chooser = Chooser.M2,
+    onColorChanged: ((Color) -> Unit)? = null,
+    colors: ColorChooserColors = ColorChooserDefaults.colors(),
+    shape: Shape = AlertDialogDefaults.shape,
+    containerColor: Color = AlertDialogDefaults.containerColor,
+    tonalElevation: Dp = AlertDialogDefaults.TonalElevation,
+    properties: DialogProperties = DialogProperties(usePlatformDefaultWidth = false),
+    contentSpacing: Dp = ColorChooserDefaults.contentSpacing,
+    previewHeight: Dp = ColorChooserDefaults.previewHeight,
+    previewLabelStyle: TextStyle = ColorChooserDefaults.previewLabelStyle,
+    tabTextStyle: TextStyle = ColorChooserDefaults.tabTextStyle,
+    sliderLabelStyle: TextStyle = ColorChooserDefaults.sliderLabelStyle,
+    confirmButton: @Composable (selectedColor: Color) -> Unit = { selectedColor ->
+        TextButton(
+            onClick = {
+                onConfirm(selectedColor)
+                onDismissRequest()
+            },
+        ) {
+            Text(
+                text = stringResource(id = R.string.mm2d_cc_ok),
+                modifier = Modifier.padding(horizontal = 8.dp),
+            )
+        }
+    },
+    dismissButton: @Composable (() -> Unit)? = {
+        TextButton(
+            onClick = onDismissRequest,
+        ) {
+            Text(
+                text = stringResource(id = R.string.mm2d_cc_cancel),
+                modifier = Modifier.padding(horizontal = 8.dp),
+            )
+        }
+    },
+) {
+    Dialog(
+        onDismissRequest = onDismissRequest,
+        properties = properties,
+    ) {
+        Surface(
+            modifier = modifier.size(calculateDialogSize()),
+            shape = shape,
+            color = containerColor,
+            tonalElevation = tonalElevation,
+        ) {
+            Column {
+                val normalizedInitialColor = remember(initialColor, withAlpha) {
+                    if (initialColor.isSpecified) {
+                        initialColor.toChooserColor(withAlpha)
+                    } else {
+                        Color.Black
+                    }
+                }
+                var selectedColor by rememberSaveable(normalizedInitialColor, withAlpha, stateSaver = ColorSaver) {
+                    mutableStateOf(normalizedInitialColor)
+                }
+                ColorChooserContent(
+                    initialColor = normalizedInitialColor,
+                    currentColor = selectedColor,
+                    onColorChanged = { color ->
+                        selectedColor = color
+                        onColorChanged?.invoke(color)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp)
+                        .padding(horizontal = 16.dp)
+                        .weight(1f),
+                    withAlpha = withAlpha,
+                    choosers = choosers,
+                    initialChooser = initialChooser,
+                    colors = colors,
+                    contentSpacing = contentSpacing,
+                    previewHeight = previewHeight,
+                    previewLabelStyle = previewLabelStyle,
+                    tabTextStyle = tabTextStyle,
+                    sliderLabelStyle = sliderLabelStyle,
+                )
+                Row(
+                    modifier = Modifier
+                        .align(Alignment.End)
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    dismissButton?.let {
+                        it()
+                        Spacer(modifier = Modifier.width(8.dp))
+                    }
+                    confirmButton(selectedColor)
+                }
+            }
+        }
+    }
+}
 
 /**
  * Color chooser dialog.
@@ -56,7 +192,13 @@ import net.mm2d.color.chooser.compose.util.toChooserColor
  * @param tonalElevation tonal elevation.
  * @param properties dialog properties.
  */
-@Deprecated("use ColorChooserScreen instead.")
+@Deprecated(
+    message = "Use ColorChooserDialog with onDismissRequest and onConfirm instead.",
+    replaceWith = ReplaceWith(
+        "ColorChooserDialog(onDismissRequest = onDismissRequest, onConfirm = onChooseColor, initialColor = initialColor, withAlpha = withAlpha)",
+    ),
+)
+@Suppress("DEPRECATION")
 @Composable
 fun ColorChooserDialog(
     initialColor: Color,
@@ -169,6 +311,7 @@ private fun calculateDialogSize(): DpSize {
     return DpSize(width, height)
 }
 
+@Suppress("DEPRECATION")
 internal fun Tab.toChooser(): Chooser =
     when (this) {
         Tab.PALETTE -> Chooser.M2

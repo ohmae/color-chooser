@@ -111,6 +111,60 @@ class ColorContractTest {
     }
 
     @Test
+    fun modernDialogConfirmsColorOnOkClick() {
+        val initial = Color.Blue
+        var dismissed = false
+        var confirmed = Color.Unspecified
+        composeRule.setContent {
+            MaterialTheme {
+                ColorChooserDialog(
+                    onDismissRequest = { dismissed = true },
+                    onConfirm = { confirmed = it },
+                    initialColor = initial,
+                    withAlpha = false,
+                )
+            }
+        }
+        composeRule.onNodeWithText("OK").performClick()
+        composeRule.runOnIdle {
+            assertEquals(Color.Blue, confirmed)
+            assertEquals(true, dismissed)
+        }
+    }
+
+    @Test
+    fun modernDialogSupportsCustomButtonsAndLiveUpdates() {
+        var dismissed = false
+        var confirmed = Color.Unspecified
+        var changed = Color.Unspecified
+        composeRule.setContent {
+            MaterialTheme {
+                ColorChooserDialog(
+                    onDismissRequest = { dismissed = true },
+                    onConfirm = { confirmed = it },
+                    initialColor = Color.Red,
+                    initialChooser = Chooser.RGB,
+                    onColorChanged = { changed = it },
+                    confirmButton = { selectedColor ->
+                        androidx.compose.material3.TextButton(onClick = { confirmed = selectedColor }) {
+                            androidx.compose.material3.Text("CustomSelect")
+                        }
+                    },
+                )
+            }
+        }
+        setProgress("Green", 255f)
+        composeRule.runOnIdle {
+            assertEquals(Color.Yellow, changed)
+        }
+        composeRule.onNodeWithText("CustomSelect").performClick()
+        composeRule.runOnIdle {
+            assertEquals(Color.Yellow, confirmed)
+            assertEquals(false, dismissed)
+        }
+    }
+
+    @Test
     fun legacyViewReflectsExternalResetAndWritesToLatestState() {
         val oldState = mutableStateOf(Color.Red)
         var state by mutableStateOf(oldState)
