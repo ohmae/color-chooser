@@ -7,6 +7,12 @@
 
 package net.mm2d.color.chooser.compose
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,6 +28,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -64,41 +71,66 @@ internal fun PaletteChooser(
                 verticalArrangement = Arrangement.spacedBy(2.dp),
             ) {
                 list.forEach { color ->
-                    val selected = color == currentColor
-                    val shape = RoundedCornerShape(if (selected) 16.dp else 6.dp)
-                    Surface(
-                        onClick = { onColorChanged(color) },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(32.dp)
-                            .semantics {
-                                contentDescription = "#%08X".format(color.toArgb())
-                                this.selected = selected
-                                role = Role.RadioButton
-                            },
-                        shape = shape,
+                    PaletteItem(
                         color = color,
-                    ) {
-                        if (selected) {
-                            val tint =
-                                if (color.shouldUseWhiteForeground()) {
-                                    Color.White
-                                } else {
-                                    Color.Black
-                                }
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                            ) {
-                                Image(
-                                    painter = painterResource(id = R.drawable.mm2d_cc_ic_check),
-                                    contentDescription = null,
-                                    colorFilter = ColorFilter.tint(tint),
-                                    modifier = Modifier.align(Alignment.Center),
-                                )
-                            }
-                        }
-                    }
+                        selected = color == currentColor,
+                        onClick = { onColorChanged(color) },
+                    )
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun PaletteItem(
+    color: Color,
+    selected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val cornerRadius by animateDpAsState(
+        targetValue = if (selected) 16.dp else 6.dp,
+        label = "paletteCornerRadius",
+    )
+    val shape = RoundedCornerShape(cornerRadius)
+    Surface(
+        onClick = onClick,
+        modifier = modifier
+            .fillMaxWidth()
+            .height(32.dp)
+            .semantics {
+                contentDescription = "#%08X".format(color.toArgb())
+                this.selected = selected
+                role = Role.RadioButton
+            },
+        shape = shape,
+        color = color,
+    ) {
+        val tint =
+            if (color.shouldUseWhiteForeground()) {
+                Color.White
+            } else {
+                Color.Black
+            }
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center,
+        ) {
+            AnimatedVisibility(
+                visible = selected,
+                enter = scaleIn(
+                    initialScale = 0.4f,
+                ) + fadeIn(),
+                exit = scaleOut(
+                    targetScale = 0.4f,
+                ) + fadeOut(),
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.mm2d_cc_ic_check),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(tint),
+                )
             }
         }
     }
