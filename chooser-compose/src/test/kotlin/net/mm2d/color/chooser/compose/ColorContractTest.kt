@@ -9,6 +9,8 @@ package net.mm2d.color.chooser.compose
 
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -133,6 +135,30 @@ class ColorContractTest {
     }
 
     @Test
+    fun modernDialogKeepsEditedRgbWhenAlphaIsToggled() {
+        var withAlpha by mutableStateOf(true)
+        var confirmed = Color.Unspecified
+        composeRule.setContent {
+            MaterialTheme {
+                ColorChooserDialog(
+                    onDismissRequest = {},
+                    onConfirm = { confirmed = it },
+                    initialColor = Color(0x40336699),
+                    withAlpha = withAlpha,
+                    initialChooser = Chooser.RGB,
+                )
+            }
+        }
+        setProgress("Red", 18f)
+        composeRule.runOnIdle { withAlpha = false }
+        composeRule.onNodeWithText("#126699").assertExists()
+        composeRule.runOnIdle { withAlpha = true }
+        composeRule.onNodeWithText("#FF126699").assertExists()
+        composeRule.onNodeWithText("OK").performClick()
+        composeRule.runOnIdle { assertEquals(Color(0xFF126699), confirmed) }
+    }
+
+    @Test
     fun modernDialogSupportsCustomButtonsAndLiveUpdates() {
         var dismissed = false
         var confirmed = Color.Unspecified
@@ -146,8 +172,8 @@ class ColorContractTest {
                     initialChooser = Chooser.RGB,
                     onColorChanged = { changed = it },
                     confirmButton = { selectedColor ->
-                        androidx.compose.material3.TextButton(onClick = { confirmed = selectedColor }) {
-                            androidx.compose.material3.Text("CustomSelect")
+                        TextButton(onClick = { confirmed = selectedColor }) {
+                            Text("CustomSelect")
                         }
                     },
                 )

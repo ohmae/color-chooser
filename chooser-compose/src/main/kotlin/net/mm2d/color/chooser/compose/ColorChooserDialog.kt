@@ -133,9 +133,10 @@ fun ColorChooserDialog(
                         Color.Black
                     }
                 }
-                var selectedColor by rememberSaveable(normalizedInitialColor, withAlpha, stateSaver = ColorSaver) {
+                var selectedColor by rememberSaveable(initialColor, stateSaver = ColorSaver) {
                     mutableStateOf(normalizedInitialColor)
                 }
+                if (!withAlpha && selectedColor.alpha != 1f) selectedColor = selectedColor.copy(alpha = 1f)
                 ColorChooserContent(
                     initialColor = normalizedInitialColor,
                     currentColor = selectedColor,

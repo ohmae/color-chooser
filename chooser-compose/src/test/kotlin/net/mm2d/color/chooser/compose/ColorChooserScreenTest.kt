@@ -299,6 +299,29 @@ class ColorChooserScreenTest {
     }
 
     @Test
+    fun hsvEditKeepsSelectedHueAfterEightBitConversion() {
+        var result = Color.Unspecified
+        composeRule.setContent {
+            MaterialTheme {
+                ColorChooserScreen(
+                    initialColor = Color.Red,
+                    onColorChanged = { result = it },
+                    initialChooser = Chooser.HSV,
+                    modifier = Modifier.width(320.dp),
+                )
+            }
+        }
+        composeRule.onNodeWithContentDescription("Hue").performSemanticsAction(SemanticsActions.SetProgress) {
+            it(241f)
+        }
+        composeRule.runOnIdle { assertEquals(Color(result.toArgb()), result) }
+        assertHue(241f)
+        composeRule.onNodeWithText("RGB").performClick()
+        composeRule.onNodeWithText("HSV").performClick()
+        assertHue(241f)
+    }
+
+    @Test
     fun hsvSynchronizesColorChangesMadeWhileItsTabIsHidden() {
         var color by mutableStateOf(Color.Blue)
         composeRule.setContent {
