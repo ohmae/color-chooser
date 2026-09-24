@@ -108,7 +108,7 @@ internal fun ControlGrip(
             .drawBehind {
                 val radius = size.minDimension / 2f
                 val stroke1 = 1.dp.toPx()
-                val stroke2 = 2.dp.toPx()
+                val stroke2 = 1.dp.toPx()
                 drawCircle(color = colorBorder2, radius = radius)
                 drawCircle(color = colorBorder1, radius = (radius - stroke1).coerceAtLeast(0f))
                 drawCircle(color = color, radius = (radius - stroke1 - stroke2).coerceAtLeast(0f))
