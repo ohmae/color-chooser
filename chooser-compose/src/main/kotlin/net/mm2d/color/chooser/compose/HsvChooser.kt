@@ -10,6 +10,7 @@ package net.mm2d.color.chooser.compose
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.absoluteOffset
@@ -18,6 +19,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -47,6 +51,7 @@ import androidx.compose.ui.semantics.progressBarRangeInfo
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.setProgress
 import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -322,4 +327,22 @@ internal fun Modifier.hueAccessibility(
             true
         }
         .focusable()
+}
+
+@PreviewLightDark
+@Composable
+private fun PreviewHsvChooser() {
+    MaterialTheme(
+        colorScheme = if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme(),
+    ) {
+        Box(
+            modifier = Modifier.background(MaterialTheme.colorScheme.background),
+        ) {
+            HsvChooser(
+                currentColor = Color.Red,
+                onColorChanged = {},
+                modifier = Modifier.padding(16.dp),
+            )
+        }
+    }
 }

@@ -9,8 +9,10 @@ package net.mm2d.color.chooser.compose
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,7 +20,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -46,6 +51,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.setProgress
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import net.mm2d.color.chooser.compose.util.CONTROL_GRIP_RADIUS
@@ -199,4 +205,39 @@ private fun Modifier.accessibility(
             true
         }
         .focusable()
+}
+
+@PreviewLightDark
+@Composable
+private fun PreviewColorSlider() {
+    MaterialTheme(
+        colorScheme = if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme(),
+    ) {
+        Box(
+            modifier = Modifier.background(MaterialTheme.colorScheme.background),
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                ColorSlider(
+                    value = 128,
+                    onValueChange = {},
+                    color = Color.Red,
+                    accessibilityLabel = "Red",
+                    labelColor = MaterialTheme.colorScheme.onSurface,
+                    labelStyle = ColorChooserDefaults.sliderLabelStyle,
+                )
+                ColorSlider(
+                    value = 128,
+                    onValueChange = {},
+                    color = Color.Blue,
+                    accessibilityLabel = "Alpha",
+                    alphaMode = true,
+                    labelColor = MaterialTheme.colorScheme.onSurface,
+                    labelStyle = ColorChooserDefaults.sliderLabelStyle,
+                )
+            }
+        }
+    }
 }

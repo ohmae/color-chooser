@@ -48,6 +48,18 @@ public final class net/mm2d/color/chooser/compose/ColorChooserViewKt {
 	public static final fun ColorChooserView-V-9fs2A (Landroidx/compose/runtime/MutableState;Landroidx/compose/ui/Modifier;ZLnet/mm2d/color/chooser/compose/Tab;Ljava/util/List;JLandroidx/compose/runtime/Composer;II)V
 }
 
+public final class net/mm2d/color/chooser/compose/ComposableSingletons$AlphaChooserKt {
+	public static final field INSTANCE Lnet/mm2d/color/chooser/compose/ComposableSingletons$AlphaChooserKt;
+	public fun <init> ()V
+	public final fun getLambda$-854768881$chooser_compose ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class net/mm2d/color/chooser/compose/ComposableSingletons$ChooserSwitchKt {
+	public static final field INSTANCE Lnet/mm2d/color/chooser/compose/ComposableSingletons$ChooserSwitchKt;
+	public fun <init> ()V
+	public final fun getLambda$2111846333$chooser_compose ()Lkotlin/jvm/functions/Function2;
+}
+
 public final class net/mm2d/color/chooser/compose/ComposableSingletons$ColorChooserDialogKt {
 	public static final field INSTANCE Lnet/mm2d/color/chooser/compose/ComposableSingletons$ColorChooserDialogKt;
 	public fun <init> ()V
@@ -60,6 +72,48 @@ public final class net/mm2d/color/chooser/compose/ComposableSingletons$ColorChoo
 	public fun <init> ()V
 	public final fun getLambda$-1139504921$chooser_compose ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$-140821482$chooser_compose ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class net/mm2d/color/chooser/compose/ComposableSingletons$ColorPreviewKt {
+	public static final field INSTANCE Lnet/mm2d/color/chooser/compose/ComposableSingletons$ColorPreviewKt;
+	public fun <init> ()V
+	public final fun getLambda$-274099185$chooser_compose ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class net/mm2d/color/chooser/compose/ComposableSingletons$ColorSliderKt {
+	public static final field INSTANCE Lnet/mm2d/color/chooser/compose/ComposableSingletons$ColorSliderKt;
+	public fun <init> ()V
+	public final fun getLambda$-177615661$chooser_compose ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class net/mm2d/color/chooser/compose/ComposableSingletons$HsvChooserKt {
+	public static final field INSTANCE Lnet/mm2d/color/chooser/compose/ComposableSingletons$HsvChooserKt;
+	public fun <init> ()V
+	public final fun getLambda$531738735$chooser_compose ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class net/mm2d/color/chooser/compose/ComposableSingletons$M2ChooserKt {
+	public static final field INSTANCE Lnet/mm2d/color/chooser/compose/ComposableSingletons$M2ChooserKt;
+	public fun <init> ()V
+	public final fun getLambda$103557103$chooser_compose ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class net/mm2d/color/chooser/compose/ComposableSingletons$M3ChooserKt {
+	public static final field INSTANCE Lnet/mm2d/color/chooser/compose/ComposableSingletons$M3ChooserKt;
+	public fun <init> ()V
+	public final fun getLambda$1993496177$chooser_compose ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class net/mm2d/color/chooser/compose/ComposableSingletons$PaletteChooserKt {
+	public static final field INSTANCE Lnet/mm2d/color/chooser/compose/ComposableSingletons$PaletteChooserKt;
+	public fun <init> ()V
+	public final fun getLambda$572363631$chooser_compose ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class net/mm2d/color/chooser/compose/ComposableSingletons$RgbChooserKt {
+	public static final field INSTANCE Lnet/mm2d/color/chooser/compose/ComposableSingletons$RgbChooserKt;
+	public fun <init> ()V
+	public final fun getLambda$586649263$chooser_compose ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class net/mm2d/color/chooser/compose/Tab : java/lang/Enum {

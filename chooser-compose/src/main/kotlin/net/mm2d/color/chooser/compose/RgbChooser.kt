@@ -7,14 +7,21 @@
 
 package net.mm2d.color.chooser.compose
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import net.mm2d.color.chooser.compose.util.to8bitInt
 
@@ -70,5 +77,25 @@ internal fun RgbChooser(
                 .fillMaxWidth()
                 .padding(top = 16.dp),
         )
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun PreviewRgbChooser() {
+    MaterialTheme(
+        colorScheme = if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme(),
+    ) {
+        Box(
+            modifier = Modifier.background(MaterialTheme.colorScheme.background),
+        ) {
+            RgbChooser(
+                currentColor = Color.Magenta,
+                onColorChanged = {},
+                sliderLabelColor = MaterialTheme.colorScheme.onSurface,
+                sliderLabelStyle = ColorChooserDefaults.sliderLabelStyle,
+                modifier = Modifier.padding(16.dp),
+            )
+        }
     }
 }
