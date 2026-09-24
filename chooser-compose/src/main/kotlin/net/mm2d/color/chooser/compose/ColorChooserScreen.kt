@@ -115,22 +115,24 @@ object ColorChooserDefaults {
 
     val previewLabelStyle: TextStyle = TextStyle.Default.copy(
         fontFamily = FontFamily.Monospace,
-        fontWeight = FontWeight.Medium,
-        fontSize = 9.sp,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 10.sp,
         letterSpacing = 0.5.sp,
     )
 
     val tabTextStyle: TextStyle = TextStyle.Default.copy(
-        fontFamily = FontFamily.Monospace,
-        fontWeight = FontWeight.Bold,
+        fontFamily = FontFamily.SansSerif,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 14.sp,
-        letterSpacing = 0.5.sp,
+        letterSpacing = 0.1.sp,
     )
 
     val sliderLabelStyle: TextStyle
         @Composable
         get() = MaterialTheme.typography.labelMedium.copy(
             fontSize = 12.sp,
+            fontWeight = FontWeight.SemiBold,
+            fontFeatureSettings = "tnum",
         )
 
     @Composable
