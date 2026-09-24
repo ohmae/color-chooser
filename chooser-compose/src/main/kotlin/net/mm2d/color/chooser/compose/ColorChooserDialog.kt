@@ -7,6 +7,8 @@
 
 package net.mm2d.color.chooser.compose
 
+import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -15,6 +17,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -47,12 +51,16 @@ import net.mm2d.color.chooser.compose.util.toChooserColor
 /**
  * Color chooser dialog.
  *
- * @param onDismissRequest callback when the dialog is dismissed.
+ * @param onDismissRequest callback for a cancellation or platform dismissal.
  * @param onConfirm callback when the color is confirmed. The chosen color is passed as argument.
+ * Close the dialog from this callback; confirmation does not invoke [onDismissRequest].
  * @param modifier modifier for the dialog surface.
  * @param initialColor initial color, converted to 8-bit sRGB. If [Color.Unspecified], [Color.Black] is used.
  * @param withAlpha whether to edit alpha. If false, previews and the chosen color are opaque,
  * including when confirmed without editing. Disabling alpha discards transparency.
+ * @param scrollEntireContent whether the preview and controls may scroll together on short windows.
+ * When false, only palettes scroll vertically. When enabled, the HSV panel is reduced to keep
+ * a separate area available for scrolling back toward the top.
  * @param choosers list of choosers to show. Default is [Chooser.entries].
  * @param initialChooser initial chooser tab to select. Default is [Chooser.M2].
  * @param onColorChanged callback invoked whenever the editing color changes in the dialog.
@@ -67,10 +75,11 @@ import net.mm2d.color.chooser.compose.util.toChooserColor
  * @param tabTextStyle text style of tab labels.
  * @param sliderLabelStyle text style of slider labels.
  * @param confirmButton composable slot for the confirmation button, receiving the currently selected color.
- * Default is a [Button] labeled "OK" calling [onConfirm] and [onDismissRequest].
+ * Default is a [Button] labeled "OK" calling [onConfirm].
  * @param dismissButton optional composable slot for the dismiss button.
  * Default is a [TextButton] labeled "Cancel" calling [onDismissRequest].
  */
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun ColorChooserDialog(
     onDismissRequest: () -> Unit,
@@ -78,6 +87,7 @@ fun ColorChooserDialog(
     modifier: Modifier = Modifier,
     initialColor: Color = Color.Unspecified,
     withAlpha: Boolean = false,
+    scrollEntireContent: Boolean = false,
     choosers: List<Chooser> = Chooser.entries,
     initialChooser: Chooser = Chooser.M2,
     onColorChanged: ((Color) -> Unit)? = null,
@@ -93,10 +103,7 @@ fun ColorChooserDialog(
     sliderLabelStyle: TextStyle = ColorChooserDefaults.sliderLabelStyle,
     confirmButton: @Composable (selectedColor: Color) -> Unit = { selectedColor ->
         Button(
-            onClick = {
-                onConfirm(selectedColor)
-                onDismissRequest()
-            },
+            onClick = { onConfirm(selectedColor) },
         ) {
             Text(
                 text = stringResource(id = R.string.mm2d_cc_ok),
@@ -137,28 +144,38 @@ fun ColorChooserDialog(
                     mutableStateOf(normalizedInitialColor)
                 }
                 if (!withAlpha && selectedColor.alpha != 1f) selectedColor = selectedColor.copy(alpha = 1f)
-                ColorChooserContent(
-                    initialColor = normalizedInitialColor,
-                    currentColor = selectedColor,
-                    onColorChanged = { color ->
-                        selectedColor = color
-                        onColorChanged?.invoke(color)
-                    },
+                BoxWithConstraints(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 16.dp)
                         .padding(horizontal = 16.dp)
                         .weight(1f),
-                    withAlpha = withAlpha,
-                    choosers = choosers,
-                    initialChooser = initialChooser,
-                    colors = colors,
-                    contentSpacing = contentSpacing,
-                    previewHeight = previewHeight,
-                    previewLabelStyle = previewLabelStyle,
-                    tabTextStyle = tabTextStyle,
-                    sliderLabelStyle = sliderLabelStyle,
-                )
+                ) {
+                    ColorChooserContent(
+                        initialColor = normalizedInitialColor,
+                        currentColor = selectedColor,
+                        onColorChanged = { color ->
+                            selectedColor = color
+                            onColorChanged?.invoke(color)
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .then(
+                                if (scrollEntireContent) Modifier.verticalScroll(rememberScrollState()) else Modifier,
+                            ),
+                        withAlpha = withAlpha,
+                        choosers = choosers,
+                        initialChooser = initialChooser,
+                        colors = colors,
+                        contentSpacing = contentSpacing,
+                        previewHeight = previewHeight,
+                        previewLabelStyle = previewLabelStyle,
+                        tabTextStyle = tabTextStyle,
+                        sliderLabelStyle = sliderLabelStyle,
+                        disableInnerScroll = scrollEntireContent,
+                        maxHsvAreaSize = if (scrollEntireContent) maxHeight * 0.5f else null,
+                    )
+                }
                 Row(
                     modifier = Modifier
                         .align(Alignment.End)
@@ -180,8 +197,9 @@ fun ColorChooserDialog(
  * Color chooser dialog.
  *
  * @param initialColor initial color, converted to 8-bit sRGB. Must not be [Color.Unspecified].
- * @param onDismissRequest callback when the dialog is dismissed.
- * @param onChooseColor callback when the color is chosen. chosen color is passed as argument.
+ * @param onDismissRequest callback when the dialog is dismissed. The default confirmation button
+ * calls this after [onChooseColor] for compatibility with previous releases.
+ * @param onChooseColor callback when the color is chosen. Chosen color is passed as argument.
  * @param modifier modifier.
  * @param withAlpha whether to edit alpha. If false, previews and the chosen color are opaque,
  * including when confirmed without editing. Disabling alpha discards transparency.

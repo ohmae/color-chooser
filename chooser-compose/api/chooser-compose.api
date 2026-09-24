@@ -36,7 +36,7 @@ public final class net/mm2d/color/chooser/compose/ColorChooserDefaults {
 
 public final class net/mm2d/color/chooser/compose/ColorChooserDialogKt {
 	public static final fun ColorChooserDialog-Jwgv5lI (JLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZLnet/mm2d/color/chooser/compose/Tab;Ljava/util/List;Landroidx/compose/ui/graphics/Shape;JJJFLandroidx/compose/ui/window/DialogProperties;Landroidx/compose/runtime/Composer;III)V
-	public static final fun ColorChooserDialog-QlcJjdA (Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;JZLjava/util/List;Lnet/mm2d/color/chooser/compose/Chooser;Lkotlin/jvm/functions/Function1;Lnet/mm2d/color/chooser/compose/ColorChooserColors;Landroidx/compose/ui/graphics/Shape;JFLandroidx/compose/ui/window/DialogProperties;FFLandroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;III)V
+	public static final fun ColorChooserDialog-rWnLjYw (Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;JZZLjava/util/List;Lnet/mm2d/color/chooser/compose/Chooser;Lkotlin/jvm/functions/Function1;Lnet/mm2d/color/chooser/compose/ColorChooserColors;Landroidx/compose/ui/graphics/Shape;JFLandroidx/compose/ui/window/DialogProperties;FFLandroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/text/TextStyle;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;IIII)V
 }
 
 public final class net/mm2d/color/chooser/compose/ColorChooserScreenKt {
@@ -63,8 +63,8 @@ public final class net/mm2d/color/chooser/compose/ComposableSingletons$ChooserSw
 public final class net/mm2d/color/chooser/compose/ComposableSingletons$ColorChooserDialogKt {
 	public static final field INSTANCE Lnet/mm2d/color/chooser/compose/ComposableSingletons$ColorChooserDialogKt;
 	public fun <init> ()V
-	public final fun getLambda$1283488865$chooser_compose ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$1447160869$chooser_compose ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1530520905$chooser_compose ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1911716229$chooser_compose ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class net/mm2d/color/chooser/compose/ComposableSingletons$ColorChooserViewKt {

@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -53,6 +54,7 @@ import androidx.compose.ui.semantics.setProgress
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import net.mm2d.color.chooser.compose.util.CONTROL_GRIP_RADIUS
@@ -73,8 +75,14 @@ internal fun HsvChooser(
     onColorChanged: (Color) -> Unit,
     modifier: Modifier = Modifier,
     state: HsvChooserState = rememberHsvChooserState(currentColor),
+    maxSaturationValueSize: Dp? = null,
 ) {
     val currentOnColorChanged by rememberUpdatedState(onColorChanged)
+    val saturationValueWidth = if (maxSaturationValueSize == null) {
+        Modifier.fillMaxWidth()
+    } else {
+        Modifier.widthIn(max = maxSaturationValueSize)
+    }
 
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -93,7 +101,8 @@ internal fun HsvChooser(
                 currentOnColorChanged(state.update(state.hue, newSaturation, newValue))
             },
             modifier = Modifier
-                .fillMaxWidth()
+                .align(Alignment.CenterHorizontally)
+                .then(saturationValueWidth)
                 .padding(top = 8.dp),
         )
     }

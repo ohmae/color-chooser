@@ -46,7 +46,11 @@ if (showDialog) {
 }
 ```
 
-- Default "OK" and "Cancel" buttons are provided.
+- Default "OK" and "Cancel" buttons are provided. "OK" calls `onConfirm` only; close the dialog
+  in that callback. "Cancel" and platform dismissal call `onDismissRequest`.
+- By default, only palettes scroll vertically. For very short dialogs, set `scrollEntireContent = true`
+  to scroll the preview and controls together; the HSV square is reduced so the user can scroll back
+  without dragging on its two-axis editing surface.
 - Custom buttons can be provided via `confirmButton: @Composable (selectedColor: Color) -> Unit` and
   `dismissButton: @Composable (() -> Unit)?` slots.
 - Optional `onColorChanged: ((Color) -> Unit)?` can be used to observe real-time color changes during editing.
@@ -110,6 +114,7 @@ fun ColorPickerScreen(
 
 `ColorChooserView`, the legacy `ColorChooserDialog` (accepting `Tab`), and `Tab` are deprecated but remain available for
 compatibility.
+The legacy dialog retains its original behavior: confirming calls `onChooseColor` and then `onDismissRequest`.
 Migrate tab selections to `Chooser` (`Tab.PALETTE` becomes `Chooser.M2`) and use `ColorChooserScreen` or the modern
 `ColorChooserDialog`.
 The old `titleContentColor` maps to both `selectedTabContentColor` and `unselectedTabContentColor`

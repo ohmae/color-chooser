@@ -7,6 +7,7 @@
 
 package net.mm2d.color.chooser.compose
 
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -15,21 +16,28 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.colorspace.ColorSpaces
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.assertCountEquals
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsSelected
+import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performSemanticsAction
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.swipe
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.dp
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -130,8 +138,72 @@ class ColorContractTest {
         composeRule.onNodeWithText("OK").performClick()
         composeRule.runOnIdle {
             assertEquals(Color.Blue, confirmed)
-            assertEquals(true, dismissed)
+            assertEquals(false, dismissed)
         }
+    }
+
+    @Test
+    fun modernDialogDismissesOnCancel() {
+        var dismissed = false
+        var confirmed = false
+        composeRule.setContent {
+            MaterialTheme {
+                ColorChooserDialog(
+                    onDismissRequest = { dismissed = true },
+                    onConfirm = { confirmed = true },
+                )
+            }
+        }
+        composeRule.onNodeWithText("Cancel").performClick()
+        composeRule.runOnIdle {
+            assertEquals(true, dismissed)
+            assertEquals(false, confirmed)
+        }
+    }
+
+    @Test
+    fun shortDialogScrollOptionKeepsHsvControlsAndButtonsReachable() {
+        composeRule.setContent {
+            MaterialTheme {
+                ColorChooserDialog(
+                    onDismissRequest = {},
+                    onConfirm = {},
+                    modifier = Modifier.width(320.dp).height(240.dp),
+                    choosers = listOf(Chooser.HSV),
+                    scrollEntireContent = true,
+                )
+            }
+        }
+        composeRule.onNodeWithContentDescription("Saturation and brightness").performScrollTo()
+        val sv = composeRule.onNodeWithContentDescription("Saturation and brightness").assertIsDisplayed()
+        composeRule.runOnIdle {
+            assertEquals(true, sv.fetchSemanticsNode().boundsInRoot.width < with(composeRule.density) { 160.dp.toPx() })
+        }
+        composeRule.onNodeWithContentDescription("Hue").assertIsDisplayed()
+        composeRule.onNodeWithText("OK").assertIsDisplayed()
+        composeRule.onNodeWithText("Cancel").assertIsDisplayed()
+        val hueBeforeSwipe = composeRule.onNodeWithContentDescription("Hue").fetchSemanticsNode().boundsInRoot.top
+        composeRule.onNodeWithContentDescription("Hue").performTouchInput {
+            swipe(Offset(width / 2f, height / 2f), Offset(width / 2f, height / 2f + 300f), durationMillis = 300)
+        }
+        val hueAfterSwipe = composeRule.onNodeWithContentDescription("Hue").fetchSemanticsNode().boundsInRoot.top
+        assertTrue("Hue did not move down: $hueBeforeSwipe -> $hueAfterSwipe", hueAfterSwipe > hueBeforeSwipe)
+        composeRule.onNodeWithContentDescription("Hue").assertIsDisplayed()
+    }
+
+    @Test
+    fun dialogDoesNotScrollEntireHsvContentByDefault() {
+        composeRule.setContent {
+            MaterialTheme {
+                ColorChooserDialog(
+                    onDismissRequest = {},
+                    onConfirm = {},
+                    modifier = Modifier.width(320.dp).height(240.dp),
+                    choosers = listOf(Chooser.HSV),
+                )
+            }
+        }
+        composeRule.onAllNodes(hasScrollAction()).assertCountEquals(0)
     }
 
     @Test

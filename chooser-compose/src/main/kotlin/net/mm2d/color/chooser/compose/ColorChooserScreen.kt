@@ -293,6 +293,7 @@ internal fun ColorChooserContent(
     tabTextStyle: TextStyle = ColorChooserDefaults.tabTextStyle,
     sliderLabelStyle: TextStyle = ColorChooserDefaults.sliderLabelStyle,
     disableInnerScroll: Boolean = false,
+    maxHsvAreaSize: Dp? = null,
 ) {
     val currentOpaque = currentColor.copy(alpha = 1f)
     val hsvState = rememberHsvChooserState(currentOpaque)
@@ -368,6 +369,7 @@ internal fun ColorChooserContent(
                     currentColor = currentOpaque,
                     state = hsvState,
                     onColorChanged = onOpaqueChanged,
+                    maxSaturationValueSize = maxHsvAreaSize,
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally),
                 )
