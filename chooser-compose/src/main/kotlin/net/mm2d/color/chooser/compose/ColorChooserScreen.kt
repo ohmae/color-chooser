@@ -48,7 +48,8 @@ import net.mm2d.color.chooser.compose.util.alphaBackgroundBrush
 import net.mm2d.color.chooser.compose.util.to8bitInt
 import net.mm2d.color.chooser.compose.util.toChooserColor
 
-private val PreviewShape = RoundedCornerShape(16.dp)
+private val PreviewShape = RoundedCornerShape(24.dp)
+private val PreviewLabelShape = RoundedCornerShape(percent = 50)
 
 @Immutable
 class ColorChooserColors internal constructor(
@@ -430,8 +431,8 @@ private fun ColorPreview(
                     text = initialColor.toHex(withAlpha),
                     modifier = Modifier
                         .padding(8.dp)
-                        .background(labelBackgroundColor, RoundedCornerShape(8.dp))
-                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                        .background(labelBackgroundColor, PreviewLabelShape)
+                        .padding(horizontal = 10.dp, vertical = 4.dp)
                         .align(Alignment.BottomStart),
                     style = labelTextStyle,
                     color = labelColor,
@@ -451,8 +452,8 @@ private fun ColorPreview(
                     text = resultColor.toHex(withAlpha),
                     modifier = Modifier
                         .padding(8.dp)
-                        .background(labelBackgroundColor, RoundedCornerShape(8.dp))
-                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                        .background(labelBackgroundColor, PreviewLabelShape)
+                        .padding(horizontal = 10.dp, vertical = 4.dp)
                         .align(Alignment.BottomEnd),
                     style = labelTextStyle,
                     color = labelColor,

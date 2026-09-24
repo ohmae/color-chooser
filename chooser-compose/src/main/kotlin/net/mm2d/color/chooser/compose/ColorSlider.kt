@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -60,6 +61,7 @@ private val RANGE_INT = 0..MAX_INT
 private const val MAX_FLOAT = MAX_INT.toFloat()
 private val RANGE_FLOAT = 0f..MAX_FLOAT
 private val TRACK_HEIGHT = 32.dp
+private val TrackShape = RoundedCornerShape(percent = 50)
 
 @Composable
 internal fun ColorSlider(
@@ -116,9 +118,9 @@ internal fun ColorSlider(
             Box(
                 modifier = Modifier
                     .align(Alignment.Center)
-                    .padding(horizontal = 5.dp)
-                    .frameDecoration()
+                    .padding(horizontal = 6.dp)
                     .fillMaxSize()
+                    .frameDecoration(TrackShape)
                     .then(if (alphaMode) Modifier.background(alphaBackgroundBrush()) else Modifier)
                     .background(colorBrush),
             )

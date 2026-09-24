@@ -65,7 +65,7 @@ internal fun PaletteChooser(
             ) {
                 list.forEach { color ->
                     val selected = color == currentColor
-                    val shape = RoundedCornerShape(if (selected) 16.dp else 4.dp)
+                    val shape = RoundedCornerShape(if (selected) 16.dp else 6.dp)
                     Surface(
                         onClick = { onColorChanged(color) },
                         modifier = Modifier

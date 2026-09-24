@@ -51,8 +51,8 @@ public final class net/mm2d/color/chooser/compose/ColorChooserViewKt {
 public final class net/mm2d/color/chooser/compose/ComposableSingletons$ColorChooserDialogKt {
 	public static final field INSTANCE Lnet/mm2d/color/chooser/compose/ComposableSingletons$ColorChooserDialogKt;
 	public fun <init> ()V
-	public final fun getLambda$-1080564494$chooser_compose ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$1283488865$chooser_compose ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1447160869$chooser_compose ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class net/mm2d/color/chooser/compose/ComposableSingletons$ColorChooserScreenKt {

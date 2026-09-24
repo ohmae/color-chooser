@@ -19,12 +19,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.ImageShader
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.ShaderBrush
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.input.pointer.PointerInputScope
 import androidx.compose.ui.res.imageResource
@@ -38,12 +41,15 @@ import net.mm2d.color.chooser.compose.R
 private val colorBorder1 = Color.White
 private val colorBorder2 = Color(0x1a000000)
 
-internal fun Modifier.frameDecoration(): Modifier =
+internal fun Modifier.frameDecoration(
+    shape: Shape = RectangleShape,
+): Modifier =
     this
-        .background(colorBorder2)
+        .background(colorBorder2, shape)
         .padding(1.dp)
-        .background(colorBorder1)
-        .padding(2.dp)
+        .background(colorBorder1, shape)
+        .padding(1.dp)
+        .clip(shape)
 
 @Composable
 internal fun alphaBackgroundBrush(): ShaderBrush {

@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -59,6 +60,7 @@ import kotlin.math.roundToInt
 
 private const val HUE_MAX = 360f
 private val TRACK_HEIGHT = 32.dp
+private val TrackShape = RoundedCornerShape(percent = 50)
 
 @Composable
 internal fun HsvChooser(
@@ -131,9 +133,9 @@ internal fun HsvChooser(
             Box(
                 modifier = Modifier
                     .align(Alignment.Center)
-                    .padding(horizontal = 5.dp)
-                    .frameDecoration()
+                    .padding(horizontal = 6.dp)
                     .fillMaxSize()
+                    .frameDecoration(TrackShape)
                     .background(colorBrush),
             )
             ControlGrip(
@@ -194,7 +196,7 @@ internal fun HsvChooser(
             ) {
                 Canvas(
                     modifier = Modifier
-                        .padding(5.dp)
+                        .padding(6.dp)
                         .frameDecoration()
                         .fillMaxSize(),
                 ) {

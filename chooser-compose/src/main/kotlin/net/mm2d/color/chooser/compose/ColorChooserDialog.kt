@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.AlertDialogDefaults
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -66,7 +67,7 @@ import net.mm2d.color.chooser.compose.util.toChooserColor
  * @param tabTextStyle text style of tab labels.
  * @param sliderLabelStyle text style of slider labels.
  * @param confirmButton composable slot for the confirmation button, receiving the currently selected color.
- * Default is a [TextButton] labeled "OK" calling [onConfirm] and [onDismissRequest].
+ * Default is a [Button] labeled "OK" calling [onConfirm] and [onDismissRequest].
  * @param dismissButton optional composable slot for the dismiss button.
  * Default is a [TextButton] labeled "Cancel" calling [onDismissRequest].
  */
@@ -91,7 +92,7 @@ fun ColorChooserDialog(
     tabTextStyle: TextStyle = ColorChooserDefaults.tabTextStyle,
     sliderLabelStyle: TextStyle = ColorChooserDefaults.sliderLabelStyle,
     confirmButton: @Composable (selectedColor: Color) -> Unit = { selectedColor ->
-        TextButton(
+        Button(
             onClick = {
                 onConfirm(selectedColor)
                 onDismissRequest()
