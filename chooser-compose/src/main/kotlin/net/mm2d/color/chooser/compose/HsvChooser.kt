@@ -70,15 +70,113 @@ internal fun HsvChooser(
     state: HsvChooserState = rememberHsvChooserState(currentColor),
 ) {
     val currentOnColorChanged by rememberUpdatedState(onColorChanged)
-    val hue = state.hue
-    val saturation = state.saturation
-    val value = state.value
-    val updateHue = { newHue: Float ->
-        currentOnColorChanged(state.update(newHue, state.saturation, state.value))
+
+    Column(
+        modifier = modifier.fillMaxWidth(),
+    ) {
+        HueSlider(
+            hue = state.hue,
+            onHueChange = { newHue ->
+                currentOnColorChanged(state.update(newHue, state.saturation, state.value))
+            },
+        )
+        SaturationValueArea(
+            hue = state.hue,
+            saturation = state.saturation,
+            value = state.value,
+            onSaturationValueChange = { newSaturation, newValue ->
+                currentOnColorChanged(state.update(state.hue, newSaturation, newValue))
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
+        )
     }
-    val updateSv = { newSaturation: Float, newValue: Float ->
-        currentOnColorChanged(state.update(state.hue, newSaturation, newValue))
+}
+
+@Composable
+private fun HueSlider(
+    hue: Float,
+    onHueChange: (Float) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val currentOnHueChange by rememberUpdatedState(onHueChange)
+    val density = LocalDensity.current
+    val gripRadiusPx = remember(density) {
+        with(density) { CONTROL_GRIP_RADIUS.roundToPx() }
     }
+    val topMarginPx = remember(density) {
+        with(density) { (TRACK_HEIGHT / 2 - CONTROL_GRIP_RADIUS).roundToPx() }
+    }
+    var trackWidthPx by remember { mutableIntStateOf(0) }
+    val currentRatio = (hue / HUE_MAX).coerceIn(0f, 1f)
+
+    val colorBrush = remember {
+        val grid = 36
+        Brush.horizontalGradient(
+            (0..grid).map {
+                Color.hsv(it.toFloat() / grid * HUE_MAX, 1f, 1f)
+            },
+        )
+    }
+
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(TRACK_HEIGHT)
+            .onSizeChanged { trackWidthPx = it.width },
+    ) {
+        Box(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(horizontal = 6.dp)
+                .fillMaxSize()
+                .frameDecoration(TrackShape)
+                .background(colorBrush),
+        )
+        ControlGrip(
+            color = Color.hsv(hue = hue, saturation = 1f, value = 1f),
+            modifier = Modifier
+                .align(AbsoluteAlignment.TopLeft)
+                .absoluteOffset {
+                    val rangeXPx = (trackWidthPx - gripRadiusPx * 2).coerceAtLeast(0)
+                    val x = (rangeXPx * currentRatio).roundToInt()
+                    IntOffset(x = x, y = topMarginPx)
+                },
+        )
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .hueAccessibility(stringResource(R.string.mm2d_cc_hue), hue, currentOnHueChange)
+                .pointerInput(trackWidthPx, density) {
+                    if (trackWidthPx <= 0) return@pointerInput
+                    val rangeXPx = (trackWidthPx - gripRadiusPx * 2).coerceAtLeast(0)
+                    if (rangeXPx == 0) return@pointerInput
+                    detectHorizontalTapAndDragGestures { position ->
+                        val targetX = position.x - gripRadiusPx
+                        val ratio = ratio(targetX, rangeXPx.toFloat())
+                        currentOnHueChange(ratio * 360f)
+                    }
+                },
+        )
+    }
+}
+
+@Composable
+private fun SaturationValueArea(
+    hue: Float,
+    saturation: Float,
+    value: Float,
+    onSaturationValueChange: (saturation: Float, value: Float) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val currentOnSaturationValueChange by rememberUpdatedState(onSaturationValueChange)
+    val density = LocalDensity.current
+    val gripRadiusPx = remember(density) {
+        with(density) { CONTROL_GRIP_RADIUS.roundToPx() }
+    }
+    var svSizePx by remember { mutableIntStateOf(0) }
+
     val svLabel = stringResource(R.string.mm2d_cc_saturation_value)
     val svState = stringResource(
         R.string.mm2d_cc_saturation_value_state,
@@ -91,7 +189,7 @@ internal fun HsvChooser(
         if (newSaturation == saturation && newValue == value) {
             false
         } else {
-            updateSv(newSaturation, newValue)
+            currentOnSaturationValueChange(newSaturation, newValue)
             true
         }
     }
@@ -101,153 +199,88 @@ internal fun HsvChooser(
         CustomAccessibilityAction(stringResource(R.string.mm2d_cc_increase_value)) { adjustSv(0f, 0.01f) },
         CustomAccessibilityAction(stringResource(R.string.mm2d_cc_decrease_value)) { adjustSv(0f, -0.01f) },
     )
-    val density = LocalDensity.current
-    val gripRadiusPx = remember(density) {
-        with(density) { CONTROL_GRIP_RADIUS.roundToPx() }
-    }
-    val topMarginPx = remember(density) {
-        with(density) { (TRACK_HEIGHT / 2 - CONTROL_GRIP_RADIUS).roundToPx() }
-    }
-    var trackWidthPx by remember { mutableIntStateOf(0) }
-    var svSizePx by remember { mutableIntStateOf(0) }
 
-    Column(
-        modifier = modifier.fillMaxWidth(),
+    val horizontalBrush = remember(hue) {
+        Brush.horizontalGradient(
+            listOf(Color.White, Color.hsv(hue, 1f, 1f)),
+        )
+    }
+    val verticalBrush = remember {
+        Brush.verticalGradient(
+            listOf(Color.Transparent, Color.Black),
+        )
+    }
+
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center,
     ) {
         Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(TRACK_HEIGHT)
-                .onSizeChanged { trackWidthPx = it.width },
+                .layout { measurable, constraints ->
+                    val squareSize = minOf(constraints.maxWidth, constraints.maxHeight).coerceAtLeast(0)
+                    val placeable = measurable.measure(
+                        Constraints.fixed(squareSize, squareSize),
+                    )
+                    layout(squareSize, squareSize) {
+                        placeable.place(0, 0)
+                    }
+                }
+                .onSizeChanged { svSizePx = it.width },
         ) {
-            val currentRatio = (hue / HUE_MAX).coerceIn(0f, 1f)
-
-            val colorBrush = remember {
-                val grid = 36
-                Brush.horizontalGradient(
-                    (0..grid).map {
-                        Color.hsv(it.toFloat() / grid * HUE_MAX, 1f, 1f)
-                    },
-                )
-            }
-            Box(
+            Canvas(
                 modifier = Modifier
-                    .align(Alignment.Center)
-                    .padding(horizontal = 6.dp)
-                    .fillMaxSize()
-                    .frameDecoration(TrackShape)
-                    .background(colorBrush),
-            )
+                    .padding(6.dp)
+                    .frameDecoration()
+                    .fillMaxSize(),
+            ) {
+                drawRect(brush = horizontalBrush)
+                drawRect(brush = verticalBrush)
+            }
             ControlGrip(
-                color = Color.hsv(hue = hue, saturation = 1f, value = 1f),
+                color = Color.hsv(hue, saturation, value),
                 modifier = Modifier
                     .align(AbsoluteAlignment.TopLeft)
                     .absoluteOffset {
-                        val rangeXPx = (trackWidthPx - gripRadiusPx * 2).coerceAtLeast(0)
-                        val x = (rangeXPx * currentRatio).roundToInt()
-                        IntOffset(x = x, y = topMarginPx)
+                        val rangeSizePx = (svSizePx - gripRadiusPx * 2).coerceAtLeast(0)
+                        val x = (rangeSizePx * saturation.coerceIn(0f, 1f)).roundToInt()
+                        val y = (rangeSizePx * (1f - value).coerceIn(0f, 1f)).roundToInt()
+                        IntOffset(x = x, y = y)
                     },
             )
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .hueAccessibility(stringResource(R.string.mm2d_cc_hue), hue, updateHue)
-                    .pointerInput(trackWidthPx, density) {
-                        if (trackWidthPx <= 0) return@pointerInput
-                        val rangeXPx = (trackWidthPx - gripRadiusPx * 2).coerceAtLeast(0)
-                        if (rangeXPx == 0) return@pointerInput
-                        detectHorizontalTapAndDragGestures { position ->
+                    .semantics {
+                        contentDescription = svLabel
+                        stateDescription = svState
+                        customActions = svActions
+                    }
+                    .onKeyEvent {
+                        if (it.type != KeyEventType.KeyDown) return@onKeyEvent false
+                        when (it.key) {
+                            Key.DirectionRight -> adjustSv(0.01f, 0f)
+                            Key.DirectionLeft -> adjustSv(-0.01f, 0f)
+                            Key.DirectionUp -> adjustSv(0f, 0.01f)
+                            Key.DirectionDown -> adjustSv(0f, -0.01f)
+                            else -> return@onKeyEvent false
+                        }
+                        true
+                    }
+                    .focusable()
+                    .pointerInput(svSizePx, density) {
+                        if (svSizePx <= 0) return@pointerInput
+                        val rangeSizePx = (svSizePx - gripRadiusPx * 2).coerceAtLeast(0)
+                        if (rangeSizePx == 0) return@pointerInput
+                        detectTapAndDragGestures { position ->
                             val targetX = position.x - gripRadiusPx
-                            val ratio = ratio(targetX, rangeXPx.toFloat())
-                            updateHue(ratio * 360f)
+                            val targetY = position.y - gripRadiusPx
+                            val newSaturation = ratio(targetX, rangeSizePx.toFloat())
+                            val newValue = 1f - ratio(targetY, rangeSizePx.toFloat())
+                            currentOnSaturationValueChange(newSaturation, newValue)
                         }
                     },
             )
-        }
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp),
-            contentAlignment = Alignment.Center,
-        ) {
-            val horizontalBrush = remember(hue) {
-                Brush.horizontalGradient(
-                    listOf(Color.White, Color.hsv(hue, 1f, 1f)),
-                )
-            }
-            val verticalBrush = remember {
-                Brush.verticalGradient(
-                    listOf(Color.Transparent, Color.Black),
-                )
-            }
-
-            Box(
-                modifier = Modifier
-                    .layout { measurable, constraints ->
-                        val squareSize = minOf(constraints.maxWidth, constraints.maxHeight).coerceAtLeast(0)
-                        val placeable = measurable.measure(
-                            Constraints.fixed(squareSize, squareSize),
-                        )
-                        layout(squareSize, squareSize) {
-                            placeable.place(0, 0)
-                        }
-                    }
-                    .onSizeChanged { svSizePx = it.width },
-            ) {
-                Canvas(
-                    modifier = Modifier
-                        .padding(6.dp)
-                        .frameDecoration()
-                        .fillMaxSize(),
-                ) {
-                    drawRect(brush = horizontalBrush)
-                    drawRect(brush = verticalBrush)
-                }
-                ControlGrip(
-                    color = Color.hsv(hue, saturation, value),
-                    modifier = Modifier
-                        .align(AbsoluteAlignment.TopLeft)
-                        .absoluteOffset {
-                            val rangeSizePx = (svSizePx - gripRadiusPx * 2).coerceAtLeast(0)
-                            val x = (rangeSizePx * saturation.coerceIn(0f, 1f)).roundToInt()
-                            val y = (rangeSizePx * (1f - value).coerceIn(0f, 1f)).roundToInt()
-                            IntOffset(x = x, y = y)
-                        },
-                )
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .semantics {
-                            contentDescription = svLabel
-                            stateDescription = svState
-                            customActions = svActions
-                        }
-                        .onKeyEvent {
-                            if (it.type != KeyEventType.KeyDown) return@onKeyEvent false
-                            when (it.key) {
-                                Key.DirectionRight -> adjustSv(0.01f, 0f)
-                                Key.DirectionLeft -> adjustSv(-0.01f, 0f)
-                                Key.DirectionUp -> adjustSv(0f, 0.01f)
-                                Key.DirectionDown -> adjustSv(0f, -0.01f)
-                                else -> return@onKeyEvent false
-                            }
-                            true
-                        }
-                        .focusable()
-                        .pointerInput(svSizePx, density) {
-                            if (svSizePx <= 0) return@pointerInput
-                            val rangeSizePx = (svSizePx - gripRadiusPx * 2).coerceAtLeast(0)
-                            if (rangeSizePx == 0) return@pointerInput
-                            detectTapAndDragGestures { position ->
-                                val targetX = position.x - gripRadiusPx
-                                val targetY = position.y - gripRadiusPx
-                                val newSaturation = ratio(targetX, rangeSizePx.toFloat())
-                                val newValue = 1f - ratio(targetY, rangeSizePx.toFloat())
-                                updateSv(newSaturation, newValue)
-                            }
-                        },
-                )
-            }
         }
     }
 }
