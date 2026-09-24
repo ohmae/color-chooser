@@ -31,6 +31,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -392,16 +394,24 @@ internal fun ColorChooserContent(
     }
 }
 
+private class ChooserPreviewParameterProvider : PreviewParameterProvider<Chooser> {
+    override val values: Sequence<Chooser> = Chooser.entries.asSequence()
+}
+
 @PreviewLightDark
 @Composable
-private fun PreviewColorChooserScreen() {
+private fun PreviewColorChooserScreen(
+    @PreviewParameter(ChooserPreviewParameterProvider::class) chooser: Chooser,
+) {
     MaterialTheme(
         colorScheme = if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme(),
     ) {
         Scaffold {
             ColorChooserScreen(
+                color = Color.Blue,
                 initialColor = Color.Red,
                 onColorChanged = {},
+                initialChooser = chooser,
                 modifier = Modifier
                     .padding(it)
                     .padding(16.dp),
