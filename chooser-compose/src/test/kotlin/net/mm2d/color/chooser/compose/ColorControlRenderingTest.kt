@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -72,6 +73,7 @@ class ColorControlRenderingTest {
     @Test
     fun sliderGradientAndGripKeepPhysicalCoordinatesInRtl() {
         var direction by mutableStateOf(LayoutDirection.Ltr)
+        var offsetX by mutableIntStateOf(0)
         composeRule.setContent {
             CompositionLocalProvider(LocalLayoutDirection provides direction) {
                 ColorSlider(
@@ -81,18 +83,24 @@ class ColorControlRenderingTest {
                     accessibilityLabel = "Red",
                     labelColor = Color.Black,
                     labelStyle = ColorChooserDefaults.sliderLabelStyle,
-                    // ラスタライズの差異を避けるため、トラックのウィンドウ内の座標を揃える。
                     modifier = Modifier
                         .width(240.dp)
-                        .absoluteOffset {
-                            IntOffset(if (direction == LayoutDirection.Rtl) (-36).dp.roundToPx() else 0, 0)
-                        },
+                        .absoluteOffset { IntOffset(offsetX, 0) },
                 )
             }
         }
-        val before = composeRule.onNodeWithContentDescription("Red").pixels()
+        val slider = composeRule.onNodeWithContentDescription("Red")
+        val beforeBounds = slider.fetchSemanticsNode().boundsInRoot
+        val before = slider.pixels()
         composeRule.runOnIdle { direction = LayoutDirection.Rtl }
-        assertArrayEquals(before, composeRule.onNodeWithContentDescription("Red").pixels())
+        val rtlBounds = slider.fetchSemanticsNode().boundsInRoot
+        // 数値欄の実測幅に合わせ、ラスタライズ前のトラックのウィンドウ内座標を揃える。
+        composeRule.runOnIdle { offsetX = (beforeBounds.left - rtlBounds.left).toInt() }
+        assertTrue(
+            "Track bounds must match before comparing pixels",
+            beforeBounds == slider.fetchSemanticsNode().boundsInRoot,
+        )
+        assertArrayEquals(before, slider.pixels())
     }
 
     @Test
