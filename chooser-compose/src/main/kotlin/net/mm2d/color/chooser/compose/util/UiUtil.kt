@@ -7,6 +7,7 @@
 
 package net.mm2d.color.chooser.compose.util
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -16,11 +17,16 @@ import androidx.compose.foundation.gestures.drag
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
@@ -29,7 +35,9 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.TileMode
+import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.PointerInputScope
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -39,7 +47,40 @@ import kotlinx.coroutines.launch
 import net.mm2d.color.chooser.compose.R
 
 private val colorBorder1 = Color.White
-private val colorBorder2 = Color(0x1a000000)
+private val colorBorder2 = Color.Black.copy(alpha = 0.45f)
+
+internal object ChooserShapes {
+    val preview = RoundedCornerShape(24.dp)
+    val label = RoundedCornerShape(percent = 50)
+    val track = RoundedCornerShape(percent = 50)
+}
+
+internal class ControlInteraction {
+    var pressed by mutableStateOf(false)
+    var focused by mutableStateOf(false)
+    val active: Boolean get() = pressed || focused
+}
+
+// プレス操作を消費したり、既存のドラッグ／スクロール検出機能と競合したりすることなく、操作を監視
+internal fun Modifier.controlInteraction(
+    interaction: ControlInteraction,
+): Modifier =
+    this
+        .onFocusChanged { interaction.focused = it.isFocused }
+        .pointerInput(interaction) {
+            try {
+                awaitEachGesture {
+                    awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial)
+                    interaction.pressed = true
+                    do {
+                        val event = awaitPointerEvent(PointerEventPass.Initial)
+                    } while (event.changes.any { it.pressed })
+                    interaction.pressed = false
+                }
+            } finally {
+                interaction.pressed = false
+            }
+        }
 
 internal fun Modifier.frameDecoration(
     shape: Shape = RectangleShape,
@@ -65,12 +106,12 @@ internal fun alphaBackgroundBrush(): ShaderBrush {
     }
 }
 
-// A vertical scroll can cancel the pending tap before it changes the color.
+// 垂直スクロールを行うと、色が変わる前に保留中のタップをキャンセルする
 internal suspend fun PointerInputScope.detectHorizontalTapAndDragGestures(
     onPositionChange: (Offset) -> Unit,
 ) {
     coroutineScope {
-        // Register both detectors before pointerInput dispatches its first down event.
+        // pointerInputが最初のdownイベントをディスパッチする前に、両方の検出器を登録
         launch(start = CoroutineStart.UNDISPATCHED) {
             detectTapGestures(onTap = onPositionChange)
         }
@@ -82,7 +123,7 @@ internal suspend fun PointerInputScope.detectHorizontalTapAndDragGestures(
     }
 }
 
-// The saturation/value plane owns drags in both directions, starting at the press position.
+// SV面では、押下位置を起点として、上下左右方向へのドラッグ操作が可能
 internal suspend fun PointerInputScope.detectTapAndDragGestures(
     onPositionChange: (Offset) -> Unit,
 ) {
@@ -101,13 +142,15 @@ internal suspend fun PointerInputScope.detectTapAndDragGestures(
 internal fun ControlGrip(
     color: Color,
     modifier: Modifier = Modifier,
+    active: Boolean = false,
 ) {
+    val emphasis by animateFloatAsState(if (active) 1f else 0f, label = "controlEmphasis")
     Box(
         modifier = modifier
             .size(16.dp)
             .drawBehind {
                 val radius = size.minDimension / 2f
-                val stroke1 = 1.dp.toPx()
+                val stroke1 = (1 + emphasis).dp.toPx()
                 val stroke2 = 1.dp.toPx()
                 drawCircle(color = colorBorder2, radius = radius)
                 drawCircle(color = colorBorder1, radius = (radius - stroke1).coerceAtLeast(0f))

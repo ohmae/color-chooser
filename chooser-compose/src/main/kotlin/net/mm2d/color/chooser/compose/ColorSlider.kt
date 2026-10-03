@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.darkColorScheme
@@ -50,13 +49,17 @@ import androidx.compose.ui.semantics.progressBarRangeInfo
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.setProgress
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import net.mm2d.color.chooser.compose.util.CONTROL_GRIP_RADIUS
+import net.mm2d.color.chooser.compose.util.ChooserShapes
 import net.mm2d.color.chooser.compose.util.ControlGrip
+import net.mm2d.color.chooser.compose.util.ControlInteraction
 import net.mm2d.color.chooser.compose.util.alphaBackgroundBrush
+import net.mm2d.color.chooser.compose.util.controlInteraction
 import net.mm2d.color.chooser.compose.util.detectHorizontalTapAndDragGestures
 import net.mm2d.color.chooser.compose.util.frameDecoration
 import net.mm2d.color.chooser.compose.util.ratio
@@ -67,7 +70,6 @@ private val RANGE_INT = 0..MAX_INT
 private const val MAX_FLOAT = MAX_INT.toFloat()
 private val RANGE_FLOAT = 0f..MAX_FLOAT
 private val TRACK_HEIGHT = 32.dp
-private val TrackShape = RoundedCornerShape(percent = 50)
 
 @Composable
 internal fun ColorSlider(
@@ -81,7 +83,14 @@ internal fun ColorSlider(
     labelStyle: TextStyle,
 ) {
     val currentOnValueChanged by rememberUpdatedState(onValueChange)
+    val interaction = remember { ControlInteraction() }
     val density = LocalDensity.current
+    val textMeasurer = rememberTextMeasurer()
+    val valueWidth = remember(textMeasurer, density, labelStyle) {
+        with(density) {
+            textMeasurer.measure(text = "255", style = labelStyle, maxLines = 1).size.width.toDp()
+        }
+    }
     val gripRadiusPx = remember(density) {
         with(density) { CONTROL_GRIP_RADIUS.roundToPx() }
     }
@@ -92,15 +101,12 @@ internal fun ColorSlider(
     val currentRatio = (value / 255f).coerceIn(0f, 1f)
 
     val colorBrush = remember(color, alphaMode) {
-        if (alphaMode) {
-            Brush.horizontalGradient(
-                listOf(color.copy(alpha = 0f), color.copy(alpha = 1f)),
-            )
+        val colors = if (alphaMode) {
+            listOf(color.copy(alpha = 0f), color)
         } else {
-            Brush.horizontalGradient(
-                listOf(Color.Black, color),
-            )
+            listOf(Color.Black, color)
         }
+        Brush.horizontalGradient(colors)
     }
     val gripColor = remember(color, alphaMode, currentRatio) {
         if (alphaMode) {
@@ -126,11 +132,12 @@ internal fun ColorSlider(
                     .align(Alignment.Center)
                     .padding(horizontal = 6.dp)
                     .fillMaxSize()
-                    .frameDecoration(TrackShape)
+                    .frameDecoration(ChooserShapes.track)
                     .then(if (alphaMode) Modifier.background(alphaBackgroundBrush()) else Modifier)
                     .background(colorBrush),
             )
             ControlGrip(
+                active = interaction.active,
                 color = gripColor,
                 modifier = Modifier
                     .align(AbsoluteAlignment.TopLeft)
@@ -143,6 +150,7 @@ internal fun ColorSlider(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
+                    .controlInteraction(interaction)
                     .accessibility(accessibilityLabel, value, currentOnValueChanged)
                     .pointerInput(trackWidthPx, density) {
                         if (trackWidthPx <= 0) return@pointerInput
@@ -161,9 +169,11 @@ internal fun ColorSlider(
             style = labelStyle,
             color = labelColor,
             textAlign = TextAlign.End,
+            softWrap = false,
             modifier = Modifier
                 .align(Alignment.CenterVertically)
-                .width(28.dp),
+                .padding(end = 6.dp)
+                .width(valueWidth),
         )
     }
 }

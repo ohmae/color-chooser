@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
@@ -58,7 +57,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import net.mm2d.color.chooser.compose.util.CONTROL_GRIP_RADIUS
+import net.mm2d.color.chooser.compose.util.ChooserShapes
 import net.mm2d.color.chooser.compose.util.ControlGrip
+import net.mm2d.color.chooser.compose.util.ControlInteraction
+import net.mm2d.color.chooser.compose.util.controlInteraction
 import net.mm2d.color.chooser.compose.util.detectHorizontalTapAndDragGestures
 import net.mm2d.color.chooser.compose.util.detectTapAndDragGestures
 import net.mm2d.color.chooser.compose.util.frameDecoration
@@ -67,7 +69,6 @@ import kotlin.math.roundToInt
 
 private const val HUE_MAX = 360f
 private val TRACK_HEIGHT = 32.dp
-private val TrackShape = RoundedCornerShape(percent = 50)
 
 @Composable
 internal fun HsvChooser(
@@ -115,6 +116,7 @@ private fun HueSlider(
     modifier: Modifier = Modifier,
 ) {
     val currentOnHueChange by rememberUpdatedState(onHueChange)
+    val interaction = remember { ControlInteraction() }
     val density = LocalDensity.current
     val gripRadiusPx = remember(density) {
         with(density) { CONTROL_GRIP_RADIUS.roundToPx() }
@@ -145,10 +147,11 @@ private fun HueSlider(
                 .align(Alignment.Center)
                 .padding(horizontal = 6.dp)
                 .fillMaxSize()
-                .frameDecoration(TrackShape)
+                .frameDecoration(ChooserShapes.track)
                 .background(colorBrush),
         )
         ControlGrip(
+            active = interaction.active,
             color = Color.hsv(hue = hue, saturation = 1f, value = 1f),
             modifier = Modifier
                 .align(AbsoluteAlignment.TopLeft)
@@ -161,6 +164,7 @@ private fun HueSlider(
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .controlInteraction(interaction)
                 .hueAccessibility(stringResource(R.string.mm2d_cc_hue), hue, currentOnHueChange)
                 .pointerInput(trackWidthPx, density) {
                     if (trackWidthPx <= 0) return@pointerInput
@@ -185,6 +189,7 @@ private fun SaturationValueArea(
     modifier: Modifier = Modifier,
 ) {
     val currentOnSaturationValueChange by rememberUpdatedState(onSaturationValueChange)
+    val interaction = remember { ControlInteraction() }
     val density = LocalDensity.current
     val gripRadiusPx = remember(density) {
         with(density) { CONTROL_GRIP_RADIUS.roundToPx() }
@@ -252,6 +257,7 @@ private fun SaturationValueArea(
                 drawRect(brush = verticalBrush)
             }
             ControlGrip(
+                active = interaction.active,
                 color = Color.hsv(hue, saturation, value),
                 modifier = Modifier
                     .align(AbsoluteAlignment.TopLeft)
@@ -281,6 +287,7 @@ private fun SaturationValueArea(
                         }
                         true
                     }
+                    .controlInteraction(interaction)
                     .focusable()
                     .pointerInput(svSizePx, density) {
                         if (svSizePx <= 0) return@pointerInput
