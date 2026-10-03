@@ -7,6 +7,15 @@
 
 package net.mm2d.color.chooser.compose
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -36,6 +45,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import net.mm2d.color.chooser.compose.util.ColorSaver
@@ -367,44 +377,64 @@ internal fun ColorChooserContent(
         val onOpaqueChanged = { newColor: Color ->
             updateColor(newColor, currentAlpha)
         }
-        when (currentChooser) {
-            Chooser.M2 ->
-                M2Chooser(
-                    currentColor = currentOpaque,
-                    onColorChanged = onOpaqueChanged,
-                    disableInnerScroll = disableInnerScroll,
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally),
+        AnimatedContent(
+            targetState = currentChooser,
+            transitionSpec = {
+                val initialIndex = validatedChoosers.indexOf(initialState)
+                val targetIndex = validatedChoosers.indexOf(targetState)
+                val slideFraction = 0.2f * if (targetIndex >= initialIndex) 1f else -1f
+                val slideSpec = spring<IntOffset>(
+                    dampingRatio = Spring.DampingRatioNoBouncy,
+                    stiffness = Spring.StiffnessMediumLow,
                 )
+                val fadeSpec = spring<Float>(stiffness = Spring.StiffnessMediumLow)
+                val enter = slideInHorizontally(
+                    animationSpec = slideSpec,
+                    initialOffsetX = { width -> (width * slideFraction).toInt() },
+                ) + fadeIn(animationSpec = fadeSpec)
+                val exit = slideOutHorizontally(
+                    animationSpec = slideSpec,
+                    targetOffsetX = { width -> -(width * slideFraction).toInt() },
+                ) + fadeOut(animationSpec = fadeSpec)
+                (enter togetherWith exit).using(SizeTransform(clip = false))
+            },
+            contentAlignment = Alignment.TopCenter,
+            label = "chooserTabTransition",
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.CenterHorizontally),
+        ) { targetChooser ->
+            when (targetChooser) {
+                Chooser.M2 ->
+                    M2Chooser(
+                        currentColor = currentOpaque,
+                        onColorChanged = onOpaqueChanged,
+                        disableInnerScroll = disableInnerScroll,
+                    )
 
-            Chooser.HSV ->
-                HsvChooser(
-                    currentColor = currentOpaque,
-                    state = hsvState,
-                    onColorChanged = onOpaqueChanged,
-                    maxSaturationValueSize = maxHsvAreaSize,
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally),
-                )
+                Chooser.HSV ->
+                    HsvChooser(
+                        currentColor = currentOpaque,
+                        state = hsvState,
+                        onColorChanged = onOpaqueChanged,
+                        maxSaturationValueSize = maxHsvAreaSize,
+                    )
 
-            Chooser.RGB ->
-                RgbChooser(
-                    currentColor = currentOpaque,
-                    onColorChanged = onOpaqueChanged,
-                    sliderLabelColor = colors.sliderLabelColor,
-                    sliderLabelStyle = sliderLabelStyle,
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally),
-                )
+                Chooser.RGB ->
+                    RgbChooser(
+                        currentColor = currentOpaque,
+                        onColorChanged = onOpaqueChanged,
+                        sliderLabelColor = colors.sliderLabelColor,
+                        sliderLabelStyle = sliderLabelStyle,
+                    )
 
-            Chooser.M3 ->
-                M3Chooser(
-                    currentColor = currentOpaque,
-                    onColorChanged = onOpaqueChanged,
-                    disableInnerScroll = disableInnerScroll,
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally),
-                )
+                Chooser.M3 ->
+                    M3Chooser(
+                        currentColor = currentOpaque,
+                        onColorChanged = onOpaqueChanged,
+                        disableInnerScroll = disableInnerScroll,
+                    )
+            }
         }
     }
 }
