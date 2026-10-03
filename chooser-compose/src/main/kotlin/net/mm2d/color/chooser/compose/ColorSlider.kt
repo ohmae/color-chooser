@@ -56,8 +56,9 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import net.mm2d.color.chooser.compose.util.CONTROL_GRIP_RADIUS
 import net.mm2d.color.chooser.compose.util.ChooserShapes
-import net.mm2d.color.chooser.compose.util.ControlGrip
 import net.mm2d.color.chooser.compose.util.ControlInteraction
+import net.mm2d.color.chooser.compose.util.SliderGrip
+import net.mm2d.color.chooser.compose.util.TRACK_HEIGHT
 import net.mm2d.color.chooser.compose.util.alphaBackgroundBrush
 import net.mm2d.color.chooser.compose.util.controlInteraction
 import net.mm2d.color.chooser.compose.util.detectHorizontalTapAndDragGestures
@@ -69,7 +70,6 @@ private const val MAX_INT = 255
 private val RANGE_INT = 0..MAX_INT
 private const val MAX_FLOAT = MAX_INT.toFloat()
 private val RANGE_FLOAT = 0f..MAX_FLOAT
-private val TRACK_HEIGHT = 32.dp
 
 @Composable
 internal fun ColorSlider(
@@ -93,9 +93,6 @@ internal fun ColorSlider(
     }
     val gripRadiusPx = remember(density) {
         with(density) { CONTROL_GRIP_RADIUS.roundToPx() }
-    }
-    val topMarginPx = remember(density) {
-        with(density) { (TRACK_HEIGHT / 2 - CONTROL_GRIP_RADIUS).roundToPx() }
     }
     var trackWidthPx by remember { mutableIntStateOf(0) }
     val currentRatio = (value / 255f).coerceIn(0f, 1f)
@@ -136,7 +133,7 @@ internal fun ColorSlider(
                     .then(if (alphaMode) Modifier.background(alphaBackgroundBrush()) else Modifier)
                     .background(colorBrush),
             )
-            ControlGrip(
+            SliderGrip(
                 active = interaction.active,
                 color = gripColor,
                 modifier = Modifier
@@ -144,7 +141,7 @@ internal fun ColorSlider(
                     .absoluteOffset {
                         val rangeXPx = (trackWidthPx - gripRadiusPx * 2).coerceAtLeast(0)
                         val x = (rangeXPx * currentRatio).roundToInt()
-                        IntOffset(x = x, y = topMarginPx)
+                        IntOffset(x = x, y = 0)
                     },
             )
             Box(

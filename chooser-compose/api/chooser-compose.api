@@ -30,7 +30,7 @@ public final class net/mm2d/color/chooser/compose/ColorChooserDefaults {
 	public final fun getContentSpacing-D9Ej5fM ()F
 	public final fun getPreviewHeight-D9Ej5fM ()F
 	public final fun getPreviewLabelStyle ()Landroidx/compose/ui/text/TextStyle;
-	public final fun getSliderLabelStyle (Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/text/TextStyle;
+	public final fun getSliderLabelStyle ()Landroidx/compose/ui/text/TextStyle;
 	public final fun getTabTextStyle ()Landroidx/compose/ui/text/TextStyle;
 }
 

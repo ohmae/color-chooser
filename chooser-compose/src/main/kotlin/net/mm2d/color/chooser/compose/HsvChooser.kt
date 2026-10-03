@@ -58,8 +58,10 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import net.mm2d.color.chooser.compose.util.CONTROL_GRIP_RADIUS
 import net.mm2d.color.chooser.compose.util.ChooserShapes
-import net.mm2d.color.chooser.compose.util.ControlGrip
 import net.mm2d.color.chooser.compose.util.ControlInteraction
+import net.mm2d.color.chooser.compose.util.SliderGrip
+import net.mm2d.color.chooser.compose.util.SvGrip
+import net.mm2d.color.chooser.compose.util.TRACK_HEIGHT
 import net.mm2d.color.chooser.compose.util.controlInteraction
 import net.mm2d.color.chooser.compose.util.detectHorizontalTapAndDragGestures
 import net.mm2d.color.chooser.compose.util.detectTapAndDragGestures
@@ -68,7 +70,6 @@ import net.mm2d.color.chooser.compose.util.ratio
 import kotlin.math.roundToInt
 
 private const val HUE_MAX = 360f
-private val TRACK_HEIGHT = 32.dp
 
 @Composable
 internal fun HsvChooser(
@@ -121,9 +122,6 @@ private fun HueSlider(
     val gripRadiusPx = remember(density) {
         with(density) { CONTROL_GRIP_RADIUS.roundToPx() }
     }
-    val topMarginPx = remember(density) {
-        with(density) { (TRACK_HEIGHT / 2 - CONTROL_GRIP_RADIUS).roundToPx() }
-    }
     var trackWidthPx by remember { mutableIntStateOf(0) }
     val currentRatio = (hue / HUE_MAX).coerceIn(0f, 1f)
 
@@ -150,7 +148,7 @@ private fun HueSlider(
                 .frameDecoration(ChooserShapes.track)
                 .background(colorBrush),
         )
-        ControlGrip(
+        SliderGrip(
             active = interaction.active,
             color = Color.hsv(hue = hue, saturation = 1f, value = 1f),
             modifier = Modifier
@@ -158,7 +156,7 @@ private fun HueSlider(
                 .absoluteOffset {
                     val rangeXPx = (trackWidthPx - gripRadiusPx * 2).coerceAtLeast(0)
                     val x = (rangeXPx * currentRatio).roundToInt()
-                    IntOffset(x = x, y = topMarginPx)
+                    IntOffset(x = x, y = 0)
                 },
         )
         Box(
@@ -256,7 +254,7 @@ private fun SaturationValueArea(
                 drawRect(brush = horizontalBrush)
                 drawRect(brush = verticalBrush)
             }
-            ControlGrip(
+            SvGrip(
                 active = interaction.active,
                 color = Color.hsv(hue, saturation, value),
                 modifier = Modifier

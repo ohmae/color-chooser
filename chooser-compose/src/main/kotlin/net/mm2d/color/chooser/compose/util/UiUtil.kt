@@ -7,7 +7,10 @@
 
 package net.mm2d.color.chooser.compose.util
 
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -27,13 +30,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.ImageShader
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.PointerInputScope
@@ -138,28 +144,147 @@ internal suspend fun PointerInputScope.detectTapAndDragGestures(
     }
 }
 
+internal val TRACK_HEIGHT: Dp = 32.dp
+internal val CONTROL_GRIP_RADIUS: Dp = 8.dp
+
 @Composable
-internal fun ControlGrip(
+internal fun SliderGrip(
     color: Color,
     modifier: Modifier = Modifier,
     active: Boolean = false,
 ) {
-    val emphasis by animateFloatAsState(if (active) 1f else 0f, label = "controlEmphasis")
+    val pillHeight by animateDpAsState(
+        targetValue = if (active) 44.dp else 38.dp,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessMediumLow,
+        ),
+        label = "sliderGripHeight",
+    )
+    val pillWidth by animateDpAsState(
+        targetValue = if (active) 12.dp else 10.dp,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessMediumLow,
+        ),
+        label = "sliderGripWidth",
+    )
+    val emphasis by animateFloatAsState(
+        targetValue = if (active) 1f else 0f,
+        label = "sliderGripEmphasis",
+    )
+
     Box(
         modifier = modifier
-            .size(16.dp)
+            .size(width = 16.dp, height = TRACK_HEIGHT)
             .drawBehind {
-                val radius = size.minDimension / 2f
+                val widthPx = pillWidth.toPx()
+                val heightPx = pillHeight.toPx()
+                val left = (size.width - widthPx) / 2f
+                val top = (size.height - heightPx) / 2f
                 val stroke1 = (1 + emphasis).dp.toPx()
                 val stroke2 = 1.dp.toPx()
-                drawCircle(color = colorBorder2, radius = radius)
-                drawCircle(color = colorBorder1, radius = (radius - stroke1).coerceAtLeast(0f))
-                drawCircle(color = color, radius = (radius - stroke1 - stroke2).coerceAtLeast(0f))
+
+                // 外側ボーダー（黒半透明）
+                drawRoundRect(
+                    color = colorBorder2,
+                    topLeft = Offset(left, top),
+                    size = Size(widthPx, heightPx),
+                    cornerRadius = CornerRadius(widthPx / 2f, widthPx / 2f),
+                )
+                // 内側ボーダー（白）
+                val w1 = (widthPx - stroke1 * 2f).coerceAtLeast(0f)
+                val h1 = (heightPx - stroke1 * 2f).coerceAtLeast(0f)
+                drawRoundRect(
+                    color = colorBorder1,
+                    topLeft = Offset(left + stroke1, top + stroke1),
+                    size = Size(w1, h1),
+                    cornerRadius = CornerRadius(w1 / 2f, w1 / 2f),
+                )
+                // 塗り（選択色）
+                val totalStroke = stroke1 + stroke2
+                val w2 = (widthPx - totalStroke * 2f).coerceAtLeast(0f)
+                val h2 = (heightPx - totalStroke * 2f).coerceAtLeast(0f)
+                drawRoundRect(
+                    color = color,
+                    topLeft = Offset(left + totalStroke, top + totalStroke),
+                    size = Size(w2, h2),
+                    cornerRadius = CornerRadius(w2 / 2f, w2 / 2f),
+                )
             },
     )
 }
 
-internal val CONTROL_GRIP_RADIUS: Dp = 8.dp
+@Composable
+internal fun SvGrip(
+    color: Color,
+    modifier: Modifier = Modifier,
+    active: Boolean = false,
+) {
+    val tickLength by animateDpAsState(
+        targetValue = if (active) 24.dp else 8.dp,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessMediumLow,
+        ),
+        label = "svTickLength",
+    )
+    val emphasis by animateFloatAsState(
+        targetValue = if (active) 1f else 0f,
+        label = "svEmphasis",
+    )
+
+    Box(
+        modifier = modifier
+            .size(16.dp)
+            .drawBehind {
+                val center = Offset(size.width / 2f, size.height / 2f)
+                val ringRadiusPx = 10.dp.toPx()
+                val tickLengthPx = tickLength.toPx()
+                val tickGapPx = 2.dp.toPx()
+                val stroke1 = (1 + emphasis).dp.toPx()
+                val stroke2 = 1.dp.toPx()
+
+                // 1. 十字照準線（Ticks）
+                val startRadiusPx = ringRadiusPx + tickGapPx
+                val tickStarts = listOf(
+                    Offset(center.x, center.y - startRadiusPx),
+                    Offset(center.x, center.y + startRadiusPx),
+                    Offset(center.x - startRadiusPx, center.y),
+                    Offset(center.x + startRadiusPx, center.y),
+                )
+                val endRadiusPx = startRadiusPx + tickLengthPx
+                val tickEnds = listOf(
+                    Offset(center.x, center.y - endRadiusPx),
+                    Offset(center.x, center.y + endRadiusPx),
+                    Offset(center.x - endRadiusPx, center.y),
+                    Offset(center.x + endRadiusPx, center.y),
+                )
+                for (i in tickStarts.indices) {
+                    drawLine(
+                        color = colorBorder2,
+                        start = tickStarts[i],
+                        end = tickEnds[i],
+                        strokeWidth = (2f + emphasis).dp.toPx(),
+                        cap = StrokeCap.Round,
+                    )
+                    drawLine(
+                        color = colorBorder1,
+                        start = tickStarts[i],
+                        end = tickEnds[i],
+                        strokeWidth = 1.2.dp.toPx(),
+                        cap = StrokeCap.Round,
+                    )
+                }
+
+                // 2. 中心ドット（Center Dot）
+                val dotRadius = 8.dp.toPx()
+                drawCircle(color = colorBorder2, radius = dotRadius, center = center)
+                drawCircle(color = colorBorder1, radius = (dotRadius - stroke1).coerceAtLeast(0f), center = center)
+                drawCircle(color = color, radius = (dotRadius - stroke1 - stroke2).coerceAtLeast(0f), center = center)
+            },
+    )
+}
 
 internal fun ratio(
     target: Float,
