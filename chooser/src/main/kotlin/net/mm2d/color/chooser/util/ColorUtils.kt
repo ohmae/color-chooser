@@ -17,12 +17,12 @@ import kotlin.math.pow
  */
 internal object ColorUtils {
     /**
-     * Convert given HSV [0.0f, 1.0f] to color
+     * [0.0f, 1.0f] の範囲の HSV を色に変換する
      *
-     * @param h Hue
-     * @param s Saturation
-     * @param v Value
-     * @return color
+     * @param h 色相
+     * @param s 彩度
+     * @param v 明度
+     * @return 色
      */
     fun hsvToColor(
         h: Float,
@@ -76,11 +76,11 @@ internal object ColorUtils {
     }
 
     /**
-     * Convert given SV [0.0f, 1.0f] to monochrome + alpha mask
+     * [0.0f, 1.0f] の範囲の SV をモノクロとアルファ値のマスクに変換する
      *
-     * @param s Saturation
-     * @param v Value
-     * @return pixel value of mask
+     * @param s 彩度
+     * @param v 明度
+     * @return マスクの画素値
      */
     fun svToMask(
         s: Float,
@@ -92,11 +92,11 @@ internal object ColorUtils {
     }
 
     /**
-     * Convert given color to HSV [0.0f, 1.0f] array
+     * 色を [0.0f, 1.0f] の範囲の HSV 配列に変換する
      *
-     * @param color color
-     * @param outHsv hsv buffer if not specify or null, allocate new array
-     * @return hsv array
+     * @param color 色
+     * @param outHsv HSV の出力先。未指定または null の場合は新しい配列を確保する
+     * @return HSV 配列
      */
     fun colorToHsv(
         color: Int,
@@ -115,10 +115,10 @@ internal object ColorUtils {
     }
 
     /**
-     * Calculate hue value
+     * 色相を計算する
      *
-     * @param color color
-     * @return hue
+     * @param color 色
+     * @return 色相
      */
     fun hue(
         color: Int,
@@ -166,12 +166,12 @@ internal object ColorUtils {
     ): Float = if (max != 0.0f) (max - min) / max else 0f
 
     /**
-     * Convert [0.0f, 1.0f] ARGB value to color
+     * [0.0f, 1.0f] の範囲の ARGB 値を色に変換する
      *
-     * @param r Red value
-     * @param g Green value
-     * @param b Blue value
-     * @return color
+     * @param r 赤の値
+     * @param g 緑の値
+     * @param b 青の値
+     * @return 色
      */
     private fun toColor(
         r: Float,
@@ -180,12 +180,12 @@ internal object ColorUtils {
     ): Int = toColor(r.to8bit(), g.to8bit(), b.to8bit())
 
     /**
-     * Convert [0, 255] RGB value to color
+     * [0, 255] の範囲の RGB 値を色に変換する
      *
-     * @param r Red value
-     * @param g Green value
-     * @param b Blue value
-     * @return color
+     * @param r 赤の値
+     * @param g 緑の値
+     * @param b 青の値
+     * @return 色
      */
     private fun toColor(
         r: Int,
@@ -194,13 +194,13 @@ internal object ColorUtils {
     ): Int = (0xff shl 24) or (0xff and r shl 16) or (0xff and g shl 8) or (0xff and b)
 
     /**
-     * Convert [0.0f, 1.0f] ARGB value to color
+     * [0.0f, 1.0f] の範囲の ARGB 値を色に変換する
      *
-     * @param a Alpha value
-     * @param r Red value
-     * @param g Green value
-     * @param b Blue value
-     * @return color
+     * @param a アルファ値
+     * @param r 赤の値
+     * @param g 緑の値
+     * @param b 青の値
+     * @return 色
      */
     private fun toColor(
         a: Float,
@@ -216,13 +216,13 @@ internal object ColorUtils {
         )
 
     /**
-     * Convert [0, 255] ARGB value to color
+     * [0, 255] の範囲の ARGB 値を色に変換する
      *
-     * @param a Alpha value
-     * @param r Red value
-     * @param g Green value
-     * @param b Blue value
-     * @return color
+     * @param a アルファ値
+     * @param r 赤の値
+     * @param g 緑の値
+     * @param b 青の値
+     * @return 色
      */
     private fun toColor(
         a: Int,
@@ -232,14 +232,14 @@ internal object ColorUtils {
     ): Int = (0xff and a shl 24) or (0xff and r shl 16) or (0xff and g shl 8) or (0xff and b)
 
     /**
-     * Calculate luminance based on ITU-R BT.709 and sRGB
+     * ITU-R BT.709 と sRGB に基づいて輝度を計算する
      *
      * https://www.w3.org/TR/WCAG20/#relativeluminancedef
      *
-     * @param r Red ratio
-     * @param g Green ratio
-     * @param b Blue ratio
-     * @return luminance
+     * @param r 赤の比率
+     * @param g 緑の比率
+     * @param b 青の比率
+     * @return 輝度
      */
     fun luminance(
         r: Float,
@@ -248,17 +248,17 @@ internal object ColorUtils {
     ): Float = r * 0.2126f + g * 0.7152f + b * 0.0722f
 
     /**
-     * Minimum contrast for large text based on W3C guideline
+     * W3C のガイドラインに基づく、大きな文字に必要な最小コントラスト
      *
      * https://www.w3.org/TR/WCAG20/#visual-audio-contrast-contrast
      */
     private const val MINIMUM_CONTRAST_FOR_LARGE_TEXT = 3f
 
     /**
-     * Determine whether sufficient contrast can be secured with white foreground.
+     * 白い前景色で十分なコントラストを確保できるか判定する。
      *
      * @param color
-     * @return if true, should use white foreground, else avoid white foreground
+     * @return true の場合は白い前景色を使用し、false の場合は白い前景色を避ける
      */
     fun shouldUseWhiteForeground(
         color: Int,
@@ -266,23 +266,23 @@ internal object ColorUtils {
 }
 
 /**
- * Overwrite alpha value of color
+ * 色のアルファ値を上書きする
  *
- * @receiver color
- * @param alpha Alpha
- * @return alpha applied color
+ * @receiver 色
+ * @param alpha アルファ値
+ * @return アルファ値を適用した色
  */
 internal fun Int.setAlpha(
     alpha: Int,
 ): Int = this and 0xffffff or (alpha shl 24)
 
 /**
- * Overwrite alpha value to completely opaque
+ * アルファ値を完全に不透明な値に上書きする
  */
 internal fun Int.toOpacity(): Int = setAlpha(0xff)
 
 /**
- * Convert [0, 255] to [0.0f, 1.0f]
+ * [0, 255] を [0.0f, 1.0f] に変換する
  *
  * @receiver [0, 255]
  * @return [0.0f, 1.0f]
@@ -290,7 +290,7 @@ internal fun Int.toOpacity(): Int = setAlpha(0xff)
 internal fun Int.toRatio(): Float = this / 255f
 
 /**
- * Convert [0.0f, 1.0f] to [0, 255]
+ * [0.0f, 1.0f] を [0, 255] に変換する
  *
  * @receiver [0.0f, 1.0f]
  * @return [0, 255]
@@ -298,31 +298,31 @@ internal fun Int.toRatio(): Float = this / 255f
 internal fun Float.to8bit(): Int = (this * 255f + 0.5f).toInt().coerceIn(0, 255)
 
 /**
- * Normalize value of primary color luminance to calculate sRGB luminance of color
+ * 色の sRGB 輝度を計算するために、原色の輝度値を正規化する
  *
  * https://www.w3.org/TR/WCAG20/#relativeluminancedef
  *
- * @receiver primary color luminance
- * @return normalized luminance
+ * @receiver 原色の輝度
+ * @return 正規化した輝度
  */
 internal fun Float.normalizeForSrgb(): Float =
     if (this < 0.03928f) this / 12.92f else ((this + 0.055) / 1.055).pow(2.4).toFloat()
 
 /**
- * Normalize value of primary color luminance to calculate sRGB luminance of color
+ * 色の sRGB 輝度を計算するために、原色の輝度値を正規化する
  *
  * https://www.w3.org/TR/WCAG20/#relativeluminancedef
  *
- * @receiver primary color luminance
- * @return normalized luminance
+ * @receiver 原色の輝度
+ * @return 正規化した輝度
  */
 internal fun Int.normalizeForSrgb(): Float = toRatio().normalizeForSrgb()
 
 /**
- * Calculate sRGB luminance of color
+ * 色の sRGB 輝度を計算する
  *
- * @receiver color
- * @return sRGB luminance
+ * @receiver 色
+ * @return sRGB 輝度
  */
 internal fun Int.relativeLuminance(): Float =
     ColorUtils.luminance(
@@ -332,9 +332,9 @@ internal fun Int.relativeLuminance(): Float =
     )
 
 /**
- * Calculate contrast between given color and pure white (#ffffff)
+ * 色と純白（#ffffff）とのコントラストを計算する
  *
- * @receiver color
- * @return contrast [1, 21]
+ * @receiver 色
+ * @return [1, 21] の範囲のコントラスト
  */
 internal fun Int.contrastWithWhite(): Float = 1.05f / (relativeLuminance() + 0.05f)

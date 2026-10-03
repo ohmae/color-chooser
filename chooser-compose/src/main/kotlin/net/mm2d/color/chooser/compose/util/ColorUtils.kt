@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.toArgb
 import kotlin.math.roundToInt
 
 /**
- * Minimum contrast for large text based on W3C guideline
+ * W3C のガイドラインに基づく、大きな文字に必要な最小コントラスト
  *
  * https://www.w3.org/TR/WCAG20/#visual-audio-contrast-contrast
  */
@@ -85,7 +85,7 @@ internal object ColorSaver : Saver<Color, Int> {
 
 internal fun Float.to8bitInt(): Int = (this * 255f).roundToInt().coerceIn(0, 255)
 
-/** Converts an input color to the chooser's 8-bit sRGB representation. */
+/** 入力色を色選択 UI の 8 ビットの sRGB 表現に変換する。 */
 internal fun Color.toChooserColor(
     withAlpha: Boolean = true,
 ): Color {

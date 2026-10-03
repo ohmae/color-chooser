@@ -73,10 +73,10 @@ class ColorChooserScreenTest {
                 )
             }
         }
-        // Initially only the alpha slider has a numeric label.
+        // 初期状態ではアルファ値のスライダーのみが数値ラベルを持つ。
         clickSlider("255", 0.5f)
         composeRule.onNodeWithText("RGB").performClick()
-        // Now the only 255 label is the red channel.
+        // この時点で 255 のラベルを持つのは赤のチャンネルのみ。
         clickSlider("255", 0.25f)
         val edited = composeRule.runOnIdle { result }
         val callsBeforeRestore = composeRule.runOnIdle { calls }
@@ -109,7 +109,7 @@ class ColorChooserScreenTest {
         clickSlider("255", 0.25f)
         val editedText = composeRule.onAllNodesWithText("#", substring = true)[1]
             .fetchSemanticsNode().config[SemanticsProperties.Text].single().text
-        // A Dialog has a separate composition; recreate its Activity and saveable registries too.
+        // Dialog は独立したコンポジションを持つため、Activity と状態保存用のレジストリも再生成する。
         composeRule.activityRule.scenario.recreate()
         composeRule.activityRule.scenario.onActivity { it.setContent(content = content) }
         composeRule.onNodeWithText(editedText).assertExists()
@@ -139,7 +139,7 @@ class ColorChooserScreenTest {
             }
         }
         composeRule.runOnIdle { initialColor = Color.Blue }
-        // Preview (64dp), spacing (12dp), then the center of the hue track (16dp).
+        // プレビュー（64dp）、余白（12dp）、色相トラックの中心までの距離（16dp）の順に加算する。
         composeRule.onNodeWithTag("screen").performTouchInput {
             click(Offset(width / 2f, with(composeRule.density) { 92.dp.toPx() }))
         }

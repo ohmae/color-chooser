@@ -95,7 +95,7 @@ class HsvChooserTest {
                 direction = layoutDirection
                 color = Color.White
             }
-            // 32dp hue + 8dp gap leaves a 140dp square, centered in the 200dp width.
+            // 色相の 32dp と余白の 8dp を除いた 140dp の正方形を、幅 200dp の中央に配置する。
             composeRule.onNodeWithTag("hsv").performTouchInput {
                 click(with(composeRule.density) { Offset(162.dp.toPx(), 48.dp.toPx()) })
             }

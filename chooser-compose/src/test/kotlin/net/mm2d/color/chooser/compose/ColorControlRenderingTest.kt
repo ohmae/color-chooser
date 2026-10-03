@@ -81,7 +81,7 @@ class ColorControlRenderingTest {
                     accessibilityLabel = "Red",
                     labelColor = Color.Black,
                     labelStyle = ColorChooserDefaults.sliderLabelStyle,
-                    // Keep the track at the same window coordinates to avoid rasterization differences.
+                    // ラスタライズの差異を避けるため、トラックのウィンドウ内の座標を揃える。
                     modifier = Modifier
                         .width(240.dp)
                         .absoluteOffset {

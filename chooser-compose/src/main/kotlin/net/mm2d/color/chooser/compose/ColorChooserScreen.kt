@@ -289,7 +289,7 @@ fun ColorChooserScreen(
     )
 }
 
-// Shared UI for the stateful screen and the legacy APIs that own their selected color.
+// 選択した色を保持する画面と従来の API で共用する UI。
 @Composable
 internal fun ColorChooserContent(
     initialColor: Color,

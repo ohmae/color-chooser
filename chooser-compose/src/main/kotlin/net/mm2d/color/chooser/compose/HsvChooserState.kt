@@ -19,7 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import net.mm2d.color.chooser.compose.util.toHsv
 
-// Owned above the tab switch: RGB alone cannot preserve hue at gray or saturation at black.
+// グレーの色相や黒の彩度は RGB だけでは保持できないため、タブ切り替えより上位で状態を保持する。
 @Stable
 internal class HsvChooserState(
     color: Color,
