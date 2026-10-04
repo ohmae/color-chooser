@@ -340,6 +340,93 @@ class ColorChooserScreenTest {
         assertHue(120f)
     }
 
+    @Test
+    fun statelessHsvRejectsEditsWithoutChangingControlsOrTheNextEdit() {
+        var color by mutableStateOf(Color.Red)
+        var acceptEdits = false
+        val proposals = mutableListOf<Color>()
+        composeRule.setContent {
+            MaterialTheme {
+                ColorChooserScreen(
+                    color = color,
+                    onColorChanged = {
+                        proposals.add(it)
+                        if (acceptEdits) color = it
+                    },
+                    choosers = listOf(Chooser.HSV),
+                    modifier = Modifier.width(320.dp),
+                )
+            }
+        }
+        val sv = composeRule.onNodeWithContentDescription("Saturation and brightness")
+        val initialSvDescription = sv.fetchSemanticsNode().config[SemanticsProperties.StateDescription]
+        composeRule.onNodeWithContentDescription("Hue").performSemanticsAction(SemanticsActions.SetProgress) {
+            it(180f)
+        }
+        assertHue(0f)
+        val decreaseBrightness = sv.fetchSemanticsNode().config[SemanticsActions.CustomActions]
+            .single { it.label == "Decrease brightness" }.action
+        composeRule.runOnIdle { decreaseBrightness() }
+        assertHue(0f)
+        assertEquals(initialSvDescription, sv.fetchSemanticsNode().config[SemanticsProperties.StateDescription])
+        composeRule.runOnIdle {
+            assertEquals(listOf(Color.Cyan, Color.hsv(0f, 1f, 0.99f)), proposals)
+            assertEquals(Color.Red, color)
+            acceptEdits = true
+        }
+        composeRule.onNodeWithContentDescription("Hue").performSemanticsAction(SemanticsActions.SetProgress) {
+            it(241f)
+        }
+        assertHue(241f)
+        composeRule.runOnIdle {
+            assertEquals(Color.hsv(241f, 1f, 1f), color)
+            assertEquals(3, proposals.size)
+            acceptEdits = false
+        }
+        composeRule.onNodeWithContentDescription("Hue").performSemanticsAction(SemanticsActions.SetProgress) {
+            it(120f)
+        }
+        assertHue(241f)
+        composeRule.runOnIdle {
+            assertEquals(Color.hsv(241f, 1f, 1f), color)
+            assertEquals(4, proposals.size)
+            color = Color.Green
+        }
+        assertHue(120f)
+    }
+
+    @Test
+    fun rejectedBrightnessEditRetainsAcceptedBlackHueAndSaturation() {
+        val restoration = StateRestorationTester(composeRule)
+        var color by mutableStateOf(Color.Blue)
+        var acceptEdits = true
+        restoration.setContent {
+            MaterialTheme {
+                ColorChooserScreen(
+                    color = color,
+                    onColorChanged = { if (acceptEdits) color = it },
+                    choosers = listOf(Chooser.HSV),
+                    modifier = Modifier.width(320.dp),
+                )
+            }
+        }
+        val sv = composeRule.onNodeWithContentDescription("Saturation and brightness")
+        sv.performTouchInput { click(Offset(width - 1f, height - 1f)) }
+        val acceptedSvDescription = sv.fetchSemanticsNode().config[SemanticsProperties.StateDescription]
+        composeRule.runOnIdle {
+            assertEquals(Color.Black, color)
+            acceptEdits = false
+        }
+        restoration.emulateSavedInstanceStateRestore()
+        assertHue(240f)
+        val increaseBrightness = sv.fetchSemanticsNode().config[SemanticsActions.CustomActions]
+            .single { it.label == "Increase brightness" }.action
+        composeRule.runOnIdle { increaseBrightness() }
+        assertHue(240f)
+        assertEquals(acceptedSvDescription, sv.fetchSemanticsNode().config[SemanticsProperties.StateDescription])
+        composeRule.runOnIdle { assertEquals(Color.Black, color) }
+    }
+
     private fun assertHue(
         expected: Float,
     ) {
