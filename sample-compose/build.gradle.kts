@@ -39,4 +39,5 @@ dependencies {
     implementation(libs.androidxComposeUi)
     implementation(libs.androidxComposeUiGraphics)
     implementation(libs.androidxComposeMaterial3)
+    implementation(libs.androidxComposeMaterialIconsCore)
 }
