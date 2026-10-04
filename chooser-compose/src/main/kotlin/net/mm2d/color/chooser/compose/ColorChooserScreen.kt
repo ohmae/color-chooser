@@ -56,7 +56,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import net.mm2d.color.chooser.compose.util.ColorSaver
 import net.mm2d.color.chooser.compose.util.TRACK_HEIGHT
 import net.mm2d.color.chooser.compose.util.to8bitInt
 import net.mm2d.color.chooser.compose.util.toChooserColor
@@ -225,10 +224,7 @@ fun ColorChooserScreen(
     val normalizedInitialColor = remember(initialColor, withAlpha) {
         initialColor.toChooserColor(withAlpha)
     }
-    var currentColor by rememberSaveable(initialColor, stateSaver = ColorSaver) {
-        mutableStateOf(normalizedInitialColor)
-    }
-    if (!withAlpha && currentColor.alpha != 1f) currentColor = currentColor.copy(alpha = 1f)
+    var currentColor by rememberSelectedColor(initialColor, normalizedInitialColor, withAlpha)
 
     ColorChooserScreen(
         color = currentColor,

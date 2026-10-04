@@ -28,9 +28,7 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,7 +44,6 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import net.mm2d.color.chooser.compose.util.ColorSaver
 import net.mm2d.color.chooser.compose.util.toChooserColor
 
 /**
@@ -141,10 +138,7 @@ fun ColorChooserDialog(
                         Color.Black
                     }
                 }
-                var selectedColor by rememberSaveable(initialColor, stateSaver = ColorSaver) {
-                    mutableStateOf(normalizedInitialColor)
-                }
-                if (!withAlpha && selectedColor.alpha != 1f) selectedColor = selectedColor.copy(alpha = 1f)
+                var selectedColor by rememberSelectedColor(initialColor, normalizedInitialColor, withAlpha)
                 BoxWithConstraints(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -245,12 +239,12 @@ fun ColorChooserDialog(
             tonalElevation = tonalElevation,
         ) {
             Column {
-                var selectedColor by rememberSaveable(initialColor, stateSaver = ColorSaver) {
-                    mutableStateOf(initialColor.toChooserColor(withAlpha))
+                val normalizedInitialColor = remember(initialColor, withAlpha) {
+                    initialColor.toChooserColor(withAlpha)
                 }
-                if (!withAlpha && selectedColor.alpha != 1f) selectedColor = selectedColor.copy(alpha = 1f)
+                var selectedColor by rememberSelectedColor(initialColor, normalizedInitialColor, withAlpha)
                 ColorChooserContent(
-                    initialColor = initialColor.toChooserColor(withAlpha),
+                    initialColor = normalizedInitialColor,
                     currentColor = selectedColor,
                     onColorChanged = { selectedColor = it },
                     modifier = Modifier

@@ -323,6 +323,34 @@ class ColorContractTest {
     }
 
     @Test
+    fun modernDialogResetsWhenUnspecifiedInitialColorBecomesBlackWithoutNotifying() {
+        var initialColor by mutableStateOf(Color.Unspecified)
+        var confirmed = Color.Unspecified
+        var calls = 0
+        composeRule.setContent {
+            MaterialTheme {
+                ColorChooserDialog(
+                    onDismissRequest = {},
+                    onConfirm = { confirmed = it },
+                    initialColor = initialColor,
+                    initialChooser = Chooser.RGB,
+                    onColorChanged = { calls++ },
+                )
+            }
+        }
+        composeRule.onAllNodesWithText("#000000").assertCountEquals(2)
+        setProgress("Red", 18f)
+        composeRule.onNodeWithText("#120000").assertExists()
+        composeRule.runOnIdle { initialColor = Color.Black }
+        composeRule.onAllNodesWithText("#000000").assertCountEquals(2)
+        composeRule.onNodeWithText("OK").performClick()
+        composeRule.runOnIdle {
+            assertEquals(Color.Black, confirmed)
+            assertEquals(1, calls)
+        }
+    }
+
+    @Test
     fun modernDialogKeepsEditedRgbWhenAlphaIsToggled() {
         var withAlpha by mutableStateOf(true)
         var confirmed = Color.Unspecified

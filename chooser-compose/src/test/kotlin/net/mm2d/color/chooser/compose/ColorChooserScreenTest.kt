@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.click
 import androidx.compose.ui.test.junit4.StateRestorationTester
@@ -118,6 +119,64 @@ class ColorChooserScreenTest {
         composeRule.runOnIdle {
             assertEquals(editedText, "#%08X".format(chosen!!.toArgb()))
             assertTrue(dismissed)
+        }
+    }
+
+    @Test
+    fun changingOnlyInitialAlphaResetsEditedScreenWithoutNotifying() {
+        var initialColor by mutableStateOf(Color(0x40336699))
+        var calls = 0
+        composeRule.setContent {
+            MaterialTheme {
+                ColorChooserScreen(
+                    initialColor = initialColor,
+                    onColorChanged = { calls++ },
+                    withAlpha = false,
+                    choosers = listOf(Chooser.RGB),
+                    modifier = Modifier.width(320.dp),
+                )
+            }
+        }
+        composeRule.onNodeWithContentDescription("Red").performSemanticsAction(SemanticsActions.SetProgress) {
+            it(18f)
+        }
+        composeRule.onNodeWithText("#126699").assertExists()
+        composeRule.runOnIdle { initialColor = Color(0x80336699) }
+        composeRule.onAllNodesWithText("#336699").assertCountEquals(2)
+        composeRule.runOnIdle { assertEquals(1, calls) }
+    }
+
+    @Test
+    fun modernDialogRestoresEditedColorWithoutNotifyingAndConfirmsWithoutDismissal() {
+        var chosen: Color? = null
+        var dismissals = 0
+        var calls = 0
+        val content: @Composable () -> Unit = {
+            MaterialTheme {
+                ColorChooserDialog(
+                    onDismissRequest = { dismissals++ },
+                    onConfirm = { chosen = it },
+                    initialColor = Color(0x40336699),
+                    withAlpha = true,
+                    initialChooser = Chooser.RGB,
+                    onColorChanged = { calls++ },
+                )
+            }
+        }
+        composeRule.activityRule.scenario.onActivity { it.setContent(content = content) }
+        composeRule.onNodeWithContentDescription("Red").performSemanticsAction(SemanticsActions.SetProgress) {
+            it(18f)
+        }
+        composeRule.onNodeWithText("#40126699").assertExists()
+        composeRule.activityRule.scenario.recreate()
+        composeRule.activityRule.scenario.onActivity { it.setContent(content = content) }
+        composeRule.onNodeWithText("#40126699").assertExists()
+        composeRule.runOnIdle { assertEquals(1, calls) }
+        composeRule.onNodeWithText("OK").performClick()
+        composeRule.runOnIdle {
+            assertEquals(Color(0x40126699), chosen)
+            assertEquals(0, dismissals)
+            assertEquals(1, calls)
         }
     }
 
