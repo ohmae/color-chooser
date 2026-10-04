@@ -7,11 +7,11 @@
 
 package net.mm2d.color.chooser.compose
 
+import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -20,46 +20,59 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import net.mm2d.color.chooser.compose.util.toHsv
 
+private data class HsvCoordinates(
+    val hue: Float,
+    val saturation: Float,
+    val value: Float,
+) {
+    companion object {
+        fun fromColor(
+            color: Color,
+            buffer: FloatArray? = null,
+        ): HsvCoordinates {
+            val (hue, saturation, value) = color.toHsv(buffer)
+            return HsvCoordinates(hue, saturation, value)
+        }
+    }
+}
+
+private data class HsvSelection(
+    val coordinates: HsvCoordinates,
+    val color: Color,
+)
+
 // グレーの色相や黒の彩度は RGB だけでは保持できないため、タブ切り替えより上位で状態を保持する。
 @Stable
-internal class HsvChooserState(
-    color: Color,
+internal class HsvChooserState private constructor(
+    initialSelection: HsvSelection,
 ) {
-    private val hsvBuffer = color.toHsv()
-    private val acceptedHsv = hsvBuffer.copyOf()
-    private var acceptedColor = color
-    var hue by mutableFloatStateOf(hsvBuffer[0])
-        private set
-    var saturation by mutableFloatStateOf(hsvBuffer[1])
-        private set
-    var value by mutableFloatStateOf(hsvBuffer[2])
-        private set
-    var lastColor by mutableStateOf(color)
-        private set
+    constructor(color: Color) : this(HsvSelection(HsvCoordinates.fromColor(color), color))
+
+    private val hsvBuffer = FloatArray(3)
+    private var editingSelection by mutableStateOf(initialSelection)
+    private var acceptedSelection = initialSelection
+
+    val hue: Float get() = editingSelection.coordinates.hue
+    val saturation: Float get() = editingSelection.coordinates.saturation
+    val value: Float get() = editingSelection.coordinates.value
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    val editingColor: Color get() = editingSelection.color
 
     fun syncColor(
         color: Color,
     ) {
-        if (color == lastColor) {
-            acceptCoordinates(color)
-            return
-        }
-        // 不採用の編集は直前の採用済み座標に戻し、黒の色相・彩度も維持する。
-        val hsv = if (color == acceptedColor) acceptedHsv else color.toHsv(hsvBuffer)
-        hue = hsv[0]
-        saturation = hsv[1]
-        value = hsv[2]
-        acceptCoordinates(color)
-        lastColor = color
-    }
+        val selection = when (color) {
+            // 外部が編集色を採用した場合は、RGB から復元できない座標もそのまま採用する。
+            editingSelection.color -> editingSelection
 
-    private fun acceptCoordinates(
-        color: Color,
-    ) {
-        acceptedHsv[0] = hue
-        acceptedHsv[1] = saturation
-        acceptedHsv[2] = value
-        acceptedColor = color
+            // 不採用の編集は採用済みの座標に戻し、黒の色相・彩度も維持する。
+            acceptedSelection.color -> acceptedSelection
+
+            // 編集とは異なる外部色への更新では、HSV 座標も更新する。
+            else -> HsvSelection(HsvCoordinates.fromColor(color, hsvBuffer), color)
+        }
+        editingSelection = selection
+        acceptedSelection = selection
     }
 
     fun update(
@@ -67,26 +80,29 @@ internal class HsvChooserState(
         saturation: Float,
         value: Float,
     ): Color {
-        this.hue = hue
-        this.saturation = saturation
-        this.value = value
-        return Color.hsv(hue, saturation, value).also {
-            lastColor = it
-            // RGB が変わらない編集座標は、外部色の更新なしでも保持できる。
-            if (it == acceptedColor) acceptCoordinates(it)
-        }
+        val selection = HsvSelection(HsvCoordinates(hue, saturation, value), Color.hsv(hue, saturation, value))
+        editingSelection = selection
+        // RGB が変わらない編集座標は、外部色の更新なしでも保持できる。
+        if (selection.color == acceptedSelection.color) acceptedSelection = selection
+        return selection.color
     }
 
     companion object {
-        val Saver = listSaver<HsvChooserState, Any>(
-            save = { listOf(it.acceptedHsv[0], it.acceptedHsv[1], it.acceptedHsv[2], it.acceptedColor.toArgb()) },
+        // 既存の保存形式（色相・彩度・明度・ARGB）を維持し、採用済みの状態だけを保存する。
+        val Saver = listSaver<HsvChooserState, Number>(
+            save = {
+                val accepted = it.acceptedSelection
+                listOf(
+                    accepted.coordinates.hue,
+                    accepted.coordinates.saturation,
+                    accepted.coordinates.value,
+                    accepted.color.toArgb(),
+                )
+            },
             restore = {
-                HsvChooserState(Color(it[3] as Int)).apply {
-                    hue = it[0] as Float
-                    saturation = it[1] as Float
-                    value = it[2] as Float
-                    acceptCoordinates(lastColor)
-                }
+                val coordinates = HsvCoordinates(it[0].toFloat(), it[1].toFloat(), it[2].toFloat())
+                val color = Color(it[3].toInt())
+                HsvChooserState(HsvSelection(coordinates, color))
             },
         )
     }
@@ -97,6 +113,6 @@ internal fun rememberHsvChooserState(
     color: Color,
 ): HsvChooserState {
     val state = rememberSaveable(saver = HsvChooserState.Saver) { HsvChooserState(color) }
-    SideEffect(color, state.lastColor) { state.syncColor(color) }
+    SideEffect(color, state.editingColor) { state.syncColor(color) }
     return state
 }
