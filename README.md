@@ -8,10 +8,17 @@
 
 ## ScreenShots
 
-|![](readme/1.png)|![](readme/2.png)|![](readme/3.png)|
+### Jetpack Compose
+
+| M2 palette | HSV | RGB | M3 palette |
+|:-:|:-:|:-:|:-:|
+| ![Compose M2 palette](readme/compose/screen-m2.png) | ![Compose HSV chooser](readme/compose/screen-hsv.png) | ![Compose RGB chooser](readme/compose/screen-rgb.png) | ![Compose M3 palette](readme/compose/screen-m3.png) |
+
+### View
+
+| RGB | HSV | palette |
 |:-:|:-:|:-:|
-|![](readme/4.png)|![](readme/5.png)|![](readme/6.png)|
-|![](readme/7.png)|![](readme/8.png)|![](readme/9.png)|
+|![](readme/1.png)|![](readme/2.png)|![](readme/3.png)|
 
 ## How to use
 
