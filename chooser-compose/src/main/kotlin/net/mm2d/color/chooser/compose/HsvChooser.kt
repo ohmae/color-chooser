@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.systemGestureExclusion
@@ -45,25 +44,18 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.CustomAccessibilityAction
-import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.customActions
-import androidx.compose.ui.semantics.progressBarRangeInfo
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.setProgress
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import net.mm2d.color.chooser.compose.util.CONTROL_GRIP_RADIUS
-import net.mm2d.color.chooser.compose.util.ChooserShapes
 import net.mm2d.color.chooser.compose.util.ControlInteraction
-import net.mm2d.color.chooser.compose.util.SliderGrip
 import net.mm2d.color.chooser.compose.util.SvGrip
-import net.mm2d.color.chooser.compose.util.TRACK_HEIGHT
 import net.mm2d.color.chooser.compose.util.controlInteraction
-import net.mm2d.color.chooser.compose.util.detectHorizontalTapAndDragGestures
 import net.mm2d.color.chooser.compose.util.detectTapAndDragGestures
 import net.mm2d.color.chooser.compose.util.frameDecoration
 import net.mm2d.color.chooser.compose.util.ratio
@@ -116,15 +108,6 @@ private fun HueSlider(
     onHueChange: (Float) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val currentOnHueChange by rememberUpdatedState(onHueChange)
-    val interaction = remember { ControlInteraction() }
-    val density = LocalDensity.current
-    val gripRadiusPx = remember(density) {
-        with(density) { CONTROL_GRIP_RADIUS.roundToPx() }
-    }
-    var trackWidthPx by remember { mutableIntStateOf(0) }
-    val currentRatio = (hue / HUE_MAX).coerceIn(0f, 1f)
-
     val colorBrush = remember {
         val grid = 36
         Brush.horizontalGradient(
@@ -134,49 +117,20 @@ private fun HueSlider(
         )
     }
 
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(TRACK_HEIGHT)
-            .systemGestureExclusion()
-            .onSizeChanged { trackWidthPx = it.width },
-    ) {
-        Box(
-            modifier = Modifier
-                .align(Alignment.Center)
-                .padding(horizontal = 6.dp)
-                .fillMaxSize()
-                .frameDecoration(ChooserShapes.track)
-                .background(colorBrush),
-        )
-        SliderGrip(
-            active = interaction.active,
-            color = Color.hsv(hue = hue, saturation = 1f, value = 1f),
-            modifier = Modifier
-                .align(AbsoluteAlignment.TopLeft)
-                .absoluteOffset {
-                    val rangeXPx = (trackWidthPx - gripRadiusPx * 2).coerceAtLeast(0)
-                    val x = (rangeXPx * currentRatio).roundToInt()
-                    IntOffset(x = x, y = 0)
-                },
-        )
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .controlInteraction(interaction)
-                .hueAccessibility(stringResource(R.string.mm2d_cc_hue), hue, currentOnHueChange)
-                .pointerInput(trackWidthPx, density) {
-                    if (trackWidthPx <= 0) return@pointerInput
-                    val rangeXPx = (trackWidthPx - gripRadiusPx * 2).coerceAtLeast(0)
-                    if (rangeXPx == 0) return@pointerInput
-                    detectHorizontalTapAndDragGestures { position ->
-                        val targetX = position.x - gripRadiusPx
-                        val ratio = ratio(targetX, rangeXPx.toFloat())
-                        currentOnHueChange(ratio * 360f)
-                    }
-                },
-        )
-    }
+    HorizontalSliderTrack(
+        currentRatio = (hue / HUE_MAX).coerceIn(0f, 1f),
+        onRatioChange = { onHueChange(it * HUE_MAX) },
+        colorBrush = colorBrush,
+        gripColor = Color.hsv(hue = hue, saturation = 1f, value = 1f),
+        modifier = modifier.fillMaxWidth(),
+        accessibilityModifier = Modifier.sliderAccessibility(
+            label = stringResource(R.string.mm2d_cc_hue),
+            value = hue,
+            maxValue = HUE_MAX,
+            steps = 359,
+            onValueChange = onHueChange,
+        ),
+    )
 }
 
 @Composable
@@ -304,45 +258,6 @@ private fun SaturationValueArea(
             )
         }
     }
-}
-
-internal fun Modifier.hueAccessibility(
-    label: String,
-    value: Float,
-    onValueChange: (Float) -> Unit,
-): Modifier {
-    val update = { requested: Float ->
-        if (!requested.isFinite()) {
-            false
-        } else {
-            val newValue = requested.coerceIn(0f, HUE_MAX)
-            if (newValue == value) {
-                false
-            } else {
-                onValueChange(newValue)
-                true
-            }
-        }
-    }
-    return this
-        .semantics {
-            contentDescription = label
-            progressBarRangeInfo = ProgressBarRangeInfo(value, 0f..HUE_MAX, 359)
-            setProgress(action = update)
-        }
-        .onKeyEvent {
-            if (it.type != KeyEventType.KeyDown) return@onKeyEvent false
-            val target = when (it.key) {
-                Key.DirectionRight, Key.DirectionUp -> value + 1f
-                Key.DirectionLeft, Key.DirectionDown -> value - 1f
-                Key.MoveHome -> 0f
-                Key.MoveEnd -> HUE_MAX
-                else -> return@onKeyEvent false
-            }
-            update(target)
-            true
-        }
-        .focusable()
 }
 
 @PreviewEnvironment

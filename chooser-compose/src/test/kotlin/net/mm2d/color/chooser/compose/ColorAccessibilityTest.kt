@@ -10,6 +10,7 @@ package net.mm2d.color.chooser.compose
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -25,6 +26,8 @@ import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.pressKey
 import androidx.compose.ui.unit.dp
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -86,6 +89,67 @@ class ColorAccessibilityTest {
     }
 
     @Test
+    fun integerSliderRoundsAndClampsProgressAndIgnoresInvalidOrUnchangedValues() {
+        var value by mutableIntStateOf(0)
+        val changes = mutableListOf<Int>()
+        composeRule.setContent {
+            ColorSliderTrack(
+                value = value,
+                onValueChange = {
+                    value = it
+                    changes.add(it)
+                },
+                color = Color.Red,
+                accessibilityLabel = "Integer",
+                modifier = Modifier.width(320.dp),
+            )
+        }
+        assertTrue(requestProgress("Integer", 12.5f))
+        composeRule.runOnIdle { assertEquals(13, value) }
+        assertFalse(requestProgress("Integer", 13.1f))
+        assertTrue(requestProgress("Integer", Float.MAX_VALUE))
+        composeRule.runOnIdle { assertEquals(255, value) }
+        assertFalse(requestProgress("Integer", 256f))
+        assertTrue(requestProgress("Integer", -10f))
+        for (invalid in listOf(Float.NaN, Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY)) {
+            assertFalse(requestProgress("Integer", invalid))
+        }
+        composeRule.runOnIdle { assertEquals(listOf(13, 255, 0), changes) }
+    }
+
+    @Test
+    fun hueProgressKeepsFractionalValuesAndKeyboardUsesHueEndpoints() {
+        var color by mutableStateOf(Color.Red)
+        val changes = mutableListOf<Color>()
+        composeRule.setContent {
+            HsvChooser(
+                currentColor = color,
+                onColorChanged = {
+                    color = it
+                    changes.add(it)
+                },
+                modifier = Modifier.width(320.dp),
+            )
+        }
+        assertTrue(requestProgress("Hue", 12.5f))
+        composeRule.runOnIdle { assertEquals(Color.hsv(12.5f, 1f, 1f), color) }
+        assertFalse(requestProgress("Hue", 12.5f))
+        for (invalid in listOf(Float.NaN, Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY)) {
+            assertFalse(requestProgress("Hue", invalid))
+        }
+        val hue = composeRule.onNodeWithContentDescription("Hue")
+        hue.performSemanticsAction(SemanticsActions.RequestFocus) { it() }
+        hue.performKeyInput { pressKey(Key.DirectionRight) }
+        composeRule.runOnIdle { assertEquals(Color.hsv(13.5f, 1f, 1f), color) }
+        hue.performKeyInput { pressKey(Key.MoveEnd) }
+        composeRule.runOnIdle { assertEquals(Color.Red, color) }
+        assertFalse(requestProgress("Hue", 361f))
+        hue.performKeyInput { pressKey(Key.MoveHome) }
+        assertFalse(requestProgress("Hue", -1f))
+        composeRule.runOnIdle { assertEquals(4, changes.size) }
+    }
+
+    @Test
     fun paletteExposesColorAndSelection() {
         var color by mutableStateOf(Color.Red)
         composeRule.setContent {
@@ -96,6 +160,17 @@ class ColorAccessibilityTest {
         composeRule.onNodeWithContentDescription("#FFFF0000").assertIsSelected()
         composeRule.onNodeWithContentDescription("#FF0000FF").performClick().assertIsSelected()
         composeRule.runOnIdle { assertEquals(Color.Blue, color) }
+    }
+
+    private fun requestProgress(
+        label: String,
+        value: Float,
+    ): Boolean {
+        var changed = false
+        composeRule.onNodeWithContentDescription(label).performSemanticsAction(SemanticsActions.SetProgress) {
+            changed = it(value)
+        }
+        return changed
     }
 
     private fun setProgress(
