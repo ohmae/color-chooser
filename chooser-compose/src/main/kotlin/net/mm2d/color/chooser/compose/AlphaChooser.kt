@@ -28,16 +28,17 @@ internal fun AlphaChooser(
     currentAlpha: Int,
     onAlphaChanged: (Int) -> Unit,
     labelColor: Color,
+    labelBackgroundColor: Color,
     labelStyle: TextStyle,
     modifier: Modifier = Modifier,
 ) {
-    ColorSlider(
+    AlphaSlider(
         value = currentAlpha,
         onValueChange = onAlphaChanged,
         color = currentColor,
         accessibilityLabel = stringResource(R.string.mm2d_cc_alpha),
-        alphaMode = true,
         labelColor = labelColor,
+        labelBackgroundColor = labelBackgroundColor,
         labelStyle = labelStyle,
         modifier = modifier,
     )
@@ -52,12 +53,14 @@ private fun PreviewAlphaChooser() {
         Box(
             modifier = Modifier.background(MaterialTheme.colorScheme.background),
         ) {
+            val colors = ColorChooserDefaults.colors()
             AlphaChooser(
                 currentColor = Color.Red,
                 currentAlpha = 128,
                 onAlphaChanged = {},
-                labelColor = MaterialTheme.colorScheme.onSurface,
-                labelStyle = ColorChooserDefaults.sliderLabelStyle,
+                labelColor = colors.previewLabelColor,
+                labelBackgroundColor = colors.previewLabelBackgroundColor,
+                labelStyle = ColorChooserDefaults.previewLabelStyle,
                 modifier = Modifier.padding(16.dp),
             )
         }

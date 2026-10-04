@@ -348,8 +348,9 @@ internal fun ColorChooserContent(
                 onAlphaChanged = { newAlpha ->
                     updateColor(currentOpaque, newAlpha)
                 },
-                labelColor = colors.sliderLabelColor,
-                labelStyle = sliderLabelStyle,
+                labelColor = colors.previewLabelColor,
+                labelBackgroundColor = colors.previewLabelBackgroundColor,
+                labelStyle = previewLabelStyle,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally),
             )

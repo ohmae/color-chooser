@@ -17,7 +17,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.click
@@ -25,8 +24,6 @@ import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performTouchInput
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import org.junit.Assert.assertEquals
@@ -47,10 +44,6 @@ class HsvChooserTest {
     fun controlsIgnoreTouchesWhenTheGripHasNoTravelRange() {
         var calls = 0
         composeRule.setContent {
-            val density = LocalDensity.current
-            val labelWidth = with(density) {
-                rememberTextMeasurer().measure("255", style = TextStyle.Default, maxLines = 1).size.width.toDp()
-            }
             Column {
                 HsvChooser(
                     currentColor = Color.Red,
@@ -59,16 +52,14 @@ class HsvChooserTest {
                         .size(16.dp, 56.dp)
                         .testTag("tinyHsv"),
                 )
-                ColorSlider(
+                ColorSliderTrack(
                     value = 128,
                     onValueChange = { calls++ },
                     color = Color.Red,
                     accessibilityLabel = "Red",
-                    labelColor = Color.Black,
-                    labelStyle = TextStyle.Default,
                     modifier = Modifier
-                        // 数値欄と余白を除いたトラック幅を、つまみの直径に揃える。
-                        .size(labelWidth + 6.dp + 8.dp + 16.dp, 32.dp)
+                        // トラック幅をつまみの直径（16dp）に揃えて可動域を0にする。
+                        .size(16.dp, 32.dp)
                         .testTag("tinySlider"),
                 )
             }

@@ -17,16 +17,17 @@ import androidx.compose.foundation.focusable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.absoluteOffset
+import androidx.compose.foundation.layout.absolutePadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
@@ -60,7 +61,6 @@ import androidx.compose.ui.semantics.progressBarRangeInfo
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.setProgress
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.IntOffset
@@ -92,6 +92,7 @@ internal fun ColorSliderTrack(
     modifier: Modifier = Modifier,
     alphaMode: Boolean = false,
     interaction: ControlInteraction = remember { ControlInteraction() },
+    content: (@Composable BoxScope.() -> Unit)? = null,
 ) {
     val currentOnValueChanged by rememberUpdatedState(onValueChange)
     val density = LocalDensity.current
@@ -131,6 +132,7 @@ internal fun ColorSliderTrack(
                 .then(if (alphaMode) Modifier.background(alphaBackgroundBrush()) else Modifier)
                 .background(colorBrush),
         )
+        content?.invoke(this)
         SliderGrip(
             active = interaction.active,
             color = gripColor,
@@ -157,55 +159,6 @@ internal fun ColorSliderTrack(
                         currentOnValueChanged((ratio * MAX_FLOAT).roundToInt())
                     }
                 },
-        )
-    }
-}
-
-// 単一行スライダー（アルファ用、およびテスト用）
-@Composable
-internal fun ColorSlider(
-    value: Int,
-    onValueChange: (Int) -> Unit,
-    color: Color,
-    accessibilityLabel: String,
-    modifier: Modifier = Modifier,
-    alphaMode: Boolean = false,
-    labelColor: Color,
-    labelStyle: TextStyle,
-) {
-    val interaction = remember { ControlInteraction() }
-    val density = LocalDensity.current
-    val textMeasurer = rememberTextMeasurer()
-    val valueWidth = remember(textMeasurer, density, labelStyle) {
-        with(density) {
-            textMeasurer.measure(text = "255", style = labelStyle, maxLines = 1).size.width.toDp()
-        }
-    }
-
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        ColorSliderTrack(
-            value = value,
-            onValueChange = onValueChange,
-            color = color,
-            accessibilityLabel = accessibilityLabel,
-            modifier = Modifier.weight(1f),
-            alphaMode = alphaMode,
-            interaction = interaction,
-        )
-        Text(
-            text = value.toString(),
-            style = labelStyle,
-            color = labelColor,
-            textAlign = TextAlign.End,
-            softWrap = false,
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .padding(end = 6.dp)
-                .width(valueWidth),
         )
     }
 }
@@ -308,6 +261,128 @@ internal fun RgbSlider(
     }
 }
 
+// トラック内包型エクスプレッシブ・アルファスライダー（重なり回避機能付き）
+@Composable
+internal fun AlphaSlider(
+    value: Int,
+    onValueChange: (Int) -> Unit,
+    color: Color,
+    accessibilityLabel: String,
+    modifier: Modifier = Modifier,
+    labelColor: Color = Color.White,
+    labelBackgroundColor: Color = Color.Black.copy(alpha = 0.75f),
+    labelStyle: TextStyle = ColorChooserDefaults.previewLabelStyle,
+) {
+    val interaction = remember { ControlInteraction() }
+    val isEvading = value >= 180
+
+    val rightAlpha by animateFloatAsState(
+        targetValue = if (isEvading) 0f else 1f,
+        animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
+        label = "alphaRightAlpha",
+    )
+    val rightScale by animateFloatAsState(
+        targetValue = when {
+            isEvading -> 0.75f
+            interaction.active -> 1.08f
+            else -> 1.0f
+        },
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessMediumLow,
+        ),
+        label = "alphaRightScale",
+    )
+    val leftAlpha by animateFloatAsState(
+        targetValue = if (isEvading) 1f else 0f,
+        animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
+        label = "alphaLeftAlpha",
+    )
+    val leftScale by animateFloatAsState(
+        targetValue = when {
+            !isEvading -> 0.75f
+            interaction.active -> 1.08f
+            else -> 1.0f
+        },
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessMediumLow,
+        ),
+        label = "alphaLeftScale",
+    )
+
+    ColorSliderTrack(
+        value = value,
+        onValueChange = onValueChange,
+        color = color,
+        accessibilityLabel = accessibilityLabel,
+        alphaMode = true,
+        interaction = interaction,
+        modifier = modifier.fillMaxWidth(),
+    ) {
+        if (leftAlpha > 0.01f) {
+            AlphaBadge(
+                value = value,
+                scale = leftScale,
+                alpha = leftAlpha,
+                backgroundColor = labelBackgroundColor,
+                contentColor = labelColor,
+                labelStyle = labelStyle,
+                modifier = Modifier
+                    .align(AbsoluteAlignment.CenterLeft)
+                    .absolutePadding(left = 12.dp),
+            )
+        }
+        if (rightAlpha > 0.01f) {
+            AlphaBadge(
+                value = value,
+                scale = rightScale,
+                alpha = rightAlpha,
+                backgroundColor = labelBackgroundColor,
+                contentColor = labelColor,
+                labelStyle = labelStyle,
+                modifier = Modifier
+                    .align(AbsoluteAlignment.CenterRight)
+                    .absolutePadding(right = 12.dp),
+            )
+        }
+    }
+}
+
+// アルファスライダー用数値バッジ（Previewのカラーコードラベルと統一された表現）
+@Composable
+private fun AlphaBadge(
+    value: Int,
+    scale: Float,
+    alpha: Float,
+    backgroundColor: Color,
+    contentColor: Color,
+    labelStyle: TextStyle,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
+                this.alpha = alpha
+            }
+            .heightIn(min = 22.dp)
+            .widthIn(min = 36.dp)
+            .background(backgroundColor, ChooserShapes.label)
+            .padding(horizontal = 6.dp, vertical = 2.dp),
+    ) {
+        Text(
+            text = value.toString(),
+            style = MaterialTheme.typography.labelSmall.merge(labelStyle),
+            color = contentColor,
+            softWrap = false,
+            textAlign = TextAlign.Center,
+        )
+    }
+}
+
 private fun Modifier.accessibility(
     label: String,
     value: Int,
@@ -360,22 +435,17 @@ private fun PreviewColorSlider() {
                 modifier = Modifier.padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
-                ColorSlider(
-                    value = 128,
-                    onValueChange = {},
-                    color = Color.Red,
-                    accessibilityLabel = "Red",
-                    labelColor = MaterialTheme.colorScheme.onSurface,
-                    labelStyle = ColorChooserDefaults.sliderLabelStyle,
-                )
-                ColorSlider(
+                AlphaSlider(
                     value = 128,
                     onValueChange = {},
                     color = Color.Blue,
                     accessibilityLabel = "Alpha",
-                    alphaMode = true,
-                    labelColor = MaterialTheme.colorScheme.onSurface,
-                    labelStyle = ColorChooserDefaults.sliderLabelStyle,
+                )
+                AlphaSlider(
+                    value = 220,
+                    onValueChange = {},
+                    color = Color.Red,
+                    accessibilityLabel = "Alpha Evading",
                 )
                 RgbSlider(
                     value = 220,

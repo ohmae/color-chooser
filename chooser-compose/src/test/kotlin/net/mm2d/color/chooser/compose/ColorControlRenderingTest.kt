@@ -7,7 +7,6 @@
 
 package net.mm2d.color.chooser.compose
 
-import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.CompositionLocalProvider
@@ -30,9 +29,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.text.TextLayoutResult
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import org.junit.Assert.assertArrayEquals
@@ -73,47 +70,61 @@ class ColorControlRenderingTest {
     @Test
     fun sliderGradientAndGripKeepPhysicalCoordinatesInRtl() {
         var direction by mutableStateOf(LayoutDirection.Ltr)
-        var offsetX by mutableIntStateOf(0)
         composeRule.setContent {
             CompositionLocalProvider(LocalLayoutDirection provides direction) {
-                ColorSlider(
+                ColorSliderTrack(
                     value = 64,
                     onValueChange = {},
                     color = Color.Red,
                     accessibilityLabel = "Red",
-                    labelColor = Color.Black,
-                    labelStyle = ColorChooserDefaults.sliderLabelStyle,
-                    modifier = Modifier
-                        .width(240.dp)
-                        .absoluteOffset { IntOffset(offsetX, 0) },
+                    modifier = Modifier.width(240.dp),
                 )
             }
         }
         val slider = composeRule.onNodeWithContentDescription("Red")
-        val beforeBounds = slider.fetchSemanticsNode().boundsInRoot
         val before = slider.pixels()
         composeRule.runOnIdle { direction = LayoutDirection.Rtl }
-        val rtlBounds = slider.fetchSemanticsNode().boundsInRoot
-        // 数値欄の実測幅に合わせ、ラスタライズ前のトラックのウィンドウ内座標を揃える。
-        composeRule.runOnIdle { offsetX = (beforeBounds.left - rtlBounds.left).toInt() }
-        assertTrue(
-            "Track bounds must match before comparing pixels",
-            beforeBounds == slider.fetchSemanticsNode().boundsInRoot,
-        )
         assertArrayEquals(before, slider.pixels())
+    }
+
+    @Test
+    fun alphaSliderBadgesAndGripKeepPhysicalCoordinatesInRtl() {
+        var direction by mutableStateOf(LayoutDirection.Ltr)
+        var alphaValue by mutableIntStateOf(64)
+        composeRule.setContent {
+            CompositionLocalProvider(LocalLayoutDirection provides direction) {
+                AlphaSlider(
+                    value = alphaValue,
+                    onValueChange = {},
+                    color = Color.Red,
+                    accessibilityLabel = "Alpha",
+                    modifier = Modifier.width(240.dp),
+                )
+            }
+        }
+        val slider = composeRule.onNodeWithContentDescription("Alpha")
+        val beforeNormal = slider.pixels()
+        composeRule.runOnIdle { direction = LayoutDirection.Rtl }
+        assertArrayEquals(beforeNormal, slider.pixels())
+
+        composeRule.runOnIdle {
+            direction = LayoutDirection.Ltr
+            alphaValue = 220
+        }
+        val beforeEvading = slider.pixels()
+        composeRule.runOnIdle { direction = LayoutDirection.Rtl }
+        assertArrayEquals(beforeEvading, slider.pixels())
     }
 
     @Test
     fun sliderPressEmphasizesGripWithoutChangingValueAndCancelRestoresIt() {
         var callbackCount = 0
         composeRule.setContent {
-            ColorSlider(
+            ColorSliderTrack(
                 value = 128,
                 onValueChange = { callbackCount++ },
                 color = Color.Red,
                 accessibilityLabel = "Red",
-                labelColor = Color.Black,
-                labelStyle = TextStyle.Default,
                 modifier = Modifier.width(240.dp),
             )
         }
