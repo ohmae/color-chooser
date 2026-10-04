@@ -440,24 +440,57 @@ internal fun ColorChooserContent(
     }
 }
 
-private class ChooserPreviewParameterProvider : PreviewParameterProvider<Chooser> {
-    override val values: Sequence<Chooser> = Chooser.entries.asSequence()
+private data class ScreenPreviewParameter(
+    val chooser: Chooser,
+    val withAlpha: Boolean,
+    val initialColor: Color,
+    val color: Color,
+)
+
+private class ChooserPreviewParameterProvider : PreviewParameterProvider<ScreenPreviewParameter> {
+    override val values: Sequence<ScreenPreviewParameter> = sequenceOf(
+        ScreenPreviewParameter(
+            chooser = Chooser.M2,
+            withAlpha = false,
+            initialColor = Color(0xFFE53935),
+            color = Color(0xFFF44336),
+        ),
+        ScreenPreviewParameter(
+            chooser = Chooser.HSV,
+            withAlpha = true,
+            initialColor = Color(0x80FF0000),
+            color = Color(0xCC00BCD4),
+        ),
+        ScreenPreviewParameter(
+            chooser = Chooser.RGB,
+            withAlpha = false,
+            initialColor = Color.Red,
+            color = Color.Magenta,
+        ),
+        ScreenPreviewParameter(
+            chooser = Chooser.M3,
+            withAlpha = true,
+            initialColor = Color(0x804F378B),
+            color = Color(0xCC6750A4),
+        ),
+    )
 }
 
 @PreviewLightDark
 @Composable
 private fun PreviewColorChooserScreen(
-    @PreviewParameter(ChooserPreviewParameterProvider::class) chooser: Chooser,
+    @PreviewParameter(ChooserPreviewParameterProvider::class) parameter: ScreenPreviewParameter,
 ) {
     MaterialTheme(
         colorScheme = if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme(),
     ) {
         Scaffold {
             ColorChooserScreen(
-                color = Color.Blue,
-                initialColor = Color.Red,
+                color = parameter.color,
+                initialColor = parameter.initialColor,
                 onColorChanged = {},
-                initialChooser = chooser,
+                withAlpha = parameter.withAlpha,
+                initialChooser = parameter.chooser,
                 modifier = Modifier
                     .padding(it)
                     .padding(16.dp),

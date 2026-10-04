@@ -3,8 +3,10 @@ package net.mm2d.color.chooser.compose
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -125,18 +127,33 @@ private fun PreviewColorPreview() {
             modifier = Modifier.background(MaterialTheme.colorScheme.background),
         ) {
             val colors = ColorChooserDefaults.colors()
-            ColorPreview(
-                initialColor = Color.Red,
-                resultColor = Color.Blue.copy(alpha = 0.5f),
-                withAlpha = true,
-                labelColor = colors.previewLabelColor,
-                labelBackgroundColor = colors.previewLabelBackgroundColor,
-                labelTextStyle = ColorChooserDefaults.previewLabelStyle,
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth()
-                    .height(ColorChooserDefaults.previewHeight),
-            )
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                ColorPreview(
+                    initialColor = Color(0xFFD32F2F),
+                    resultColor = Color(0xFF1976D2),
+                    withAlpha = false,
+                    labelColor = colors.previewLabelColor,
+                    labelBackgroundColor = colors.previewLabelBackgroundColor,
+                    labelTextStyle = ColorChooserDefaults.previewLabelStyle,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(ColorChooserDefaults.previewHeight),
+                )
+                ColorPreview(
+                    initialColor = Color(0xFFD32F2F),
+                    resultColor = Color(0x801976D2),
+                    withAlpha = true,
+                    labelColor = colors.previewLabelColor,
+                    labelBackgroundColor = colors.previewLabelBackgroundColor,
+                    labelTextStyle = ColorChooserDefaults.previewLabelStyle,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(ColorChooserDefaults.previewHeight),
+                )
+            }
         }
     }
 }

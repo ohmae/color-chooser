@@ -152,12 +152,35 @@ private fun PreviewPaletteChooser() {
         Box(
             modifier = Modifier.background(MaterialTheme.colorScheme.background),
         ) {
-            PaletteChooser(
-                palette = paletteMaterial2,
-                currentColor = Color.Red,
-                onColorChanged = {},
-                modifier = Modifier.padding(16.dp),
+            val samplePalette = listOf(
+                listOf(
+                    Color.White,
+                    Color(0xFFFFEB3B),
+                    Color(0xFF4CAF50),
+                    Color(0xFF2196F3),
+                ),
+                listOf(
+                    Color.Black,
+                    Color(0xFF9C27B0),
+                    Color(0xFFF44336),
+                    Color(0xFFFF9800),
+                ),
             )
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                PaletteChooser(
+                    palette = samplePalette,
+                    currentColor = Color.White,
+                    onColorChanged = {},
+                )
+                PaletteChooser(
+                    palette = samplePalette,
+                    currentColor = Color.Black,
+                    onColorChanged = {},
+                )
+            }
         }
     }
 }

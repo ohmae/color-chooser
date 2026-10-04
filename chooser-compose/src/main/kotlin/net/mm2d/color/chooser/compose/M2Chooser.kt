@@ -46,7 +46,7 @@ private fun PreviewM2Chooser() {
             modifier = Modifier.background(MaterialTheme.colorScheme.background),
         ) {
             M2Chooser(
-                currentColor = Color.Red,
+                currentColor = Color(0xFFF44336),
                 onColorChanged = {},
                 modifier = Modifier.padding(16.dp),
             )

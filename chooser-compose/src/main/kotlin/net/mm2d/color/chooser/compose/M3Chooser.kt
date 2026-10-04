@@ -50,7 +50,7 @@ private fun PreviewM3Chooser() {
             modifier = Modifier.background(MaterialTheme.colorScheme.background),
         ) {
             M3Chooser(
-                currentColor = Color.Red,
+                currentColor = Color(0xFF6750A4),
                 onColorChanged = {},
                 modifier = Modifier.padding(16.dp),
             )

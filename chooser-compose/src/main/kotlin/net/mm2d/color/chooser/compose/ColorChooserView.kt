@@ -8,22 +8,14 @@
 package net.mm2d.color.chooser.compose
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialogDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import net.mm2d.color.chooser.compose.util.ColorSaver
 import net.mm2d.color.chooser.compose.util.toChooserColor
@@ -69,20 +61,4 @@ fun ColorChooserView(
             unselectedTabContentColor = titleContentColor,
         ),
     )
-}
-
-@PreviewLightDark
-@Composable
-private fun PreviewColorChooserScreen() {
-    MaterialTheme(
-        colorScheme = if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme(),
-    ) {
-        Scaffold {
-            ColorChooserView(
-                colorState = remember { mutableStateOf(Color.Red) },
-                modifier = Modifier
-                    .padding(it),
-            )
-        }
-    }
 }

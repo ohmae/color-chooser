@@ -356,7 +356,7 @@ private fun PreviewHsvChooser() {
             modifier = Modifier.background(MaterialTheme.colorScheme.background),
         ) {
             HsvChooser(
-                currentColor = Color.Red,
+                currentColor = Color(0xFF3F51B5),
                 onColorChanged = {},
                 modifier = Modifier.padding(16.dp),
             )
