@@ -48,9 +48,10 @@ if (showDialog) {
 
 - Default "OK" and "Cancel" buttons are provided. "OK" calls `onConfirm` only; close the dialog
   in that callback. "Cancel" and platform dismissal call `onDismissRequest`.
-- By default, only palettes scroll vertically. For very short dialogs, set `scrollEntireContent = true`
-  to scroll the preview and controls together; the HSV square is reduced so the user can scroll back
-  without dragging on its two-axis editing surface.
+- By default, palettes scroll internally. RGB and HSV controls automatically scroll with the preview
+  when they do not fit. The overflowing HSV square is reduced to leave an area for scrolling without
+  dragging on its two-axis editing surface. Set `scrollEntireContent = true` to include palettes in
+  whole-content scrolling as well.
 - Custom buttons can be provided via `confirmButton: @Composable (selectedColor: Color) -> Unit` and
   `dismissButton: @Composable (() -> Unit)?` slots.
 - Optional `onColorChanged: ((Color) -> Unit)?` can be used to observe real-time color changes during editing.
@@ -106,6 +107,8 @@ fun ColorPickerScreen(
   and tab changes, including hue at gray and saturation at black.
 - When embedding in a `verticalScroll` or `LazyColumn` without a fixed item height, pass
   `disableInnerScroll = true`. Palette horizontal scrolling still requires a bounded width.
+- In a bounded height, overflowing RGB and HSV controls automatically scroll with the preview,
+  while palettes keep their own vertical scrolling.
 - RGB, opacity and hue bars update on tap release or horizontal drag; vertical swipes can scroll
   the parent without changing the color. The saturation/brightness plane uses both drag directions for editing.
 - Color ramps keep a left-to-right direction in RTL layouts. RGB, opacity and hue support

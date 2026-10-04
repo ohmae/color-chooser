@@ -7,8 +7,8 @@
 
 package net.mm2d.color.chooser.compose
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
@@ -18,10 +18,14 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.darkColorScheme
@@ -29,13 +33,17 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -48,6 +56,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import net.mm2d.color.chooser.compose.util.ColorSaver
+import net.mm2d.color.chooser.compose.util.TRACK_HEIGHT
 import net.mm2d.color.chooser.compose.util.to8bitInt
 import net.mm2d.color.chooser.compose.util.toChooserColor
 
@@ -176,6 +185,9 @@ object ColorChooserDefaults {
  * Inputs are converted to 8-bit sRGB for previews and editing; callbacks return 8-bit sRGB colors.
  * [Color.Unspecified] is not supported. Disabling alpha discards transparency, including when
  * toggled during editing. Enabling it again starts with full opacity.
+ * In a bounded height, overflowing RGB and HSV controls scroll together with the preview;
+ * palettes keep their own vertical scrolling. The overflowing HSV panel is reduced to leave
+ * an area for starting vertical scroll gestures outside its two-axis editing surface.
  *
  * @param initialColor initial color.
  * @param onColorChanged callback invoked when the selected color changes.
@@ -244,6 +256,8 @@ fun ColorChooserScreen(
  * External updates to [color] are reflected immediately.
  * [color] is converted to 8-bit sRGB; [Color.Unspecified] is not supported.
  * Disabling alpha discards transparency, and callbacks return 8-bit sRGB colors.
+ * In a bounded height, overflowing RGB and HSV controls scroll together with the preview;
+ * palettes keep their own vertical scrolling.
  *
  * @param color current color to display and edit.
  * @param onColorChanged callback invoked when the selected color changes.
@@ -299,6 +313,7 @@ fun ColorChooserScreen(
 }
 
 // 選択した色を保持する画面と従来の API で共用する UI。
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 internal fun ColorChooserContent(
     initialColor: Color,
@@ -316,6 +331,7 @@ internal fun ColorChooserContent(
     sliderLabelStyle: TextStyle = ColorChooserDefaults.sliderLabelStyle,
     disableInnerScroll: Boolean = false,
     maxHsvAreaSize: Dp? = null,
+    scrollEntireContent: Boolean = false,
 ) {
     val currentOpaque = currentColor.copy(alpha = 1f)
     val hsvState = rememberHsvChooserState(currentOpaque)
@@ -325,115 +341,146 @@ internal fun ColorChooserContent(
         onColorChanged(color.copy(alpha = alphaFloat))
     }
 
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(contentSpacing),
-    ) {
-        ColorPreview(
-            initialColor = initialColor,
-            resultColor = currentColor,
-            withAlpha = withAlpha,
-            labelColor = colors.previewLabelColor,
-            labelBackgroundColor = colors.previewLabelBackgroundColor,
-            labelTextStyle = previewLabelStyle,
+    val validatedChoosers = choosers.ifEmpty { listOf(Chooser.M2) }
+    var currentChooser by rememberSaveable(validatedChoosers, initialChooser) {
+        val validatedInitialChooser =
+            validatedChoosers.firstOrNull { it == initialChooser } ?: validatedChoosers.first()
+        mutableStateOf(validatedInitialChooser)
+    }
+    val scrollState = rememberScrollState()
+    var headerHeightPx by remember { mutableIntStateOf(0) }
+    val density = LocalDensity.current
+    BoxWithConstraints(modifier = modifier) {
+        val isPalette = currentChooser == Chooser.M2 || currentChooser == Chooser.M3
+        val useEntireScroll = constraints.hasBoundedHeight && (scrollEntireContent || !isPalette)
+        val headerHeight = with(density) { headerHeightPx.toDp() }
+        // SV 面の外にスクロールを開始できる余地を残す。収まる場合は従来の正方形を維持する。
+        val hsvOverflows = headerHeight + contentSpacing + TRACK_HEIGHT + 8.dp + maxWidth > maxHeight
+        val hsvAreaSize = maxHsvAreaSize ?: if (constraints.hasBoundedHeight && hsvOverflows) {
+            maxHeight * 0.5f
+        } else {
+            null
+        }
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(previewHeight),
-        )
-        if (withAlpha) {
-            AlphaChooser(
-                currentColor = currentOpaque,
-                currentAlpha = currentAlpha,
-                onAlphaChanged = { newAlpha ->
-                    updateColor(currentOpaque, newAlpha)
-                },
-                labelColor = colors.previewLabelColor,
-                labelBackgroundColor = colors.previewLabelBackgroundColor,
-                labelStyle = previewLabelStyle,
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally),
-            )
-        }
-        val validatedChoosers = choosers.ifEmpty { listOf(Chooser.M2) }
-        var currentChooser by rememberSaveable(validatedChoosers, initialChooser) {
-            val validatedInitialChooser =
-                validatedChoosers.firstOrNull { it == initialChooser } ?: validatedChoosers.first()
-            mutableStateOf(validatedInitialChooser)
-        }
-        if (validatedChoosers.size > 1) {
-            ChooserSwitch(
-                currentChooser = currentChooser,
-                onChooserChanged = { currentChooser = it },
-                choosers = validatedChoosers,
-                selectedContentColor = colors.selectedTabContentColor,
-                unselectedContentColor = colors.unselectedTabContentColor,
-                selectedContainerColor = colors.selectedTabContainerColor,
-                unselectedContainerColor = colors.unselectedTabContainerColor,
-                tabTextStyle = tabTextStyle,
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally),
-            )
-        }
-        val onOpaqueChanged = { newColor: Color ->
-            updateColor(newColor, currentAlpha)
-        }
-        AnimatedContent(
-            targetState = currentChooser,
-            transitionSpec = {
-                val initialIndex = validatedChoosers.indexOf(initialState)
-                val targetIndex = validatedChoosers.indexOf(targetState)
-                val slideFraction = 0.2f * if (targetIndex >= initialIndex) 1f else -1f
-                val slideSpec = spring<IntOffset>(
-                    dampingRatio = Spring.DampingRatioNoBouncy,
-                    stiffness = Spring.StiffnessMediumLow,
+                .then(
+                    if (useEntireScroll) {
+                        Modifier.verticalScroll(scrollState, enabled = scrollState.maxValue > 0)
+                    } else {
+                        Modifier
+                    },
+                ),
+            verticalArrangement = Arrangement.spacedBy(contentSpacing),
+        ) {
+            Column(
+                modifier = Modifier.onSizeChanged { headerHeightPx = it.height },
+                verticalArrangement = Arrangement.spacedBy(contentSpacing),
+            ) {
+                ColorPreview(
+                    initialColor = initialColor,
+                    resultColor = currentColor,
+                    withAlpha = withAlpha,
+                    labelColor = colors.previewLabelColor,
+                    labelBackgroundColor = colors.previewLabelBackgroundColor,
+                    labelTextStyle = previewLabelStyle,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(previewHeight),
                 )
-                val fadeSpec = spring<Float>(stiffness = Spring.StiffnessMediumLow)
-                val enter = slideInHorizontally(
-                    animationSpec = slideSpec,
-                    initialOffsetX = { width -> (width * slideFraction).toInt() },
-                ) + fadeIn(animationSpec = fadeSpec)
-                val exit = slideOutHorizontally(
-                    animationSpec = slideSpec,
-                    targetOffsetX = { width -> -(width * slideFraction).toInt() },
-                ) + fadeOut(animationSpec = fadeSpec)
-                (enter togetherWith exit).using(SizeTransform(clip = false))
-            },
-            contentAlignment = Alignment.TopCenter,
-            label = "chooserTabTransition",
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.CenterHorizontally),
-        ) { targetChooser ->
-            when (targetChooser) {
-                Chooser.M2 ->
-                    M2Chooser(
+                if (withAlpha) {
+                    AlphaChooser(
                         currentColor = currentOpaque,
-                        onColorChanged = onOpaqueChanged,
-                        disableInnerScroll = disableInnerScroll,
+                        currentAlpha = currentAlpha,
+                        onAlphaChanged = { newAlpha ->
+                            updateColor(currentOpaque, newAlpha)
+                        },
+                        labelColor = colors.previewLabelColor,
+                        labelBackgroundColor = colors.previewLabelBackgroundColor,
+                        labelStyle = previewLabelStyle,
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally),
                     )
+                }
+                if (validatedChoosers.size > 1) {
+                    ChooserSwitch(
+                        currentChooser = currentChooser,
+                        onChooserChanged = { currentChooser = it },
+                        choosers = validatedChoosers,
+                        selectedContentColor = colors.selectedTabContentColor,
+                        unselectedContentColor = colors.unselectedTabContentColor,
+                        selectedContainerColor = colors.selectedTabContainerColor,
+                        unselectedContainerColor = colors.unselectedTabContainerColor,
+                        tabTextStyle = tabTextStyle,
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally),
+                    )
+                }
+            }
+            val onOpaqueChanged = { newColor: Color ->
+                updateColor(newColor, currentAlpha)
+            }
+            AnimatedContent(
+                targetState = currentChooser,
+                transitionSpec = {
+                    val initialIndex = validatedChoosers.indexOf(initialState)
+                    val targetIndex = validatedChoosers.indexOf(targetState)
+                    val slideFraction = 0.2f * if (targetIndex >= initialIndex) 1f else -1f
+                    val slideSpec = spring<IntOffset>(
+                        dampingRatio = Spring.DampingRatioNoBouncy,
+                        stiffness = Spring.StiffnessMediumLow,
+                    )
+                    val fadeSpec = spring<Float>(stiffness = Spring.StiffnessMediumLow)
+                    val enter = slideInHorizontally(
+                        animationSpec = slideSpec,
+                        initialOffsetX = { width -> (width * slideFraction).toInt() },
+                    ) + fadeIn(animationSpec = fadeSpec)
+                    val exit = slideOutHorizontally(
+                        animationSpec = slideSpec,
+                        targetOffsetX = { width -> -(width * slideFraction).toInt() },
+                    ) + fadeOut(animationSpec = fadeSpec)
+                    (enter togetherWith exit).using(null)
+                },
+                contentAlignment = Alignment.TopCenter,
+                label = "chooserTabTransition",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally)
+                    .clipToBounds(),
+            ) { targetChooser ->
+                when (targetChooser) {
+                    Chooser.M2 ->
+                        M2Chooser(
+                            currentColor = currentOpaque,
+                            onColorChanged = onOpaqueChanged,
+                            disableInnerScroll = disableInnerScroll || useEntireScroll,
+                        )
 
-                Chooser.HSV ->
-                    HsvChooser(
-                        currentColor = currentOpaque,
-                        state = hsvState,
-                        onColorChanged = onOpaqueChanged,
-                        maxSaturationValueSize = maxHsvAreaSize,
-                    )
+                    Chooser.HSV ->
+                        HsvChooser(
+                            currentColor = currentOpaque,
+                            state = hsvState,
+                            onColorChanged = onOpaqueChanged,
+                            // タブ切り替え中の高さ制約で SV 面が縮まないよう、固有の高さで測定する。
+                            modifier = Modifier.wrapContentHeight(align = Alignment.Top, unbounded = true),
+                            maxSaturationValueSize = hsvAreaSize,
+                        )
 
-                Chooser.RGB ->
-                    RgbChooser(
-                        currentColor = currentOpaque,
-                        onColorChanged = onOpaqueChanged,
-                        sliderLabelColor = colors.sliderLabelColor,
-                        sliderLabelStyle = sliderLabelStyle,
-                    )
+                    Chooser.RGB ->
+                        RgbChooser(
+                            currentColor = currentOpaque,
+                            onColorChanged = onOpaqueChanged,
+                            sliderLabelColor = colors.sliderLabelColor,
+                            sliderLabelStyle = sliderLabelStyle,
+                        )
 
-                Chooser.M3 ->
-                    M3Chooser(
-                        currentColor = currentOpaque,
-                        onColorChanged = onOpaqueChanged,
-                        disableInnerScroll = disableInnerScroll,
-                    )
+                    Chooser.M3 ->
+                        M3Chooser(
+                            currentColor = currentOpaque,
+                            onColorChanged = onOpaqueChanged,
+                            disableInnerScroll = disableInnerScroll || useEntireScroll,
+                        )
+                }
             }
         }
     }

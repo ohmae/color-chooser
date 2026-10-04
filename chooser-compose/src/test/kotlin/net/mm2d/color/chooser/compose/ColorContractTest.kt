@@ -21,11 +21,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.colorspace.ColorSpaces
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.semantics.SemanticsActions
+import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsSelected
+import androidx.compose.ui.test.click
 import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
@@ -192,7 +195,7 @@ class ColorContractTest {
     }
 
     @Test
-    fun dialogDoesNotScrollEntireHsvContentByDefault() {
+    fun shortDialogAutomaticallyScrollsHsvContent() {
         composeRule.setContent {
             MaterialTheme {
                 ColorChooserDialog(
@@ -203,7 +206,120 @@ class ColorContractTest {
                 )
             }
         }
+        composeRule.onAllNodes(hasScrollAction()).assertCountEquals(1)
+        composeRule.onNodeWithContentDescription("Saturation and brightness").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithContentDescription("Hue").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithText("OK").assertIsDisplayed()
+    }
+
+    @Test
+    fun shortDialogAutomaticallyScrollsRgbAndAllowsBlueEditing() {
+        var changed = Color.Unspecified
+        composeRule.setContent {
+            MaterialTheme {
+                ColorChooserDialog(
+                    onDismissRequest = {},
+                    onConfirm = {},
+                    onColorChanged = { changed = it },
+                    modifier = Modifier.width(320.dp).height(240.dp),
+                    initialChooser = Chooser.RGB,
+                    withAlpha = true,
+                )
+            }
+        }
+        val blue = composeRule.onNodeWithContentDescription("Blue").performScrollTo().assertIsDisplayed()
+        blue.performTouchInput { click(Offset(width - 1f, centerY)) }
+        composeRule.runOnIdle { assertEquals(Color.Blue, changed) }
+        composeRule.onNodeWithText("RGB").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithText("HSV").performClick()
+        composeRule.onNodeWithContentDescription("Saturation and brightness").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithContentDescription("Hue").performScrollTo().assertIsDisplayed()
+        composeRule.onNodeWithText("M2").performScrollTo().performClick()
+        composeRule.onNodeWithText("OK").assertIsDisplayed()
+    }
+
+    @Test
+    fun shortPaletteDialogScrollsOnlyThePalette() {
+        composeRule.setContent {
+            MaterialTheme {
+                ColorChooserDialog(
+                    onDismissRequest = {},
+                    onConfirm = {},
+                    modifier = Modifier.width(320.dp).height(240.dp),
+                    choosers = listOf(Chooser.M2),
+                )
+            }
+        }
+        val preview = composeRule.onAllNodesWithText("#000000")[0]
+        val previewTop = preview.fetchSemanticsNode().boundsInRoot.top
+        val scroll = composeRule.onNode(hasScrollAction())
+        scroll.performTouchInput {
+            swipe(center, Offset(centerX, 1f), durationMillis = 300)
+        }
+        val scrollRange = scroll.fetchSemanticsNode().config[SemanticsProperties.VerticalScrollAxisRange]
+        composeRule.runOnIdle { assertTrue(scrollRange.value() > 0f) }
+        assertEquals(previewTop, preview.fetchSemanticsNode().boundsInRoot.top, 0f)
+        composeRule.onNodeWithText("OK").assertIsDisplayed()
+    }
+
+    @Test
+    fun fittingDialogDoesNotScrollRgbOrHsv() {
+        var chooser by mutableStateOf(Chooser.RGB)
+        var height by mutableStateOf(600.dp)
+        composeRule.setContent {
+            MaterialTheme {
+                ColorChooserDialog(
+                    onDismissRequest = {},
+                    onConfirm = {},
+                    modifier = Modifier.width(320.dp).height(height),
+                    choosers = listOf(chooser),
+                )
+            }
+        }
         composeRule.onAllNodes(hasScrollAction()).assertCountEquals(0)
+        composeRule.runOnIdle { chooser = Chooser.HSV }
+        composeRule.onAllNodes(hasScrollAction()).assertCountEquals(0)
+        composeRule.runOnIdle { height = 240.dp }
+        composeRule.onAllNodes(hasScrollAction()).assertCountEquals(1)
+        composeRule.onNodeWithContentDescription("Saturation and brightness").performScrollTo()
+        composeRule.runOnIdle { height = 600.dp }
+        composeRule.onAllNodes(hasScrollAction()).assertCountEquals(0)
+        composeRule.onNodeWithContentDescription("Hue").assertIsDisplayed()
+    }
+
+    @Test
+    fun hsvKeepsItsSizeThroughoutChooserTransitions() {
+        var height by mutableStateOf(240.dp)
+        composeRule.setContent {
+            MaterialTheme {
+                ColorChooserScreen(
+                    initialColor = Color.Red,
+                    onColorChanged = {},
+                    modifier = Modifier.width(320.dp).height(height),
+                    initialChooser = Chooser.HSV,
+                    withAlpha = true,
+                )
+            }
+        }
+        for (availableHeight in listOf(240.dp, 600.dp)) {
+            composeRule.runOnIdle { height = availableHeight }
+            val expectedSize = composeRule.onNodeWithContentDescription("Saturation and brightness")
+                .fetchSemanticsNode().size
+            composeRule.mainClock.autoAdvance = false
+            for (tab in listOf("M2", "HSV", "RGB", "HSV", "M3", "HSV")) {
+                composeRule.onNodeWithText(tab).performClick()
+                repeat(40) {
+                    composeRule.mainClock.advanceTimeByFrame()
+                    composeRule.waitForIdle()
+                    composeRule.onAllNodesWithContentDescription("Saturation and brightness")
+                        .fetchSemanticsNodes().forEach { node ->
+                            assertEquals("HSV size during transition to $tab", expectedSize, node.size)
+                        }
+                }
+                composeRule.mainClock.advanceTimeBy(1_000)
+            }
+            composeRule.mainClock.autoAdvance = true
+        }
     }
 
     @Test

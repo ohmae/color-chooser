@@ -18,8 +18,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -61,9 +59,9 @@ import net.mm2d.color.chooser.compose.util.toChooserColor
  * @param initialColor initial color, converted to 8-bit sRGB. If [Color.Unspecified], [Color.Black] is used.
  * @param withAlpha whether to edit alpha. If false, previews and the chosen color are opaque,
  * including when confirmed without editing. Disabling alpha discards transparency.
- * @param scrollEntireContent whether the preview and controls may scroll together on short windows.
- * When false, only palettes scroll vertically. When enabled, the HSV panel is reduced to keep
- * a separate area available for scrolling back toward the top.
+ * @param scrollEntireContent whether to scroll the preview and controls together for every chooser.
+ * When false, palettes scroll internally; RGB and HSV scroll together with the preview when they
+ * do not fit. The overflowing HSV panel is reduced to leave an area for scrolling back toward the top.
  * @param choosers list of choosers to show. Default is [Chooser.entries].
  * @param initialChooser initial chooser tab to select. Default is [Chooser.M2].
  * @param onColorChanged callback invoked whenever the editing color changes in the dialog.
@@ -162,10 +160,7 @@ fun ColorChooserDialog(
                             onColorChanged?.invoke(color)
                         },
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .then(
-                                if (scrollEntireContent) Modifier.verticalScroll(rememberScrollState()) else Modifier,
-                            ),
+                            .fillMaxWidth(),
                         withAlpha = withAlpha,
                         choosers = choosers,
                         initialChooser = initialChooser,
@@ -177,6 +172,7 @@ fun ColorChooserDialog(
                         sliderLabelStyle = sliderLabelStyle,
                         disableInnerScroll = scrollEntireContent,
                         maxHsvAreaSize = if (scrollEntireContent) maxHeight * 0.5f else null,
+                        scrollEntireContent = scrollEntireContent,
                     )
                 }
                 Row(
