@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.systemGestureExclusion
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
@@ -138,6 +139,7 @@ private fun HueSlider(
         modifier = modifier
             .fillMaxWidth()
             .height(TRACK_HEIGHT)
+            .systemGestureExclusion()
             .onSizeChanged { trackWidthPx = it.width },
     ) {
         Box(
@@ -243,6 +245,7 @@ private fun SaturationValueArea(
                         placeable.place(0, 0)
                     }
                 }
+                .systemGestureExclusion()
                 .onSizeChanged { svSizePx = it.width },
         ) {
             Canvas(
