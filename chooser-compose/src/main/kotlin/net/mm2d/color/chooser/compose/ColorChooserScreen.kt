@@ -42,7 +42,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
@@ -372,7 +371,8 @@ internal fun ColorChooserContent(
                     } else {
                         Modifier
                     },
-                ),
+                )
+                .padding(bottom = if (layout.useEntireScroll) 32.dp else 0.dp),
             verticalArrangement = Arrangement.spacedBy(contentSpacing),
         ) {
             ColorChooserHeader(
@@ -424,9 +424,9 @@ private fun calculateChooserLayout(
     maxHsvAreaSize: Dp?,
 ): ChooserLayout {
     val isPalette = currentChooser == Chooser.M2 || currentChooser == Chooser.M3
-    val useEntireScroll = hasBoundedHeight && (scrollEntireContent || !isPalette)
     // SV 面の外にスクロールを開始できる余地を残す。収まる場合は従来の正方形を維持する。
     val hsvOverflows = headerHeight + contentSpacing + TRACK_HEIGHT + 8.dp + maxWidth > maxHeight
+    val useEntireScroll = hasBoundedHeight && (scrollEntireContent || !isPalette && hsvOverflows)
     val hsvAreaSize = maxHsvAreaSize ?: if (hasBoundedHeight && hsvOverflows) maxHeight * 0.5f else null
     return ChooserLayout(useEntireScroll, hsvAreaSize)
 }
@@ -514,8 +514,7 @@ private fun AnimatedChooserPanel(
         contentAlignment = Alignment.TopCenter,
         label = "chooserTabTransition",
         modifier = modifier
-            .fillMaxWidth()
-            .clipToBounds(),
+            .fillMaxWidth(),
     ) { targetChooser ->
         when (targetChooser) {
             Chooser.M2 ->

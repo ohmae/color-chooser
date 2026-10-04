@@ -7,6 +7,10 @@
 
 package net.mm2d.color.chooser.compose
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.CompositionLocalProvider
@@ -15,14 +19,19 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.captureToImage
+import androidx.compose.ui.test.click
+import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -32,6 +41,7 @@ import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
@@ -40,6 +50,7 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
+import kotlin.math.roundToInt
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [35])
@@ -180,6 +191,92 @@ class ColorControlRenderingTest {
             val layout = layouts.single()
             assertTrue("The full code must fit: $code", !layout.didOverflowWidth && !layout.didOverflowHeight)
         }
+    }
+
+    @Test
+    fun screenDrawsHueAndSaturationValueGripsOutsideTheirControlBounds() {
+        composeRule.setContent {
+            Box(Modifier.size(320.dp, 640.dp).background(Color.Black).testTag("root")) {
+                ColorChooserScreen(
+                    initialColor = Color.Red,
+                    onColorChanged = {},
+                    withAlpha = false,
+                    choosers = listOf(Chooser.HSV),
+                    modifier = Modifier.offset(40.dp, 20.dp).width(240.dp).height(560.dp),
+                )
+            }
+        }
+        val hue = composeRule.onNodeWithContentDescription("Hue")
+        hue.performSemanticsAction(SemanticsActions.RequestFocus) { it() }
+        val hueBounds = hue.fetchSemanticsNode().boundsInRoot
+        val huePixel = pixelAt(
+            Offset(
+                hueBounds.left + with(composeRule.density) { 8.dp.toPx() },
+                hueBounds.top - with(composeRule.density) { 3.dp.toPx() },
+            ),
+        )
+        assertTrue("The hue grip must extend above the panel", huePixel.red > 0.8f && huePixel.green < 0.3f)
+
+        val sv = composeRule.onNodeWithContentDescription("Saturation and brightness")
+        sv.performTouchInput { click(Offset(width - 1f, height - 1f)) }
+        sv.performSemanticsAction(SemanticsActions.RequestFocus) { it() }
+        val svBounds = sv.fetchSemanticsNode().boundsInRoot
+        val points = listOf(
+            Offset(
+                svBounds.right + with(composeRule.density) { 12.dp.toPx() },
+                svBounds.bottom - with(composeRule.density) { 8.dp.toPx() },
+            ),
+            Offset(
+                svBounds.right - with(composeRule.density) { 8.dp.toPx() },
+                svBounds.bottom + with(composeRule.density) { 20.dp.toPx() },
+            ),
+        )
+        for (point in points) {
+            val pixel = pixelAt(point)
+            assertTrue("SV grip ticks must extend outside the panel: $point ($pixel)", pixel.red > 0.5f)
+        }
+    }
+
+    @Test
+    fun screenDrawsScaledRgbBadgeAndLastGripOutsideTheirControlBounds() {
+        composeRule.setContent {
+            Box(Modifier.size(320.dp, 640.dp).background(Color.Black).testTag("root")) {
+                ColorChooserScreen(
+                    initialColor = Color.White,
+                    onColorChanged = {},
+                    withAlpha = false,
+                    choosers = listOf(Chooser.RGB),
+                    sliderLabelStyle = ColorChooserDefaults.sliderLabelStyle.copy(fontSize = 32.sp, lineHeight = 40.sp),
+                    modifier = Modifier.offset(40.dp, 20.dp).width(240.dp).height(240.dp),
+                )
+            }
+        }
+        composeRule.onNodeWithContentDescription("Red").performSemanticsAction(SemanticsActions.RequestFocus) { it() }
+        val badgeBounds = composeRule.onAllNodesWithText("255")[0].fetchSemanticsNode().boundsInRoot
+        val badgePixel = pixelAt(
+            Offset(badgeBounds.center.x, badgeBounds.top - with(composeRule.density) { 3.dp.toPx() }),
+        )
+        assertTrue("The scaled RGB badge must extend above the panel", badgePixel.red > 0.1f)
+        composeRule.onNode(hasScrollAction()).performSemanticsAction(SemanticsActions.ScrollBy) { it(0f, 10_000f) }
+        val blue = composeRule.onNodeWithContentDescription("Blue")
+        blue.performSemanticsAction(SemanticsActions.RequestFocus) { it() }
+        val blueBounds = blue.fetchSemanticsNode().boundsInRoot
+        val bluePixel = pixelAt(
+            Offset(
+                blueBounds.right - with(composeRule.density) { 8.dp.toPx() },
+                blueBounds.bottom + with(composeRule.density) { 2.dp.toPx() },
+            ),
+        )
+        assertTrue("Last RGB grip must fit in scroll viewport: $blueBounds ($bluePixel)", bluePixel.blue > 0.8f)
+    }
+
+    private fun pixelAt(
+        position: Offset,
+    ): Color {
+        val root = composeRule.onNodeWithTag("root")
+        val bounds = root.fetchSemanticsNode().boundsInRoot
+        val pixels = root.captureToImage().toPixelMap()
+        return pixels[(position.x - bounds.left).roundToInt(), (position.y - bounds.top).roundToInt()]
     }
 
     private fun SemanticsNodeInteraction.pixels(): IntArray {
