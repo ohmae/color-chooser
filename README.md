@@ -173,7 +173,7 @@ Please see [Sample code](sample/src/main/java/net/mm2d/color/chooser/sample/Main
 
 ## API Document
 
-- [dokka](https://ohmae.github.io/color-chooser/dokka/)
+- [dokka](https://ohmae.github.io/color-chooser/dokka/html)
 
 ## Dependent OSS
 
