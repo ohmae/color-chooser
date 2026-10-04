@@ -29,7 +29,6 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import net.mm2d.color.chooser.compose.util.ChooserShapes
 import net.mm2d.color.chooser.compose.util.alphaBackgroundBrush
@@ -117,7 +116,7 @@ private fun Color.toHex(
         "#%06X".format(toArgb() and 0xFFFFFF)
     }
 
-@PreviewLightDark
+@PreviewEnvironment
 @Composable
 private fun PreviewColorPreview() {
     MaterialTheme(

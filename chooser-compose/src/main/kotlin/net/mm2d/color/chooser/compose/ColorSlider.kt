@@ -63,7 +63,6 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.setProgress
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import net.mm2d.color.chooser.compose.util.CONTROL_GRIP_RADIUS
@@ -424,7 +423,7 @@ private fun Modifier.accessibility(
         .focusable()
 }
 
-@PreviewLightDark
+@PreviewEnvironment
 @Composable
 private fun PreviewColorSlider() {
     MaterialTheme(

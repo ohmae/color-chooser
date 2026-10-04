@@ -43,7 +43,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
@@ -344,7 +343,7 @@ internal fun Tab.toChooser(): Chooser =
         Tab.M3 -> Chooser.M3
     }
 
-@PreviewLightDark
+@PreviewEnvironment
 @Composable
 private fun PreviewColorChooserDialog() {
     MaterialTheme(

@@ -19,7 +19,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -40,7 +39,7 @@ internal fun M3Chooser(
     )
 }
 
-@PreviewLightDark
+@PreviewEnvironment
 @Composable
 private fun PreviewM3Chooser() {
     MaterialTheme(

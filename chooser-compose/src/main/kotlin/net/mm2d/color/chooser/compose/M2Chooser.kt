@@ -17,7 +17,6 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -36,7 +35,7 @@ internal fun M2Chooser(
     )
 }
 
-@PreviewLightDark
+@PreviewEnvironment
 @Composable
 private fun PreviewM2Chooser() {
     MaterialTheme(

@@ -23,7 +23,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -67,7 +66,7 @@ internal fun ChooserSwitch(
     }
 }
 
-@PreviewLightDark
+@PreviewEnvironment
 @Composable
 private fun PreviewChooserSwitch() {
     MaterialTheme(

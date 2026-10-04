@@ -46,7 +46,6 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import net.mm2d.color.chooser.compose.util.shouldUseWhiteForeground
 
@@ -143,7 +142,7 @@ private fun PaletteItem(
     }
 }
 
-@PreviewLightDark
+@PreviewEnvironment
 @Composable
 private fun PreviewPaletteChooser() {
     MaterialTheme(

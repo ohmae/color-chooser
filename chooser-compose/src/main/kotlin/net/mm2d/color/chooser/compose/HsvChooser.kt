@@ -52,7 +52,6 @@ import androidx.compose.ui.semantics.progressBarRangeInfo
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.setProgress
 import androidx.compose.ui.semantics.stateDescription
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
@@ -346,7 +345,7 @@ internal fun Modifier.hueAccessibility(
         .focusable()
 }
 
-@PreviewLightDark
+@PreviewEnvironment
 @Composable
 private fun PreviewHsvChooser() {
     MaterialTheme(

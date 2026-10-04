@@ -41,7 +41,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineHeightStyle
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
@@ -476,7 +475,7 @@ private class ChooserPreviewParameterProvider : PreviewParameterProvider<ScreenP
     )
 }
 
-@PreviewLightDark
+@PreviewEnvironment
 @Composable
 private fun PreviewColorChooserScreen(
     @PreviewParameter(ChooserPreviewParameterProvider::class) parameter: ScreenPreviewParameter,
