@@ -9,6 +9,7 @@ package net.mm2d.color.chooser.compose
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -39,43 +40,40 @@ internal fun RgbChooser(
 
     Column(
         modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        ColorSlider(
+        RgbSlider(
             value = red,
             onValueChange = { newRed ->
                 onColorChanged(Color(newRed, green, blue))
             },
             color = Color.Red,
-            accessibilityLabel = stringResource(R.string.mm2d_cc_red),
+            label = stringResource(R.string.mm2d_cc_red),
             labelColor = sliderLabelColor,
             labelStyle = sliderLabelStyle,
             modifier = Modifier.fillMaxWidth(),
         )
-        ColorSlider(
+        RgbSlider(
             value = green,
             onValueChange = { newGreen ->
                 onColorChanged(Color(red, newGreen, blue))
             },
             color = Color.Green,
-            accessibilityLabel = stringResource(R.string.mm2d_cc_green),
+            label = stringResource(R.string.mm2d_cc_green),
             labelColor = sliderLabelColor,
             labelStyle = sliderLabelStyle,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp),
+            modifier = Modifier.fillMaxWidth(),
         )
-        ColorSlider(
+        RgbSlider(
             value = blue,
             onValueChange = { newBlue ->
                 onColorChanged(Color(red, green, newBlue))
             },
             color = Color.Blue,
-            accessibilityLabel = stringResource(R.string.mm2d_cc_blue),
+            label = stringResource(R.string.mm2d_cc_blue),
             labelColor = sliderLabelColor,
             labelStyle = sliderLabelStyle,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp),
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }
