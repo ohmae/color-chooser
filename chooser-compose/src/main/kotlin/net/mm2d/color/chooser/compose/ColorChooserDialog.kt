@@ -320,15 +320,6 @@ private fun calculateDialogSize(): DpSize {
     return DpSize(width, height)
 }
 
-@Suppress("DEPRECATION")
-internal fun Tab.toChooser(): Chooser =
-    when (this) {
-        Tab.PALETTE -> Chooser.M2
-        Tab.HSV -> Chooser.HSV
-        Tab.RGB -> Chooser.RGB
-        Tab.M3 -> Chooser.M3
-    }
-
 @PreviewEnvironment
 @Composable
 private fun PreviewColorChooserDialog() {
