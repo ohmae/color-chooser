@@ -128,7 +128,7 @@ class ColorControlRenderingTest {
     }
 
     @Test
-    fun sliderPressEmphasizesGripWithoutChangingValueAndCancelRestoresIt() {
+    fun sliderPressEmphasizesGripAndUpdatesValueAndCancelClearsEmphasis() {
         var callbackCount = 0
         composeRule.setContent {
             ColorSliderTrack(
@@ -145,9 +145,10 @@ class ColorControlRenderingTest {
         slider.performTouchInput { down(center) }
         assertTrue("Press must visibly emphasize the grip", !resting.contentEquals(slider.pixels()))
         assertTrue("Press must preserve the control dimensions", bounds == slider.fetchSemanticsNode().boundsInRoot)
-        composeRule.runOnIdle { assertTrue("Press must not change the color", callbackCount == 0) }
+        composeRule.runOnIdle { assertTrue("Press must update the value once", callbackCount == 1) }
         slider.performTouchInput { cancel() }
         assertArrayEquals("Cancelled gesture must clear the emphasis", resting, slider.pixels())
+        composeRule.runOnIdle { assertTrue("Cancel must not update the value again", callbackCount == 1) }
     }
 
     @Test

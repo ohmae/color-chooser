@@ -52,7 +52,7 @@ class ColorGestureTest {
     private val barLabels = listOf("Red", "Green", "Blue", "Opacity", "Hue")
 
     @Test
-    fun verticalSwipesOnEveryBarScrollTheParentWithoutEditing() {
+    fun verticalSwipesOnEveryBarScrollTheParentAfterUpdatingThePressPosition() {
         showChooser()
         barLabels.forEach { label ->
             selectControl(label)
@@ -61,8 +61,7 @@ class ColorGestureTest {
             }
             composeRule.runOnIdle {
                 assertTrue("$label must let the parent scroll", scrollState.value > 0)
-                assertEquals("$label must not emit a color", 0, calls)
-                assertEquals(initialColor, color)
+                assertEquals("$label must only update on press", 1, calls)
             }
         }
     }
@@ -90,17 +89,20 @@ class ColorGestureTest {
     }
 
     @Test
-    fun canceledPressesDoNotEditAndFollowingTapsStillWork() {
+    fun pressesUpdateImmediatelyAndCancelOrReleaseDoesNotUpdateAgain() {
         showChooser()
         barLabels.forEach { label ->
             selectControl(label)
             val control = composeRule.onNodeWithContentDescription(label)
-            control.performTouchInput { down(center) }
-            composeRule.runOnIdle { assertEquals(0, calls) }
+            control.performTouchInput { down(Offset(width * 0.75f, centerY)) }
+            composeRule.runOnIdle {
+                assertEquals("$label must update before release or drag", 1, calls)
+                assertTrue(color != initialColor)
+            }
             control.performTouchInput { cancel() }
-            composeRule.runOnIdle { assertEquals(0, calls) }
-            control.performTouchInput { click(center) }
             composeRule.runOnIdle { assertEquals(1, calls) }
+            control.performTouchInput { click(Offset(width * 0.25f, centerY)) }
+            composeRule.runOnIdle { assertEquals(2, calls) }
         }
     }
 

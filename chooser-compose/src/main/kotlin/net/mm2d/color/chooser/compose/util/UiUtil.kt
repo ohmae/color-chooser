@@ -112,14 +112,14 @@ internal fun alphaBackgroundBrush(): ShaderBrush {
     }
 }
 
-// 垂直スクロールを行うと、色が変わる前に保留中のタップをキャンセルする
+// 押下位置を即時反映し、横ドラッグで更新する。縦ドラッグは親のスクロールに渡す。
 internal suspend fun PointerInputScope.detectHorizontalTapAndDragGestures(
     onPositionChange: (Offset) -> Unit,
 ) {
     coroutineScope {
         // pointerInputが最初のdownイベントをディスパッチする前に、両方の検出器を登録
         launch(start = CoroutineStart.UNDISPATCHED) {
-            detectTapGestures(onTap = onPositionChange)
+            detectTapGestures(onPress = { onPositionChange(it) })
         }
         launch(start = CoroutineStart.UNDISPATCHED) {
             detectHorizontalDragGestures { change, _ ->
