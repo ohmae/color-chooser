@@ -56,7 +56,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import net.mm2d.color.chooser.compose.util.TRACK_HEIGHT
 import net.mm2d.color.chooser.compose.util.to8bitInt
 import net.mm2d.color.chooser.compose.util.toChooserColor
 
@@ -327,7 +326,6 @@ internal fun ColorChooserContent(
     tabTextStyle: TextStyle = ColorChooserDefaults.tabTextStyle,
     sliderLabelStyle: TextStyle = ColorChooserDefaults.sliderLabelStyle,
     disableInnerScroll: Boolean = false,
-    maxHsvAreaSize: Dp? = null,
     scrollEntireContent: Boolean = false,
 ) {
     val currentOpaque = currentColor.copy(alpha = 1f)
@@ -356,7 +354,7 @@ internal fun ColorChooserContent(
             contentSpacing = contentSpacing,
             maxWidth = maxWidth,
             maxHeight = maxHeight,
-            maxHsvAreaSize = maxHsvAreaSize,
+            disableInnerScroll = disableInnerScroll,
         )
         Column(
             modifier = Modifier
@@ -395,36 +393,13 @@ internal fun ColorChooserContent(
                 onColorChanged = { updateColor(it, currentAlpha) },
                 hsvState = hsvState,
                 hsvAreaSize = layout.hsvAreaSize,
-                disableInnerScroll = disableInnerScroll || layout.useEntireScroll,
+                disableInnerScroll = layout.disablePaletteScroll,
                 sliderLabelColor = colors.sliderLabelColor,
                 sliderLabelStyle = sliderLabelStyle,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
             )
         }
     }
-}
-
-private data class ChooserLayout(
-    val useEntireScroll: Boolean,
-    val hsvAreaSize: Dp?,
-)
-
-private fun calculateChooserLayout(
-    currentChooser: Chooser,
-    hasBoundedHeight: Boolean,
-    scrollEntireContent: Boolean,
-    headerHeight: Dp,
-    contentSpacing: Dp,
-    maxWidth: Dp,
-    maxHeight: Dp,
-    maxHsvAreaSize: Dp?,
-): ChooserLayout {
-    val isPalette = currentChooser == Chooser.M2 || currentChooser == Chooser.M3
-    // SV 面の外にスクロールを開始できる余地を残す。収まる場合は従来の正方形を維持する。
-    val hsvOverflows = headerHeight + contentSpacing + TRACK_HEIGHT + 8.dp + maxWidth > maxHeight
-    val useEntireScroll = hasBoundedHeight && (scrollEntireContent || !isPalette && hsvOverflows)
-    val hsvAreaSize = maxHsvAreaSize ?: if (hasBoundedHeight && hsvOverflows) maxHeight * 0.5f else null
-    return ChooserLayout(useEntireScroll, hsvAreaSize)
 }
 
 @Composable

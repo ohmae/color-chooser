@@ -7,9 +7,8 @@
 
 package net.mm2d.color.chooser.compose
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -77,7 +76,6 @@ import net.mm2d.color.chooser.compose.util.toChooserColor
  * @param dismissButton optional composable slot for the dismiss button.
  * Default is a [TextButton] labeled "Cancel" calling [onDismissRequest].
  */
-@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun ColorChooserDialog(
     onDismissRequest: () -> Unit,
@@ -139,7 +137,7 @@ fun ColorChooserDialog(
                     }
                 }
                 var selectedColor by rememberSelectedColor(initialColor, normalizedInitialColor, withAlpha)
-                BoxWithConstraints(
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 16.dp)
@@ -164,8 +162,6 @@ fun ColorChooserDialog(
                         previewLabelStyle = previewLabelStyle,
                         tabTextStyle = tabTextStyle,
                         sliderLabelStyle = sliderLabelStyle,
-                        disableInnerScroll = scrollEntireContent,
-                        maxHsvAreaSize = if (scrollEntireContent) maxHeight * 0.5f else null,
                         scrollEntireContent = scrollEntireContent,
                     )
                 }

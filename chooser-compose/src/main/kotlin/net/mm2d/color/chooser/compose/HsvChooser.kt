@@ -97,7 +97,7 @@ internal fun HsvChooser(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .then(saturationValueWidth)
-                .padding(top = 8.dp),
+                .padding(top = HSV_CONTENT_SPACING),
         )
     }
 }
