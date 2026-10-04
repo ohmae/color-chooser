@@ -237,10 +237,10 @@ internal fun RgbSlider(
                         scaleY = badgeScale
                     }
                     .heightIn(min = 24.dp)
-                    .widthIn(min = 44.dp)
+                    .widthIn(min = 56.dp)
                     .background(badgeBgColor, ChooserShapes.label)
                     .border(1.dp, badgeBorderColor, ChooserShapes.label)
-                    .padding(horizontal = 6.dp, vertical = 2.dp),
+                    .padding(horizontal = 12.dp, vertical = 2.dp),
             ) {
                 Text(
                     text = value.toString(),
