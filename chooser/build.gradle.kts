@@ -38,8 +38,6 @@ dependencies {
     implementation(libs.androidxConstraintLayout)
     implementation(libs.androidxCore)
     implementation(libs.materialComponents)
-    implementation(libs.androidxDatabinding)
-    testImplementation(libs.junit)
 }
 
 apiValidation {

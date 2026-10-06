@@ -31,7 +31,6 @@ android {
 dependencies {
     implementation(projects.chooserCompose)
 
-    implementation(libs.androidxCore)
     implementation(libs.androidxAppCompat)
     implementation(libs.androidxActivityCompose)
     implementation(libs.materialComponents)

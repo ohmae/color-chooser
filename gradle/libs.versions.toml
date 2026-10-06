@@ -41,9 +41,7 @@ androidxAppCompat = { group = "androidx.appcompat", name = "appcompat", version.
 androidxConstraintLayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidxConstraintLayout" }
 androidxCore = { group = "androidx.core", name = "core", version.ref = "androidxCore" }
 androidxNavigationFragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "androidxNavigation" }
-androidxNavigationUi = { group = "androidx.navigation", name = "navigation-ui", version.ref = "androidxNavigation" }
 materialComponents = { group = "com.google.android.material", name = "material", version.ref = "materialComponents" }
-androidxDatabinding = { group = "androidx.databinding", name = "viewbinding", version.ref = "androidGradlePlugin" }
 
 androidxActivityCompose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidxComposeBom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }

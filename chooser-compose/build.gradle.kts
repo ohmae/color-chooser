@@ -32,7 +32,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidxCore)
     api(libs.androidxComposeRuntime)
     api(libs.androidxComposeUi)
     api(libs.androidxComposeUiGraphics)
