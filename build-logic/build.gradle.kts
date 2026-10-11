@@ -9,32 +9,32 @@ dependencies {
 gradlePlugin {
     plugins {
         register("androidApplication") {
-            id = "build.logic.androidApplication"
-            implementationClass = "net.mm2d.build.AndroidApplicationPlugin"
+            id = "chooser.androidApplication"
+            implementationClass = "chooser.AndroidApplicationPlugin"
         }
         register("androidLibrary") {
-            id = "build.logic.androidLibrary"
-            implementationClass = "net.mm2d.build.AndroidLibraryPlugin"
+            id = "chooser.androidLibrary"
+            implementationClass = "chooser.AndroidLibraryPlugin"
         }
         register("kotlinAndroid") {
-            id = "build.logic.kotlinAndroid"
-            implementationClass = "net.mm2d.build.KotlinAndroidPlugin"
+            id = "chooser.kotlinAndroid"
+            implementationClass = "chooser.KotlinAndroidPlugin"
         }
         register("navigationSafeArgs") {
-            id = "build.logic.navigationSafeArgs"
-            implementationClass = "net.mm2d.build.NavigationSafeArgsPlugin"
+            id = "chooser.navigationSafeArgs"
+            implementationClass = "chooser.NavigationSafeArgsPlugin"
         }
         register("documentationDokka") {
-            id = "build.logic.documentationDokka"
-            implementationClass = "net.mm2d.build.DocumentationDokkaPlugin"
+            id = "chooser.documentationDokka"
+            implementationClass = "chooser.DocumentationDokkaPlugin"
         }
         register("mavenPublish") {
-            id = "build.logic.mavenPublish"
-            implementationClass = "net.mm2d.build.MavenPublishPlugin"
+            id = "chooser.mavenPublish"
+            implementationClass = "chooser.MavenPublishPlugin"
         }
         register("dependencyGuard") {
-            id = "build.logic.dependencyGuard"
-            implementationClass = "net.mm2d.build.DependencyGuardPlugin"
+            id = "chooser.dependencyGuard"
+            implementationClass = "chooser.DependencyGuardPlugin"
         }
     }
 }

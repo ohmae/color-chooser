@@ -1,4 +1,4 @@
-package net.mm2d.build
+package chooser
 
 import com.dropbox.gradle.plugins.dependencyguard.DependencyGuardPluginExtension
 import org.gradle.api.Action

@@ -37,7 +37,7 @@ Android 向けの色選択ライブラリです。View 版と Jetpack Compose �
 - Android SDK の参照先は環境変数またはローカルの `local.properties` で設定してください。
   個人のパスや認証情報をコミットしないでください。
 - SDK・JVM・ライブラリ公開バージョンの定義元は
-  `build-logic/src/main/kotlin/net/mm2d/build/Projects.kt` です。
+  `build-logic/src/main/kotlin/chooser/Projects.kt` です。
   現在は JVM toolchain 21、Java/Kotlin の出力ターゲット 11 です。両者を混同しないでください。
 - 共通ビルド設定は `build-logic/`、依存関係はバージョンカタログと各モジュールの
   `build.gradle.kts` に従って変更してください。

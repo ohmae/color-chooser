@@ -1,4 +1,4 @@
-package net.mm2d.build
+package chooser
 
 import com.vanniktech.maven.publish.AndroidSingleVariantLibrary
 import com.vanniktech.maven.publish.JavadocJar

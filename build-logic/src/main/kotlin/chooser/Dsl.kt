@@ -1,4 +1,4 @@
-package net.mm2d.build
+package chooser
 
 import org.gradle.api.Project
 import org.gradle.api.artifacts.MinimalExternalModuleDependency

@@ -1,14 +1,14 @@
-import net.mm2d.build.Projects
-import net.mm2d.build.pomDescription
-import net.mm2d.build.pomInceptionYear
-import net.mm2d.build.pomName
+import chooser.Projects
+import chooser.pomDescription
+import chooser.pomInceptionYear
+import chooser.pomName
 
 plugins {
-    alias(libs.plugins.build.logic.androidLibrary)
-    alias(libs.plugins.build.logic.kotlinAndroid)
-    alias(libs.plugins.build.logic.documentationDokka)
-    alias(libs.plugins.build.logic.mavenPublish)
-    alias(libs.plugins.build.logic.dependencyGuard)
+    alias(libs.plugins.chooser.androidLibrary)
+    alias(libs.plugins.chooser.kotlinAndroid)
+    alias(libs.plugins.chooser.documentationDokka)
+    alias(libs.plugins.chooser.mavenPublish)
+    alias(libs.plugins.chooser.dependencyGuard)
 }
 
 base.archivesName.set("color-chooser")

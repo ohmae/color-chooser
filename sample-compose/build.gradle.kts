@@ -1,6 +1,6 @@
 plugins {
-    alias(libs.plugins.build.logic.androidApplication)
-    alias(libs.plugins.build.logic.kotlinAndroid)
+    alias(libs.plugins.chooser.androidApplication)
+    alias(libs.plugins.chooser.kotlinAndroid)
     alias(libs.plugins.kotlinCompose)
 }
 

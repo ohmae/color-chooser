@@ -1,4 +1,4 @@
-package net.mm2d.build
+package chooser
 
 import com.android.build.gradle.internal.dsl.LibraryExtensionImpl
 import org.gradle.api.Action

@@ -1,4 +1,4 @@
-package net.mm2d.build
+package chooser
 
 import org.gradle.api.Action
 import org.gradle.api.Plugin

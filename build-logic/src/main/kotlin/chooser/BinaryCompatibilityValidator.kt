@@ -1,4 +1,4 @@
-package net.mm2d.build
+package chooser
 
 import kotlinx.validation.ApiValidationExtension
 import kotlinx.validation.KotlinApiBuildTask

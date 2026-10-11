@@ -78,13 +78,13 @@ kotlinxValidator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator"
 versionCatalogUpdate = { id = "nl.littlerobots.version-catalog-update", version.ref = "versionCatalogUpdate" }
 
 # build-logic
-build-logic-androidApplication = { id = "build.logic.androidApplication", version = "unspecified" }
-build-logic-androidLibrary = { id = "build.logic.androidLibrary", version = "unspecified" }
-build-logic-kotlinAndroid = { id = "build.logic.kotlinAndroid", version = "unspecified" }
-build-logic-navigationSafeArgs = { id = "build.logic.navigationSafeArgs", version = "unspecified" }
-build-logic-documentationDokka = { id = "build.logic.documentationDokka", version = "unspecified" }
-build-logic-mavenPublish = { id = "build.logic.mavenPublish", version = "unspecified" }
-build-logic-dependencyGuard = { id = "build.logic.dependencyGuard", version = "unspecified" }
+chooser-androidApplication = { id = "chooser.androidApplication", version = "unspecified" }
+chooser-androidLibrary = { id = "chooser.androidLibrary", version = "unspecified" }
+chooser-kotlinAndroid = { id = "chooser.kotlinAndroid", version = "unspecified" }
+chooser-navigationSafeArgs = { id = "chooser.navigationSafeArgs", version = "unspecified" }
+chooser-documentationDokka = { id = "chooser.documentationDokka", version = "unspecified" }
+chooser-mavenPublish = { id = "chooser.mavenPublish", version = "unspecified" }
+chooser-dependencyGuard = { id = "chooser.dependencyGuard", version = "unspecified" }
 
 [bundles]
 plugins = [

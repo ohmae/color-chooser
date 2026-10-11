@@ -1,4 +1,4 @@
-package net.mm2d.build
+package chooser
 
 import org.gradle.api.JavaVersion
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget

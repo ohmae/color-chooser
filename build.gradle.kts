@@ -20,7 +20,7 @@ buildscript {
 }
 
 dependencies {
-    val dokkaPluginId = libs.plugins.build.logic.documentationDokka.get().pluginId
+    val dokkaPluginId = libs.plugins.chooser.documentationDokka.get().pluginId
     subprojects {
         plugins.withId(dokkaPluginId) {
             dokka(this@subprojects)
