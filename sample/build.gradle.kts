@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.chooser.androidApplication)
-    alias(libs.plugins.chooser.kotlinAndroid)
-    alias(libs.plugins.chooser.navigationSafeArgs)
+    alias(libs.plugins.navigationSafeArgs)
 }
 
 android {

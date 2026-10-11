@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.chooser.androidApplication)
-    alias(libs.plugins.chooser.kotlinAndroid)
     alias(libs.plugins.kotlinCompose)
 }
 

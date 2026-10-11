@@ -3,68 +3,64 @@ package chooser
 import com.vanniktech.maven.publish.AndroidSingleVariantLibrary
 import com.vanniktech.maven.publish.JavadocJar
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
-import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.plugins.ExtensionAware
+import org.gradle.api.plugins.BasePluginExtension
+import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.getByType
 
 class MavenPublishPlugin : Plugin<Project> {
-    override fun apply(target: Project) {
-        target.plugin()
-    }
-}
-
-private fun Project.plugin() {
-    with(pluginManager) {
-        apply("com.vanniktech.maven.publish")
-    }
-    mavenPublishing {
-        configure(
-            AndroidSingleVariantLibrary(
-                javadocJar = JavadocJar.Javadoc(),
-            )
-        )
-        publishToMavenCentral()
-        signAllPublications()
-        afterEvaluate {
-            coordinates(
-                groupId = project.group.toString(),
-                artifactId = project.base.archivesName.get(),
-                version = project.version.toString()
-            )
-        }
-        pom {
-            name.set(project.pomName)
-            description.set(project.pomDescription)
-            url.set(Projects.Url.SITE)
-            inceptionYear.set(project.pomInceptionYear)
-            licenses {
-                license {
-                    name.set("The MIT License")
-                    url.set("https://opensource.org/licenses/MIT")
-                    distribution.set("repo")
+    override fun apply(
+        target: Project,
+    ): Unit =
+        with(target) {
+            pluginManager.apply("com.vanniktech.maven.publish")
+            extensions.configure<MavenPublishBaseExtension> {
+                configure(
+                    AndroidSingleVariantLibrary(
+                        javadocJar = JavadocJar.Javadoc(),
+                    ),
+                )
+                publishToMavenCentral()
+                signAllPublications()
+                afterEvaluate {
+                    coordinates(
+                        groupId = project.group.toString(),
+                        artifactId = project.extensions.getByType<BasePluginExtension>().archivesName.get(),
+                        version = project.version.toString(),
+                    )
+                }
+                pom {
+                    name.set(project.pomName)
+                    description.set(project.pomDescription)
+                    url.set(Projects.Url.SITE)
+                    inceptionYear.set(project.pomInceptionYear)
+                    licenses {
+                        license {
+                            name.set("The MIT License")
+                            url.set("https://opensource.org/licenses/MIT")
+                            distribution.set("repo")
+                        }
+                    }
+                    developers {
+                        developer {
+                            id.set(Projects.DEVELOPER_ID)
+                            name.set(Projects.DEVELOPER_NAME)
+                        }
+                    }
+                    scm {
+                        connection.set(Projects.Url.SCM)
+                        developerConnection.set(Projects.Url.SCM)
+                        url.set(Projects.Url.GITHUB)
+                    }
                 }
             }
-            developers {
-                developer {
-                    id.set(Projects.DEVELOPER_ID)
-                    name.set(Projects.DEVELOPER_NAME)
-                }
-            }
-            scm {
-                connection.set(Projects.Url.SCM)
-                developerConnection.set(Projects.Url.SCM)
-                url.set(Projects.Url.GITHUB)
-            }
         }
-    }
 }
 
-// DSL
-private fun Project.mavenPublishing(configure: Action<MavenPublishBaseExtension>): Unit =
-    (this as ExtensionAware).extensions.configure("mavenPublishing", configure)
-
-private fun Project.findPropertyString(name: String): String {
+private fun Project.findPropertyString(
+    name: String,
+): String {
     val value = findProperty(name) as? String
     require(!value.isNullOrBlank())
     return value

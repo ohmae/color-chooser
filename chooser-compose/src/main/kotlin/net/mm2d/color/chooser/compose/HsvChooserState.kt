@@ -55,6 +55,7 @@ internal class HsvChooserState private constructor(
     val hue: Float get() = editingSelection.coordinates.hue
     val saturation: Float get() = editingSelection.coordinates.saturation
     val value: Float get() = editingSelection.coordinates.value
+
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     val editingColor: Color get() = editingSelection.color
 

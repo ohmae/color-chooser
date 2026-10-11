@@ -80,8 +80,6 @@ versionCatalogUpdate = { id = "nl.littlerobots.version-catalog-update", version.
 # build-logic
 chooser-androidApplication = { id = "chooser.androidApplication", version = "unspecified" }
 chooser-androidLibrary = { id = "chooser.androidLibrary", version = "unspecified" }
-chooser-kotlinAndroid = { id = "chooser.kotlinAndroid", version = "unspecified" }
-chooser-navigationSafeArgs = { id = "chooser.navigationSafeArgs", version = "unspecified" }
 chooser-documentationDokka = { id = "chooser.documentationDokka", version = "unspecified" }
 chooser-mavenPublish = { id = "chooser.mavenPublish", version = "unspecified" }
 chooser-dependencyGuard = { id = "chooser.dependencyGuard", version = "unspecified" }

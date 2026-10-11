@@ -6,7 +6,6 @@ import chooser.pomName
 
 plugins {
     alias(libs.plugins.chooser.androidLibrary)
-    alias(libs.plugins.chooser.kotlinAndroid)
     alias(libs.plugins.chooser.documentationDokka)
     alias(libs.plugins.chooser.mavenPublish)
     alias(libs.plugins.chooser.dependencyGuard)

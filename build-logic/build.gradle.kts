@@ -16,14 +16,6 @@ gradlePlugin {
             id = "chooser.androidLibrary"
             implementationClass = "chooser.AndroidLibraryPlugin"
         }
-        register("kotlinAndroid") {
-            id = "chooser.kotlinAndroid"
-            implementationClass = "chooser.KotlinAndroidPlugin"
-        }
-        register("navigationSafeArgs") {
-            id = "chooser.navigationSafeArgs"
-            implementationClass = "chooser.NavigationSafeArgsPlugin"
-        }
         register("documentationDokka") {
             id = "chooser.documentationDokka"
             implementationClass = "chooser.DocumentationDokkaPlugin"
