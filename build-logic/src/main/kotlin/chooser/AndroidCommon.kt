@@ -9,7 +9,9 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 internal fun Project.configureAndroidCommon() {
     extensions.configure<CommonExtension> {
         compileSdk {
-            version = release(Projects.COMPILE_SDK)
+            version = release(Projects.COMPILE_SDK) {
+                minorApiLevel = 2
+            }
         }
         defaultConfig.minSdk = Projects.MIN_SDK
         compileOptions.apply {
