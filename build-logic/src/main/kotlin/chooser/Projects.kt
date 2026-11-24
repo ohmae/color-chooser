@@ -5,6 +5,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 object Projects {
     const val COMPILE_SDK: Int = 37
+    const val COMPILE_SDK_MINOR: Int = 2
     const val MIN_SDK: Int = 26
     const val TARGET_SDK: Int = 37
 

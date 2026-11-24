@@ -10,7 +10,7 @@ internal fun Project.configureAndroidCommon() {
     extensions.configure<CommonExtension> {
         compileSdk {
             version = release(Projects.COMPILE_SDK) {
-                minorApiLevel = 2
+                minorApiLevel = Projects.COMPILE_SDK_MINOR
             }
         }
         defaultConfig.minSdk = Projects.MIN_SDK
